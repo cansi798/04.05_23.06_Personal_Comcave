@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<style id="pdk-back-style">
+#pdk-back-banner { position: sticky; top: 0; z-index: 9999; background: #0f3151; color: #fff; padding: 0.85rem 1rem; display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; box-shadow: 0 4px 14px rgba(0,0,0,0.25); font-family: "Segoe UI", Tahoma, sans-serif; border-bottom: 3px solid #1780a1; }
+#pdk-back-banner a { color: #fff; text-decoration: none; font-weight: 700; padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4); font-size: 0.95rem; transition: background 0.15s, transform 0.1s; }
+#pdk-back-banner a:hover { background: rgba(255,255,255,0.32); transform: translateY(-1px); }
+#pdk-back-banner .pdk-label { font-size: 0.92rem; opacity: 0.95; margin-left: auto; }
+#pdk-floating-back { position: fixed; bottom: 22px; right: 22px; z-index: 9998; background: #0f3151; color: #fff !important; text-decoration: none; padding: 0.85rem 1.3rem; border-radius: 50px; box-shadow: 0 6px 18px rgba(0,0,0,0.30); font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 0.95rem; border: 2px solid rgba(255,255,255,0.4); transition: transform 0.12s, box-shadow 0.12s; }
+#pdk-floating-back:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
+#pdk-bottom-back { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; padding: 1.5rem 1rem 2rem; background: #eef4f8; border-top: 1px solid #d6e0e8; margin-top: 2rem; }
+#pdk-bottom-back a { display: inline-block; padding: 0.85rem 1.5rem; background: #0d5c8c; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 1rem; box-shadow: 0 4px 12px rgba(13,92,140,0.25); }
+#pdk-bottom-back a:hover { background: #0f3151; }
+@media print { #pdk-back-banner, #pdk-floating-back, #pdk-bottom-back { display: none !important; } }
+</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tag 02 – Arbeitsplanung &amp; Schnittstellen (Personaldienstleistungskaufmann/-frau IHK 2026)</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+        .header { background: linear-gradient(135deg, #00325f 0%, #004b87 50%, #0082b4 100%); color: #fff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+        .header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+        .header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+        .toolbar button, .toolbar .toggle-label { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .toolbar button:hover { background: #00325f; }
+        .toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+        .toggle-label input { accent-color: #004b87; width: 18px; height: 18px; cursor: pointer; }
+        .progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+        .progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0082b4, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+        .container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+        .section-title { background: #00325f; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+        .section-title:first-child { margin-top: 0; }
+        .question-card { background: #fff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+        .question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .question-card.correct-card { border-left: 5px solid #28a745; }
+        .question-card.incorrect-card { border-left: 5px solid #dc3545; }
+        .question-number { display: inline-block; background: #e8f0fe; color: #004b87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+        .question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+        .options-list { list-style: none; }
+        .options-list li { margin-bottom: 0.5rem; }
+        .options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+        .options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+        .options-list input[type="radio"] { accent-color: #004b87; margin-top: 3px; flex-shrink: 0; }
+        .options-list label.selected { background: #e8f0fe; border-color: #004b87; }
+        .options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+        .options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+        .check-btn { margin-top: 0.8rem; background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .check-btn:hover { background: #00325f; }
+        .check-btn:disabled { background: #8faec8; cursor: default; }
+        .feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .nav-btn { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .nav-btn:hover { background: #00325f; }
+        .nav-btn:disabled { background: #8faec8; cursor: default; }
+        .results-panel { background: #fff; border: 2px solid #004b87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .results-panel.show { display: block; }
+        .results-panel h2 { color: #00325f; margin-bottom: 0.8rem; }
+        .score-big { font-size: 3rem; font-weight: 700; color: #004b87; }
+        .grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+        .grade.pass { color: #28a745; }
+        .grade.fail { color: #dc3545; }
+        .section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+        .section-breakdown table { width: 100%; border-collapse: collapse; }
+        .section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+        .section-breakdown th { background: #e8f0fe; color: #00325f; text-align: left; }
+        .references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+        .references h3 { color: #00325f; margin-bottom: 0.8rem; font-size: 1.1rem; }
+        .references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+        .footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+        @media print {
+            body { background: #fff; }
+            .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; }
+            .header { background: #00325f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+            .section-title { break-after: avoid; }
+            .feedback.show { display: block !important; }
+        }
+        @media (max-width: 600px) {
+            .header { padding: 1.4rem 0.8rem; }
+            .question-card { padding: 1rem; }
+            .toolbar { flex-direction: column; align-items: stretch; text-align: center; }
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+<div id="pdk-back-banner">
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+  <span class="pdk-label">PDK Personal-Kurs Mai-Juni 2026</span>
+</div>
+<a id="pdk-floating-back" href="../../../index.html" title="Zurueck zur Tagesuebersicht">&larr; Uebersicht</a>
+
+<header class="header">
+    <h1>Quiz Tag 02 &ndash; Arbeitsplanung &amp; Schnittstellen</h1>
+    <div class="subtitle">Lehrgang Personaldienstleistungskaufmann/-frau IHK &middot; Lerninhalte A2 + A3</div>
+    <div class="meta">
+        <span>&copy; Can Siebert</span>
+        <span>Stand 05/2026</span>
+        <span>60 Fragen &bull; Multiple Choice</span>
+    </div>
+</header>
+
+<div class="toolbar">
+    <label class="toggle-label">
+        <input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen
+    </label>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <button onclick="showResults()">Ergebnis anzeigen</button>
+        <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-info">
+        <span id="progressText">0 von 60 beantwortet</span>
+        <span id="progressPct">0 %</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+    <div class="results-panel" id="resultsPanel">
+        <h2>Dein Ergebnis</h2>
+        <div class="score-big" id="scoreBig"></div>
+        <div class="grade" id="gradeText"></div>
+        <div class="section-breakdown" id="sectionBreakdown"></div>
+        <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="references">
+    <h3>Literaturverzeichnis (APA 7)</h3>
+    <p>Cirillo, F. (2018). <em>The Pomodoro Technique</em>. Currency.</p>
+    <p>Covey, S. R. (2004). <em>The 7 Habits of Highly Effective People</em>. Free Press.</p>
+    <p>Deming, W. E. (1986). <em>Out of the Crisis</em>. MIT Press.</p>
+    <p>Drucker, P. F. (2007). <em>The Effective Executive</em>. HarperBusiness.</p>
+    <p>Koch, R. (2007). <em>The 80/20 Principle</em>. Crown Business.</p>
+    <p>Schulz von Thun, F. (2010). <em>Miteinander reden 1: St&ouml;rungen und Kl&auml;rungen</em>. Rowohlt.</p>
+    <p>Seiwert, L. J. (2014). <em>Das 1x1 des Zeitmanagement</em>. Gr&auml;fe und Unzer.</p>
+    <p>Bundesministerium der Justiz. (2024). <em>Arbeitnehmer&uuml;berlassungsgesetz (A&Uuml;G)</em>. https://www.gesetze-im-internet.de/a_g/</p>
+</div>
+
+<footer class="footer">
+    &copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Lehrgang Personaldienstleistungskaufmann/-frau Mai&ndash;Juni 2026 | Stand 05/2026
+</footer>
+
+<script>
+const sections = [
+    {
+        title: "Abschnitt 1: PDCA-Zyklus & systematisches Arbeiten (Fragen 1–10)",
+        questions: [
+            { id: 1, text: "Wofür steht die Abkürzung PDCA?", options: ["A) Plan – Do – Check – Act", "B) Personal – Disposition – Controlling – Audit", "C) Produkt – Distribution – Channel – Account", "D) Problem – Diagnose – Change – Action"], correct: 0, explanation: "PDCA = Plan, Do, Check, Act – der Deming-Kreis (auch Shewhart-Zyklus). Grundmodell für kontinuierliches Verbessern und systematisches Arbeiten." },
+            { id: 2, text: "Wer hat den PDCA-Zyklus maßgeblich populär gemacht?", options: ["A) Henry Ford", "B) W. Edwards Deming", "C) Frederick Taylor", "D) Peter Drucker"], correct: 1, explanation: "W. Edwards Deming hat den von Walter Shewhart entwickelten Zyklus in Japan populär gemacht. Daher auch die Bezeichnung Deming-Kreis." },
+            { id: 3, text: "Welche Phase im PDCA-Zyklus beinhaltet den Soll-Ist-Vergleich?", options: ["A) Plan", "B) Do", "C) Check", "D) Act"], correct: 2, explanation: "In der Check-Phase werden die Ergebnisse der Do-Phase mit den geplanten Zielen verglichen (Soll-Ist-Analyse)." },
+            { id: 4, text: "Was bedeutet die Act-Phase im PDCA-Zyklus?", options: ["A) Den Plan abbrechen", "B) Anpassungen vornehmen, Standardisierung, neuer Zyklus", "C) Eine neue Aufgabe beginnen", "D) Nichts tun"], correct: 1, explanation: "Act bedeutet: Erfolgreiche Verbesserungen standardisieren, Erkenntnisse in den nächsten Plan einfließen lassen – PDCA ist eine Spirale, kein einmaliger Vorgang." },
+            { id: 5, text: "Was bedeutet 'systematisch arbeiten' im PDL-Kontext?", options: ["A) Aufgaben werden zufällig, aus dem Bauch erledigt", "B) Aufgaben werden geordnet, geplant und nachvollziehbar erledigt", "C) Nur die wichtigsten Kunden werden bedient", "D) Es gibt keine Dokumentation"], correct: 1, explanation: "Systematisch heißt: Aufgaben sind geordnet, geplant und nachvollziehbar – mit klaren Schritten, Zuständigkeiten und Dokumentation." },
+            { id: 6, text: "Welche Aussage zur PDCA-Anwendung im Recruiting ist korrekt?", options: ["A) PDCA ist nur für Produktion gedacht", "B) PDCA hilft beim systematischen Verbessern von Sourcing und Time-to-Hire", "C) PDCA ersetzt das Anforderungsprofil", "D) PDCA ist eine Form der Lohnabrechnung"], correct: 1, explanation: "PDCA hilft, Recruiting-Prozesse messbar zu verbessern: z.B. Sourcing-Kanäle testen (Plan), umsetzen (Do), Time-to-Fill prüfen (Check), erfolgreichen Mix standardisieren (Act)." },
+            { id: 7, text: "Was ist KEINE Eigenschaft eigenverantwortlichen Arbeitens?", options: ["A) Selbstständige Entscheidung über Reihenfolge", "B) Selbstkontrolle der Ergebnisqualität", "C) Warten auf Anweisungen für jeden Schritt", "D) Reflexion der eigenen Arbeitsweise"], correct: 2, explanation: "Eigenverantwortliches Arbeiten heißt gerade NICHT, auf Anweisungen zu warten, sondern selbstständig Entscheidungen zu treffen und Verantwortung zu übernehmen." },
+            { id: 8, text: "Welcher Schritt im typischen Disponenten-Tag fällt früh am Morgen an?", options: ["A) Folgewochendisposition", "B) Krankmeldungen sichten und Vertretungspool aktivieren", "C) Lohnabrechnung", "D) Großkunden-Akquise"], correct: 1, explanation: "Der Tag startet mit Krankmeldungen-Check und Aktivierung des Vertretungspools, weil ausfallende ZAN sofort ersetzt werden müssen." },
+            { id: 9, text: "Was bedeutet 'qualitätsbewusst' arbeiten?", options: ["A) Möglichst schnell arbeiten", "B) An klaren Qualitätsstandards messen und kontinuierlich verbessern", "C) Nur die einfachsten Aufgaben übernehmen", "D) Immer die billigste Lösung wählen"], correct: 1, explanation: "Qualitätsbewusst = Arbeit wird an definierten Standards gemessen und kontinuierlich verbessert (Continuous Improvement / KVP)." },
+            { id: 10, text: "Warum ist PDCA als Spirale (nicht Kreis) zu verstehen?", options: ["A) Weil es nie endet", "B) Jeder Durchlauf hebt das Niveau – kontinuierliche Verbesserung", "C) Weil es schwindelig macht", "D) Weil Deming spiralförmig dachte"], correct: 1, explanation: "PDCA ist eine Spirale, weil jeder Durchlauf das Qualitätsniveau anhebt – jeder Zyklus baut auf dem vorigen auf." }
+        ]
+    },
+    {
+        title: "Abschnitt 2: ALPEN, Eisenhower, Pareto, Pomodoro (Fragen 11–20)",
+        questions: [
+            { id: 11, text: "Wofür steht das Akronym ALPEN nach Seiwert?", options: ["A) Aufgaben – Länge – Puffer – Entscheiden – Nachkontrolle", "B) Arbeit – Lohn – Pause – Erholung – Nachhaltigkeit", "C) Aktion – Liste – Plan – Ende – Notiz", "D) Akquise – Lead – Pflege – Eintrag – Nachkauf"], correct: 0, explanation: "ALPEN = Aufgaben aufschreiben, Länge schätzen, Puffer einplanen, Entscheidungen treffen, Nachkontrolle." },
+            { id: 12, text: "Welche Pufferregel empfiehlt Seiwert in der ALPEN-Methode?", options: ["A) 100 % verplanen", "B) 80/20 (80 % verplant, 20 % Puffer)", "C) 60/40 (60 % verplant, 40 % Puffer)", "D) 50/50"], correct: 2, explanation: "Die 60/40-Regel: 60 % der Arbeitszeit fest verplanen, 40 % als Puffer für Unvorhergesehenes (Krankmeldungen, Reklamationen, spontane Anrufe)." },
+            { id: 13, text: "Welche zwei Achsen verwendet die Eisenhower-Matrix?", options: ["A) Zeit und Geld", "B) Wichtigkeit und Dringlichkeit", "C) Qualität und Quantität", "D) Hard Skills und Soft Skills"], correct: 1, explanation: "Die Eisenhower-Matrix kreuzt Wichtigkeit (Y-Achse) mit Dringlichkeit (X-Achse) – ergibt 4 Quadranten." },
+            { id: 14, text: "In welches Eisenhower-Feld gehört eine 'Reklamation eines Großkunden'?", options: ["A) A: Sofort (wichtig + dringend)", "B) B: Planen (wichtig, nicht dringend)", "C) C: Delegieren (nicht wichtig, dringend)", "D) D: Weglassen (nicht wichtig, nicht dringend)"], correct: 0, explanation: "Großkunden-Reklamation = wichtig (Umsatzrisiko) + dringend (Frist) → Feld A: SOFORT bearbeiten." },
+            { id: 15, text: "Was sagt das Pareto-Prinzip aus?", options: ["A) 100 % Aufwand für 100 % Ergebnis", "B) 80 % des Outputs entstehen durch 20 % des Inputs", "C) Jeder Arbeitsschritt ist gleich wichtig", "D) Mehr Arbeit = besseres Ergebnis"], correct: 1, explanation: "Pareto (80/20): ca. 20 % der Ursachen verantworten ca. 80 % der Wirkungen. Heuristik, kein Naturgesetz." },
+            { id: 16, text: "Welches Pareto-Beispiel passt zur PDL-Branche?", options: ["A) 80 % der Mitarbeiter:innen sind Zeitarbeit", "B) 80 % des Umsatzes kommen von ca. 20 % der Kunden (Key-Account)", "C) 80 % aller Bewerber:innen sind weiblich", "D) 80 % der Arbeitsverträge sind unbefristet"], correct: 1, explanation: "Klassisches Pareto-Beispiel: 80 % des Umsatzes kommen von 20 % der Kunden – deshalb Key-Account-Management." },
+            { id: 17, text: "Wie lauten die Pomodoro-Intervalle nach Cirillo?", options: ["A) 90 Min. arbeiten, 30 Min. Pause", "B) 25 Min. fokussiert, 5 Min. Pause; nach 4 Pomodoros längere Pause 15–30 Min.", "C) 60 Min. arbeiten, 10 Min. Pause", "D) 45 Min. arbeiten, 15 Min. Pause"], correct: 1, explanation: "Klassisches Pomodoro: 25 Min. fokussiert + 5 Min. Pause. Nach 4 Pomodoros 15–30 Min. lange Pause." },
+            { id: 18, text: "Wofür eignet sich Pomodoro im Disponenten-Alltag besonders gut?", options: ["A) Telefon-/Reaktiv-Aufgaben", "B) Deep-Work-Blöcke wie Anforderungsanalyse, Profile schreiben, Auswertungen", "C) Krankmeldungen sichten", "D) Spontane Eskalationen"], correct: 1, explanation: "Pomodoro eignet sich für Deep-Work (konzentriertes Arbeiten), nicht für reaktive Aufgaben wie Telefon, weil dort Unterbrechungen unvermeidbar sind." },
+            { id: 19, text: "Welcher Quadrant in der Eisenhower-Matrix soll DELEGIERT werden?", options: ["A) A: Wichtig + Dringend", "B) B: Wichtig + Nicht dringend", "C) C: Nicht wichtig + Dringend", "D) D: Nicht wichtig + Nicht dringend"], correct: 2, explanation: "Feld C (nicht wichtig, aber dringend) sollte delegiert werden – z.B. Stundenzettel an Backoffice." },
+            { id: 20, text: "Welche Aussage zu Quadrant B (wichtig, nicht dringend) ist korrekt?", options: ["A) Sofort erledigen", "B) Vernachlässigen", "C) Hier liegt langfristige Wirkung – täglich 1 B-Aufgabe einplanen", "D) Delegieren"], correct: 2, explanation: "B-Aufgaben (z.B. Recruiting-Strategie, Networking, Schulungen) bauen die Zukunft – täglich 1 B-Aufgabe planen, sonst werden sie nie erledigt." }
+        ]
+    },
+    {
+        title: "Abschnitt 3: Kontrolle, KPIs & Selbstcheck (Fragen 21–30)",
+        questions: [
+            { id: 21, text: "Was ist 'Time-to-Hire' im Recruiting?", options: ["A) Dauer einer Einarbeitung", "B) Zeit von Stellenausschreibung bis zur Einstellung", "C) Maximale Arbeitszeit pro Tag", "D) Probezeit-Dauer"], correct: 1, explanation: "Time-to-Hire = Zeitspanne von der Veröffentlichung einer Stelle bis zur Einstellung der Person. Wichtige Recruiting-KPI." },
+            { id: 22, text: "Welche KPI misst die Übernahmequote von ZAN in Festanstellung beim Kunden?", options: ["A) Time-to-Fill", "B) Klebequote", "C) Reklamationsquote", "D) Equal-Pay-Quote"], correct: 1, explanation: "Klebequote (Klebeeffekt-Quote) misst den Anteil ZAN, die in Festanstellung beim Kundenbetrieb übernommen werden – ca. 30–40 %." },
+            { id: 23, text: "Welche Kontroll-Ebenen sollten Disponent:innen unterscheiden?", options: ["A) Tag, Woche, Monat", "B) Stunde, Tag, Jahr", "C) Quartal, Halbjahr, Jahr", "D) Nur Tagesabschluss"], correct: 0, explanation: "Drei Ebenen: Tageskontrolle (ALPEN-Nachkontrolle), Wochenreview (Pipeline), Monatsreview (Ziele/KPI-Trends)." },
+            { id: 24, text: "Was bedeutet 'Bewerberpipeline' als KPI?", options: ["A) Eine Wasserleitung im Büro", "B) Die Anzahl aktiver Kandidat:innen in verschiedenen Recruiting-Stufen", "C) Liste eingestellter Mitarbeitender", "D) E-Mail-Verteiler an Bewerber:innen"], correct: 1, explanation: "Pipeline = Übersicht aller Kandidat:innen in den Stufen (angesprochen, beworben, im Interview, im Angebot, eingestellt). Wichtig für Planungssicherheit." },
+            { id: 25, text: "Welche Kontroll-Aktivität gehört zum Tagesabschluss?", options: ["A) Lohnabrechnung", "B) ALPEN-Nachkontrolle, KPI-Check, To-Do für nächsten Tag", "C) Großkunden-Akquise", "D) Vertragsverhandlung"], correct: 1, explanation: "Tagesabschluss: Was wurde erledigt? Was nicht? Welche KPIs erreicht? Was muss morgen passieren? – ALPEN-Nachkontrolle." },
+            { id: 26, text: "Wozu dient das Wochenreview?", options: ["A) Pipeline-Übersicht, Soll-Ist-Vergleich, Wochenplanung", "B) Reine Erholung", "C) Kundenakquise", "D) Personalauswahl"], correct: 0, explanation: "Wochenreview: Pipeline-Status, Soll-Ist-Vergleich der Wochenziele, Vorbereitung der nächsten Woche." },
+            { id: 27, text: "Welcher Soll-Ist-Vergleich ist im Recruiting üblich?", options: ["A) Gewünschte vs. tatsächliche Time-to-Fill", "B) Gewünschte vs. tatsächliche Stundenpreise", "C) Wunschtermine vs. Krankheitstage", "D) Sollarbeitszeit vs. Pause"], correct: 0, explanation: "Klassischer Recruiting-Soll-Ist: Geplante vs. tatsächliche Time-to-Fill, geplante vs. tatsächliche Bewerber-Pipeline." },
+            { id: 28, text: "Was sagt eine hohe 'Reklamationsquote' aus?", options: ["A) Großer Erfolg", "B) Qualitätsproblem im Recruiting/Disposition – Ursachenanalyse nötig", "C) Niedrige Krankheitstage", "D) Hohes Trinkgeld"], correct: 1, explanation: "Hohe Reklamationsquote = Qualitätsproblem (falsches Profil, schlechte Briefings, ungeeignete ZAN). Ursachenanalyse mit Ishikawa/5-Why." },
+            { id: 29, text: "Was ist Self-Check in der Arbeitsplanung?", options: ["A) Selbstständige Reflexion und Bewertung der eigenen Arbeit", "B) Personalkontrolle durch Vorgesetzte", "C) IT-Sicherheitscheck", "D) Steuerprüfung"], correct: 0, explanation: "Self-Check = eigenständige Reflexion über Arbeitsweise, erreichte Ziele, Verbesserungspotenziale. Teil der Selbstorganisation." },
+            { id: 30, text: "Was bedeutet 'Lessons Learned'?", options: ["A) Schulung neuer Mitarbeitender", "B) Strukturierte Auswertung nach Projekt/Auftrag: Was lief gut, was nicht, was übernehmen?", "C) Examen am Ende der Ausbildung", "D) Online-Kurs"], correct: 1, explanation: "Lessons Learned: nach jedem größeren Auftrag/Projekt strukturiert reflektieren – Erfolge bewahren, Fehler vermeiden." }
+        ]
+    },
+    {
+        title: "Abschnitt 4: Schnittstellen im PDL-Workflow (Fragen 31–40)",
+        questions: [
+            { id: 31, text: "Was ist eine Schnittstelle im Workflow?", options: ["A) Ein USB-Anschluss", "B) Stelle, an der Information/Verantwortung von einer Person/Abteilung zur nächsten übergeht", "C) Ein Vertragsformular", "D) Ein Fenster zwischen Büros"], correct: 1, explanation: "Schnittstelle = Übergangspunkt zwischen zwei Bereichen. Hier entstehen die meisten Fehler und Reibungsverluste." },
+            { id: 32, text: "Wie lautet die Hauptkette der Schnittstellen im PDL?", options: ["A) Kunde → Backoffice → Vertrieb → Disposition → Kunde", "B) Kunde → Vertrieb → Recruiting → Disposition → Backoffice → Kunde", "C) Vertrieb → Kunde → Disposition → Backoffice → Recruiting", "D) Recruiting → Disposition → Kunde → Backoffice → Vertrieb"], correct: 1, explanation: "Klassische Hauptkette: Kunde → Vertrieb (Akquise) → Recruiting (Bewerber) → Disposition (Einsatz) → Backoffice (Abrechnung) → Kunde." },
+            { id: 33, text: "Welche Information übergibt der Vertrieb an Recruiting?", options: ["A) Lohnabrechnung", "B) Anforderungsprofil, Volumen, Stundensatz, Sonderwünsche", "C) Pause-Regelung", "D) Kantinenplan"], correct: 1, explanation: "Vertrieb übergibt: Anforderungsprofil, Auftragsvolumen, Stundensatz, Starttermin, Kunden-Sonderwünsche (z.B. PSA, Schichten, Sicherheitsunterweisung)." },
+            { id: 34, text: "Was ist im PDL ein 'Briefing'?", options: ["A) Kurze Schulung", "B) Strukturierte Auftragsübergabe mit allen relevanten Informationen", "C) Kaffeepause", "D) Vertrag"], correct: 1, explanation: "Briefing = Strukturierte Übergabe der Auftragsinformationen vom Vertrieb ans Recruiting bzw. von Disposition an die ZAN." },
+            { id: 35, text: "Was ist ein 'Debriefing'?", options: ["A) Nachbereitung/Feedback nach einem Termin oder Vorstellungsgespräch", "B) Vertragsabschluss", "C) Bewerber-Onboarding", "D) Kündigung"], correct: 0, explanation: "Debriefing = strukturiertes Feedback nach Vorstellungsgespräch / Einsatzbeginn / Eskalation – sichert Lerneffekt für nächste Iteration." },
+            { id: 36, text: "Warum entstehen die meisten Fehler an Schnittstellen?", options: ["A) Wegen der Beleuchtung", "B) Information geht verloren oder wird falsch interpretiert", "C) Es gibt zu viele Mitarbeitende", "D) Schnittstellen sind grundsätzlich fehlerfrei"], correct: 1, explanation: "An Schnittstellen verändern sich Verantwortliche – Informationen können verloren gehen, falsch interpretiert werden oder doppelt erledigt werden." },
+            { id: 37, text: "Welche Pflicht ergibt sich aus § 1 AÜG für die Auftragsweitergabe?", options: ["A) Mindestlohnpflicht", "B) Konkretisierungspflicht – konkrete Person vorab benennen", "C) Schweigepflicht für ZAN", "D) Mitbestimmungspflicht"], correct: 1, explanation: "Konkretisierungspflicht (§ 1 Abs. 1 S. 6 AÜG): Verleiher muss vor dem Einsatz die konkrete Person dem Entleiher benennen (kein Auswechselrecht)." },
+            { id: 38, text: "Was muss bei Bewerber-Profilen vor Versand an den Kunden beachtet werden?", options: ["A) Anonymisierung (kein Klarname/Adresse, erst nach Kundeninteresse identifizieren)", "B) Beifügen aller Personalausweis-Kopien", "C) Bankverbindung mitschicken", "D) Foto + Wohnadresse"], correct: 0, explanation: "Datenschutz: Bewerber:innen müssen anonymisiert vorgestellt werden, bis ernstes Kundeninteresse besteht. DSGVO Art. 5 (Datenminimierung)." },
+            { id: 39, text: "Was ist RACI?", options: ["A) Eine Tarifvertragsregel", "B) Rollenmodell: Responsible, Accountable, Consulted, Informed", "C) Ein DSGVO-Gesetz", "D) Eine Rechnungsabkürzung"], correct: 1, explanation: "RACI = Responsible (führt aus), Accountable (verantwortlich), Consulted (zu konsultieren), Informed (zu informieren). Klärt Rollen an Schnittstellen." },
+            { id: 40, text: "Welche Schnittstelle ist NICHT im PDL-Standard-Workflow?", options: ["A) Vertrieb → Recruiting", "B) Recruiting → Disposition", "C) Disposition → Backoffice", "D) Backoffice → ZAN-Familie"], correct: 3, explanation: "Backoffice arbeitet mit Lohnabrechnung und Vertragswesen – die direkte Schnittstelle zur 'Familie' der ZAN gibt es im Standard-Workflow nicht." }
+        ]
+    },
+    {
+        title: "Abschnitt 5: Informationsweitergabe & Kommunikation (Fragen 41–50)",
+        questions: [
+            { id: 41, text: "Welcher Kommunikationskanal eignet sich am besten für Eskalationen?", options: ["A) E-Mail", "B) Telefon (schnelle Klärung, dann schriftlich nachfassen)", "C) WhatsApp Story", "D) Postkarte"], correct: 1, explanation: "Eskalation = sofortige Reaktion nötig → Telefon ist schnellster Kanal. Wichtig: Anschließend schriftlich (Mail) nachfassen für Doku." },
+            { id: 42, text: "Welche Faustregel gilt bei Vereinbarungen mit Kunden?", options: ["A) 'Ein Handschlag genügt'", "B) 'Wer es nicht schreibt, hat es nicht gesagt' – wichtige Vereinbarungen IMMER schriftlich", "C) 'Verträge sind unnötig'", "D) 'Mündlich ist genauso bindend wie schriftlich' – egal wie"], correct: 1, explanation: "Im Geschäftsalltag: Wichtige Vereinbarungen müssen schriftlich (E-Mail, CRM-Notiz, Vertragszusatz) dokumentiert werden – sonst Beweisproblem." },
+            { id: 43, text: "Wie viele Seiten hat eine Nachricht nach Schulz von Thun?", options: ["A) 1", "B) 2", "C) 3", "D) 4"], correct: 3, explanation: "Vier-Seiten-Modell von Schulz von Thun: 1) Sachebene, 2) Selbstoffenbarung, 3) Beziehung, 4) Appell." },
+            { id: 44, text: "Welche Seite des Schulz-von-Thun-Modells ist KEINE?", options: ["A) Sachebene", "B) Selbstoffenbarung", "C) Beziehung", "D) Geld"], correct: 3, explanation: "Die vier Seiten sind Sache, Selbstoffenbarung, Beziehung, Appell. 'Geld' gehört nicht dazu." },
+            { id: 45, text: "Beim Kundenanruf 'Wo bleibt der Mitarbeiter?' – welche Seite ist der Appell?", options: ["A) Information über die Person", "B) 'Kümmert euch endlich darum'", "C) Wut des Kunden", "D) Die Frage selbst"], correct: 1, explanation: "Appell = was der Empfänger tun soll. Hier: 'Kümmert euch sofort, ich brauche eine Lösung'. Andere Ebenen: Sache (ZAN nicht da), Selbst (Frust), Beziehung (Vertrauen erschüttert)." },
+            { id: 46, text: "Welcher Kanal ist für komplexe Sachverhalte UNGEEIGNET?", options: ["A) Detaillierte E-Mail mit Anhang", "B) Telefon ohne anschließende schriftliche Doku", "C) CRM-Strukturierung", "D) Persönliches Meeting"], correct: 1, explanation: "Komplexe Themen brauchen Doku. Telefon ohne Nachfassen = Information geht verloren. Besser: Telefon UND Mail/CRM zusammen." },
+            { id: 47, text: "Was sollte ein Übergabeprotokoll enthalten?", options: ["A) Nur das Wetter", "B) Aktuelle Aufträge, offene Eskalationen, kritische Termine, ZAN-Status", "C) Nur den Namen der Person", "D) Persönliche Meinungen"], correct: 1, explanation: "Übergabeprotokoll: Aktive Aufträge, offene Reklamationen, kritische Termine (heute, nächste Tage), ZAN-Status (Krank/Urlaub/Einsatz)." },
+            { id: 48, text: "Was bedeutet DSGVO Art. 5 'Datenminimierung'?", options: ["A) Möglichst viele Daten sammeln", "B) Nur die Daten verarbeiten, die für den Zweck erforderlich sind", "C) Daten löschen, sobald gespeichert", "D) Daten verschlüsseln"], correct: 1, explanation: "Datenminimierung = nur erforderliche Daten verarbeiten. Im Recruiting: nicht mehr Daten als nötig, keine Vorratsdatenspeicherung." },
+            { id: 49, text: "Welche Sensibilität gehört NICHT in eine offene CRM-Notiz?", options: ["A) Auftragsstand", "B) Termin der nächsten Wiedervorlage", "C) Persönlich-private oder gesundheitliche Details der Bewerber:innen", "D) Stundensatz"], correct: 2, explanation: "Sensibilität: Persönliche/private/gesundheitliche Daten dürfen nicht in offen einsehbaren CRM-Notizen stehen – nur in geschützten Personalakten (DSGVO Art. 9)." },
+            { id: 50, text: "Was ist Single Source of Truth?", options: ["A) Genau eine zentrale Datenquelle pro Auftrag/Person – kein paralleles 'Geheimwissen' in Excel", "B) Ein Lügendetektor", "C) Ein Mantra im Yoga", "D) Eine Verschlüsselungssoftware"], correct: 0, explanation: "Single Source of Truth = eine zentrale, autoritative Datenquelle pro Sachverhalt. Verhindert Inkonsistenzen, Schnittstellen-Missverständnisse und doppelte Buchführung." }
+        ]
+    },
+    {
+        title: "Abschnitt 6: Eskalation, SLA & Werkzeuge (Fragen 51–60)",
+        questions: [
+            { id: 51, text: "Wofür steht SLA?", options: ["A) Single Lager Account", "B) Service Level Agreement", "C) Ständig Lückenhafter Auftrag", "D) Schnelle Lohnabrechnung"], correct: 1, explanation: "SLA = Service Level Agreement: Vertraglich vereinbarte Reaktions- und Lösungszeiten zwischen Personaldienstleister und Kunde." },
+            { id: 52, text: "Was regelt ein typisches SLA im PDL?", options: ["A) Mindestlohn", "B) Reaktionszeiten bei Reklamationen, Verfügbarkeit, Ersatzstellung", "C) Steuern", "D) Pausenzeiten"], correct: 1, explanation: "SLA regelt: Reaktionszeit auf Anfragen (z.B. 4h), Ersatzstellung bei Ausfall (z.B. 2h), Verfügbarkeitsgarantie (z.B. 95 %)." },
+            { id: 53, text: "Welche Eskalationsstufe ist typischerweise die ERSTE?", options: ["A) Geschäftsführung", "B) Disponent:in – direkte Klärung mit Kunde", "C) Anwalt", "D) Gericht"], correct: 1, explanation: "Stufe 1: Disponent:in löst direkt mit dem Ansprechpartner beim Kunden. Erst bei Nichtklärung Stufe 2 (NL/Vertrieb)." },
+            { id: 54, text: "Wann wird Eskalationsstufe 3 (Geschäftsleitung) ausgelöst?", options: ["A) Bei jeder Krankmeldung", "B) Bei Kundenverlustrisiko, Großschaden, rechtlichem Konflikt", "C) Beim Mittagessen", "D) Bei kleinen Profil-Anpassungen"], correct: 1, explanation: "Stufe 3 = Eskalation an Geschäftsleitung bei Risiken: drohender Kundenverlust, Schadenersatzforderung, rechtlicher Konflikt." },
+            { id: 55, text: "Was leistet ein CRM-System (Customer-Relationship-Management) im PDL?", options: ["A) Lohnabrechnung", "B) Verwaltung von Kundenstämmen, Aufträgen, Notizen, Wiedervorlagen", "C) Steuererklärung", "D) Webseiten-Hosting"], correct: 1, explanation: "CRM bündelt: Kundenstamm, Auftragshistorie, Notizen, Wiedervorlagen, Reporting – die 'Single Source of Truth' für Kundeninformationen." },
+            { id: 56, text: "Was leistet ein ATS (Applicant Tracking System)?", options: ["A) Buchhaltung", "B) Bewerber-Pipeline, Workflow-Automatisierung, Recruiting-KPI", "C) Maschinenwartung", "D) Lohnabrechnung"], correct: 1, explanation: "ATS = Applicant Tracking System (Bewerbermanagementsystem): Pipeline-Verwaltung, automatische Workflows, KPI-Auswertung. Beispiele: TalentLink, Persis, Workday." },
+            { id: 57, text: "Welcher Best Practice gehört NICHT zum guten Schnittstellen-Management?", options: ["A) Standardisierte Briefings", "B) Definierte Verantwortlichkeiten (RACI)", "C) Tägliche 15-Min-Standups", "D) Möglichst viele Excel-Listen parallel führen"], correct: 3, explanation: "Parallele Excel-Listen widersprechen Single Source of Truth – sie verursachen Inkonsistenzen und Schnittstellen-Probleme." },
+            { id: 58, text: "Wozu dient ein 'Daily Standup' (15-Min-Sync)?", options: ["A) Längere Pausen", "B) Kurzer täglicher Austausch im Team über Status, Blocker, Prioritäten", "C) Einarbeitung neuer Mitarbeitender", "D) Kundengewinnung"], correct: 1, explanation: "Daily Standup = täglich 15 Min im Stehen: Was wurde erledigt? Was steht heute an? Was blockiert mich? – aus dem agilen Projektmanagement übernommen." },
+            { id: 59, text: "Welche Aufgabe sollte typischerweise an das Backoffice DELEGIERT werden?", options: ["A) Strategische Großkunden-Akquise", "B) Stundenzettel-Prüfung und Lohnabrechnung", "C) Anforderungsprofil definieren", "D) Eskalationsgespräche mit Geschäftsführung"], correct: 1, explanation: "Backoffice = Verwaltungs-Bereich: Stundenzettel, Abrechnung, Mahnwesen, Vertragswesen. Klassische Delegation aus Disposition/Vertrieb." },
+            { id: 60, text: "Was bedeutet 'Akkordstunden' im Disponentenkontext?", options: ["A) Stunden auf einem Akkord-Instrument", "B) Vergütung nach Stückzahl statt Zeit", "C) Reklamationsstunden", "D) Pausenzeit"], correct: 1, explanation: "Akkordstunden / Akkordlohn: Vergütung nach Leistung/Stückzahl statt Zeit. Im PDL eher selten, kommt aber bei Logistik-/Produktionseinsätzen vor – wichtig für Disposition zur korrekten Stundenerfassung." }
+        ]
+    }
+];
+
+let answered = {};
+let checked  = {};
+let showAll  = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() {
+    const flat = [];
+    sections.forEach(s => s.questions.forEach(q => flat.push(q)));
+    return flat;
+}
+const flatQ = allQuestions();
+
+function render() {
+    const container = document.getElementById('quizContainer');
+    let html = '';
+    let globalIdx = 0;
+
+    sections.forEach((sec, si) => {
+        html += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach((q, qi) => {
+            const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+            const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+            html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+            html += `<p class="question-text">${q.text}</p>`;
+            html += `<ul class="options-list">`;
+            q.options.forEach((opt, oi) => {
+                let cls = '';
+                if (checked[q.id]) {
+                    if (oi === q.correct) cls = 'correct-opt';
+                    else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+                } else if (answered[q.id] === oi) {
+                    cls = 'selected';
+                }
+                const dis = checked[q.id] ? 'disabled' : '';
+                const chk = answered[q.id] === oi ? 'checked' : '';
+                html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+            });
+            html += `</ul>`;
+            const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+
+            if (checked[q.id]) {
+                const isCorr = answered[q.id] === q.correct;
+                const fbClass = isCorr ? 'correct' : 'incorrect';
+                const fbText = isCorr
+                    ? `<strong>Richtig!</strong> ${q.explanation}`
+                    : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+                html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+            } else {
+                html += `<div class="feedback" id="fb-${q.id}"></div>`;
+            }
+
+            html += `</div>`;
+            globalIdx++;
+        });
+    });
+
+    if (!showAll) {
+        html += `<div class="nav-row">`;
+        html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+        html += `<span style="font-weight:600;color:#004b87;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+        html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+        html += `</div>`;
+    }
+
+    container.innerHTML = html;
+    updateProgress();
+}
+
+function selectOption(qid, idx) {
+    if (checked[qid]) return;
+    answered[qid] = idx;
+    render();
+}
+
+function checkAnswer(qid) {
+    if (answered[qid] === undefined || checked[qid]) return;
+    checked[qid] = true;
+    render();
+    updateProgress();
+}
+
+function navigate(dir) {
+    currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir));
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+    const done = Object.keys(checked).length;
+    const pct = Math.round((done / totalQ) * 100);
+    document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+    document.getElementById('progressPct').textContent = `${pct} %`;
+    document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+    const done = Object.keys(checked).length;
+    if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+
+    let correct = 0;
+    flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+    const pct = Math.round((correct / done) * 100);
+
+    document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+
+    let gradeText = '';
+    let gradeClass = 'pass';
+    if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+    else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+    else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+    else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+    else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+    else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+
+    const gEl = document.getElementById('gradeText');
+    gEl.textContent = gradeText;
+    gEl.className = 'grade ' + gradeClass;
+
+    let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+    sections.forEach(sec => {
+        let sCorr = 0, sTotal = 0;
+        sec.questions.forEach(q => {
+            if (checked[q.id]) {
+                sTotal++;
+                if (answered[q.id] === q.correct) sCorr++;
+            }
+        });
+        const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+        tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+    });
+    tbl += '</table>';
+    document.getElementById('sectionBreakdown').innerHTML = tbl;
+
+    document.getElementById('resultsPanel').classList.add('show');
+    document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+    answered = {};
+    checked = {};
+    currentQ = 0;
+    document.getElementById('resultsPanel').classList.remove('show');
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () {
+    showAll = this.checked;
+    render();
+});
+
+function shuffleQuizOptions() {
+    let seed = 20260505;
+    function seededRandom() {
+        seed = (seed * 16807 + 0) % 2147483647;
+        return (seed - 1) / 2147483646;
+    }
+    sections.forEach(sec => {
+        sec.questions.forEach(q => {
+            const correctText = q.options[q.correct];
+            const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+            for (let i = cleaned.length - 1; i > 0; i--) {
+                const j = Math.floor(seededRandom() * (i + 1));
+                [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+            }
+            const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+            const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+            q.options = cleaned.map((c, i) => prefixes[i] + c);
+            q.correct = cleaned.indexOf(correctClean);
+        });
+    });
+}
+shuffleQuizOptions();
+
+render();
+</script>
+<div id="pdk-bottom-back">
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+</div>
+</body>
+</html>

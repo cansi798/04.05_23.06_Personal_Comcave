@@ -12,6 +12,7 @@ Nach Aktivierung von GitHub Pages: https://cansi798.github.io/04.05_23.06_Person
 
 - **Tag 01** (2026-05-04) -- Mo Einfuehrung PDL Lernstrategien
 - **Tag 02** (2026-05-05) -- Di Arbeitsplanung Disposition Recruitingalltag
+- **Tag 03** (2026-05-06) -- Mi Qualitaet Prozessanalyse Kundenzufriedenheit
 
 ### Modul 2 -- Projektmanagement (07.05-19.05)
 

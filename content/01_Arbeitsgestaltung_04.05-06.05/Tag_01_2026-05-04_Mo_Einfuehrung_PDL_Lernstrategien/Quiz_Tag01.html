@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+<style id="pdk-back-style">
+#pdk-back-banner { position: sticky; top: 0; z-index: 9999; background: #0f3151; color: #fff; padding: 0.85rem 1rem; display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; box-shadow: 0 4px 14px rgba(0,0,0,0.25); font-family: "Segoe UI", Tahoma, sans-serif; border-bottom: 3px solid #1780a1; }
+#pdk-back-banner a { color: #fff; text-decoration: none; font-weight: 700; padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4); font-size: 0.95rem; transition: background 0.15s, transform 0.1s; }
+#pdk-back-banner a:hover { background: rgba(255,255,255,0.32); transform: translateY(-1px); }
+#pdk-back-banner .pdk-label { font-size: 0.92rem; opacity: 0.95; margin-left: auto; }
+#pdk-floating-back { position: fixed; bottom: 22px; right: 22px; z-index: 9998; background: #0f3151; color: #fff !important; text-decoration: none; padding: 0.85rem 1.3rem; border-radius: 50px; box-shadow: 0 6px 18px rgba(0,0,0,0.30); font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 0.95rem; border: 2px solid rgba(255,255,255,0.4); transition: transform 0.12s, box-shadow 0.12s; }
+#pdk-floating-back:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
+#pdk-bottom-back { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; padding: 1.5rem 1rem 2rem; background: #eef4f8; border-top: 1px solid #d6e0e8; margin-top: 2rem; }
+#pdk-bottom-back a { display: inline-block; padding: 0.85rem 1.5rem; background: #0d5c8c; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 1rem; box-shadow: 0 4px 12px rgba(13,92,140,0.25); }
+#pdk-bottom-back a:hover { background: #0f3151; }
+@media print { #pdk-back-banner, #pdk-floating-back, #pdk-bottom-back { display: none !important; } }
+</style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Tag 01 – Einf&uuml;hrung PDL-Branche &amp; Lernstrategien (Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026)</title>
@@ -93,19 +105,12 @@
     </style>
 </head>
 <body>
-
-<style>
-#pdk-back-banner { position: sticky; top: 0; z-index: 1000; background: linear-gradient(135deg, #0f3151 0%, #0d5c8c 60%, #1780a1 100%); color: #fff; padding: 0.7rem 1rem; display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-family: "Segoe UI", Tahoma, sans-serif; }
-#pdk-back-banner a { color: #fff; text-decoration: none; font-weight: 600; padding: 0.35rem 0.8rem; border-radius: 6px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); font-size: 0.9rem; }
-#pdk-back-banner a:hover { background: rgba(255,255,255,0.28); }
-#pdk-back-banner span { font-size: 0.88rem; opacity: 0.95; }
-</style>
 <div id="pdk-back-banner">
-  <a href="../../../index.html">&larr; Tagesuebersicht</a>
-  <a href="tag.html">&uarr; Diesen Tag</a>
-  <span>PDK Personal-Kurs Mai-Juni 2026</span>
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+  <span class="pdk-label">PDK Personal-Kurs Mai-Juni 2026</span>
 </div>
-
+<a id="pdk-floating-back" href="../../../index.html" title="Zurueck zur Tagesuebersicht">&larr; Uebersicht</a>
 
 <header class="header">
     <h1>Quiz Tag 01 &ndash; Einf&uuml;hrung PDL-Branche &amp; Lernstrategien</h1>
@@ -436,5 +441,9 @@ shuffleQuizOptions();
 
 render();
 </script>
+<div id="pdk-bottom-back">
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+</div>
 </body>
 </html>

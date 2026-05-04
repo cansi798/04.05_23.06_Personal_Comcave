@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<style id="pdk-back-style">
+#pdk-back-banner { position: sticky; top: 0; z-index: 9999; background: #0f3151; color: #fff; padding: 0.85rem 1rem; display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; box-shadow: 0 4px 14px rgba(0,0,0,0.25); font-family: "Segoe UI", Tahoma, sans-serif; border-bottom: 3px solid #1780a1; }
+#pdk-back-banner a { color: #fff; text-decoration: none; font-weight: 700; padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4); font-size: 0.95rem; transition: background 0.15s, transform 0.1s; }
+#pdk-back-banner a:hover { background: rgba(255,255,255,0.32); transform: translateY(-1px); }
+#pdk-back-banner .pdk-label { font-size: 0.92rem; opacity: 0.95; margin-left: auto; }
+#pdk-floating-back { position: fixed; bottom: 22px; right: 22px; z-index: 9998; background: #0f3151; color: #fff !important; text-decoration: none; padding: 0.85rem 1.3rem; border-radius: 50px; box-shadow: 0 6px 18px rgba(0,0,0,0.30); font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 0.95rem; border: 2px solid rgba(255,255,255,0.4); transition: transform 0.12s, box-shadow 0.12s; }
+#pdk-floating-back:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
+#pdk-bottom-back { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; padding: 1.5rem 1rem 2rem; background: #eef4f8; border-top: 1px solid #d6e0e8; margin-top: 2rem; }
+#pdk-bottom-back a { display: inline-block; padding: 0.85rem 1.5rem; background: #0d5c8c; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 1rem; box-shadow: 0 4px 12px rgba(13,92,140,0.25); }
+#pdk-bottom-back a:hover { background: #0f3151; }
+@media print { #pdk-back-banner, #pdk-floating-back, #pdk-bottom-back { display: none !important; } }
+</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tag 05 – Lastenheft/Pflichtenheft &amp; Anforderungsprofil (Personaldienstleistungskaufmann/-frau IHK 2026)</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+        .header { background: linear-gradient(135deg, #00325f 0%, #004b87 50%, #0082b4 100%); color: #fff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+        .header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+        .header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+        .toolbar button, .toolbar .toggle-label { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .toolbar button:hover { background: #00325f; }
+        .toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+        .toggle-label input { accent-color: #004b87; width: 18px; height: 18px; cursor: pointer; }
+        .progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+        .progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0082b4, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+        .container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+        .section-title { background: #00325f; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+        .section-title:first-child { margin-top: 0; }
+        .question-card { background: #fff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+        .question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .question-card.correct-card { border-left: 5px solid #28a745; }
+        .question-card.incorrect-card { border-left: 5px solid #dc3545; }
+        .question-number { display: inline-block; background: #e8f0fe; color: #004b87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+        .question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+        .options-list { list-style: none; }
+        .options-list li { margin-bottom: 0.5rem; }
+        .options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+        .options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+        .options-list input[type="radio"] { accent-color: #004b87; margin-top: 3px; flex-shrink: 0; }
+        .options-list label.selected { background: #e8f0fe; border-color: #004b87; }
+        .options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+        .options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+        .check-btn { margin-top: 0.8rem; background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .check-btn:hover { background: #00325f; }
+        .check-btn:disabled { background: #8faec8; cursor: default; }
+        .feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .nav-btn { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .nav-btn:hover { background: #00325f; }
+        .nav-btn:disabled { background: #8faec8; cursor: default; }
+        .results-panel { background: #fff; border: 2px solid #004b87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .results-panel.show { display: block; }
+        .results-panel h2 { color: #00325f; margin-bottom: 0.8rem; }
+        .score-big { font-size: 3rem; font-weight: 700; color: #004b87; }
+        .grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+        .grade.pass { color: #28a745; }
+        .grade.fail { color: #dc3545; }
+        .section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+        .section-breakdown table { width: 100%; border-collapse: collapse; }
+        .section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+        .section-breakdown th { background: #e8f0fe; color: #00325f; text-align: left; }
+        .references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+        .references h3 { color: #00325f; margin-bottom: 0.8rem; font-size: 1.1rem; }
+        .references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+        .footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+        @media print { body { background: #fff; } .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; } }
+        @media (max-width: 600px) { .header { padding: 1.4rem 0.8rem; } .question-card { padding: 1rem; } .toolbar { flex-direction: column; align-items: stretch; text-align: center; } }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+<div id="pdk-back-banner">
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+  <span class="pdk-label">PDK Personal-Kurs Mai-Juni 2026</span>
+</div>
+<a id="pdk-floating-back" href="../../../index.html" title="Zurueck zur Tagesuebersicht">&larr; Uebersicht</a>
+
+<header class="header">
+    <h1>Quiz Tag 05 &ndash; Lastenheft/Pflichtenheft &amp; Anforderungsprofil</h1>
+    <div class="subtitle">Lehrgang Personaldienstleistungskaufmann/-frau IHK &middot; Lerninhalt P4</div>
+    <div class="meta">
+        <span>&copy; Can Siebert</span>
+        <span>Stand 05/2026</span>
+        <span>60 Fragen &bull; Multiple Choice</span>
+    </div>
+</header>
+
+<div class="toolbar">
+    <label class="toggle-label"><input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen</label>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <button onclick="showResults()">Ergebnis anzeigen</button>
+        <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-info">
+        <span id="progressText">0 von 60 beantwortet</span>
+        <span id="progressPct">0 %</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+    <div class="results-panel" id="resultsPanel">
+        <h2>Dein Ergebnis</h2>
+        <div class="score-big" id="scoreBig"></div>
+        <div class="grade" id="gradeText"></div>
+        <div class="section-breakdown" id="sectionBreakdown"></div>
+        <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="references">
+    <h3>Literaturverzeichnis (APA 7)</h3>
+    <p>Deutsches Institut f&uuml;r Normung. (2009). <em>DIN 69905 &ndash; Begriffe der Projektabwicklung</em>. Beuth.</p>
+    <p>Project Management Institute. (2021). <em>PMBOK Guide (7th ed.)</em>. PMI.</p>
+    <p>IEEE. (1998). <em>IEEE Std 830-1998: Recommended Practice for Software Requirements Specifications</em>.</p>
+    <p>Robertson, S., &amp; Robertson, J. (2012). <em>Mastering the Requirements Process</em>. Addison-Wesley.</p>
+    <p>Bundesministerium der Justiz. (2024). <em>Arbeitnehmer&uuml;berlassungsgesetz (A&Uuml;G)</em>. https://www.gesetze-im-internet.de/a_g/</p>
+</div>
+
+<footer class="footer">&copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Lehrgang Personaldienstleistungskaufmann/-frau Mai&ndash;Juni 2026 | Stand 05/2026</footer>
+
+<script>
+const sections = [
+    {
+        title: "Abschnitt 1: Lastenheft &amp; Pflichtenheft (Fragen 1–10)",
+        questions: [
+            { id: 1, text: "Wer erstellt ein Lastenheft?", options: ["A) Der Auftragnehmer (Personaldienstleister)", "B) Der Auftraggeber (Kunde)", "C) Die IHK", "D) Der Betriebsrat"], correct: 1, explanation: "Lastenheft = Auftraggeber-Dokument: Der Kunde beschreibt darin, WAS er will (Anforderungen, Ziele) – aber nicht WIE es umgesetzt wird." },
+            { id: 2, text: "Wer erstellt ein Pflichtenheft?", options: ["A) Der Auftragnehmer (Personaldienstleister)", "B) Der Auftraggeber (Kunde)", "C) Die Behörde", "D) Der Bewerber"], correct: 0, explanation: "Pflichtenheft = Auftragnehmer-Dokument: Der Personaldienstleister beschreibt darin, WIE er die Anforderungen aus dem Lastenheft konkret umsetzt." },
+            { id: 3, text: "Welche Norm regelt die Begriffe rund um Lasten- und Pflichtenheft?", options: ["A) DIN EN ISO 9001", "B) DIN 69905 / DIN 69901", "C) AÜG", "D) GG"], correct: 1, explanation: "DIN 69901 + DIN 69905 = Standard-Normen für Projektmanagement und Begriffe der Projektabwicklung in Deutschland." },
+            { id: 4, text: "Was beschreibt das Lastenheft?", options: ["A) Das WAS – Ziele, Anforderungen, Rahmenbedingungen", "B) Das WIE – konkrete Lösungswege", "C) Den Lohn", "D) Die Pause"], correct: 0, explanation: "Lastenheft = WAS soll erreicht werden: Ziele, Anforderungen, Rahmenbedingungen, Mengen, Termine. Lösungsoffen formuliert." },
+            { id: 5, text: "Was beschreibt das Pflichtenheft?", options: ["A) Das WAS", "B) Das WIE – konkrete technische und organisatorische Umsetzung", "C) Eine Pflicht zur Mehrarbeit", "D) Eine Schulung"], correct: 1, explanation: "Pflichtenheft = WIE die Lastenheft-Anforderungen konkret umgesetzt werden: Architektur, Prozesse, Schnittstellen, Rollen." },
+            { id: 6, text: "Welcher Schritt kommt im klassischen Vorgehen zuerst?", options: ["A) Pflichtenheft", "B) Lastenheft", "C) Vertrag", "D) Rechnung"], correct: 1, explanation: "Reihenfolge: 1) Lastenheft (Kunde definiert Bedarf), 2) Angebot/Pflichtenheft (Anbieter beschreibt Lösung), 3) Vertrag, 4) Umsetzung." },
+            { id: 7, text: "Welche der folgenden Aussagen ist korrekt?", options: ["A) Lastenheft = Pflichtenheft, beide gleichbedeutend", "B) Lastenheft beschreibt das WAS, Pflichtenheft beschreibt das WIE", "C) Pflichtenheft kommt vor dem Lastenheft", "D) Pflichtenheft schreibt der Kunde"], correct: 1, explanation: "Klare Abgrenzung: Lastenheft (vom Auftraggeber, WAS) → Pflichtenheft (vom Auftragnehmer, WIE)." },
+            { id: 8, text: "Welche Funktion hat das Lastenheft im PDL-Großprojekt?", options: ["A) Es ist optional", "B) Es bildet die Grundlage für Auftragsklärung, Angebot und spätere Vertragspflichten", "C) Es ersetzt den AÜV", "D) Es ist eine Werbebroschüre"], correct: 1, explanation: "Lastenheft ist Grundlage für: Angebotskalkulation, Vertrag, spätere Abnahme. Bei Personalbeschaffungs-Großprojekten unverzichtbar." },
+            { id: 9, text: "Welche Information gehört NICHT in ein Lastenheft?", options: ["A) Mengengerüst (Anzahl ZAN, Stunden)", "B) Zieltermin", "C) Detaillierte technische Lösung des Anbieters", "D) Anforderungsprofil"], correct: 2, explanation: "Detaillierte technische Lösung des Anbieters gehört NICHT ins Lastenheft (das wäre WIE). Lastenheft bleibt lösungsoffen." },
+            { id: 10, text: "Was ist ein typischer Lastenheft-Inhalt im PDL?", options: ["A) Personalbedarf, Skill-Anforderungen, Einsatzort, Schichtmodell, Qualifikationsnachweise", "B) Lebenslauf des Disponenten", "C) Werbeprospekt der Niederlassung", "D) Mietvertrag"], correct: 0, explanation: "Im PDL-Lastenheft typisch: Personalbedarf (Anzahl, Profile, Skills), Einsatzdauer, Einsatzort, Schichtmodelle, geforderte Zertifikate/PSA." }
+        ]
+    },
+    {
+        title: "Abschnitt 2: Auftragskl&auml;rung &amp; Stakeholder (Fragen 11–20)",
+        questions: [
+            { id: 11, text: "Was ist Auftragsklärung?", options: ["A) Schriftliche Bestätigung der Bestellung", "B) Strukturierter Dialog mit dem Kunden zur Präzisierung der Anforderungen", "C) Eine Buchhaltungssoftware", "D) Eine Pause"], correct: 1, explanation: "Auftragsklärung = strukturierter Dialog mit dem Kunden, um implizite Anforderungen explizit zu machen, Erwartungen abzustimmen und Missverständnisse zu vermeiden." },
+            { id: 12, text: "Welche W-Fragen gehören in die Auftragsklärung?", options: ["A) Was, Wann, Wo, Wer, Wie viel", "B) Wieso, Weshalb, Warum nicht", "C) Wer hat das gesagt?", "D) Wie geht's der Familie?"], correct: 0, explanation: "Klassische 5-W-Fragen: Was (Aufgabe), Wann (Termin), Wo (Einsatzort), Wer (welche Profile/wie viele), Wie viel (Stundensatz/Volumen)." },
+            { id: 13, text: "Was ist ein Stakeholder?", options: ["A) Jemand, der Aktien hält", "B) Jede Person/Gruppe, die ein Interesse am Projekt hat oder davon betroffen ist", "C) Ein Recruiting-Tool", "D) Ein Lieferant"], correct: 1, explanation: "Stakeholder (Anspruchsgruppe): alle, die das Projekt beeinflussen oder davon beeinflusst werden – Kunde, Endnutzer, Betriebsrat, Geschäftsleitung, ZAN, Lieferanten." },
+            { id: 14, text: "Wozu dient eine Stakeholder-Analyse?", options: ["A) Erwartungen, Einfluss und Haltung der Anspruchsgruppen identifizieren", "B) Lohnberechnung", "C) Steuererklärung", "D) Stundenzettel"], correct: 0, explanation: "Stakeholder-Analyse: Identifizieren wer wichtig ist (Macht/Interesse), wie kommuniziert wird, wie Risiken zu managen sind." },
+            { id: 15, text: "Welche Stakeholder gibt es in einem PDL-Großprojekt typischerweise?", options: ["A) Kunde, Endnutzer-Abteilungen, Betriebsrat, ZAN, Personaldienstleister-NL, GF", "B) Nur der Kunde", "C) Nur die ZAN", "D) Nur das Backoffice"], correct: 0, explanation: "Klassische PDL-Stakeholder: Kunde (Einkauf, Fachabteilung), Endnutzer-Teams beim Kunden, Betriebsrat des Kunden, ZAN, Niederlassung, Verleiher-GF." },
+            { id: 16, text: "Was ist ein Lasten-Workshop?", options: ["A) Eine Mitarbeiterversammlung", "B) Strukturierter Workshop mit dem Kunden zur Erarbeitung des Lastenhefts", "C) Eine Schulung", "D) Eine Vertragsverhandlung"], correct: 1, explanation: "Lasten-Workshop / Requirements-Workshop: Methode, um mit Kunden-Stakeholdern Anforderungen zu erheben, zu präzisieren und zu priorisieren." },
+            { id: 17, text: "Welche Reihenfolge ist in der Auftragsklärung sinnvoll?", options: ["A) Erst Vertrag, dann Anforderungen", "B) Erst Anforderungen klären, dann Lösung skizzieren, dann Angebot/Vertrag", "C) Erst Rechnung, dann Anforderungen", "D) Reihenfolge ist egal"], correct: 1, explanation: "Reihenfolge: 1) Anforderungen klären (Lastenheft), 2) Lösung skizzieren (Pflichtenheft/Angebot), 3) Vertrag schließen, 4) Umsetzung." },
+            { id: 18, text: "Wie dokumentiert man Auftragsklärung sauber?", options: ["A) Mündlich genügt", "B) Strukturiertes Briefing-/Gesprächsprotokoll, in CRM erfasst, vom Kunden bestätigt", "C) Auf einem Bierdeckel", "D) Per WhatsApp Sprachnachricht"], correct: 1, explanation: "Beste Praxis: Strukturiertes Protokoll, Erfassung im CRM, Versand zur Bestätigung an den Kunden – schriftlich + signiert." },
+            { id: 19, text: "Welche Rolle hat der Betriebsrat des Kunden in einem AÜ-Großprojekt?", options: ["A) Keine", "B) Mitbestimmung bei Einsatz von Leiharbeitnehmern (§§ 14, 99 BetrVG)", "C) Vertragsabschluss", "D) Lohnauszahlung"], correct: 1, explanation: "Betriebsrat des Entleihers hat Mitbestimmungsrechte beim Einsatz von Leiharbeitnehmern (§ 14 AÜG, § 99 BetrVG: Zustimmung zur Einstellung)." },
+            { id: 20, text: "Was passiert bei unklarer Auftragsklärung?", options: ["A) Es entstehen meist Reklamationen, Mehrarbeit, Konflikte", "B) Alles läuft glatt", "C) Der Kunde ist zufriedener", "D) Es ist günstiger"], correct: 0, explanation: "Unklare Auftragsklärung = häufigste Quelle für spätere Konflikte, Reklamationen, Eskalationen, Mehrkosten und unzufriedene Kunden." }
+        ]
+    },
+    {
+        title: "Abschnitt 3: Anforderungsprofil &amp; Skills (Fragen 21–30)",
+        questions: [
+            { id: 21, text: "Was ist ein Anforderungsprofil?", options: ["A) Lebenslauf eines Bewerbers", "B) Strukturierte Beschreibung aller fachlichen und persönlichen Anforderungen an eine zu besetzende Stelle", "C) Stellenanzeige", "D) Arbeitsvertrag"], correct: 1, explanation: "Anforderungsprofil: präzise, strukturierte Beschreibung der Stelle – Hard Skills, Soft Skills, Erfahrungen, Mussforderungen, Sollwünsche." },
+            { id: 22, text: "Was sind Hard Skills?", options: ["A) Persönlichkeitsmerkmale", "B) Fachliche, messbare Qualifikationen (Abschlüsse, Zertifikate, technisches Können)", "C) Bauchmuskeln", "D) Hobbys"], correct: 1, explanation: "Hard Skills = fachliche, oft messbare Qualifikationen: Ausbildungsabschluss, Zertifikate, IT-Kenntnisse, Sprachen, Maschinenführerscheine." },
+            { id: 23, text: "Was sind Soft Skills?", options: ["A) Computerkenntnisse", "B) Persönliche/soziale Kompetenzen wie Teamfähigkeit, Kommunikation, Belastbarkeit", "C) Maschinenkenntnisse", "D) Sportarten"], correct: 1, explanation: "Soft Skills = persönliche und soziale Kompetenzen: Teamfähigkeit, Kommunikation, Empathie, Belastbarkeit, Konfliktlösung – schwerer messbar als Hard Skills." },
+            { id: 24, text: "Welche Drei-Klassen-Hierarchie gilt im Anforderungsprofil?", options: ["A) Mussanforderung – Sollanforderung – Wunschanforderung", "B) Klein – Mittel – Groß", "C) Tag – Woche – Monat", "D) Anfänger – Fortgeschritten – Profi"], correct: 0, explanation: "Klassische Drei-Klassen: Muss (zwingend), Soll (sehr wünschenswert), Wunsch (nice to have). Hilft, fair und nachvollziehbar zu priorisieren." },
+            { id: 25, text: "Wofür steht MoSCoW?", options: ["A) Monitoring System for Continuous Workflow", "B) Must, Should, Could, Won't have", "C) Mode of Skills, Capability and Workforce", "D) Match of Soft Capabilities and Workplace"], correct: 1, explanation: "MoSCoW = Must (zwingend), Should (sollte), Could (könnte), Won't (nicht in dieser Iteration). Standard-Priorisierungs-Methode in Requirements." },
+            { id: 26, text: "Was ist eine Persona im Recruiting?", options: ["A) Eine reale Bewerber:in", "B) Fiktiver Idealtyp einer Zielgruppe (Demografie, Skills, Motive) zur Schärfung von Sourcing/Marketing", "C) Ein Datenschutzbegriff", "D) Eine Rolle im Theater"], correct: 1, explanation: "Persona = fiktive, aber repräsentative Zielperson, mit Demografie, Skills, Motiven, Frustrationen. Hilft Stellen-Marketing/Sourcing präziser auszurichten." },
+            { id: 27, text: "Welche der folgenden Anforderungen wäre typischerweise eine Mussanforderung im PDL?", options: ["A) Hobby Schach", "B) Gültiger Staplerschein für Lager-Einsatz", "C) Bekanntheit der Firmenfarbe", "D) Linkshändigkeit"], correct: 1, explanation: "Staplerschein für Lager-Einsatz ist eine Muss-Voraussetzung – ohne gültigen Schein ist der Einsatz rechtlich unzulässig." },
+            { id: 28, text: "Was bedeutet 'objektivierbares Anforderungsprofil'?", options: ["A) Anforderungen sind beobachtbar/prüfbar formuliert (Ja/Nein, Skala)", "B) Anforderungen sind subjektiv", "C) Bewerber:innen entscheiden selbst", "D) Anforderungen sind geheim"], correct: 0, explanation: "Objektivierbar = nachvollziehbar prüfbar (z.B. 'B2-Sprachzertifikat' statt 'gute Sprachkenntnisse'). Wichtig für AGG-Konformität und faires Auswahlverfahren." },
+            { id: 29, text: "Welche AGG-Aspekte muss ein Anforderungsprofil beachten?", options: ["A) Keine Diskriminierung wegen Alter, Geschlecht, Religion, Behinderung, sexueller Identität, ethnischer Herkunft", "B) Diskriminierung ist erlaubt", "C) Nur Jüngere", "D) Nur Männer"], correct: 0, explanation: "Allgemeines Gleichbehandlungsgesetz (AGG): Anforderungen müssen sachlich gerechtfertigt sein, keine Diskriminierung der geschützten Merkmale." },
+            { id: 30, text: "Welche der folgenden ist KEINE Soft Skill?", options: ["A) Kommunikationsfähigkeit", "B) Teamfähigkeit", "C) Excel-Fortgeschrittenenkenntnisse", "D) Konfliktfähigkeit"], correct: 2, explanation: "Excel-Kenntnisse = Hard Skill (technisch messbar). Kommunikation, Team, Konflikt = Soft Skills." }
+        ]
+    },
+    {
+        title: "Abschnitt 4: MoSCoW &amp; Priorisierung (Fragen 31–40)",
+        questions: [
+            { id: 31, text: "Wofür steht das 'M' in MoSCoW?", options: ["A) Maybe", "B) Must have", "C) Manage", "D) Make"], correct: 1, explanation: "M = Must have. Anforderungen, die zwingend erfüllt sein müssen – sonst ist das Projekt gescheitert." },
+            { id: 32, text: "Wofür steht das 'S' in MoSCoW?", options: ["A) Strategy", "B) Should have – wichtig, aber nicht zwingend", "C) Skill", "D) Stage"], correct: 1, explanation: "S = Should have. Wichtig, aber nicht zwingend – wenn machbar, einbauen, sonst ohne Projektabbruch verzichtbar." },
+            { id: 33, text: "Wofür steht das 'C' in MoSCoW?", options: ["A) Could have – nice to have", "B) Critical have", "C) Cancel", "D) Compromise"], correct: 0, explanation: "C = Could have. Nice to have. Wird aufgenommen wenn Zeit/Budget übrig." },
+            { id: 34, text: "Wofür steht das 'W' in MoSCoW?", options: ["A) Will have", "B) Won't have (in dieser Iteration)", "C) Wait", "D) Work"], correct: 1, explanation: "W = Won't have (this time). Bewusste Abgrenzung: Was wird in dieser Iteration NICHT umgesetzt – wichtig für Erwartungsmanagement." },
+            { id: 35, text: "Welche Priorisierung passt zu 'Bewerber muss B1-Deutsch sprechen'?", options: ["A) Must", "B) Should", "C) Could", "D) Won't"], correct: 0, explanation: "Eine zwingende Sprachanforderung für die Tätigkeit (z.B. Sicherheitsunterweisung verstehen) ist eine Must-Anforderung." },
+            { id: 36, text: "Welche Priorisierung passt zu 'Bewerber sollte Erfahrung mit SAP haben'?", options: ["A) Must", "B) Should", "C) Could", "D) Won't"], correct: 1, explanation: "Wenn SAP-Erfahrung wünschenswert, aber nicht Bedingung ist (kann nachgeschult werden), zählt sie als Should." },
+            { id: 37, text: "Was ist eine Nutzwertanalyse?", options: ["A) Bewerbungsgespräch", "B) Multikriterielle Entscheidungsmethode: Kriterien gewichten, Alternativen bewerten, Punkte aggregieren", "C) Lohnabrechnung", "D) Steuerprüfung"], correct: 1, explanation: "Nutzwertanalyse: Kriterien definieren, gewichten (Summe 100%), Alternativen je Kriterium bewerten (1-10), gewichtet aufaddieren – die höchste Summe gewinnt." },
+            { id: 38, text: "Welche Schritte hat eine Nutzwertanalyse?", options: ["A) Kriterien definieren – gewichten – Alternativen bewerten – aggregieren – auswählen", "B) Lohn berechnen", "C) Stundenzettel kontrollieren", "D) Pause machen"], correct: 0, explanation: "5 Schritte: 1) Kriterien definieren, 2) Gewichte vergeben, 3) Alternativen je Kriterium bewerten, 4) Gewicht × Bewertung aggregieren, 5) beste Alternative wählen." },
+            { id: 39, text: "Wann eignet sich eine Nutzwertanalyse?", options: ["A) Bei Auswahl unter mehreren Bewerber:innen mit unterschiedlichen Stärken", "B) Bei reiner Lohnberechnung", "C) Bei Vertragsabschluss", "D) Bei Krankmeldungen"], correct: 0, explanation: "Nutzwertanalyse hilft, mehrere Bewerber-Profile mit verschiedenen Stärken/Schwächen objektiviert zu vergleichen – AGG-konform und nachvollziehbar." },
+            { id: 40, text: "Wie hoch ist die Summe aller Kriteriengewichte in der Nutzwertanalyse typischerweise?", options: ["A) 50 %", "B) 100 %", "C) 200 %", "D) Egal"], correct: 1, explanation: "Konvention: Alle Gewichte summieren sich zu 100 % (oder 1,0). Erleichtert Vergleich und Interpretation." }
+        ]
+    },
+    {
+        title: "Abschnitt 5: Stellenausschreibung &amp; Persona (Fragen 41–50)",
+        questions: [
+            { id: 41, text: "Welche Bestandteile gehören zu einer guten Stellenausschreibung?", options: ["A) Stellenbezeichnung, Aufgaben, Anforderungen, Was wird geboten, Bewerbungsweg", "B) Nur die Stellenbezeichnung", "C) Nur der Lohn", "D) Nur die E-Mail-Adresse"], correct: 0, explanation: "Vollständige Stellenausschreibung: Titel, Unternehmen, Aufgaben, Muss-Anforderungen, Soll-Anforderungen, Benefits/Was geboten wird, Bewerbungsweg, Ansprechpartner:in, Frist." },
+            { id: 42, text: "Wofür steht 'm/w/d' in Stellenausschreibungen?", options: ["A) Mode/Wert/Datum", "B) männlich/weiblich/divers (geschlechtsneutrale Ausschreibung gemäß AGG)", "C) müde/wach/dynamisch", "D) muss/will/darf"], correct: 1, explanation: "m/w/d = männlich/weiblich/divers. AGG-konform formulieren, da das BAG seit 2018 das dritte Geschlecht 'divers' anerkennt." },
+            { id: 43, text: "Welcher Begriff im Recruiting-Marketing meint die Wahrnehmung des Arbeitgebers?", options: ["A) Employer Branding", "B) Personalbuchhaltung", "C) Lohnabrechnung", "D) Lieferkette"], correct: 0, explanation: "Employer Branding: gezielter Aufbau einer Arbeitgebermarke – wirkt auf Bewerber-Pipeline (mehr/bessere Bewerbungen) und Mitarbeitenden-Bindung." },
+            { id: 44, text: "Welche Inhalte gehören in eine Persona-Beschreibung im Recruiting?", options: ["A) Demografie, Skills, Motive, Frustrationen, bevorzugte Kanäle", "B) Nur Alter", "C) Nur Adresse", "D) Nur Beruf"], correct: 0, explanation: "Persona umfasst: Alter/Bildung, fachliche Skills, Motive (Was treibt sie?), Pain Points, bevorzugte Kommunikations-Kanäle (LinkedIn, Indeed, TikTok)." },
+            { id: 45, text: "Welche Sourcing-Strategie passt zu einer Persona 'Logistik-Mitarbeiter:in 25-40, lokal'?", options: ["A) Indeed/lokale Jobbörsen, Direktansprache vor Ort, Mund-zu-Mund-Empfehlung", "B) LinkedIn-Premium-Ads für CEOs", "C) Wirtschaftspresse", "D) Wissenschaftsverlage"], correct: 0, explanation: "Lokale, operative Logistik-Profile erreicht man am besten über Indeed, Aushänge, Direktansprache, Empfehlungs-Boni – nicht über LinkedIn-Executive-Targeting." },
+            { id: 46, text: "Was ist 'Employer Value Proposition' (EVP)?", options: ["A) Lohnzettel", "B) Das Wertversprechen des Arbeitgebers an Bewerber/Mitarbeitende: Warum bei uns arbeiten?", "C) Tarifvertrag", "D) Bewerbungsformular"], correct: 1, explanation: "EVP = Employer Value Proposition: präzises Wertversprechen, das den Arbeitgeber für Bewerber:innen attraktiv macht (Sicherheit, Entwicklung, Kultur, Bezahlung)." },
+            { id: 47, text: "Welcher AGG-Aspekt ist bei Stellenanzeigen besonders kritisch?", options: ["A) Keine Hinweise auf Alter, Geschlecht, Familienstand, ethnische Herkunft, Religion, Behinderung, sexuelle Identität", "B) Schöne Sprache", "C) Lange Sätze", "D) Bunte Farben"], correct: 0, explanation: "AGG verbietet Diskriminierung in Stellenanzeigen. Indizien (z.B. 'junges Team', 'Muttersprache Deutsch') können bereits Indizwirkung erzeugen → Schadensersatz möglich." },
+            { id: 48, text: "Welche Strategie sammelt am meisten qualifizierte Bewerbungen?", options: ["A) Eine kanalübergreifende Strategie: Stellenanzeige + Active Sourcing + Empfehlung + Karrieremessen", "B) Nur eine Anzeige", "C) Nur LinkedIn", "D) Nur Aushang"], correct: 0, explanation: "Multi-Channel-Recruiting: Stellenausschreibung breit + Active Sourcing gezielt + Mitarbeiter-Empfehlung + Career Events → höchste Pipeline-Qualität." },
+            { id: 49, text: "Welche Information gehört in jede Stellenausschreibung?", options: ["A) Bewerbungsweg + Ansprechpartner:in + Frist", "B) Lohn jeden Mitarbeitenden", "C) IBAN", "D) Geburtstag"], correct: 0, explanation: "Pflicht-Bestandteile: konkreter Bewerbungsweg (Mail/Portal), Ansprechpartner:in mit Kontakt, Frist – sonst niedrige Conversion." },
+            { id: 50, text: "Welche Aussage zur Candidate Experience ist korrekt?", options: ["A) Sie ist unwichtig", "B) Schlechte Candidate Experience führt zu negativem Employer Branding und sinkender Bewerber-Pipeline", "C) Bewerber:innen merken sich nichts", "D) Schnell ablehnen ist besser als Feedback geben"], correct: 1, explanation: "Candidate Experience prägt das Bewerber-Erlebnis – schlechte Erfahrung wird auf kununu/Glassdoor sichtbar und schadet Marke + Pipeline langfristig." }
+        ]
+    },
+    {
+        title: "Abschnitt 6: Vertrag, A&Uuml;V &amp; PDL-Praxis (Fragen 51–60)",
+        questions: [
+            { id: 51, text: "Welche Funktion hat der AÜV?", options: ["A) Vertrag zwischen Verleiher und Entleiher über die Überlassung einer Person", "B) Lohnabrechnung", "C) Krankenkassen-Anmeldung", "D) Steuererklärung"], correct: 0, explanation: "AÜV = Arbeitnehmerüberlassungsvertrag: regelt Konditionen, Person, Einsatzort, Stundensatz zwischen Personaldienstleister und Kundenbetrieb." },
+            { id: 52, text: "Welche Inhalte muss der AÜV nach § 12 AÜG enthalten?", options: ["A) Erklärung über AÜ-Erlaubnis, Bezeichnung als AÜV, Person + Tätigkeit, Beginn + Dauer", "B) Lebenslauf", "C) Schulnoten", "D) Gehaltszettel"], correct: 0, explanation: "§ 12 AÜG zwingender AÜV-Inhalt: Erlaubnis-Erklärung, ausdrückliche AÜV-Bezeichnung, konkrete Person, Tätigkeit, Beginn + Dauer." },
+            { id: 53, text: "Was bedeutet 'Konkretisierungspflicht' im AÜG?", options: ["A) Konkrete Person muss vor Einsatz benannt werden", "B) Konkrete Adresse muss zentral sein", "C) Konkrete Geldsumme muss in EUR angegeben sein", "D) Konkrete Pause"], correct: 0, explanation: "§ 1 Abs. 1 S. 6 AÜG: Konkretisierungspflicht – die zu überlassende Person muss vor Beginn konkret benannt werden, kein 'Auswechselrecht'." },
+            { id: 54, text: "Welche Höchstüberlassungsdauer regelt § 1b AÜG?", options: ["A) 6 Monate", "B) 12 Monate", "C) 18 Monate (tariflich anpassbar)", "D) 36 Monate"], correct: 2, explanation: "§ 1b AÜG: Höchstüberlassungsdauer 18 Monate pro Kunden – tariflich verlängerbar (z.B. TV-GVP/IG Metall bis 48 Monate)." },
+            { id: 55, text: "Wann gilt spätestens Equal Pay nach § 8 AÜG?", options: ["A) Sofort", "B) Nach 9 Monaten Einsatz beim selben Kunden (kann tariflich gestaffelt früher gelten)", "C) Nach 36 Monaten", "D) Nie"], correct: 1, explanation: "§ 8 AÜG: spätestens nach 9 Monaten Einsatz Equal Pay (gleiches Entgelt wie vergleichbare Stammbelegschaft). Branchenzuschläge können früher greifen." },
+            { id: 56, text: "Welche Prüfung gehört zum Onboarding der ZAN beim Kunden?", options: ["A) Sicherheitsunterweisung, PSA-Übergabe, ggf. arbeitsmedizinische Vorsorge", "B) Lohnabrechnung", "C) Steuererklärung", "D) Krankenkasse"], correct: 0, explanation: "Pflicht-Onboarding der ZAN: Sicherheitsunterweisung (Brandschutz, Erste Hilfe), PSA-Übergabe, ggf. arbeitsmedizinische Untersuchung (Lärm, Höhe, Gefahrgut)." },
+            { id: 57, text: "Welche der folgenden Dokumente schließt der Personaldienstleister mit dem Kunden ab?", options: ["A) Arbeitsvertrag (mit ZAN)", "B) AÜV (mit Kunde)", "C) Tarifvertrag", "D) Mietvertrag"], correct: 1, explanation: "Drei-Personen-Verhältnis: Verleiher–ZAN = Arbeitsvertrag; Verleiher–Kunde = AÜV; Kunde–ZAN = nur faktisches Weisungsverhältnis (kein Arbeitsvertrag)." },
+            { id: 58, text: "Wann sollte das Lastenheft im PDL-Prozess freigegeben werden?", options: ["A) Vor Angebotsabgabe", "B) Nach Vertragsabschluss", "C) Nach Einsatzbeginn", "D) Nie"], correct: 0, explanation: "Lastenheft muss VOR Angebotsabgabe vom Kunden freigegeben sein – sonst kalkuliert man auf falscher Basis. Standardweg: Lastenheft → Angebot/Pflichtenheft → Vertrag." },
+            { id: 59, text: "Welche Methode hilft, Anforderungen aus Stakeholdern zu erheben?", options: ["A) Workshops, Interviews, Beobachtung am Arbeitsplatz, Fragebögen", "B) Raten", "C) Würfeln", "D) Träumen"], correct: 0, explanation: "Requirements Engineering: Workshops, Stakeholder-Interviews, Job Shadowing/Beobachtung am Arbeitsplatz, Fragebögen für breite Erhebung – Mix je nach Komplexität." },
+            { id: 60, text: "Welcher Inhalt fehlt häufig in Lastenheften und führt später zu Konflikten?", options: ["A) Keine messbaren Akzeptanzkriterien (Was heißt 'gut erledigt'?)", "B) Stundenangabe", "C) Personalangaben", "D) Adresse"], correct: 0, explanation: "Häufiger Fehler: Anforderungen ohne messbare Akzeptanzkriterien → spätere Konflikte ('Das war doch klar!'). Best Practice: SMART formulieren (spezifisch, messbar, akzeptiert, realistisch, terminiert)." }
+        ]
+    }
+];
+
+let answered = {};
+let checked  = {};
+let showAll  = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() {
+    const flat = [];
+    sections.forEach(s => s.questions.forEach(q => flat.push(q)));
+    return flat;
+}
+const flatQ = allQuestions();
+
+function render() {
+    const container = document.getElementById('quizContainer');
+    let html = '';
+    let globalIdx = 0;
+
+    sections.forEach((sec, si) => {
+        html += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach((q, qi) => {
+            const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+            const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+            html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+            html += `<p class="question-text">${q.text}</p>`;
+            html += `<ul class="options-list">`;
+            q.options.forEach((opt, oi) => {
+                let cls = '';
+                if (checked[q.id]) {
+                    if (oi === q.correct) cls = 'correct-opt';
+                    else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+                } else if (answered[q.id] === oi) {
+                    cls = 'selected';
+                }
+                const dis = checked[q.id] ? 'disabled' : '';
+                const chk = answered[q.id] === oi ? 'checked' : '';
+                html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+            });
+            html += `</ul>`;
+            const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+
+            if (checked[q.id]) {
+                const isCorr = answered[q.id] === q.correct;
+                const fbClass = isCorr ? 'correct' : 'incorrect';
+                const fbText = isCorr
+                    ? `<strong>Richtig!</strong> ${q.explanation}`
+                    : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+                html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+            } else {
+                html += `<div class="feedback" id="fb-${q.id}"></div>`;
+            }
+            html += `</div>`;
+            globalIdx++;
+        });
+    });
+
+    if (!showAll) {
+        html += `<div class="nav-row">`;
+        html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+        html += `<span style="font-weight:600;color:#004b87;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+        html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+        html += `</div>`;
+    }
+    container.innerHTML = html;
+    updateProgress();
+}
+
+function selectOption(qid, idx) { if (checked[qid]) return; answered[qid] = idx; render(); }
+function checkAnswer(qid) { if (answered[qid] === undefined || checked[qid]) return; checked[qid] = true; render(); updateProgress(); }
+function navigate(dir) { currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir)); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function updateProgress() {
+    const done = Object.keys(checked).length;
+    const pct = Math.round((done / totalQ) * 100);
+    document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+    document.getElementById('progressPct').textContent = `${pct} %`;
+    document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+    const done = Object.keys(checked).length;
+    if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+    let correct = 0;
+    flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+    const pct = Math.round((correct / done) * 100);
+    document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+    let gradeText = '';
+    let gradeClass = 'pass';
+    if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+    else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+    else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+    else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+    else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+    else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+    const gEl = document.getElementById('gradeText');
+    gEl.textContent = gradeText;
+    gEl.className = 'grade ' + gradeClass;
+    let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+    sections.forEach(sec => {
+        let sCorr = 0, sTotal = 0;
+        sec.questions.forEach(q => { if (checked[q.id]) { sTotal++; if (answered[q.id] === q.correct) sCorr++; } });
+        const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+        tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+    });
+    tbl += '</table>';
+    document.getElementById('sectionBreakdown').innerHTML = tbl;
+    document.getElementById('resultsPanel').classList.add('show');
+    document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+    answered = {}; checked = {}; currentQ = 0;
+    document.getElementById('resultsPanel').classList.remove('show');
+    render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () { showAll = this.checked; render(); });
+
+function shuffleQuizOptions() {
+    let seed = 20260508;
+    function seededRandom() { seed = (seed * 16807 + 0) % 2147483647; return (seed - 1) / 2147483646; }
+    sections.forEach(sec => {
+        sec.questions.forEach(q => {
+            const correctText = q.options[q.correct];
+            const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+            for (let i = cleaned.length - 1; i > 0; i--) {
+                const j = Math.floor(seededRandom() * (i + 1));
+                [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+            }
+            const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+            const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+            q.options = cleaned.map((c, i) => prefixes[i] + c);
+            q.correct = cleaned.indexOf(correctClean);
+        });
+    });
+}
+shuffleQuizOptions();
+
+render();
+</script>
+<div id="pdk-bottom-back">
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+</div>
+</body>
+</html>

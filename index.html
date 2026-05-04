@@ -159,10 +159,13 @@
     .res a:hover { background: #dbe7f0; }
     .res-quiz_html a { border-left-color: var(--ok); }
     .res-quiz_pdf a { border-left-color: var(--ok); opacity: 0.85; }
-    .res-handout a { border-left-color: var(--accent); }
-    .res-praesentation a { border-left-color: var(--accent-2); }
-    .res-notizen a { border-left-color: #6c5b9a; }
-    .res-klausur a, .res-klausur_loesung a { border-left-color: var(--warn); }
+    .res-video a { border-left-color: #b13a8a; }
+    .res-podcast a { border-left-color: #c25e0d; }
+    .res-pending span { display: block; padding: 0.4rem 0.6rem; border-radius: 6px; background: #fff7e0; color: #8a6d1d; font-size: 0.85rem; border-left: 3px dashed #d4a017; font-style: italic; }
+    .open-day { align-self: flex-start; margin-top: 0.4rem; font-size: 0.88rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+    .open-day:hover { text-decoration: underline; }
+    .card-link { color: inherit; text-decoration: none; }
+    .card-link:hover { color: var(--accent); }
     footer {
       padding: 1.5rem 1.25rem 2rem;
       color: var(--ink-2);
@@ -237,13 +240,13 @@
     </form>
   </div>
   <header class="site">
-    <h1>PDK Personal-Kurs Mai-Juni 2026</h1>
-    <p>Materialien zum Kurs „WISO Comcave - Integrative Unternehmensprozesse Personal" (Personaldienstleistungskaufmann/-frau IHK). Quizze laufen interaktiv im Browser, alle Handouts und Praesentationen als PDF.</p>
+    <h1>PDK Personal-Kurs Mai-Juni 2026 -- Quiz, Video & Podcast</h1>
+    <p>Lernmaterialien zum Kurs „WISO Comcave - Integrative Unternehmensprozesse Personal" (Personaldienstleistungskaufmann/-frau IHK). Pro Tag: interaktives Quiz im Browser sowie - sobald verfuegbar - Erklaervideo und Podcast.</p>
     <div class="stats">
       <span class="stat"><strong>23</strong> Tage</span>
       <span class="stat"><strong>14</strong> Quizze</span>
-      <span class="stat"><strong>20</strong> Praesentationen</span>
-      <span class="stat"><strong>23</strong> Handouts</span>
+      <span class="stat"><strong>0</strong> Videos</span>
+      <span class="stat"><strong>0</strong> Podcasts</span>
     </div>
   </header>
   <div class="toolbar">
@@ -262,18 +265,20 @@
         
         <article class="card" data-day="01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien">
           <header class="card-head">
-            <h3>Tag 01 <span class="date-badge">2026-05-04</span></h3>
+            <h3><a class="card-link" href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/tag.html">Tag 01</a> <span class="date-badge">2026-05-04</span></h3>
             <p class="topic">Mo Einfuehrung PDL Lernstrategien</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/Handout_Tag01.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/Praesentation_Tag01_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/Praesentation_Tag01.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/Quiz_Tag01.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/Quiz_Tag01.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/Quiz_Tag01.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/Quiz_Tag01.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="01_Arbeitsgestaltung_04.05-06.05/Tag_02_2026-05-05_Di_Arbeitsplanung_Disposition_Recruitingalltag">
           <header class="card-head">
-            <h3>Tag 02 <span class="date-badge">2026-05-05</span></h3>
+            <h3><a class="card-link" href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_02_2026-05-05_Di_Arbeitsplanung_Disposition_Recruitingalltag/tag.html">Tag 02</a> <span class="date-badge">2026-05-05</span></h3>
             <p class="topic">Di Arbeitsplanung Disposition Recruitingalltag</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_02_2026-05-05_Di_Arbeitsplanung_Disposition_Recruitingalltag/Handout_Tag02.pdf">Handout (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-pending"><span>Noch keine Materialien hochgeladen</span></li></ul>
+          <a class="open-day" href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_02_2026-05-05_Di_Arbeitsplanung_Disposition_Recruitingalltag/tag.html">&rarr; Tag oeffnen</a>
         </article>
       </div>
     </section>
@@ -284,50 +289,56 @@
         
         <article class="card" data-day="02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte">
           <header class="card-head">
-            <h3>Tag 04 <span class="date-badge">2026-05-07</span></h3>
+            <h3><a class="card-link" href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/tag.html">Tag 04</a> <span class="date-badge">2026-05-07</span></h3>
             <p class="topic">Do Projektbegriff Onsite Grosskundenprojekte</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/Handout_Tag04.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/Praesentation_Tag04_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/Praesentation_Tag04.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/Quiz_Tag04.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/Quiz_Tag04.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/Quiz_Tag04.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/Quiz_Tag04.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="02_Projektmanagement_07.05-19.05/Tag_05_2026-05-08_Fr_Lastenheft_Pflichtenheft_Auftragsklaerung_Anforderungsprofil">
           <header class="card-head">
-            <h3>Tag 05 <span class="date-badge">2026-05-08</span></h3>
+            <h3><a class="card-link" href="content/02_Projektmanagement_07.05-19.05/Tag_05_2026-05-08_Fr_Lastenheft_Pflichtenheft_Auftragsklaerung_Anforderungsprofil/tag.html">Tag 05</a> <span class="date-badge">2026-05-08</span></h3>
             <p class="topic">Fr Lastenheft Pflichtenheft Auftragsklaerung Anforderungsprofil</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/02_Projektmanagement_07.05-19.05/Tag_05_2026-05-08_Fr_Lastenheft_Pflichtenheft_Auftragsklaerung_Anforderungsprofil/Handout_Tag05.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/02_Projektmanagement_07.05-19.05/Tag_05_2026-05-08_Fr_Lastenheft_Pflichtenheft_Auftragsklaerung_Anforderungsprofil/Praesentation_Tag05_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/02_Projektmanagement_07.05-19.05/Tag_05_2026-05-08_Fr_Lastenheft_Pflichtenheft_Auftragsklaerung_Anforderungsprofil/Praesentation_Tag05.pdf">Praesentation (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-pending"><span>Noch keine Materialien hochgeladen</span></li></ul>
+          <a class="open-day" href="content/02_Projektmanagement_07.05-19.05/Tag_05_2026-05-08_Fr_Lastenheft_Pflichtenheft_Auftragsklaerung_Anforderungsprofil/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation">
           <header class="card-head">
-            <h3>Tag 07 <span class="date-badge">2026-05-12</span></h3>
+            <h3><a class="card-link" href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/tag.html">Tag 07</a> <span class="date-badge">2026-05-12</span></h3>
             <p class="topic">Di Rollen Team Projektorganisation</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/Handout_Tag07.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/Praesentation_Tag07_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/Praesentation_Tag07.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/Quiz_Tag07.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/Quiz_Tag07.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/Quiz_Tag07.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/Quiz_Tag07.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP">
           <header class="card-head">
-            <h3>Tag 08 <span class="date-badge">2026-05-13</span></h3>
+            <h3><a class="card-link" href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/tag.html">Tag 08</a> <span class="date-badge">2026-05-13</span></h3>
             <p class="topic">Mi Projektstrukturplan PSP</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/Handout_Tag08.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/Praesentation_Tag08_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/Praesentation_Tag08.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/Quiz_Tag08.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/Quiz_Tag08.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/Quiz_Tag08.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/Quiz_Tag08.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation">
           <header class="card-head">
-            <h3>Tag 10 <span class="date-badge">2026-05-18</span></h3>
+            <h3><a class="card-link" href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/tag.html">Tag 10</a> <span class="date-badge">2026-05-18</span></h3>
             <p class="topic">Mo Soll-Ist-KPI Recruiting Fluktuation</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/Handout_Tag10.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/Praesentation_Tag10_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/Praesentation_Tag10.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/Quiz_Tag10.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/Quiz_Tag10.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/Quiz_Tag10.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/Quiz_Tag10.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="02_Projektmanagement_07.05-19.05/Tag_11_2026-05-19_Di_Projektdokumentation_Abschluss_LessonsLearned">
           <header class="card-head">
-            <h3>Tag 11 <span class="date-badge">2026-05-19</span></h3>
+            <h3><a class="card-link" href="content/02_Projektmanagement_07.05-19.05/Tag_11_2026-05-19_Di_Projektdokumentation_Abschluss_LessonsLearned/tag.html">Tag 11</a> <span class="date-badge">2026-05-19</span></h3>
             <p class="topic">Di Projektdokumentation Abschluss LessonsLearned</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/02_Projektmanagement_07.05-19.05/Tag_11_2026-05-19_Di_Projektdokumentation_Abschluss_LessonsLearned/Handout_Tag11.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/02_Projektmanagement_07.05-19.05/Tag_11_2026-05-19_Di_Projektdokumentation_Abschluss_LessonsLearned/Praesentation_Tag11_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/02_Projektmanagement_07.05-19.05/Tag_11_2026-05-19_Di_Projektdokumentation_Abschluss_LessonsLearned/Praesentation_Tag11.pdf">Praesentation (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-pending"><span>Noch keine Materialien hochgeladen</span></li></ul>
+          <a class="open-day" href="content/02_Projektmanagement_07.05-19.05/Tag_11_2026-05-19_Di_Projektdokumentation_Abschluss_LessonsLearned/tag.html">&rarr; Tag oeffnen</a>
         </article>
       </div>
     </section>
@@ -338,50 +349,56 @@
         
         <article class="card" data-day="03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin">
           <header class="card-head">
-            <h3>Tag 13 <span class="date-badge">2026-05-21</span></h3>
+            <h3><a class="card-link" href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/tag.html">Tag 13</a> <span class="date-badge">2026-05-21</span></h3>
             <p class="topic">Do Kompetenzprofile gewerblich kfm IT Medizin</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/Handout_Tag13.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/Praesentation_Tag13_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/Praesentation_Tag13.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/Quiz_Tag13.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/Quiz_Tag13.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/Quiz_Tag13.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/Quiz_Tag13.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="03_Berufsfelderschliessung_20.05-03.06/Tag_14_2026-05-22_Fr_Einsatzfelder_Branchenspezifika">
           <header class="card-head">
-            <h3>Tag 14 <span class="date-badge">2026-05-22</span></h3>
+            <h3><a class="card-link" href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_14_2026-05-22_Fr_Einsatzfelder_Branchenspezifika/tag.html">Tag 14</a> <span class="date-badge">2026-05-22</span></h3>
             <p class="topic">Fr Einsatzfelder Branchenspezifika</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_14_2026-05-22_Fr_Einsatzfelder_Branchenspezifika/Handout_Tag14.pdf">Handout (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-pending"><span>Noch keine Materialien hochgeladen</span></li></ul>
+          <a class="open-day" href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_14_2026-05-22_Fr_Einsatzfelder_Branchenspezifika/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen">
           <header class="card-head">
-            <h3>Tag 16 <span class="date-badge">2026-05-27</span></h3>
+            <h3><a class="card-link" href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/tag.html">Tag 16</a> <span class="date-badge">2026-05-27</span></h3>
             <p class="topic">Mi Anforderungsprofile erstellen</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/Handout_Tag16.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/Praesentation_Tag16_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/Praesentation_Tag16.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/Quiz_Tag16.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/Quiz_Tag16.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/Quiz_Tag16.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/Quiz_Tag16.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="03_Berufsfelderschliessung_20.05-03.06/Tag_17_2026-05-28_Do_Stellenausschreibung_Praxis">
           <header class="card-head">
-            <h3>Tag 17 <span class="date-badge">2026-05-28</span></h3>
+            <h3><a class="card-link" href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_17_2026-05-28_Do_Stellenausschreibung_Praxis/tag.html">Tag 17</a> <span class="date-badge">2026-05-28</span></h3>
             <p class="topic">Do Stellenausschreibung Praxis</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_17_2026-05-28_Do_Stellenausschreibung_Praxis/Handout_Tag17.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_17_2026-05-28_Do_Stellenausschreibung_Praxis/Praesentation_Tag17_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_17_2026-05-28_Do_Stellenausschreibung_Praxis/Praesentation_Tag17.pdf">Praesentation (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-pending"><span>Noch keine Materialien hochgeladen</span></li></ul>
+          <a class="open-day" href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_17_2026-05-28_Do_Stellenausschreibung_Praxis/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork">
           <header class="card-head">
-            <h3>Tag 19 <span class="date-badge">2026-06-01</span></h3>
+            <h3><a class="card-link" href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/tag.html">Tag 19</a> <span class="date-badge">2026-06-01</span></h3>
             <p class="topic">Mo Demografie Digitalisierung NewWork</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/Handout_Tag19.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/Praesentation_Tag19_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/Praesentation_Tag19.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/Quiz_Tag19.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/Quiz_Tag19.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/Quiz_Tag19.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/Quiz_Tag19.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="03_Berufsfelderschliessung_20.05-03.06/Tag_20_2026-06-02_Di_Mangelberufe_Zielbranchen_Akquise">
           <header class="card-head">
-            <h3>Tag 20 <span class="date-badge">2026-06-02</span></h3>
+            <h3><a class="card-link" href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_20_2026-06-02_Di_Mangelberufe_Zielbranchen_Akquise/tag.html">Tag 20</a> <span class="date-badge">2026-06-02</span></h3>
             <p class="topic">Di Mangelberufe Zielbranchen Akquise</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_20_2026-06-02_Di_Mangelberufe_Zielbranchen_Akquise/Handout_Tag20.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_20_2026-06-02_Di_Mangelberufe_Zielbranchen_Akquise/Praesentation_Tag20_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_20_2026-06-02_Di_Mangelberufe_Zielbranchen_Akquise/Praesentation_Tag20.pdf">Praesentation (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-pending"><span>Noch keine Materialien hochgeladen</span></li></ul>
+          <a class="open-day" href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_20_2026-06-02_Di_Mangelberufe_Zielbranchen_Akquise/tag.html">&rarr; Tag oeffnen</a>
         </article>
       </div>
     </section>
@@ -392,66 +409,74 @@
         
         <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL">
           <header class="card-head">
-            <h3>Tag 22 <span class="date-badge">2026-06-05</span></h3>
+            <h3><a class="card-link" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/tag.html">Tag 22</a> <span class="date-badge">2026-06-05</span></h3>
             <p class="topic">Fr Kommunikationsmodelle Schulz v Thun PDL</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/Handout_Tag22.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/Praesentation_Tag22_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/Praesentation_Tag22.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/Quiz_Tag22.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/Quiz_Tag22.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/Quiz_Tag22.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/Quiz_Tag22.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_23_2026-06-08_Mo_Kunde_Bewerber_ZAN_zielgruppengerecht">
           <header class="card-head">
-            <h3>Tag 23 <span class="date-badge">2026-06-08</span></h3>
+            <h3><a class="card-link" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_23_2026-06-08_Mo_Kunde_Bewerber_ZAN_zielgruppengerecht/tag.html">Tag 23</a> <span class="date-badge">2026-06-08</span></h3>
             <p class="topic">Mo Kunde Bewerber ZAN zielgruppengerecht</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_23_2026-06-08_Mo_Kunde_Bewerber_ZAN_zielgruppengerecht/Handout_Tag23.pdf">Handout (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_23_2026-06-08_Mo_Kunde_Bewerber_ZAN_zielgruppengerecht/Praesentation_Tag23.pdf">Praesentation (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-pending"><span>Noch keine Materialien hochgeladen</span></li></ul>
+          <a class="open-day" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_23_2026-06-08_Mo_Kunde_Bewerber_ZAN_zielgruppengerecht/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren">
           <header class="card-head">
-            <h3>Tag 25 <span class="date-badge">2026-06-10</span></h3>
+            <h3><a class="card-link" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/tag.html">Tag 25</a> <span class="date-badge">2026-06-10</span></h3>
             <p class="topic">Mi Vorstellungsgespraech aktives Zuhoeren</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/Handout_Tag25.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/Praesentation_Tag25_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/Praesentation_Tag25.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/Quiz_Tag25.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/Quiz_Tag25.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/Quiz_Tag25.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/Quiz_Tag25.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_26_2026-06-11_Do_Mitarbeitergespraech_Feedback_im_Einsatz">
           <header class="card-head">
-            <h3>Tag 26 <span class="date-badge">2026-06-11</span></h3>
+            <h3><a class="card-link" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_26_2026-06-11_Do_Mitarbeitergespraech_Feedback_im_Einsatz/tag.html">Tag 26</a> <span class="date-badge">2026-06-11</span></h3>
             <p class="topic">Do Mitarbeitergespraech Feedback im Einsatz</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_26_2026-06-11_Do_Mitarbeitergespraech_Feedback_im_Einsatz/Handout_Tag26.pdf">Handout (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_26_2026-06-11_Do_Mitarbeitergespraech_Feedback_im_Einsatz/Praesentation_Tag26.pdf">Praesentation (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-pending"><span>Noch keine Materialien hochgeladen</span></li></ul>
+          <a class="open-day" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_26_2026-06-11_Do_Mitarbeitergespraech_Feedback_im_Einsatz/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern">
           <header class="card-head">
-            <h3>Tag 28 <span class="date-badge">2026-06-15</span></h3>
+            <h3><a class="card-link" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/tag.html">Tag 28</a> <span class="date-badge">2026-06-15</span></h3>
             <p class="topic">Mo Konfliktarten Kunde ZAN intern</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/Handout_Tag28.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/Praesentation_Tag28_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/Praesentation_Tag28.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/Quiz_Tag28.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/Quiz_Tag28.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/Quiz_Tag28.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/Quiz_Tag28.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_29_2026-06-16_Di_Eskalation_Mediation_Beschwerdemanagement">
           <header class="card-head">
-            <h3>Tag 29 <span class="date-badge">2026-06-16</span></h3>
+            <h3><a class="card-link" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_29_2026-06-16_Di_Eskalation_Mediation_Beschwerdemanagement/tag.html">Tag 29</a> <span class="date-badge">2026-06-16</span></h3>
             <p class="topic">Di Eskalation Mediation Beschwerdemanagement</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_29_2026-06-16_Di_Eskalation_Mediation_Beschwerdemanagement/Handout_Tag29.pdf">Handout (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-pending"><span>Noch keine Materialien hochgeladen</span></li></ul>
+          <a class="open-day" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_29_2026-06-16_Di_Eskalation_Mediation_Beschwerdemanagement/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt">
           <header class="card-head">
-            <h3>Tag 31 <span class="date-badge">2026-06-18</span></h3>
+            <h3><a class="card-link" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/tag.html">Tag 31</a> <span class="date-badge">2026-06-18</span></h3>
             <p class="topic">Do Betriebsrat GVP Anwalt</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/Handout_Tag31.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/Praesentation_Tag31_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/Praesentation_Tag31.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/Quiz_Tag31.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/Quiz_Tag31.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/Quiz_Tag31.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/Quiz_Tag31.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/tag.html">&rarr; Tag oeffnen</a>
         </article>
 
         <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation">
           <header class="card-head">
-            <h3>Tag 33 <span class="date-badge">2026-06-22</span></h3>
+            <h3><a class="card-link" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/tag.html">Tag 33</a> <span class="date-badge">2026-06-22</span></h3>
             <p class="topic">Mo Klausurvorbereitung PDK Pruefungssimulation</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/Handout_Tag33.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/Praesentation_Tag33_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/Praesentation_Tag33.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/Quiz_Tag33.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/Quiz_Tag33.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/Quiz_Tag33.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/Quiz_Tag33.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/tag.html">&rarr; Tag oeffnen</a>
         </article>
       </div>
     </section>
@@ -462,10 +487,11 @@
         
         <article class="card" data-day="05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK">
           <header class="card-head">
-            <h3>Tag 34 <span class="date-badge">2026-06-23</span></h3>
+            <h3><a class="card-link" href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/tag.html">Tag 34</a> <span class="date-badge">2026-06-23</span></h3>
             <p class="topic">Di Klausur PDK IHK</p>
           </header>
-          <ul class="resources"><li class="res res-handout"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Handout_Tag34.pdf">Handout (PDF)</a></li><li class="res res-klausur_loesung"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Klausur_Tag34_Loesung.pdf">Klausur Loesung (PDF)</a></li><li class="res res-klausur"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Klausur_Tag34.pdf">Klausur (PDF)</a></li><li class="res res-praesentation"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Praesentation_Tag34.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Quiz_Tag34.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Quiz_Tag34.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <ul class="resources"><li class="res res-quiz_html"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Quiz_Tag34.html">Quiz interaktiv starten (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Quiz_Tag34.pdf">Quiz Druckversion (PDF)</a></li></ul>
+          <a class="open-day" href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/tag.html">&rarr; Tag oeffnen</a>
         </article>
       </div>
     </section>

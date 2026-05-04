@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tag 04 &ndash; Projektbegriff, Projektarten, PM-Instrumente (Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026)</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+        .header { background: linear-gradient(135deg, #00325f 0%, #004b87 50%, #0082b4 100%); color: #fff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+        .header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+        .header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.85; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+        .toolbar button, .toolbar .toggle-label { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .toolbar button:hover { background: #00325f; }
+        .toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+        .toggle-label input { accent-color: #004b87; width: 18px; height: 18px; cursor: pointer; }
+        .progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+        .progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0082b4, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+        .container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+        .section-title { background: #00325f; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+        .section-title:first-child { margin-top: 0; }
+        .question-card { background: #fff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+        .question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .question-card.correct-card { border-left: 5px solid #28a745; }
+        .question-card.incorrect-card { border-left: 5px solid #dc3545; }
+        .question-number { display: inline-block; background: #e8f0fe; color: #004b87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+        .question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+        .options-list { list-style: none; }
+        .options-list li { margin-bottom: 0.5rem; }
+        .options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+        .options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+        .options-list input[type="radio"] { accent-color: #004b87; margin-top: 3px; flex-shrink: 0; }
+        .options-list label.selected { background: #e8f0fe; border-color: #004b87; }
+        .options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+        .options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+        .check-btn { margin-top: 0.8rem; background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .check-btn:hover { background: #00325f; }
+        .check-btn:disabled { background: #8faec8; cursor: default; }
+        .feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .nav-btn { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .nav-btn:hover { background: #00325f; }
+        .nav-btn:disabled { background: #8faec8; cursor: default; }
+        .results-panel { background: #fff; border: 2px solid #004b87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .results-panel.show { display: block; }
+        .results-panel h2 { color: #00325f; margin-bottom: 0.8rem; }
+        .score-big { font-size: 3rem; font-weight: 700; color: #004b87; }
+        .grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+        .grade.pass { color: #28a745; }
+        .grade.fail { color: #dc3545; }
+        .section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+        .section-breakdown table { width: 100%; border-collapse: collapse; }
+        .section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+        .section-breakdown th { background: #e8f0fe; color: #00325f; text-align: left; }
+        .references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+        .references h3 { color: #00325f; margin-bottom: 0.8rem; font-size: 1.1rem; }
+        .references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+        .footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+        @media print { body { background: #fff; } .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; } .header { background: #00325f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; } .section-title { break-after: avoid; } .feedback.show { display: block !important; } }
+        @media (max-width: 600px) { .header { padding: 1.4rem 0.8rem; } .question-card { padding: 1rem; } .toolbar { flex-direction: column; align-items: stretch; text-align: center; } }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1>Quiz Tag 04 &ndash; Projektbegriff, Projektarten, PM-Instrumente</h1>
+    <div class="subtitle">Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026 &ndash; WISO Integrative Unternehmensprozesse Personal</div>
+    <div class="meta">
+        <span>&copy; Can Siebert</span>
+        <span>Donnerstag, 07. Mai 2026</span>
+        <span>60 Fragen &bull; Multiple Choice</span>
+    </div>
+</header>
+
+<div class="toolbar">
+    <label class="toggle-label">
+        <input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen
+    </label>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <button onclick="showResults()">Ergebnis anzeigen</button>
+        <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-info">
+        <span id="progressText">0 von 60 beantwortet</span>
+        <span id="progressPct">0 %</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+    <div class="results-panel" id="resultsPanel">
+        <h2>Dein Ergebnis</h2>
+        <div class="score-big" id="scoreBig"></div>
+        <div class="grade" id="gradeText"></div>
+        <div class="section-breakdown" id="sectionBreakdown"></div>
+        <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="references">
+    <h3>Literaturverzeichnis (APA 7)</h3>
+    <p>Bundesagentur f&uuml;r Arbeit. (2024). <em>Branchen und Berufe: Zeitarbeit &ndash; Arbeitsmarktbericht 2024</em>. Statistik der Bundesagentur für Arbeit.</p>
+    <p>Bundesministerium der Justiz. (2017). <em>Arbeitnehmer&uuml;berlassungsgesetz (A&Uuml;G)</em>.</p>
+    <p>Deutsches Institut f&uuml;r Normung. (2009). <em>DIN 69901: Projektmanagement &ndash; Projektmanagementsysteme</em>. Beuth Verlag.</p>
+    <p>Doran, G. T. (1981). There&rsquo;s a S.M.A.R.T. way to write management&rsquo;s goals and objectives. <em>Management Review</em>, 70(11), 35&ndash;36.</p>
+    <p>Drews, G., &amp; Hillebrand, N. (2014). <em>Lexikon der Projektmanagement-Methoden</em> (3. Aufl.). Haufe.</p>
+    <p>Freeman, R. E. (1984). <em>Strategic Management: A Stakeholder Approach</em>. Pitman.</p>
+    <p>Gesamtverband der Personaldienstleister e.V. (2022). <em>Gesamtverband der Personaldienstleister &ndash; Leitlinien und Tarifvertr&auml;ge</em>. https://www.personaldienstleister.de</p>
+    <p>GPM Deutsche Gesellschaft f&uuml;r Projektmanagement. (2020). <em>Kompetenzbasiertes Projektmanagement (PM3)</em> (2. Aufl.). GPM.</p>
+    <p>Kuster, J., Bachmann, C., Hubmann, M., Lippmann, R., &amp; Schneider, P. (2019). <em>Handbuch Projektmanagement: Agil &ndash; Klassisch &ndash; Hybrid</em> (4. Aufl.). Springer Gabler.</p>
+    <p>Litke, H.-D. (2007). <em>Projektmanagement: Methoden, Techniken, Verhaltensweisen</em> (5. Aufl.). Hanser.</p>
+    <p>Patzak, G., &amp; Rattay, G. (2014). <em>Projektmanagement</em> (6. Aufl.). Linde.</p>
+    <p>Project Management Institute. (2021). <em>PMBOK Guide</em> (7. Aufl.). PMI.</p>
+    <p>Schrey&ouml;gg, G., &amp; Koch, J. (2016). <em>Grundlagen des Managements</em> (3. Aufl.). Springer Gabler.</p>
+</div>
+
+<footer class="footer">
+    &copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026 | Tag 04 von 34
+</footer>
+
+<script>
+const sections = [
+    {
+        title: "Abschnitt 1: Projektbegriff (DIN 69901) (Fragen 1–12)",
+        questions: [
+            { id: 1, text: "Welche Norm definiert in Deutschland den Begriff „Projekt“?", options: ["A) DIN 9001", "B) DIN 69901", "C) DIN ISO 21500", "D) DIN 69905"], correct: 1, explanation: "Die DIN 69901 „Projektmanagement – Projektmanagementsysteme“ definiert den Projektbegriff. Die DIN 69905 regelt Lasten-/Pflichtenheft (Tag 05)." },
+            { id: 2, text: "Was ist nach DIN 69901 das Hauptmerkmal eines Projekts?", options: ["A) Hohe Kosten", "B) Lange Dauer", "C) Einmaligkeit der Bedingungen in ihrer Gesamtheit", "D) Internationale Zusammenarbeit"], correct: 2, explanation: "Das wesentliche Merkmal nach DIN 69901 ist die Einmaligkeit der Bedingungen in ihrer Gesamtheit." },
+            { id: 3, text: "Welche der folgenden Bedingungen zählt NICHT zu den Projektmerkmalen nach DIN 69901?", options: ["A) Zielvorgabe", "B) Begrenzungen", "C) Projektspezifische Organisation", "D) Mindestbudget von 100.000 Euro"], correct: 3, explanation: "Eine starre Budgetschwelle ist kein Projektmerkmal. Es gelten Einmaligkeit, Zielvorgabe, Begrenzungen, Abgrenzung, projektspezifische Organisation." },
+            { id: 4, text: "Welche Eselsbrücke fasst die fünf Projektmerkmale nach DIN 69901 zusammen?", options: ["A) Spezifisch, Messbar, Akzeptiert, Realistisch und Terminiert", "B) EZ-BAP (Einmaligkeit, Zielvorgabe, Begrenzungen, Abgrenzung, Projektorganisation)", "C) Political, Economic, Social, Technological, Environmental and Legal", "D) SWOT"], correct: 1, explanation: "EZ-BAP steht für die fünf konstitutiven Merkmale eines Projekts." },
+            { id: 5, text: "Welche Aussage zur Einmaligkeit eines Projekts ist korrekt?", options: ["A) Jede Aufgabe muss inhaltlich noch nie vorgekommen sein", "B) Die Konstellation der Rahmenbedingungen muss in dieser Form neu sein", "C) Einmaligkeit bedeutet „einmal pro Jahr“", "D) Einmaligkeit ist optional"], correct: 1, explanation: "Es geht nicht darum, dass die Aufgabe selbst einmalig ist, sondern die Konstellation der Bedingungen (Kunde, Team, Budget, Termine) in ihrer Gesamtheit." },
+            { id: 6, text: "Welche der folgenden Aufgaben in einem PDL-Unternehmen ist eindeutig ein Projekt?", options: ["A) Tägliche Disposition von 80 Zeitarbeitnehmerinnen und Zeitarbeitnehmer bei Stammkunden", "B) Erstellung der monatlichen Lohnabrechnung", "C) Aufbau eines Onsite-Offices bei einem Neukunden mit 200 Zeitarbeitnehmerinnen und Zeitarbeitnehmer über 24 Monate", "D) Beantwortung von eingehenden Bewerbungen"], correct: 2, explanation: "Der Onsite-Aufbau ist einmalig, hat klare Ziele, Begrenzungen und eine Projektorganisation. Die anderen Aufgaben sind Routine." },
+            { id: 7, text: "Welche Begrenzungen muss ein Projekt nach DIN 69901 haben?", options: ["A) Nur zeitliche Begrenzungen", "B) Nur finanzielle Begrenzungen", "C) Zeitliche, finanzielle, personelle oder andere Begrenzungen (Mehrere möglich)", "D) Begrenzungen sind optional"], correct: 2, explanation: "Begrenzungen können mehrdimensional sein – Zeit, Geld, Personal, Sachmittel, technische Vorgaben." },
+            { id: 8, text: "Wann lohnt sich der Einsatz von Projektmanagement?", options: ["A) Nur bei Projekten über 1 Mio. Euro Budget", "B) Wenn mindestens zwei der Kriterien Komplexität, Risiko und Innovationsgrad stark ausgeprägt sind", "C) Bei jeder beliebigen Aufgabe", "D) Niemals in der PDL-Branche"], correct: 1, explanation: "Faustregel: Wenn mindestens zwei der drei Kriterien hoch ausgeprägt sind, lohnt sich PM." },
+            { id: 9, text: "Welcher Unterschied besteht zwischen einem Projekt und einer Routineaufgabe hinsichtlich der Organisation?", options: ["A) Routine nutzt Projektorganisation, Projekt nutzt Linienorganisation", "B) Routine erfolgt in der Linienorganisation, ein Projekt erhält eine projektspezifische Organisation", "C) Beide nutzen identische Organisationen", "D) Routineaufgaben haben gar keine Organisation"], correct: 1, explanation: "Routine läuft in der bestehenden Linie. Für Projekte wird eine eigene, oft temporäre Organisation aufgebaut." },
+            { id: 10, text: "Was bedeutet „Abgrenzung gegenüber anderen Vorhaben“?", options: ["A) Das Projekt darf nicht mit anderen Projekten kommunizieren", "B) Das Projekt muss vom Tagesgeschäft und anderen Projekten klar getrennt werden (Ressourcen, Zeit, Verantwortung)", "C) Das Projekt findet in einem anderen Gebäude statt", "D) Das Projekt benutzt eine andere Sprache"], correct: 1, explanation: "Abgrenzung sichert, dass Projekte nicht im Tagesgeschäft untergehen und Ressourcen klar zugeordnet sind." },
+            { id: 11, text: "Welches Merkmal trifft auf Routineaufgaben zu?", options: ["A) Hoher Innovationsgrad", "B) Geringe Häufigkeit", "C) Wiederkehrende Standardabläufe", "D) Befristete Laufzeit"], correct: 2, explanation: "Routinen sind wiederkehrend und folgen eingespielten Standards. Projekte sind einmalig und befristet." },
+            { id: 12, text: "Welche Aussage zur Zielvorgabe in einem Projekt ist korrekt?", options: ["A) Sie ist optional", "B) Sie muss klar, messbar und terminiert sein", "C) Sie wird erst am Projektende formuliert", "D) Sie wird vom Projektteam selbst bestimmt"], correct: 1, explanation: "Eine klare, messbare und terminierte Zielvorgabe ist konstitutiv für ein Projekt (vgl. SMART-Methodik, Tag 06)." }
+        ]
+    },
+    {
+        title: "Abschnitt 2: Projektarten (Fragen 13–24)",
+        questions: [
+            { id: 13, text: "Nach welchen drei Hauptdimensionen werden Projekte typischerweise klassifiziert?", options: ["A) Inhalt, Auftragsherkunft, Größe", "B) Farbe, Form, Funktion", "C) Vertrieb, Recruiting, Backoffice", "D) Tag, Woche, Monat"], correct: 0, explanation: "Die drei klassischen Klassifikationsdimensionen sind: inhaltlich-funktional, Auftragsherkunft und Projektgröße." },
+            { id: 14, text: "Welche Projektart liegt vor, wenn ein PDL-Unternehmen sein eigenes Applicant Tracking System (Bewerbermanagementsystem) wechselt?", options: ["A) Forschungsprojekt", "B) IT-Projekt", "C) Investitionsprojekt", "D) Personalprojekt"], correct: 1, explanation: "Die Migration eines IT-Systems wie Bewerbermanagementsystem ist ein klassisches IT-Projekt." },
+            { id: 15, text: "Welche Projektart ist die Personalumstrukturierung einer Niederlassung?", options: ["A) Investitionsprojekt", "B) Forschungsprojekt", "C) Organisationsprojekt", "D) IT-Projekt"], correct: 2, explanation: "Personalumstrukturierungen verändern Strukturen und Prozesse – das ist ein Organisationsprojekt." },
+            { id: 16, text: "Welches Projekt zählt zu den externen Projekten?", options: ["A) Einführung eines neuen Schichtplan-Tools im eigenen Unternehmen", "B) Überarbeitung des internen Onboarding-Prozesses", "C) Aufbau eines Onsite-Offices bei einem Kundenbetrieb", "D) Bewerbung um neue Mitarbeitende für die eigene Niederlassung"], correct: 2, explanation: "Externe Projekte werden im Auftrag eines Kunden durchgeführt. Onsite-Management ist klassisch extern." },
+            { id: 17, text: "Was kennzeichnet ein internes Projekt?", options: ["A) Auftraggeber und Auftragnehmer gehören zur selben Organisation", "B) Externer Kunde ist Auftraggeber", "C) Es gibt keinen Auftraggeber", "D) Es läuft im Ausland"], correct: 0, explanation: "Bei internen Projekten ist der Auftraggeber Teil derselben Organisation wie der Auftragnehmer." },
+            { id: 18, text: "Welche Größe-Kategorie passt zu einem PDL-Projekt mit 80 Personentagen und 60.000 Euro Budget?", options: ["A) Kleinprojekt", "B) Mittelprojekt", "C) Großprojekt", "D) Mega-Projekt"], correct: 1, explanation: "Mittelprojekt: 50–500 PT bzw. 25.000–250.000 €." },
+            { id: 19, text: "Welche der folgenden Aktivitäten ist KEIN Personalprojekt im PDL-Sinne?", options: ["A) Onsite-Management bei Kundenbetrieb", "B) Großkundenprojekt mit 60 Pflegekräften", "C) Outplacement-Begleitung beim Kunden", "D) Kauf eines neuen Bürogebäudes"], correct: 3, explanation: "Der Gebäudekauf ist ein Investitionsprojekt, kein Personalprojekt." },
+            { id: 20, text: "Welche Schwierigkeit kann bei externen PDL-Projekten besonders rechtlich relevant werden?", options: ["A) Verbot der Werbung", "B) Abgrenzung zwischen Arbeitnehmerüberlassung und Werk-/Dienstvertrag (Scheinwerkvertrag)", "C) Pflicht zur Geheimhaltung des Kundennamens", "D) Verbot von Auslandseinsätzen"], correct: 1, explanation: "Wenn ein Werkvertrag in Wahrheit Arbeitnehmerüberlassung ist, drohen Bußgelder (Scheinwerkvertrag, Arbeitnehmerüberlassungsgesetz)." },
+            { id: 21, text: "Welche der folgenden Beispiele beschreibt klassischerweise ein Investitionsprojekt in der PDL-Branche?", options: ["A) Tarifverhandlungen mit dem Betriebsrat", "B) Aufbau einer neuen Niederlassung in Sachsen-Anhalt", "C) Erstellung eines Newsletters", "D) Lohnbuchhaltung"], correct: 1, explanation: "Eine neue Niederlassung erfordert Investitionen in Räume, IT, Personal – klassisches Investitionsprojekt." },
+            { id: 22, text: "Was ist ein typisches Beispiel für ein Großprojekt?", options: ["A) Onboarding-Workshop für 5 Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "B) Konzern-weite Personalumstrukturierung mit über 500 Personentagen Aufwand", "C) Eintragung eines neuen Bewerbers ins Bewerbermanagementsystem", "D) Tagesgeschäft der Disposition"], correct: 1, explanation: "Großprojekte haben üblicherweise mehr als 500 Personentage Aufwand und hohe Budgets." },
+            { id: 23, text: "Welche Projektart liegt vor, wenn das eigene Unternehmen einen neuen Onboarding-Prozess für Zeitarbeitnehmerinnen und Zeitarbeitnehmer entwickelt?", options: ["A) Externes IT-Projekt", "B) Internes Organisationsprojekt", "C) Externes Personalprojekt beim Kunden", "D) Forschungsprojekt"], correct: 1, explanation: "Die Prozessentwicklung im eigenen Unternehmen ist ein internes Organisationsprojekt." },
+            { id: 24, text: "Welche Aussage zur Klassifikation von Projekten ist korrekt?", options: ["A) Ein Projekt gehört immer nur einer einzigen Kategorie an", "B) In der Praxis überschneiden sich oft Kategorien (z. B. Investitions- + Organisations- + Personalprojekt)", "C) Forschungsprojekte sind in der PDL-Branche die häufigste Projektart", "D) Externe Projekte dürfen keine Personalkomponente haben"], correct: 1, explanation: "Reale Projekte sind meist mehrdimensional: ein Onsite-Aufbau ist Investitions-, Organisations- und Personalprojekt zugleich." }
+        ]
+    },
+    {
+        title: "Abschnitt 3: PDL-Projekttypen (Onsite, Großkunde, Umstrukturierung) (Fragen 25–36)",
+        questions: [
+            { id: 25, text: "Was bedeutet Onsite-Management in der Personaldienstleistung?", options: ["A) Personal arbeitet ausschließlich im Homeoffice", "B) PDL-Personal ist direkt beim Kundenbetrieb vor Ort und steuert dort die ZAN-Themen", "C) Recruiting nur über Online-Portale", "D) Auslagerung der Lohnabrechnung"], correct: 1, explanation: "Onsite = vor Ort beim Kunden. Eine Recruiterin oder ein Onsite-Manager sitzt beim Kunden im Büro." },
+            { id: 26, text: "Welche maximale Überlassungsdauer pro Zeitarbeitnehmerinnen und Zeitarbeitnehmer bei demselben Kunden gilt nach Arbeitnehmerüberlassungsgesetz?", options: ["A) 6 Monate", "B) 12 Monate", "C) 18 Monate", "D) 24 Monate"], correct: 2, explanation: "Nach § 1 Abs. 1b Arbeitnehmerüberlassungsgesetz gilt die 18-Monats-Höchstüberlassung pro ZAN-Person bei demselben Kunden (abweichende Tarife möglich)." },
+            { id: 27, text: "Ab wann gilt der Equal-Pay-Grundsatz nach Arbeitnehmerüberlassungsgesetz?", options: ["A) Sofort", "B) Nach 3 Monaten", "C) Spätestens nach 9 Monaten Einsatz beim selben Kunden", "D) Erst nach 12 Monaten"], correct: 2, explanation: "Equal Pay greift spätestens nach 9 Monaten (Tarifverträge mit Branchenzuschlägen ermöglichen Abweichungen)." },
+            { id: 28, text: "Was ist ein typisches PDL-Großkundenprojekt?", options: ["A) Bewerbungsgespräch für eine Hilfskraft", "B) Recruiting von 60 examinierten Pflegekräften für eine Klinik-Eröffnung", "C) Lohnabrechnung für eine Person", "D) Wechsel des Webhosters"], correct: 1, explanation: "Großkundenprojekte zeichnen sich durch hohes Volumen, klare Frist und Schlüsselkundenstatus aus." },
+            { id: 29, text: "Welche Methodik ist typisch für ein Pflegekräfte-Recruiting im Großkundenprojekt?", options: ["A) Ausschließlich Print-Anzeigen", "B) Active Sourcing (XING/LinkedIn), Headhunting im EU-Ausland, Pflegemessen", "C) Nur Mund-zu-Mund-Propaganda", "D) Keine besondere Methodik"], correct: 1, explanation: "Im Pflegemarkt reicht der klassische Anzeigenweg nicht. Active Sourcing und EU-Recruiting sind Standard." },
+            { id: 30, text: "Welches Risiko ist typisch für ein Onsite-Management-Projekt?", options: ["A) Konflikt mit der entsendenden Niederlassung um die Kundenbeziehung", "B) Entfall der Mehrwertsteuer", "C) Verbot von Vertragsverhandlungen", "D) Pflicht zur Telefonseelsorge"], correct: 0, explanation: "Onsite-Recruiter:innen werden oft direkter Ansprechpartner des Kunden – die Niederlassung kann an Einfluss verlieren." },
+            { id: 31, text: "Was ist eine Personalumstrukturierung im PDL-Kontext?", options: ["A) Ein Wechsel der Tarifkasse", "B) Eine Veränderung der Aufbau- oder Ablauforganisation des Personalbereichs (intern oder beim Kunden)", "C) Der Kauf neuer Möbel", "D) Eine technische Wartung"], correct: 1, explanation: "Personalumstrukturierungen ändern Strukturen und Prozesse – typisches Organisationsprojekt." },
+            { id: 32, text: "Welche Methode hilft bei einer Personalumstrukturierung Widerstand zu reduzieren?", options: ["A) Heimliche Umsetzung ohne Information", "B) Mitarbeitergespräche vor der Umstellung, transparente Kommunikation, partizipative Anreizsysteme", "C) Verbot von Diskussionen", "D) Sofortige Kündigungswelle"], correct: 1, explanation: "Beteiligung, Transparenz und faire Anreize sind erfolgskritisch für Change-Projekte." },
+            { id: 33, text: "Welche Phase zählt zum typischen Onsite-Aufbau-Projekt?", options: ["A) Akquise und Vertragsverhandlung", "B) Pilotbetrieb und Regelbetrieb", "C) Rückbau am Vertragsende", "D) Alle drei vorgenannten Phasen"], correct: 3, explanation: "Onsite-Projekte haben mehrere Phasen: Akquise, Konzeption, Aufbau, Pilot, Regelbetrieb, Rückbau / Verlängerung." },
+            { id: 34, text: "Welche organisatorische Anforderung stellt ein Großkundenprojekt typischerweise?", options: ["A) Keine Projektleitung nötig", "B) Dediziertes Projektteam mit Projektleitung, Recruiter:innen und Backoffice", "C) Nur eine Person", "D) Auslagerung an externe Dienstleister"], correct: 1, explanation: "Großkundenprojekte benötigen ein dediziertes Team – Projektleitung, mehrere Recruiter:innen und Backoffice-Unterstützung." },
+            { id: 35, text: "Welche Aussage zum Onsite-Management ist korrekt?", options: ["A) Onsite ist eine Auslagerung der Lohnbuchhaltung", "B) Onsite ist ein Premium-Service mit eigenem Recruiter beim Kunden", "C) Onsite findet ausschließlich im Ausland statt", "D) Onsite ersetzt das Backoffice"], correct: 1, explanation: "Onsite-Management ist ein Premium-Service mit dedizierter Präsenz beim Kunden – dafür höhere Margen." },
+            { id: 36, text: "Welches Beispiel zeigt ein internes Organisationsprojekt im PDL-Unternehmen?", options: ["A) Trennung der bisher gemischten Funktionen Vertrieb und Recruiting in zwei Teams", "B) Verleih einer Zeitarbeitnehmerinnen und Zeitarbeitnehmer an einen Stammkunden", "C) Lohnabrechnung Februar", "D) Tagesgeschäft der Disposition"], correct: 0, explanation: "Die Funktionsteilung Vertrieb/Recruiting ist eine intern initiierte Organisationsänderung." }
+        ]
+    },
+    {
+        title: "Abschnitt 4: PM-Instrumente Überblick (Fragen 37–48)",
+        questions: [
+            { id: 37, text: "In welche vier Werkzeuggruppen lassen sich PM-Instrumente einteilen?", options: ["A) Planung, Steuerung, Kommunikation, Dokumentation", "B) Recruiting, Vertrieb, Disposition, Backoffice", "C) Einkauf, Verkauf, Lager, Buchhaltung", "D) Marketing, Personal, Finanzen, IT"], correct: 0, explanation: "Die vier zentralen Aufgabenfelder eines Projekts sind Planung, Steuerung, Kommunikation und Dokumentation." },
+            { id: 38, text: "Welches Instrument gehört zur Gruppe „Planung“?", options: ["A) Projektsteckbrief", "B) Status-Report", "C) Lessons-Learned-Workshop", "D) Projektstrukturplan"], correct: 3, explanation: "Der Projektstrukturplan ist ein klassisches Planungsinstrument (Tag 08). Steckbrief = Kommunikation, Status-Report = Kommunikation, Lessons Learned = Dokumentation." },
+            { id: 39, text: "Welche PM-Instrumente sind auch in Kleinprojekten meist sinnvoll?", options: ["A) Netzplan und Lenkungsausschuss", "B) Projektsteckbrief, SMART-Ziele, Gantt-Diagramm, Lessons Learned", "C) Projektstrukturplan und Risikoregister", "D) Earned Value Analysis und PMBOK Guide"], correct: 1, explanation: "Diese vier Instrumente sind auch für Kleinprojekte sinnvoll und mit überschaubarem Aufwand umsetzbar." },
+            { id: 40, text: "Was kennzeichnet das klassische (plangetriebene) Projektmanagement?", options: ["A) Iterative Sprints", "B) Umfangreiche Vorabplanung, Phasenmodell und hoher Dokumentationsgrad", "C) Tägliche Stand-ups", "D) Verzicht auf Dokumentation"], correct: 1, explanation: "Klassisches PM (Wasserfall, V-Modell, PRINCE2) baut auf umfangreicher Vorabplanung und klaren Phasen auf." },
+            { id: 41, text: "Welcher Ansatz beschreibt agiles Projektmanagement?", options: ["A) Iterative Auslieferung in kurzen Sprints mit ständigem Feedback", "B) Hierarchische Top-down-Planung", "C) Rein dokumentationsgetriebenes Vorgehen", "D) Pläne dürfen niemals geändert werden"], correct: 0, explanation: "Agiles PM (Scrum, Kanban) arbeitet iterativ in Sprints mit ständigem Feedback." },
+            { id: 42, text: "Was ist hybrides Projektmanagement?", options: ["A) Verzicht auf jegliche Methode", "B) Kombination klassischer Rahmenplanung mit agilen Umsetzungsphasen", "C) Auslagerung an externe Dienstleister", "D) Reines Bauchgefühl"], correct: 1, explanation: "Hybrid kombiniert klassische Rahmen mit agilen Methoden – in Personaldienstleistungsunternehmen meist die beste Lösung." },
+            { id: 43, text: "In welcher Werkzeuggruppe befindet sich der Soll-Ist-Vergleich?", options: ["A) Planung", "B) Steuerung", "C) Kommunikation", "D) Dokumentation"], correct: 1, explanation: "Der Soll-Ist-Vergleich ist ein Steuerungsinstrument zur Überwachung von Termin, Kosten, Qualität (Tag 10)." },
+            { id: 44, text: "Was ist ein Kick-off-Meeting?", options: ["A) Eine Pause", "B) Die Auftaktveranstaltung eines Projekts mit allen Beteiligten", "C) Das Projekt-Ende", "D) Eine reine Marketing-Aktion"], correct: 1, explanation: "Kick-off = Auftakt; alle Beteiligten lernen Ziele, Rollen und Rahmen kennen." },
+            { id: 45, text: "Welche Aussage zum Lenkungsausschuss ist korrekt?", options: ["A) Er steuert das Projekt operativ Tag für Tag", "B) Er ist ein strategisches Entscheidungsgremium, typischerweise bei Großprojekten", "C) Er ist gesetzlich vorgeschrieben", "D) Er ersetzt das Projektteam"], correct: 1, explanation: "Der Lenkungsausschuss trifft strategische Entscheidungen, vor allem bei Großprojekten." },
+            { id: 46, text: "Was gehört zur Werkzeuggruppe Dokumentation?", options: ["A) Projektsteckbrief", "B) SMART-Ziele", "C) Projekthandbuch und Lessons-Learned-Workshop", "D) Gantt-Diagramm"], correct: 2, explanation: "Projekthandbuch und Lessons Learned bewahren Projektwissen – klassische Dokumentationsinstrumente." },
+            { id: 47, text: "Welche der folgenden Methoden ist KEINE klassische PM-Methode?", options: ["A) Wasserfallmodell", "B) V-Modell", "C) PRINCE2", "D) Scrum"], correct: 3, explanation: "Scrum ist eine agile Methode. Wasserfall, V-Modell und PRINCE2 sind klassisch." },
+            { id: 48, text: "Welche PM-Phase ist typischerweise der Ausgangspunkt eines Projekts?", options: ["A) Projektabschluss mit Lessons Learned", "B) Projektinitialisierung mit Projektsteckbrief, Lasten/Pflichtenheft, Stakeholderanalyse", "C) Live-Betrieb", "D) Risikomanagement"], correct: 1, explanation: "Am Anfang stehen Steckbrief, Auftragsklärung (Lastenheft, Pflichtenheft) und Stakeholderanalyse." }
+        ]
+    },
+    {
+        title: "Abschnitt 5: PDL-Recht (Arbeitnehmerüberlassungsgesetz, Gesamtverband der Personaldienstleister, TV-GVP) (Fragen 49–60)",
+        questions: [
+            { id: 49, text: "Wofür steht die Abkürzung Arbeitnehmerüberlassungsgesetz?", options: ["A) Allgemeines Überlassungsgesetz", "B) Arbeitnehmerüberlassungsgesetz", "C) Anti-Übergangsgesetz", "D) Arbeitslosenüberbrückungsgesetz"], correct: 1, explanation: "Arbeitnehmerüberlassungsgesetz = Arbeitnehmerüberlassungsgesetz – zentrale Rechtsgrundlage der Zeitarbeit." },
+            { id: 50, text: "Welcher Verband ist seit 01.01.2022 der zentrale Branchenverband der Zeitarbeit?", options: ["A) BAP", "B) iGZ", "C) Gesamtverband der Personaldienstleister (Gesamtverband der Personaldienstleister, fusioniert aus iGZ und BAP)", "D) DGB"], correct: 2, explanation: "Zum 01.01.2022 fusionierten iGZ und BAP zum Gesamtverband der Personaldienstleister." },
+            { id: 51, text: "Welche Behörde erteilt die Erlaubnis zur Arbeitnehmerüberlassung?", options: ["A) Industrie- und Handelskammer", "B) Bundesagentur für Arbeit (Regionaldirektion)", "C) Bundesfinanzministerium", "D) Polizeipräsidium"], correct: 1, explanation: "Die Erlaubnis zur Arbeitnehmerüberlassung wird von der Bundesagentur für Arbeit (zuständige Regionaldirektion) erteilt." },
+            { id: 52, text: "Was ist die Kennzeichnungspflicht im Arbeitnehmerüberlassungsgesetz?", options: ["A) Zeitarbeitnehmerinnen und Zeitarbeitnehmer müssen ein Schild tragen", "B) Verträge zwischen Verleiher und Entleiher müssen ausdrücklich als Arbeitnehmerüberlassung bezeichnet werden", "C) Werkstätten müssen besondere Schilder tragen", "D) Es gibt keine Kennzeichnungspflicht"], correct: 1, explanation: "Seit 2017 müssen AÜ-Verträge ausdrücklich als solche bezeichnet werden. Verbot des verdeckten Verleihs." },
+            { id: 53, text: "Welche tarifliche Regelung ist für die meisten Zeitarbeitnehmerinnen und Zeitarbeitnehmer seit 2022 maßgeblich?", options: ["A) TV-iGZ", "B) TV-BAP", "C) TV-GVP", "D) MTV Metall"], correct: 2, explanation: "Mit der GVP-Fusion gilt der TV-GVP als zentraler Branchentarifvertrag." },
+            { id: 54, text: "Welche Berufsausbildung qualifiziert speziell für die Zeitarbeitsbranche?", options: ["A) Kaufmann/-frau für Büromanagement", "B) Personaldienstleistungskaufmann/-frau", "C) Industriekaufmann/-frau", "D) Bankkaufmann/-frau"], correct: 1, explanation: "Der PDK-Beruf wurde 2008 eigens für die Personaldienstleistungsbranche eingeführt." },
+            { id: 55, text: "Welche Funktion hat eine Disponentin bzw. ein Disponent in einem PDL-Unternehmen?", options: ["A) Sie ist für die Lohnabrechnung verantwortlich", "B) Sie steuert die Einsätze von Zeitarbeitnehmerinnen und Zeitarbeitnehmer bei Kundenbetrieben", "C) Sie programmiert die Recruiting-Software", "D) Sie führt nur Vorstellungsgespräche"], correct: 1, explanation: "Die Disposition steuert die operativen Einsätze: Wer wird wann zu welchem Kunden geschickt?" },
+            { id: 56, text: "Welche Rolle hat das Backoffice in einem PDL-Unternehmen?", options: ["A) Reines Marketing", "B) Verwaltung: Lohnabrechnung, Vertragserstellung, Bescheinigungen, Stammdatenpflege", "C) Reine IT-Programmierung", "D) Außendienst beim Kunden"], correct: 1, explanation: "Das Backoffice übernimmt die administrative Abwicklung im PDL-Unternehmen." },
+            { id: 57, text: "Welche Aussage zum Betriebsrat im Kundenbetrieb ist korrekt?", options: ["A) Er hat keinerlei Mitbestimmungsrechte beim Einsatz von Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "B) Nach § 99 BetrVG hat er Mitbestimmungsrechte beim Einsatz von Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "C) Er ist Betriebsrat des Verleihers", "D) Zeitarbeitnehmerinnen und Zeitarbeitnehmer dürfen nicht in den Betriebsrat gewählt werden"], correct: 1, explanation: "Nach § 99 BetrVG hat der Betriebsrat des Kundenbetriebs Mitbestimmungsrechte bei Einstellungen – inkl. ZAN-Einsatz." },
+            { id: 58, text: "Welche Pflicht ergibt sich aus dem Arbeitnehmerüberlassungsgesetz bei längerfristigen Einsätzen?", options: ["A) Pflicht zur Sonntagsarbeit", "B) Pflicht zur Equal-Pay-Bezahlung spätestens nach 9 Monaten", "C) Pflicht zur Übernahme als Stammkraft nach 6 Monaten", "D) Pflicht zur Aus- und Weiterbildung im Ausland"], correct: 1, explanation: "Equal Pay ist spätestens nach 9 Monaten gesetzlich vorgeschrieben (mit tariflichen Branchenzuschlägen Modifizierbar)." },
+            { id: 59, text: "Welcher Stakeholder ist KEIN typischer Beteiligter eines externen PDL-Projekts?", options: ["A) Kundenbetrieb (Auftraggeber)", "B) Bewerber:innen / Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "C) Bundesagentur für Arbeit (Erlaubnisbehörde)", "D) Bundeszentrale für politische Bildung"], correct: 3, explanation: "Die BpB hat keinen direkten Bezug zu PDL-Projekten. Die anderen drei sind klassische Stakeholder." },
+            { id: 60, text: "Welche der folgenden Aussagen ist korrekt im Hinblick auf die Prüfungsrelevanz von Tag 04?", options: ["A) DIN 69901 ist nicht prüfungsrelevant", "B) Die Unterscheidung interne/externe Projekte sowie der Projektbegriff nach DIN 69901 sind klassische IHK-Prüfungsfragen", "C) Projektarten werden niemals abgefragt", "D) Arbeitnehmerüberlassungsgesetz ist für PDK-Prüfungen unwichtig"], correct: 1, explanation: "Sowohl der Projektbegriff (DIN 69901) als auch die Klassifikation (intern/extern) und das Arbeitnehmerüberlassungsgesetz sind klassische IHK-Prüfungsthemen." }
+        ]
+    }
+];
+
+let answered = {};
+let checked = {};
+let showAll = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() {
+    const flat = [];
+    sections.forEach(s => s.questions.forEach(q => flat.push(q)));
+    return flat;
+}
+const flatQ = allQuestions();
+
+function render() {
+    const container = document.getElementById('quizContainer');
+    let html = '';
+    let globalIdx = 0;
+    sections.forEach((sec, si) => {
+        html += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach((q, qi) => {
+            const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+            const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+            html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+            html += `<p class="question-text">${q.text}</p>`;
+            html += `<ul class="options-list">`;
+            q.options.forEach((opt, oi) => {
+                let cls = '';
+                if (checked[q.id]) {
+                    if (oi === q.correct) cls = 'correct-opt';
+                    else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+                } else if (answered[q.id] === oi) {
+                    cls = 'selected';
+                }
+                const dis = checked[q.id] ? 'disabled' : '';
+                const chk = answered[q.id] === oi ? 'checked' : '';
+                html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+            });
+            html += `</ul>`;
+            const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+            if (checked[q.id]) {
+                const isCorr = answered[q.id] === q.correct;
+                const fbClass = isCorr ? 'correct' : 'incorrect';
+                const fbText = isCorr
+                    ? `<strong>Richtig!</strong> ${q.explanation}`
+                    : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+                html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+            } else {
+                html += `<div class="feedback" id="fb-${q.id}"></div>`;
+            }
+            html += `</div>`;
+            globalIdx++;
+        });
+    });
+    if (!showAll) {
+        html += `<div class="nav-row">`;
+        html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+        html += `<span style="font-weight:600;color:#004b87;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+        html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+        html += `</div>`;
+    }
+    container.innerHTML = html;
+    updateProgress();
+}
+
+function selectOption(qid, idx) {
+    if (checked[qid]) return;
+    answered[qid] = idx;
+    render();
+}
+
+function checkAnswer(qid) {
+    if (answered[qid] === undefined || checked[qid]) return;
+    checked[qid] = true;
+    render();
+    updateProgress();
+}
+
+function navigate(dir) {
+    currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir));
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+    const done = Object.keys(checked).length;
+    const pct = Math.round((done / totalQ) * 100);
+    document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+    document.getElementById('progressPct').textContent = `${pct} %`;
+    document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+    const done = Object.keys(checked).length;
+    if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+    let correct = 0;
+    flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+    const pct = Math.round((correct / done) * 100);
+    document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+    let gradeText = '';
+    let gradeClass = 'pass';
+    if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+    else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+    else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+    else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+    else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+    else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+    const gEl = document.getElementById('gradeText');
+    gEl.textContent = gradeText;
+    gEl.className = 'grade ' + gradeClass;
+    let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+    sections.forEach(sec => {
+        let sCorr = 0, sTotal = 0;
+        sec.questions.forEach(q => {
+            if (checked[q.id]) {
+                sTotal++;
+                if (answered[q.id] === q.correct) sCorr++;
+            }
+        });
+        const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+        tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+    });
+    tbl += '</table>';
+    document.getElementById('sectionBreakdown').innerHTML = tbl;
+    document.getElementById('resultsPanel').classList.add('show');
+    document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+    answered = {};
+    checked = {};
+    currentQ = 0;
+    document.getElementById('resultsPanel').classList.remove('show');
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () {
+    showAll = this.checked;
+    render();
+});
+
+function shuffleQuizOptions() {
+    let seed = 42;
+    function seededRandom() {
+        seed = (seed * 16807 + 0) % 2147483647;
+        return (seed - 1) / 2147483646;
+    }
+    sections.forEach(sec => {
+        sec.questions.forEach(q => {
+            const correctText = q.options[q.correct];
+            const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+            for (let i = cleaned.length - 1; i > 0; i--) {
+                const j = Math.floor(seededRandom() * (i + 1));
+                [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+            }
+            const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+            const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+            q.options = cleaned.map((c, i) => prefixes[i] + c);
+            q.correct = cleaned.indexOf(correctClean);
+        });
+    });
+}
+shuffleQuizOptions();
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tag 22 &ndash; Kommunikationsmodelle in der Personaldienstleistungsbranche</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+        .header { background: linear-gradient(135deg, #003366 0%, #004a99 50%, #0066cc 100%); color: #ffffff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+        .header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+        .header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+        .toolbar button, .toolbar .toggle-label { background: #004a99; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .toolbar button:hover { background: #003366; }
+        .toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+        .toggle-label input { accent-color: #004a99; width: 18px; height: 18px; cursor: pointer; }
+        .progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+        .progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0066cc, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+        .container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+        .section-title { background: #003366; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+        .section-title:first-child { margin-top: 0; }
+        .question-card { background: #ffffff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+        .question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .question-card.correct-card { border-left: 5px solid #28a745; }
+        .question-card.incorrect-card { border-left: 5px solid #dc3545; }
+        .question-number { display: inline-block; background: #e8f0fe; color: #004a99; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+        .question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+        .options-list { list-style: none; }
+        .options-list li { margin-bottom: 0.5rem; }
+        .options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+        .options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+        .options-list input[type="radio"] { accent-color: #004a99; margin-top: 3px; flex-shrink: 0; }
+        .options-list label.selected { background: #e8f0fe; border-color: #004a99; }
+        .options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+        .options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+        .check-btn { margin-top: 0.8rem; background: #004a99; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .check-btn:hover { background: #003366; }
+        .check-btn:disabled { background: #8faec8; cursor: default; }
+        .feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .nav-btn { background: #004a99; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .nav-btn:hover { background: #003366; }
+        .nav-btn:disabled { background: #8faec8; cursor: default; }
+        .results-panel { background: #ffffff; border: 2px solid #004a99; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .results-panel.show { display: block; }
+        .results-panel h2 { color: #003366; margin-bottom: 0.8rem; }
+        .score-big { font-size: 3rem; font-weight: 700; color: #004a99; }
+        .grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+        .grade.pass { color: #28a745; }
+        .grade.fail { color: #dc3545; }
+        .section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+        .section-breakdown table { width: 100%; border-collapse: collapse; }
+        .section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+        .section-breakdown th { background: #e8f0fe; color: #003366; text-align: left; }
+        .references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+        .references h3 { color: #003366; margin-bottom: 0.8rem; font-size: 1.1rem; }
+        .references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+        .footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+        @media print { body { background: #fff; } .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; } .header { background: #003366 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; } .section-title { break-after: avoid; } .feedback.show { display: block !important; } }
+        @media (max-width: 600px) { .header { padding: 1.4rem 0.8rem; } .question-card { padding: 1rem; } .toolbar { flex-direction: column; align-items: stretch; text-align: center; } }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1>Quiz Tag 22 &ndash; Kommunikationsmodelle in der Personaldienstleistungsbranche</h1>
+    <div class="subtitle">Sender-Empf&auml;nger, Schulz von Thun, Watzlawick</div>
+    <div class="meta">
+        <span>&copy; Can Siebert</span>
+        <span>Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026</span>
+        <span>60 Fragen &bull; Multiple Choice</span>
+    </div>
+</header>
+
+<div class="toolbar">
+    <label class="toggle-label"><input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen</label>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <button onclick="showResults()">Ergebnis anzeigen</button>
+        <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-info"><span id="progressText">0 von 60 beantwortet</span><span id="progressPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+    <div class="results-panel" id="resultsPanel">
+        <h2>Dein Ergebnis</h2>
+        <div class="score-big" id="scoreBig"></div>
+        <div class="grade" id="gradeText"></div>
+        <div class="section-breakdown" id="sectionBreakdown"></div>
+        <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="references">
+    <h3>Literaturverzeichnis (APA 7)</h3>
+    <p>Mehrabian, A. (1972). <em>Nonverbal Communication</em>. Aldine-Atherton.</p>
+    <p>Schulz von Thun, F. (1981). <em>Miteinander reden 1: St&ouml;rungen und Kl&auml;rungen</em>. Rowohlt.</p>
+    <p>Schulz von Thun, F. (2019). <em>Miteinander reden 1&ndash;3 (Gesamtausgabe)</em> (54. Aufl.). Rowohlt.</p>
+    <p>Shannon, C. E., &amp; Weaver, W. (1949). <em>The Mathematical Theory of Communication</em>. University of Illinois Press.</p>
+    <p>Watzlawick, P., Beavin, J. H., &amp; Jackson, D. D. (2017). <em>Menschliche Kommunikation</em> (13. Aufl.). Hogrefe.</p>
+</div>
+
+<footer class="footer">&copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026</footer>
+
+<script>
+const sections = [
+    {
+        title: "Abschnitt 1: Sender-Empfänger-Modell (Fragen 1–10)",
+        questions: [
+            { id: 1, text: "Wer entwickelte das klassische Sender-Empfänger-Modell?", options: ["A) Watzlawick und Beavin", "B) Shannon und Weaver", "C) Schulz von Thun", "D) Mehrabian und Rogers"], correct: 1, explanation: "Claude E. Shannon und Warren Weaver entwickelten das Modell 1949 ursprünglich für die Telekommunikation." },
+            { id: 2, text: "Was bezeichnet man als ,Encoding' im Sender-Empfänger-Modell?", options: ["A) Die Störung der Übertragung", "B) Die Verschlüsselung eines Gedankens in Zeichen durch den Sender", "C) Die Entschlüsselung der Nachricht durch den Empfänger", "D) Das Feedback des Empfängers"], correct: 1, explanation: "Encoding ist die Umwandlung eines Gedankens in Zeichen (Sprache, Schrift, Symbol) durch den Sender." },
+            { id: 3, text: "Was ist eine ,Störquelle' (Noise) im Modell?", options: ["A) Eine bewusste Täuschung des Empfängers", "B) Jede Beeinträchtigung der Kommunikationsübertragung", "C) Die Antwort des Empfängers", "D) Das Medium der Übertragung"], correct: 1, explanation: "Störquellen (Noise) sind alle Beeinträchtigungen: technisch, sprachlich, emotional, sozial." },
+            { id: 4, text: "Welche Störquelle ist typisch in der Personaldienstleistungsbranche?", options: ["A) Hochfrequenz-Funkstörung", "B) Sprachbarriere bei internationalen Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "C) Magnetfeld-Interferenzen", "D) Solar-Eruption"], correct: 1, explanation: "Sprachbarrieren bei internationalen Zeitarbeitnehmern sind eine häufige Störquelle in der Personaldienstleistungsbranche." },
+            { id: 5, text: "Was ist die wichtigste Voraussetzung für gelingende Kommunikation nach Shannon-Weaver?", options: ["A) Schnelle Übertragung", "B) Gemeinsamer Zeichenvorrat zwischen Sender und Empfänger", "C) Hohe Lautstärke", "D) Wiederholung der Nachricht"], correct: 1, explanation: "Sender und Empfänger müssen denselben Zeichenvorrat (Sprache, Begriffe) teilen, sonst scheitert das Decoding." },
+            { id: 6, text: "Welcher Kanal eignet sich am besten für ein Konfliktgespräch?", options: ["A) E-Mail", "B) SMS", "C) Persönliches Gespräch", "D) WhatsApp"], correct: 2, explanation: "Je emotionaler das Thema, desto persönlicher der Kanal. Konflikte gehören ins persönliche Gespräch." },
+            { id: 7, text: "Was ist eine wesentliche Grenze des Sender-Empfänger-Modells?", options: ["A) Es ist zu kompliziert", "B) Es berücksichtigt die Beziehungsebene und Nonverbalität nicht", "C) Es ist nur für Computer geeignet", "D) Es kennt keine Störquellen"], correct: 1, explanation: "Das Modell vernachlässigt die Beziehungsebene, nonverbale Signale und behandelt Kommunikation linear statt zirkulär." },
+            { id: 8, text: "Was bezeichnet ,Decoding' im Modell?", options: ["A) Das Löschen der Nachricht", "B) Die Entschlüsselung empfangener Zeichen in Bedeutung", "C) Die Verzögerung der Übertragung", "D) Die Kompression der Nachricht"], correct: 1, explanation: "Decoding ist die Interpretation und Bedeutungszuordnung empfangener Zeichen durch den Empfänger." },
+            { id: 9, text: "Welcher Kanal ist optimal für die Versendung von Termindaten?", options: ["A) Mündlich am Telefon", "B) E-Mail oder SMS, weil dokumentiert", "C) WhatsApp-Sprachnachricht", "D) Postkarte"], correct: 1, explanation: "Daten und Termine sollten immer schriftlich versendet werden, weil sie dokumentiert und nachprüfbar sein müssen." },
+            { id: 10, text: "Welche Aussage zum Sender-Empfänger-Modell ist FALSCH?", options: ["A) Es enthält einen Sender und einen Empfänger", "B) Es kennt einen Kanal", "C) Es berücksichtigt nonverbale Signale umfassend", "D) Es kennt Störquellen"], correct: 2, explanation: "Das Modell berücksichtigt nonverbale Signale gerade NICHT umfassend. Das ist eine seiner zentralen Grenzen." }
+        ]
+    },
+    {
+        title: "Abschnitt 2: Schulz von Thun – 4-Ohren-Modell (Fragen 11–20)",
+        questions: [
+            { id: 11, text: "Wie viele Seiten hat eine Nachricht nach Schulz von Thun?", options: ["A) Zwei", "B) Drei", "C) Vier", "D) Fünf"], correct: 2, explanation: "Schulz von Thun unterscheidet vier Seiten: Sache, Selbstkundgabe, Beziehung und Appell." },
+            { id: 12, text: "Welche Ebene umfasst die Frage ,Worüber informiere ich?'?", options: ["A) Sachebene", "B) Selbstkundgabe", "C) Beziehungsebene", "D) Appellebene"], correct: 0, explanation: "Die Sachebene enthält Daten, Fakten und Sachverhalte." },
+            { id: 13, text: "Welche Ebene umfasst die Frage ,Was gebe ich von mir preis?'?", options: ["A) Sachebene", "B) Selbstkundgabe", "C) Beziehungsebene", "D) Appellebene"], correct: 1, explanation: "Die Selbstkundgabe enthält Gefühle, Werte und den Zustand des Senders." },
+            { id: 14, text: "Welche Ebene umfasst die Frage ,Was halte ich von dir?'?", options: ["A) Sachebene", "B) Selbstkundgabe", "C) Beziehungsebene", "D) Appellebene"], correct: 2, explanation: "Die Beziehungsebene zeigt, wie der Sender den Empfänger sieht und wie sie zueinander stehen." },
+            { id: 15, text: "Welche Ebene umfasst die Frage ,Was möchte ich erreichen?'?", options: ["A) Sachebene", "B) Selbstkundgabe", "C) Beziehungsebene", "D) Appellebene"], correct: 3, explanation: "Die Appellebene enthält Wünsche und Aufforderungen." },
+            { id: 16, text: "Was bedeutet ,Kongruenz' bei Schulz von Thun?", options: ["A) Alle vier Ebenen widersprechen sich", "B) Alle vier Ebenen senden die gleiche Botschaft", "C) Nur die Sachebene ist klar", "D) Nur die Beziehungsebene ist klar"], correct: 1, explanation: "Kongruenz bedeutet, dass alle vier Ebenen übereinstimmen und dieselbe Botschaft transportieren." },
+            { id: 17, text: "Auf welcher Ebene werden in der Personaldienstleistungsbranche die meisten Konflikte ausgetragen?", options: ["A) Sachebene", "B) Selbstkundgabe", "C) Beziehungsebene", "D) Appellebene"], correct: 2, explanation: "Das Beziehungs-Ohr ist das ,gefährlichste' Ohr -- viele Konflikte mit Zeitarbeitnehmerinnen und Zeitarbeitnehmer entstehen, weil sie sachliche Anweisungen persönlich nehmen." },
+            { id: 18, text: "Welche Aussage beschreibt das Modell korrekt?", options: ["A) Sender spricht mit einem Schnabel, Empfänger hört mit vier Ohren", "B) Sender spricht mit vier Schnäbeln, Empfänger hört mit vier Ohren", "C) Sender und Empfänger nutzen je drei Kanäle", "D) Sender und Empfänger sind identisch"], correct: 1, explanation: "Sender ,sendet' auf vier Ebenen, Empfänger ,empfängt' auf vier Ebenen. Missverständnisse entstehen, wenn unterschiedliche Ebenen dominieren." },
+            { id: 19, text: "Disponent zum Zeitarbeitnehmerinnen und Zeitarbeitnehmer: ,Sie sind heute zu spät.' Welche Beziehungsbotschaft schwingt mit?", options: ["A) ,Es ist 8:20 Uhr.'", "B) ,Ich ärgere mich.'", "C) ,Ich nehme dich als unzuverlässig wahr.'", "D) ,Komm morgen pünktlich.'"], correct: 2, explanation: "Die Beziehungsbotschaft sagt: ,Ich nehme dich als unzuverlässig wahr' -- das wird als Kränkung empfunden." },
+            { id: 20, text: "Was ist eine inkongruente Botschaft?", options: ["A) Eine Botschaft, die alle vier Ebenen widerspruchsfrei aussagt", "B) Eine Botschaft, deren Ebenen sich widersprechen (z. B. freundliche Worte mit genervtem Tonfall)", "C) Eine Botschaft, die nur sachlich ist", "D) Eine Botschaft ohne Appell"], correct: 1, explanation: "Inkongruenz liegt vor, wenn z. B. die Sachebene freundlich, die Beziehungsebene aber genervt ist. Empfänger werden verwirrt." }
+        ]
+    },
+    {
+        title: "Abschnitt 3: Watzlawick – 5 Axiome (Fragen 21–30)",
+        questions: [
+            { id: 21, text: "Welches ist Watzlawicks Axiom 1?", options: ["A) Inhalt + Beziehung", "B) Man kann nicht nicht kommunizieren", "C) Symmetrisch oder komplementär", "D) Digital oder analog"], correct: 1, explanation: "Axiom 1: Man kann nicht nicht kommunizieren -- jedes Verhalten (auch Schweigen) hat Mitteilungscharakter." },
+            { id: 22, text: "Was bedeutet ,Interpunktion von Ereignisfolgen'?", options: ["A) Setzen von Satzzeichen", "B) Subjektive Einteilung von Ursache und Wirkung", "C) Klare Hierarchie", "D) Korrekte Grammatik"], correct: 1, explanation: "Axiom 3: Beide Partner setzen unterschiedliche Interpunktionen -- jeder sieht den anderen als Verursacher." },
+            { id: 23, text: "Was ist ,digitale' Kommunikation nach Watzlawick?", options: ["A) Kommunikation über das Internet", "B) Verbale, eindeutige Kommunikation mit Worten", "C) Nonverbale Signale", "D) Kommunikation per E-Mail"], correct: 1, explanation: ",Digital' meint verbale, eindeutige Kommunikation mit Worten -- im Gegensatz zur ,analogen' nonverbalen Kommunikation." },
+            { id: 24, text: "Was kennzeichnet ,komplementäre' Kommunikation?", options: ["A) Augenhöhe zwischen den Partnern", "B) Hierarchisches Gefälle (z. B. Vorgesetzter $\\leftrightarrow$ Mitarbeiter)", "C) Eine zusätzliche Ergänzung", "D) Symmetrische Antwort"], correct: 1, explanation: "Komplementäre Kommunikation hat ein hierarchisches Gefälle, z. B. Vorgesetzter zu Mitarbeiter, Recruiter zu Bewerber im Erstkontakt." },
+            { id: 25, text: "Was ist ,analoge' Kommunikation?", options: ["A) Kommunikation per Brief", "B) Nonverbale, mehrdeutige Kommunikation (Körpersprache, Tonfall)", "C) Eindeutige verbale Aussagen", "D) Kommunikation mit Computer"], correct: 1, explanation: ",Analog' meint nonverbale, mehrdeutige Kommunikation: Körpersprache, Mimik, Tonfall." },
+            { id: 26, text: "Welches Axiom besagt, dass Beziehungsaspekt den Inhaltsaspekt bestimmt?", options: ["A) Axiom 1", "B) Axiom 2", "C) Axiom 4", "D) Axiom 5"], correct: 1, explanation: "Axiom 2: Jede Kommunikation hat einen Inhalts- und einen Beziehungsaspekt, wobei der Beziehungsaspekt den Inhaltsaspekt bestimmt." },
+            { id: 27, text: "PDL-Beispiel: Zeitarbeitnehmerinnen und Zeitarbeitnehmer ruft nicht mehr an, weil Disponent nie zurückruft. Disponent ruft nicht zurück, weil Zeitarbeitnehmerinnen und Zeitarbeitnehmer nie ans Telefon geht. Welches Axiom?", options: ["A) Axiom 1 (Nicht-Kommunikation)", "B) Axiom 3 (Interpunktion)", "C) Axiom 4 (Digital-Analog)", "D) Axiom 5 (Symmetrie)"], correct: 1, explanation: "Axiom 3: Interpunktion -- beide Partner sehen sich als Reagierende und den anderen als Verursacher. Zirkuläre Kommunikation." },
+            { id: 28, text: "Was bedeutet ,symmetrische' Kommunikation?", options: ["A) Beide Partner sprechen gleich viel", "B) Beide Partner sind auf Augenhöhe", "C) Beide Partner widersprechen sich", "D) Beide Partner schweigen"], correct: 1, explanation: "Symmetrische Kommunikation findet auf Augenhöhe statt, z. B. zwischen Kollegen oder Disponenten." },
+            { id: 29, text: "Wer formulierte die 5 Axiome?", options: ["A) Schulz von Thun, Mehrabian, Rogers", "B) Watzlawick, Beavin, Jackson", "C) Shannon, Weaver, Wiener", "D) Maslow, Honneth, Whitney"], correct: 1, explanation: "Paul Watzlawick, Janet Beavin und Don Jackson formulierten 1969 die 5 Axiome der Palo-Alto-Schule." },
+            { id: 30, text: "Welches Axiom ist NICHT von Watzlawick?", options: ["A) Man kann nicht nicht kommunizieren", "B) Inhalts- und Beziehungsaspekt", "C) Eine Nachricht hat vier Seiten", "D) Symmetrische und komplementäre Kommunikation"], correct: 2, explanation: "Die ,vier Seiten einer Nachricht' stammen von Schulz von Thun, nicht von Watzlawick." }
+        ]
+    },
+    {
+        title: "Abschnitt 4: Verbal, Paraverbal, Nonverbal (Fragen 31–40)",
+        questions: [
+            { id: 31, text: "Was gehört zur paraverbalen Kommunikation?", options: ["A) Worte und Inhalt", "B) Tonfall, Lautstärke, Sprechtempo, Pausen", "C) Körpersprache und Mimik", "D) Kleidung und Distanz"], correct: 1, explanation: "Paraverbale Kommunikation umfasst Tonfall, Lautstärke, Sprechtempo, Pausen und Akzent." },
+            { id: 32, text: "Was gehört zur nonverbalen Kommunikation?", options: ["A) Wortwahl", "B) Tonfall", "C) Mimik, Gestik, Blickkontakt, Körperhaltung", "D) Sachargumente"], correct: 2, explanation: "Nonverbale Kommunikation umfasst Mimik, Gestik, Körperhaltung, Blickkontakt, Distanz und Kleidung." },
+            { id: 33, text: "Was besagt die Mehrabian-Regel (7-38-55)?", options: ["A) 7 % Worte, 38 % Tonfall, 55 % Körpersprache - bei Aussagen über Gefühle und inkongruenter Botschaft", "B) 7 % Aufmerksamkeit, 38 % Behaltensquote, 55 % Wirkung", "C) Prüfungsgewichtung in der Industrie- und Handelskammer", "D) Aufteilung der Ausbildung"], correct: 0, explanation: "Mehrabians Regel gilt nur für Aussagen über Gefühle bei inkongruenten Botschaften, nicht generell." },
+            { id: 34, text: "Was ist im Telefonscreening besonders wichtig?", options: ["A) Visuelle Präsenz", "B) Paraverbale Signale (Tonfall, Tempo, Pausen)", "C) Körperhaltung", "D) Distanz zum Gegenüber"], correct: 1, explanation: "Am Telefon entfällt die nonverbale Ebene -- paraverbale Signale werden besonders wichtig." },
+            { id: 35, text: "Was ist ,Pacing' in der Kommunikation?", options: ["A) Schnelles Sprechen", "B) Unbewusste Übernahme der Körpersprache des Gegenübers", "C) Sportliche Aktivität", "D) Pausenmanagement"], correct: 1, explanation: "Pacing ist das Spiegeln der Körpersprache des Gegenübers, um Sympathie und Rapport aufzubauen." },
+            { id: 36, text: "Welcher Anteil Blickkontakt ist im Vorstellungsgespräch üblich?", options: ["A) 0--20 %", "B) 30--50 %", "C) 60--70 %", "D) 90--100 %"], correct: 2, explanation: "Im professionellen Kontext sind etwa 60--70 % Blickkontakt üblich -- weniger wirkt unsicher, mehr aufdringlich." },
+            { id: 37, text: "Wie wirkt Lächeln am Telefon?", options: ["A) Es ist nicht hörbar", "B) Es ist hörbar und hebt die Stimmung des Gegenübers", "C) Es stört die Übertragung", "D) Es macht die Stimme leiser"], correct: 1, explanation: "Lächeln ist am Telefon tatsächlich hörbar (Mundwinkel verändern Stimmklang) und verbessert die Stimmung des Gegenübers." },
+            { id: 38, text: "Welche Distanz ist im professionellen PDL-Gespräch üblich?", options: ["A) 0,5 m (intime Zone)", "B) 1,2 m (soziale Zone)", "C) 3 m (öffentliche Zone)", "D) 5 m und mehr"], correct: 1, explanation: "Die soziale Zone (ca. 1,2 m) ist im professionellen Kontext angemessen." },
+            { id: 39, text: "Welche Körperhaltung wirkt offen?", options: ["A) Verschränkte Arme", "B) Leicht zugewandt, ohne Verschränkung", "C) Komplett abgewandt", "D) Statisch und steif"], correct: 1, explanation: "Eine leicht zugewandte Körperhaltung ohne Verschränkungen signalisiert Offenheit und Interesse." },
+            { id: 40, text: "Was bezeichnet ,Leading' im NLP/Kommunikationskontext?", options: ["A) Reden", "B) Erst Pacing, dann sanftes Verändern der eigenen Körpersprache zur Beeinflussung", "C) Anbrüllen", "D) Schweigen"], correct: 1, explanation: "Leading folgt dem Pacing: Nach dem Spiegeln führt man durch eigene Veränderung der Haltung den Gesprächspartner in eine andere Stimmung." }
+        ]
+    },
+    {
+        title: "Abschnitt 5: Kommunikationsstörungen & Aktives Zuhören (Fragen 41–50)",
+        questions: [
+            { id: 41, text: "Aktives Zuhören nach Carl Rogers besteht aus drei Stufen. Welche?", options: ["A) Schweigen, Kritisieren, Argumentieren", "B) Aufmerksames Schweigen, Paraphrasieren, Verbalisieren von Gefühlen", "C) Notizen, Pausen, Fragen", "D) Hören, Antworten, Wiederholen"], correct: 1, explanation: "Carl Rogers definierte: 1) Aufmerksames Schweigen, 2) Paraphrasieren, 3) Verbalisieren der Gefühle." },
+            { id: 42, text: "Was ist eine ,Du-Botschaft'?", options: ["A) Eine wertschätzende Aussage", "B) Eine Aussage, die den anderen anklagt (z. B. ,Du hörst nie zu')", "C) Eine offizielle Anrede", "D) Eine Frage"], correct: 1, explanation: "Du-Botschaften klingen wie Anklagen und lösen Verteidigungsreflexe aus." },
+            { id: 43, text: "Wie formuliert man eine gute Ich-Botschaft?", options: ["A) ,Du machst immer alles falsch.'", "B) ,Ich + Wahrnehmung + Wirkung + Bedürfnis'", "C) ,Man muss …'", "D) ,Niemand mag das.'"], correct: 1, explanation: "Die Formel für Ich-Botschaften: Eigene Wahrnehmung + Wirkung + eigenes Bedürfnis -- ohne Anklage." },
+            { id: 44, text: "Was ist eine ,Killerphrase'?", options: ["A) Eine sehr direkte Botschaft", "B) Eine Aussage, die Kommunikation abwürgt (z. B. ,Das geht so nicht!')", "C) Ein tödlicher Satz", "D) Eine offizielle Mitteilung"], correct: 1, explanation: "Killerphrasen wie ,Das haben wir schon immer so gemacht' oder ,Da könnte ja jeder kommen' blockieren konstruktive Kommunikation." },
+            { id: 45, text: "Was ist Paraphrasieren?", options: ["A) Wörtlich wiederholen", "B) Inhalt in eigenen Worten wiedergeben, um Verstehen zu sichern", "C) Aufschreiben", "D) Übersetzen"], correct: 1, explanation: "Paraphrasieren = Inhalt in eigenen Worten wiedergeben (z. B. ,Wenn ich Sie richtig verstehe …')." },
+            { id: 46, text: "Welche Störung tritt typisch beim Multitasking auf?", options: ["A) Bessere Effizienz", "B) Empfänger spürt fehlende Aufmerksamkeit", "C) Höhere Konzentration", "D) Klarere Kommunikation"], correct: 1, explanation: "Wenn der Recruiter telefoniert und gleichzeitig tippt, spürt der Bewerber das -- die Aufmerksamkeit fehlt." },
+            { id: 47, text: "Was ist beim Verbalisieren von Gefühlen wichtig?", options: ["A) Sich an Stelle des Gegenübers äußern", "B) Hypothetisch fragen (,Hat Sie das geärgert?'), nicht behaupten", "C) Sofort eigene Gefühle anbieten", "D) Kritik üben"], correct: 1, explanation: "Verbalisieren ist hypothetisch: ,Klingt so, als hätte Sie das verletzt?' -- nicht: ,Sie sind verletzt.'" },
+            { id: 48, text: "Welche Aussage ist eine Ich-Botschaft?", options: ["A) ,Sie sind immer zu spät.'", "B) ,Ich brauche Pünktlichkeit, weil sonst der Kunde Vertrauen verliert.'", "C) ,Du kannst das nicht.'", "D) ,Niemand respektiert mich.'"], correct: 1, explanation: "Eine Ich-Botschaft beschreibt eigene Wahrnehmung und Bedürfnis ohne Anklage." },
+            { id: 49, text: "Was ist eine wesentliche Voraussetzung für aktives Zuhören?", options: ["A) Schnelle Antwort", "B) Echte Aufmerksamkeit und Empathie", "C) Notizen machen", "D) Augen schließen"], correct: 1, explanation: "Aktives Zuhören erfordert echte Aufmerksamkeit, Empathie und das Aussetzen eigener Bewertungen." },
+            { id: 50, text: "Welche Reaktion auf eine Killerphrase ist konstruktiv?", options: ["A) Beleidigt sein", "B) Nachfragen (,Was genau geht nicht?'), Kontext schaffen", "C) Selbst eine Killerphrase verwenden", "D) Schweigen"], correct: 1, explanation: "Konstruktive Reaktion: nachfragen, konkretisieren lassen, Kontext klären -- statt Eskalation." }
+        ]
+    },
+    {
+        title: "Abschnitt 6: PDL-Anwendung & Gesamtverband der Personaldienstleister (Fragen 51–60)",
+        questions: [
+            { id: 51, text: "Was regelt der GVP-Verhaltenskodex?", options: ["A) Mitarbeitergehälter", "B) Faire, transparente und wertschätzende Kommunikation in der Personaldienstleistungsbranche", "C) Steuern", "D) Maschinenwartung"], correct: 1, explanation: "Der GVP-Verhaltenskodex definiert ethische Mindeststandards für seriöse Personaldienstleistung -- inkl. Kommunikation." },
+            { id: 52, text: "Was ist die ZAN-Triangel?", options: ["A) Drei Kollegen", "B) Kunde, Bewerber, Zeitarbeitnehmer als Stakeholder-Trio", "C) Drei Disponenten", "D) Drei Vertriebsphasen"], correct: 1, explanation: "Die Personaldienstleistungsunternehmen vermittelt zwischen Kunde, Bewerber und Zeitarbeitnehmerinnen und Zeitarbeitnehmer -- die Disposition ist die Drehscheibe." },
+            { id: 53, text: "Welche Reihenfolge empfiehlt sich bei einem Reklamationsgespräch mit dem Kunden?", options: ["A) Sofort verteidigen, dann verhandeln", "B) Beziehung klären (Empathie), dann Sache prüfen, dann Lösung anbieten", "C) Erst die Schuld dem Zeitarbeitnehmerinnen und Zeitarbeitnehmer geben", "D) Direkt einen Preisnachlass anbieten"], correct: 1, explanation: "Bewährte Reihenfolge: Erst Empathie zeigen (Beziehung), dann Sachverhalt prüfen, dann Lösung anbieten." },
+            { id: 54, text: "Wie reagiert man am besten auf einen einsilbigen Bewerber im VG?", options: ["A) Gespräch sofort beenden", "B) Mit Smalltalk beginnen, offene Fragen stellen, eigene Körpersprache öffnen", "C) Lauter sprechen", "D) Notenabzug"], correct: 1, explanation: "Einsilbigkeit kann Aufregung sein. Smalltalk und offene Fragen öffnen das Gespräch." },
+            { id: 55, text: "Welcher Kanal eignet sich für eine Kündigung des ZAN-Vertrags?", options: ["A) WhatsApp", "B) E-Mail", "C) Persönliches Gespräch (mit schriftlicher Bestätigung)", "D) Telegram"], correct: 2, explanation: "Eine Kündigung sollte persönlich erfolgen (oder telefonisch), schriftlich nur als Bestätigung. Außerdem hat Schriftform arbeitsrechtliche Anforderungen." },
+            { id: 56, text: "Welche Aussage zu Konflikten zwischen Disposition und Zeitarbeitnehmerinnen und Zeitarbeitnehmer ist richtig?", options: ["A) Sie sind immer durch fehlende Anweisungen verursacht", "B) Häufig entstehen sie auf der Beziehungsebene durch missverstandene Sachbotschaften", "C) Sie sind selten", "D) Sie betreffen nur das Geld"], correct: 1, explanation: "Viele Konflikte mit Zeitarbeitnehmerinnen und Zeitarbeitnehmer entstehen, weil sachliche Anweisungen auf der Beziehungsebene als Angriff empfunden werden." },
+            { id: 57, text: "Was bedeutet AGG-konforme Kommunikation?", options: ["A) Kommunikation auf Englisch", "B) Diskriminierungsfreie Sprache, z. B. in Stellenausschreibungen", "C) Kommunikation per Brief", "D) Verbot von E-Mail"], correct: 1, explanation: "Das Allgemeines Gleichbehandlungsgesetz (Allgemeines Gleichbehandlungsgesetz) verbietet Diskriminierung. Stellenausschreibungen und Bewerbergespräche müssen AGG-konform sein." },
+            { id: 58, text: "Wie sollte man auf eine Krankmeldung einer Zeitarbeitnehmerin oder eines Zeitarbeitnehmers am Schichtbeginn reagieren?", options: ["A) Anschreien und Kündigung androhen", "B) Sachlich Genesungswünsche äußern, AU einfordern, Ersatz organisieren", "C) Sofort den Kunden informieren, ohne mit der betroffenen Person zu sprechen", "D) Ignorieren"], correct: 1, explanation: "Sachlich-wertschätzende Reaktion (auch wenn Stress!): Genesungswünsche, AU einfordern, intern Ersatz suchen, Kunde informieren." },
+            { id: 59, text: "Welche Aussage zur Disposition als Drehscheibe ist richtig?", options: ["A) Die Disposition kommuniziert nur mit Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "B) Die Disposition vermittelt zwischen Kunde, Bewerber/Zeitarbeitnehmerinnen und Zeitarbeitnehmer und intern -- mit unterschiedlichen Kommunikationsstilen", "C) Die Disposition ist nur für Schichtpläne zuständig", "D) Die Disposition kommuniziert nur per E-Mail"], correct: 1, explanation: "Die Disposition ist Drehscheibe und muss zwischen mindestens drei Kommunikationsstilen wechseln können." },
+            { id: 60, text: "Welche Kompetenz ist die wichtigste in der Personaldienstleistungsbranche?", options: ["A) Buchhaltung", "B) Kommunikation -- da es ein People Business ist", "C) Programmierung", "D) Maschinensteuerung"], correct: 1, explanation: "Die Personaldienstleistungsunternehmen ist People Business -- Kommunikation ist die wichtigste Kompetenz neben Fachwissen." }
+        ]
+    }
+];
+
+let answered = {};
+let checked = {};
+let showAll = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() { const flat = []; sections.forEach(s => s.questions.forEach(q => flat.push(q))); return flat; }
+const flatQ = allQuestions();
+
+function render() {
+    const container = document.getElementById('quizContainer');
+    let html = '';
+    let globalIdx = 0;
+    sections.forEach((sec, si) => {
+        html += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach((q, qi) => {
+            const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+            const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+            html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+            html += `<p class="question-text">${q.text}</p>`;
+            html += `<ul class="options-list">`;
+            q.options.forEach((opt, oi) => {
+                let cls = '';
+                if (checked[q.id]) {
+                    if (oi === q.correct) cls = 'correct-opt';
+                    else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+                } else if (answered[q.id] === oi) { cls = 'selected'; }
+                const dis = checked[q.id] ? 'disabled' : '';
+                const chk = answered[q.id] === oi ? 'checked' : '';
+                html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+            });
+            html += `</ul>`;
+            const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+            if (checked[q.id]) {
+                const isCorr = answered[q.id] === q.correct;
+                const fbClass = isCorr ? 'correct' : 'incorrect';
+                const fbText = isCorr ? `<strong>Richtig!</strong> ${q.explanation}` : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+                html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+            } else {
+                html += `<div class="feedback" id="fb-${q.id}"></div>`;
+            }
+            html += `</div>`;
+            globalIdx++;
+        });
+    });
+    if (!showAll) {
+        html += `<div class="nav-row">`;
+        html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+        html += `<span style="font-weight:600;color:#004a99;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+        html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+        html += `</div>`;
+    }
+    container.innerHTML = html;
+    updateProgress();
+}
+
+function selectOption(qid, idx) { if (checked[qid]) return; answered[qid] = idx; render(); }
+function checkAnswer(qid) { if (answered[qid] === undefined || checked[qid]) return; checked[qid] = true; render(); updateProgress(); }
+function navigate(dir) { currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir)); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function updateProgress() {
+    const done = Object.keys(checked).length;
+    const pct = Math.round((done / totalQ) * 100);
+    document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+    document.getElementById('progressPct').textContent = `${pct} %`;
+    document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+    const done = Object.keys(checked).length;
+    if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+    let correct = 0;
+    flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+    const pct = Math.round((correct / done) * 100);
+    document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+    let gradeText = ''; let gradeClass = 'pass';
+    if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+    else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+    else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+    else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+    else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+    else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+    const gEl = document.getElementById('gradeText');
+    gEl.textContent = gradeText;
+    gEl.className = 'grade ' + gradeClass;
+    let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+    sections.forEach(sec => {
+        let sCorr = 0, sTotal = 0;
+        sec.questions.forEach(q => { if (checked[q.id]) { sTotal++; if (answered[q.id] === q.correct) sCorr++; } });
+        const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+        tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+    });
+    tbl += '</table>';
+    document.getElementById('sectionBreakdown').innerHTML = tbl;
+    document.getElementById('resultsPanel').classList.add('show');
+    document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+    answered = {}; checked = {}; currentQ = 0;
+    document.getElementById('resultsPanel').classList.remove('show');
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () { showAll = this.checked; render(); });
+
+function shuffleQuizOptions() {
+    let seed = 42;
+    function seededRandom() { seed = (seed * 16807 + 0) % 2147483647; return (seed - 1) / 2147483646; }
+    sections.forEach(sec => {
+        sec.questions.forEach(q => {
+            const correctText = q.options[q.correct];
+            const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+            for (let i = cleaned.length - 1; i > 0; i--) {
+                const j = Math.floor(seededRandom() * (i + 1));
+                [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+            }
+            const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+            const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+            q.options = cleaned.map((c, i) => prefixes[i] + c);
+            q.correct = cleaned.indexOf(correctClean);
+        });
+    });
+}
+shuffleQuizOptions();
+render();
+</script>
+</body>
+</html>

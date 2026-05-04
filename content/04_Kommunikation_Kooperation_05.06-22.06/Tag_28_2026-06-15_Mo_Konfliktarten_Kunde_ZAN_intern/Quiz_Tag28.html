@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tag 28 &ndash; Konfliktarten und Eskalation nach Glasl</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+        .header { background: linear-gradient(135deg, #003366 0%, #004a99 50%, #0066cc 100%); color: #ffffff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+        .header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+        .header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+        .toolbar button, .toolbar .toggle-label { background: #004a99; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .toolbar button:hover { background: #003366; }
+        .toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+        .toggle-label input { accent-color: #004a99; width: 18px; height: 18px; cursor: pointer; }
+        .progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+        .progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0066cc, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+        .container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+        .section-title { background: #003366; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+        .section-title:first-child { margin-top: 0; }
+        .question-card { background: #ffffff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+        .question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .question-card.correct-card { border-left: 5px solid #28a745; }
+        .question-card.incorrect-card { border-left: 5px solid #dc3545; }
+        .question-number { display: inline-block; background: #e8f0fe; color: #004a99; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+        .question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+        .options-list { list-style: none; }
+        .options-list li { margin-bottom: 0.5rem; }
+        .options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+        .options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+        .options-list input[type="radio"] { accent-color: #004a99; margin-top: 3px; flex-shrink: 0; }
+        .options-list label.selected { background: #e8f0fe; border-color: #004a99; }
+        .options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+        .options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+        .check-btn { margin-top: 0.8rem; background: #004a99; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .check-btn:hover { background: #003366; }
+        .check-btn:disabled { background: #8faec8; cursor: default; }
+        .feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .nav-btn { background: #004a99; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .nav-btn:hover { background: #003366; }
+        .nav-btn:disabled { background: #8faec8; cursor: default; }
+        .results-panel { background: #ffffff; border: 2px solid #004a99; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .results-panel.show { display: block; }
+        .results-panel h2 { color: #003366; margin-bottom: 0.8rem; }
+        .score-big { font-size: 3rem; font-weight: 700; color: #004a99; }
+        .grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+        .grade.pass { color: #28a745; }
+        .grade.fail { color: #dc3545; }
+        .section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+        .section-breakdown table { width: 100%; border-collapse: collapse; }
+        .section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+        .section-breakdown th { background: #e8f0fe; color: #003366; text-align: left; }
+        .references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+        .references h3 { color: #003366; margin-bottom: 0.8rem; font-size: 1.1rem; }
+        .references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+        .footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+        @media print { body { background: #fff; } .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; } .header { background: #003366 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; } .section-title { break-after: avoid; } .feedback.show { display: block !important; } }
+        @media (max-width: 600px) { .header { padding: 1.4rem 0.8rem; } .question-card { padding: 1rem; } .toolbar { flex-direction: column; align-items: stretch; text-align: center; } }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1>Quiz Tag 28 &ndash; Konfliktarten und Eskalation nach Glasl</h1>
+    <div class="subtitle">Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026 &ndash; K5 (Teil 1/2)</div>
+    <div class="meta">
+        <span>&copy; Can Siebert</span>
+        <span>Stand 05/2026</span>
+        <span>60 Fragen &bull; Multiple Choice</span>
+    </div>
+</header>
+
+<div class="toolbar">
+    <label class="toggle-label">
+        <input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen
+    </label>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <button onclick="showResults()">Ergebnis anzeigen</button>
+        <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-info">
+        <span id="progressText">0 von 60 beantwortet</span>
+        <span id="progressPct">0 %</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+    <div class="results-panel" id="resultsPanel">
+        <h2>Dein Ergebnis</h2>
+        <div class="score-big" id="scoreBig"></div>
+        <div class="grade" id="gradeText"></div>
+        <div class="section-breakdown" id="sectionBreakdown"></div>
+        <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="references">
+    <h3>Literaturverzeichnis (APA 7)</h3>
+    <p>Berkel, K. (2020). <em>Konflikttraining: Konflikte verstehen, analysieren, bew&auml;ltigen</em> (13. Aufl.). Windm&uuml;hle Verlag.</p>
+    <p>Bundesministerium der Justiz. (2017). <em>Arbeitnehmer&uuml;berlassungsgesetz (A&Uuml;G)</em>. BGBl. I S. 258.</p>
+    <p>Glasl, F. (2017). <em>Konfliktmanagement: Ein Handbuch f&uuml;r F&uuml;hrungskr&auml;fte, Beraterinnen und Berater</em> (11. Aufl.). Haupt Verlag.</p>
+    <p>Gesamtverband der Personaldienstleister. (2024). <em>GVP-Verhaltenskodex und Branchenstandards 2024</em>. Gesamtverband der Personaldienstleister.</p>
+    <p>Schwarz, G. (2014). <em>Konfliktmanagement: Konflikte erkennen, analysieren, l&ouml;sen</em> (9. Aufl.). Springer Gabler.</p>
+    <p>Thomas, K. W. &amp; Kilmann, R. H. (2008). <em>Thomas-Kilmann Conflict Mode Instrument</em>. CPP, Inc.</p>
+</div>
+
+<footer class="footer">
+    &copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Stand 05/2026
+</footer>
+
+<script>
+const sections = [
+    {
+        title: "Abschnitt 1: Konfliktbegriff und Konfliktarten (Fragen 1–15)",
+        questions: [
+            { id: 1, text: "Welche drei Merkmale müssen nach Glasl erfüllt sein, damit ein Konflikt vorliegt?", options: ["A) Schuld, Strafe, Versshnung", "B) Unvereinbarkeit, Interaktion, Beeinträchtigung", "C) Anklage, Verteidigung, Urteil", "D) Macht, Ohnmacht, Widerstand"], correct: 1, explanation: "Nach Glasl müssen drei Merkmale vorliegen: Unvereinbarkeit (echte oder wahrgenommene Gegensätze), Interaktion (Parteien sind aufeinander bezogen) und Beeinträchtigung (mindestens eine Partei fühlt sich behindert)." },
+            { id: 2, text: "Welche der folgenden ist KEINE der fünf klassischen Konfliktarten?", options: ["A) Sachkonflikt", "B) Beziehungskonflikt", "C) Karrierekonflikt", "D) Wertekonflikt"], correct: 2, explanation: "Die fünf Konfliktarten sind: Sach-, Beziehungs-, Werte-, Verteilungs- und Rollenkonflikt. Karrierekonflikt ist keine eigene Kategorie." },
+            { id: 3, text: "Ein Disponent und ein Zeitarbeitnehmerinnen und Zeitarbeitnehmer streiten sich über die korrekte Schichteintragung. Beide haben unterschiedliche schriftliche Bestätigungen. Um welche Konfliktart handelt es sich primär?", options: ["A) Wertekonflikt", "B) Sachkonflikt", "C) Beziehungskonflikt", "D) Verteilungskonflikt"], correct: 1, explanation: "Wenn unterschiedliche Fakten oder Daten der Streitpunkt sind, handelt es sich um einen Sachkonflikt. Lösung: Faktenklärung, Dokumentenprüfung." },
+            { id: 4, text: "Ein Kunde verlangt telefonisch „nur deutsche Mitarbeiter“. Welche Konfliktart entsteht im Verhältnis zum Personaldienstleister?", options: ["A) Sachkonflikt", "B) Verteilungskonflikt", "C) Wertekonflikt", "D) Rollenkonflikt"], correct: 2, explanation: "Die Forderung verstößt gegen das Allgemeines Gleichbehandlungsgesetz und den GVP-Verhaltenskodex. Es geht um unvereinbare Grundsätze (Diskriminierungsverbot vs. Diskriminierungsforderung) – ein Wertekonflikt." },
+            { id: 5, text: "Drei Vertriebsmitarbeiter konkurrieren um einen knappen Top-Kandidaten im Pool. Welche Konfliktart liegt vor?", options: ["A) Beziehungskonflikt", "B) Verteilungskonflikt", "C) Wertekonflikt", "D) Sachkonflikt"], correct: 1, explanation: "Bei knappen Ressourcen (hier: Personal) handelt es sich um einen Verteilungskonflikt. Lösung: klare Priorisierungsregeln und Pool-Verwaltung." },
+            { id: 6, text: "Der Zeitarbeitnehmerinnen und Zeitarbeitnehmer ist Arbeitnehmer des Verleihers, untersteht aber dem Weisungsrecht des Entleihers. Welcher Konflikttyp ist hier strukturell angelegt?", options: ["A) Sachkonflikt", "B) Verteilungskonflikt", "C) Rollenkonflikt", "D) Wertekonflikt"], correct: 2, explanation: "Der Zeitarbeitnehmerinnen und Zeitarbeitnehmer steht im klassischen Rollenkonflikt: Zwei Auftraggeber mit potentiell widersprüchlichen Erwartungen (Verleiher = Arbeitgeber, Entleiher = Weisungsbefugter)." },
+            { id: 7, text: "Welche Unterform des Rollenkonflikts beschreibt widersprüchliche Erwartungen INNERHALB einer Rolle?", options: ["A) Inter-Rollenkonflikt", "B) Person-Rollen-Konflikt", "C) Intra-Rollenkonflikt", "D) Trans-Rollenkonflikt"], correct: 2, explanation: "Der Intra-Rollenkonflikt entsteht innerhalb einer Rolle. Beispiel: Disponent soll dem Kunden gefallen UND den Zeitarbeitnehmerinnen und Zeitarbeitnehmer schützen – widersprüchliche Erwartungen an dieselbe Rolle." },
+            { id: 8, text: "Watzlawick betont, dass jede Botschaft welche zwei Aspekte hat?", options: ["A) Sender und Empfänger", "B) Inhalts- und Beziehungsaspekt", "C) Verbal und nonverbal", "D) Wahrheit und Lüge"], correct: 1, explanation: "Watzlawick (Menschliche Kommunikation, 2017): Jede Botschaft hat einen Inhalts- und einen Beziehungsaspekt. Bei Beziehungskonflikten ist der Beziehungsaspekt gestört." },
+            { id: 9, text: "Welche Lösungsstrategie passt am besten zu einem reinen Sachkonflikt?", options: ["A) Mediation und psychologische Begleitung", "B) Faktenklärung und Dokumentenprüfung", "C) Trennung der Parteien", "D) Werteklarstellung"], correct: 1, explanation: "Sachkonflikte werden am besten durch sachliche Methoden gelöst: Fakten klären, Dokumente prüfen, eindeutige schriftliche Vereinbarungen treffen." },
+            { id: 10, text: "Was ist die Hauptursache für Konflikte zwischen Vertrieb und Recruiting in der Personaldienstleistungsbranche?", options: ["A) Persönliche Antipathie", "B) Unterschiedliche Zielsysteme und KPIs", "C) Mangelnde Fortbildung", "D) Sprachprobleme"], correct: 1, explanation: "Vertrieb wird an Auftragseingang gemessen, Recruiting an Besetzungsquote und Time-to-Hire. Diese gegenläufigen KPIs führen strukturell zu Konflikten." },
+            { id: 11, text: "Welcher Konflikttyp ist in der Personaldienstleistungsbranche bei Diskriminierungsforderungen von Kunden besonders relevant?", options: ["A) Verteilungskonflikt", "B) Wertekonflikt", "C) Sachkonflikt", "D) Beziehungskonflikt"], correct: 1, explanation: "Diskriminierungsforderungen kollidieren mit dem Allgemeines Gleichbehandlungsgesetz (Allgemeines Gleichbehandlungsgesetz) und dem GVP-Verhaltenskodex – ein klassischer Wertekonflikt." },
+            { id: 12, text: "Ein Zeitarbeitnehmerinnen und Zeitarbeitnehmer fühlt sich vom Disponenten herablassend behandelt; der Disponent empfindet den Zeitarbeitnehmerinnen und Zeitarbeitnehmer als unzuverlässig. Welche Konfliktart liegt primär vor?", options: ["A) Sachkonflikt", "B) Beziehungskonflikt", "C) Wertekonflikt", "D) Verteilungskonflikt"], correct: 1, explanation: "Wenn Sachfragen zur Provokation werden und gegenseitiges Misstrauen herrscht, liegt ein Beziehungskonflikt vor. Lösung: klärendes Gespräch oder Wechsel des Ansprechpartners." },
+            { id: 13, text: "Welcher Schritt steht am ANFANG einer professionellen Konfliktlösung?", options: ["A) Sofortige Trennung der Parteien", "B) Konfliktdiagnose (Art und Stufe bestimmen)", "C) Disziplinarmaßnahmen", "D) Externe Mediation einschalten"], correct: 1, explanation: "Erst die Konfliktdiagnose (welche Art? welche Glasl-Stufe?), dann die passende Intervention. Ohne Diagnose ist die Intervention oft falsch dimensioniert." },
+            { id: 14, text: "Was unterscheidet einen Wertekonflikt von einem Sachkonflikt?", options: ["A) Wertekonflikte sind weniger ernst", "B) Wertekonflikte berühren Identität und Grundsätze, Sachkonflikte sind methodisch klärbar", "C) Sachkonflikte dauern länger", "D) Es gibt keinen Unterschied"], correct: 1, explanation: "Wertekonflikte berühren die Identität und Grundüberzeugungen der Beteiligten und sind daher meist nicht durch Kompromisse lösbar. Sachkonflikte können durch Faktenklärung beigelegt werden." },
+            { id: 15, text: "Welche der folgenden Aussagen zu Konflikten in der Personaldienstleistungsbranche ist KORREKT?", options: ["A) Konflikte sind in der Personaldienstleistungsbranche selten", "B) Die meisten realen PDL-Konflikte sind Mischformen mehrerer Konfliktarten", "C) Konflikte entstehen nur zwischen Kunde und Verleiher", "D) Konflikte werden durch das Arbeitnehmerüberlassungsgesetz vollständig vermieden"], correct: 1, explanation: "In der PDL-Praxis sind die meisten Konflikte Mischformen – z.B. Sach- plus Beziehungs- plus Rollenkonflikt gleichzeitig. Wichtig: dominante Konfliktart identifizieren." }
+        ]
+    },
+    {
+        title: "Abschnitt 2: Glasl-Modell der Eskalation (Fragen 16–30)",
+        questions: [
+            { id: 16, text: "Wie viele Eskalationsstufen unterscheidet Friedrich Glasl?", options: ["A) 5 Stufen", "B) 7 Stufen", "C) 9 Stufen", "D) 12 Stufen"], correct: 2, explanation: "Glasl unterscheidet 9 Eskalationsstufen, die in 3 Phasen (Win-Win, Win-Lose, Lose-Lose) gegliedert sind." },
+            { id: 17, text: "Wie heißen die drei Hauptphasen des Glasl-Modells?", options: ["A) Anfang – Mitte – Ende", "B) Win-Win – Win-Lose – Lose-Lose", "C) Diskussion – Streit – Krieg", "D) Prävention – Intervention – Sanktion"], correct: 1, explanation: "Glasl gliedert die 9 Stufen in 3 Phasen: Win-Win (1–3), Win-Lose (4–6), Lose-Lose (7–9)." },
+            { id: 18, text: "Wie heißt die erste Eskalationsstufe nach Glasl?", options: ["A) Debatte", "B) Verhärtung", "C) Polemik", "D) Image"], correct: 1, explanation: "Stufe 1 heißt Verhärtung: Standpunkte verhärten sich, Diskussionen werden förmlicher, aber alle bleiben kooperationsbereit." },
+            { id: 19, text: "Auf welcher Eskalationsstufe wird erstmals einseitig gehandelt, ohne Zustimmung der anderen Partei?", options: ["A) Stufe 1 (Verhärtung)", "B) Stufe 2 (Debatte)", "C) Stufe 3 (Taten statt Worte)", "D) Stufe 5 (Gesichtsverlust)"], correct: 2, explanation: "Auf Stufe 3 (Taten statt Worte) wird Diskutieren als sinnlos empfunden; eine Partei handelt einseitig und stellt die andere vor vollendete Tatsachen. Wichtiger Wendepunkt." },
+            { id: 20, text: "Welcher Übergang markiert das Kippen von der Win-Win- zur Win-Lose-Phase?", options: ["A) Stufe 2 zu Stufe 3", "B) Stufe 3 zu Stufe 4", "C) Stufe 5 zu Stufe 6", "D) Stufe 6 zu Stufe 7"], correct: 1, explanation: "Der Übergang von Stufe 3 zu Stufe 4 markiert den Kipppunkt: Bis Stufe 3 wollen alle eine Lösung; ab Stufe 4 wird die andere Seite gezielt geschädigt." },
+            { id: 21, text: "Auf welcher Stufe werden erstmals Verbündete gesucht und Stereotype über den Gegner verbreitet?", options: ["A) Stufe 2 (Debatte)", "B) Stufe 4 (Image und Koalitionen)", "C) Stufe 6 (Drohstrategien)", "D) Stufe 8 (Zersplitterung)"], correct: 1, explanation: "Auf Stufe 4 (Image und Koalitionen) werden Verbündete gesucht, Stereotype über den Gegner verbreitet – „er ist immer so unzuverlässig“." },
+            { id: 22, text: "Auf welcher Eskalationsstufe wird erstmals mit Sanktionen gedroht?", options: ["A) Stufe 3 (Taten statt Worte)", "B) Stufe 5 (Gesichtsverlust)", "C) Stufe 6 (Drohstrategien)", "D) Stufe 7 (Vernichtungsschläge)"], correct: 2, explanation: "Auf Stufe 6 (Drohstrategien) wird mit Sanktionen gedroht: Vertragskündigung, Klage, Pool-Ausschluss. Drohungen kommen erst hier, nicht früher!" },
+            { id: 23, text: "Was kennzeichnet die Lose-Lose-Phase (Stufen 7–9)?", options: ["A) Beide Parteien profitieren", "B) Beide Parteien erleiden Schaden", "C) Nur die schwächere Partei verliert", "D) Es gibt einen klaren Sieger"], correct: 1, explanation: "Die Lose-Lose-Phase (Stufen 7–9) ist dadurch gekennzeichnet, dass beide Parteien Schaden erleiden. Eigener Schaden wird in Kauf genommen, um den Gegner zu schädigen." },
+            { id: 24, text: "Auf welcher Stufe wird erstmals der EIGENE Schaden in Kauf genommen, um dem Gegner zu schaden?", options: ["A) Stufe 4 (Image)", "B) Stufe 6 (Drohstrategien)", "C) Stufe 7 (Vernichtungsschläge)", "D) Stufe 9 (Abgrund)"], correct: 2, explanation: "Auf Stufe 7 (begrenzte Vernichtungsschläge) wird der Gegner nicht mehr als Mensch wahrgenommen; Schaden zufügen wird wichtiger als eigener Vorteil." },
+            { id: 25, text: "Wie heißt die letzte (9.) Eskalationsstufe nach Glasl?", options: ["A) Vernichtungsschläge", "B) Zersplitterung", "C) Gemeinsam in den Abgrund", "D) Drohstrategien"], correct: 2, explanation: "Stufe 9 heißt „Gemeinsam in den Abgrund“: Selbstvernichtung wird in Kauf genommen, um den Gegner mitzunehmen." },
+            { id: 26, text: "Welche Intervention ist nach Glasl auf Stufen 1–3 typischerweise noch möglich?", options: ["A) Nur noch Schiedsverfahren", "B) Moderation, Coaching, Selbsthilfe", "C) Gerichtliche Eingriffe", "D) Sofortige Trennung der Parteien"], correct: 1, explanation: "Auf den Stufen 1–3 (Win-Win) sind Moderation, Coaching und Selbsthilfe der Parteien noch möglich. Externe Mediation wird erst ab Stufe 3–5 typisch." },
+            { id: 27, text: "Welche Intervention ist auf Stufen 7–9 nach Glasl noch möglich?", options: ["A) Coaching der Parteien", "B) Sanftes Mediationsverfahren", "C) Machteingriff von außen, Trennung der Parteien", "D) Selbsthilfe ohne Dritte"], correct: 2, explanation: "Auf den Stufen 7–9 (Lose-Lose) helfen nur noch Machteingriffe von außen – gerichtliche Verfahren, Trennung der Parteien, Auflösung des Vertragsverhältnisses." },
+            { id: 28, text: "Wie heißt die zweite Eskalationsstufe nach Glasl?", options: ["A) Verhärtung", "B) Debatte und Polemik", "C) Taten statt Worte", "D) Image und Koalitionen"], correct: 1, explanation: "Stufe 2 heißt Debatte und Polemik: Die Auseinandersetzung wird verbal schärfer; Argumente werden zu Waffen, taktische Tricks tauchen auf." },
+            { id: 29, text: "Was ist charakteristisch für Stufe 5 (Gesichtsverlust)?", options: ["A) Erste sachliche Diskussion", "B) Suche nach Verbündeten", "C) Öffentliche Bloßstellung des Gegners", "D) Gemeinsame Lösungsfindung"], correct: 2, explanation: "Stufe 5 (Gesichtsverlust) ist gekennzeichnet durch öffentliche Bloßstellung; das Vertrauen ist nachhaltig zerstört." },
+            { id: 30, text: "Welche Aussage zum Glasl-Modell ist KORREKT?", options: ["A) Es ist rein deskriptiv ohne Handlungsempfehlungen", "B) Es ist nur für private Konflikte gedacht", "C) Es ist sowohl deskriptiv als auch handlungsleitend", "D) Es hat sich in der Praxis nicht bewährt"], correct: 2, explanation: "Das Glasl-Modell ist sowohl deskriptiv (beschreibt Konfliktverlauf) als auch handlungsleitend (gibt Hinweise auf passende Interventionen je nach Stufe)." }
+        ]
+    },
+    {
+        title: "Abschnitt 3: Typische PDL-Konflikte (Fragen 31–45)",
+        questions: [
+            { id: 31, text: "Welche drei Hauptakteure bilden das PDL-Dreieck?", options: ["A) Disponent, Recruiter, Vertrieb", "B) Verleiher, Entleiher, Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "C) Industrie- und Handelskammer, Bundesagentur für Arbeit, Gesamtverband der Personaldienstleister", "D) Geschäftsleitung, HR, Betriebsrat"], correct: 1, explanation: "Das PDL-Dreieck besteht aus Verleiher (Personaldienstleister), Entleiher (Kunde) und Zeitarbeitnehmerinnen und Zeitarbeitnehmer (Zeitarbeitnehmer). Die rechtliche Grundlage ist das Arbeitnehmerüberlassungsgesetz." },
+            { id: 32, text: "Welcher Paragraph des Arbeitnehmerüberlassungsgesetz regelt das Weisungsrecht des Entleihers?", options: ["A) § 1 Arbeitnehmerüberlassungsgesetz", "B) § 8 Arbeitnehmerüberlassungsgesetz", "C) § 11 Arbeitnehmerüberlassungsgesetz", "D) § 15 Arbeitnehmerüberlassungsgesetz"], correct: 2, explanation: "§ 11 Arbeitnehmerüberlassungsgesetz regelt die Rechtsstellung der Leiharbeitnehmer und das Weisungsrecht des Entleihers während der Überlassung." },
+            { id: 33, text: "Wie lange ist die gesetzliche Höchstüberlassungsdauer nach § 1 Abs. 1b Arbeitnehmerüberlassungsgesetz?", options: ["A) 12 Monate", "B) 18 Monate", "C) 24 Monate", "D) 36 Monate"], correct: 1, explanation: "Die Höchstüberlassungsdauer beträgt 18 Monate (§ 1 Abs. 1b Arbeitnehmerüberlassungsgesetz). Konfliktherd: Kunde will Mitarbeiter behalten, Verleiher muss tauschen." },
+            { id: 34, text: "Ab wann gilt nach § 8 Arbeitnehmerüberlassungsgesetz das Equal-Pay-Prinzip?", options: ["A) Sofort ab Einsatzbeginn", "B) Nach 3 Monaten", "C) Nach 9 Monaten", "D) Nach 18 Monaten"], correct: 2, explanation: "Equal Pay gilt nach 9 Monaten Einsatz beim selben Entleiher (§ 8 Arbeitnehmerüberlassungsgesetz). Der Verleiher muss dann vergleichbare Vergütung wie Stammbelegschaft zahlen." },
+            { id: 35, text: "Was ist ein typisches Beispiel für einen Konflikt zwischen Vertrieb und Recruiting in der Personaldienstleistungsbranche?", options: ["A) Streit über den Pausenplan", "B) Vertrieb verspricht 5 Schweisser bis morgen, ohne Recruiting zu fragen", "C) Recruiting weigert sich, neue Bewerber anzulegen", "D) Vertrieb arbeitet zu wenig"], correct: 1, explanation: "Ein klassischer Konflikt: Der Vertrieb sagt einen Auftrag zu, ohne mit Recruiting abzustimmen, ob die Anforderungen überhaupt zeitnah besetzbar sind." },
+            { id: 36, text: "Was ist ein „Schichtbruch“ in der Personaldienstleistungsbranche?", options: ["A) Eine geplante Schichtänderung", "B) Das Nichterscheinen eines Zeitarbeitnehmerinnen und Zeitarbeitnehmer zur eingeteilten Schicht", "C) Eine zusätzliche Schicht", "D) Eine besonders lange Schicht"], correct: 1, explanation: "Ein Schichtbruch liegt vor, wenn ein Zeitarbeitnehmerinnen und Zeitarbeitnehmer ohne Vorankündigung nicht zur eingeteilten Schicht erscheint. Klassischer Konfliktauslöser zwischen Kunde und Disposition." },
+            { id: 37, text: "Welcher Konflikt entsteht typischerweise bei kurzfristiger Krankmeldung am Montagmorgen?", options: ["A) Wertekonflikt zwischen Kunde und Verleiher", "B) Verteilungs- und Sachkonflikt um kurzfristigen Ersatz", "C) Reiner Beziehungskonflikt", "D) Kein Konflikt, da Krankheit legitim"], correct: 1, explanation: "Es entsteht primär ein Verteilungskonflikt (Ressource Personal in 30 Minuten organisieren) plus Sachkonflikt (ist Krankmeldung legitim?). Disposition steht unter Druck." },
+            { id: 38, text: "Welche Leistungskennzahl gilt primär für die Disposition?", options: ["A) Auftragseingang", "B) Auslastung und Schichtbesetzung", "C) Time-to-Hire", "D) Anzahl Bewerbungen"], correct: 1, explanation: "Disposition wird an Auslastung und Schichtbesetzung gemessen. Vertrieb → Auftragseingang, Recruiting → Time-to-Hire/Besetzungsquote." },
+            { id: 39, text: "Was bedeutet die „doppelte Loyalität“ einer Zeitarbeitnehmerin oder eines Zeitarbeitnehmers?", options: ["A) Er hat zwei Arbeitsverträge", "B) Er ist gleichzeitig dem Verleiher und dem Entleiher verpflichtet", "C) Er arbeitet für zwei Personaldienstleister", "D) Er ist Mitglied in zwei Gewerkschaften"], correct: 1, explanation: "Doppelte Loyalität: Die Zeitarbeitnehmerin oder der Zeitarbeitnehmer ist arbeitsrechtlich beim Verleiher angestellt (Lohn, Urlaub) und unterliegt gleichzeitig dem Weisungsrecht des Entleihers während des Einsatzes." },
+            { id: 40, text: "Welcher Verband hat den Branchen-Verhaltenskodex der Personaldienstleister herausgegeben?", options: ["A) DGB", "B) BDA", "C) Gesamtverband der Personaldienstleister", "D) Industrie- und Handelskammer"], correct: 2, explanation: "Der Gesamtverband der Personaldienstleister hat den Verhaltenskodex herausgegeben. Er regelt u.a. Diskriminierungsverbot, Beschwerdemanagement-Pflicht und Abwerbeverbot." },
+            { id: 41, text: "Welche Präventionsmaßnahme reduziert Konflikte zwischen Vertrieb und Disposition am wirksamsten?", options: ["A) Strikte Trennung beider Abteilungen", "B) Daily Stand-up und Pool-Check vor Auftragszusagen", "C) Auflösung der Disposition", "D) Erhöhung der Vertriebsboni"], correct: 1, explanation: "Daily Stand-up (kurze tägliche Abstimmung) und ein verbindlicher Pool-Check vor Auftragszusagen verhindern unrealistische Versprechen und schützen die Disposition." },
+            { id: 42, text: "Was ist die typische Konfliktart bei Überstundenanordnungen durch den Kunden?", options: ["A) Reiner Sachkonflikt", "B) Wertekonflikt", "C) Mischung aus Sach-, Rollen- und Verteilungskonflikt", "D) Kein Konflikt vorgesehen"], correct: 2, explanation: "Überstundenanordnungen berühren mehrere Ebenen: Sachkonflikt (was ist vereinbart?), Rollenkonflikt (wer darf anweisen?), Verteilungskonflikt (Lohn/Equal Pay)." },
+            { id: 43, text: "Welche Pflicht ergibt sich aus dem GVP-Verhaltenskodex zum Thema Beschwerden?", options: ["A) Keine Beschwerden zulassen", "B) Beschwerden direkt an die Industrie- und Handelskammer weiterleiten", "C) Pflicht zu professionellem Beschwerdemanagement", "D) Beschwerden dem Kunden überlassen"], correct: 2, explanation: "Der GVP-Kodex verpflichtet Mitgliedsunternehmen zu einem professionellen Beschwerdemanagement und zu Konfliktlösungsstrukturen." },
+            { id: 44, text: "Was ist ein typischer Konflikt zwischen Disposition und Kunde bei Stundenzettel-Diskrepanzen?", options: ["A) Reiner Beziehungskonflikt", "B) Sachkonflikt um die korrekte Stundenanzahl, oft mit Vertrauensaspekt", "C) Wertekonflikt", "D) Rollenkonflikt"], correct: 1, explanation: "Stundenzettel-Diskrepanzen sind primär Sachkonflikte (welche Stunden wurden tatsächlich geleistet?). Bei wiederholten Fällen kann ein Beziehungs- oder Vertrauenskonflikt entstehen." },
+            { id: 45, text: "Welche Konsequenz droht beim Überschreiten der Höchstüberlassungsdauer?", options: ["A) Bußgeld für den Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "B) Fingiertes Arbeitsverhältnis zwischen Entleiher und Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "C) Verlust der Verleiherlaubnis automatisch", "D) Keine Konsequenz"], correct: 1, explanation: "Bei Überschreitung der 18-Monate-Grenze fingiert das Gesetz ein Arbeitsverhältnis zwischen Entleiher und Zeitarbeitnehmerinnen und Zeitarbeitnehmer – mit weitreichenden Konsequenzen." }
+        ]
+    },
+    {
+        title: "Abschnitt 4: Konfliktdiagnose und Lösungswerkzeuge (Fragen 46–60)",
+        questions: [
+            { id: 46, text: "Wie viele Konfliktstile unterscheidet das Thomas-Kilmann-Modell?", options: ["A) 3", "B) 4", "C) 5", "D) 7"], correct: 2, explanation: "Das Thomas-Kilmann-Modell unterscheidet 5 Konfliktstile: Konkurrieren, Vermeiden, Anpassen, Kompromiss, Kooperieren – entlang der Dimensionen Kooperation und Durchsetzung." },
+            { id: 47, text: "Welcher Thomas-Kilmann-Stil zeichnet sich durch hohe Durchsetzung und niedrige Kooperation aus?", options: ["A) Anpassen", "B) Kompromiss", "C) Konkurrieren", "D) Kooperieren"], correct: 2, explanation: "Konkurrieren (competing) ist hochdurchsetzungsstark und wenig kooperativ – die eigene Position wird gegen die Interessen des anderen durchgesetzt." },
+            { id: 48, text: "Welcher Stil nach Thomas-Kilmann passt am besten zu Bagatellkonflikten oder bei hohem Eskalationsrisiko?", options: ["A) Konkurrieren", "B) Vermeiden", "C) Kooperieren", "D) Kompromiss"], correct: 1, explanation: "Vermeiden ist sinnvoll bei Bagatellen, hohem Eskalationsrisiko oder wenn keine Zeit für eine vollständige Klärung vorhanden ist." },
+            { id: 49, text: "Wie viele Schritte umfasst die Konfliktdiagnose nach Glasl?", options: ["A) 3 Schritte", "B) 5 Schritte", "C) 6 Schritte", "D) 9 Schritte"], correct: 2, explanation: "Glasl schlägt eine 6-Schritte-Diagnose vor: 1. Streitfragen, 2. Verlauf, 3. Parteien, 4. Beziehungsstrukturen, 5. Grundeinstellungen, 6. Eskalationsstufe." },
+            { id: 50, text: "Welche Aussage zum Thomas-Kilmann-Modell ist KORREKT?", options: ["A) Nur „Kooperieren“ ist richtig", "B) Jeder Stil hat situativ seine Berechtigung", "C) „Vermeiden“ ist immer falsch", "D) Konkurrieren ist verboten"], correct: 1, explanation: "Jeder der fünf Stile hat situativ seine Berechtigung. Reife Konfliktlöser können alle Stile bewusst und situationsabhängig einsetzen." },
+            { id: 51, text: "Welcher Stil nach Thomas-Kilmann passt zu komplexen Problemen mit wichtigen Beziehungen?", options: ["A) Konkurrieren", "B) Vermeiden", "C) Anpassen", "D) Kooperieren"], correct: 3, explanation: "Kooperieren (hohe Kooperation, hohe Durchsetzung) eignet sich für komplexe Probleme mit wichtigen Beziehungen – die Win-Win-Lösung wird gemeinsam entwickelt." },
+            { id: 52, text: "Welche Bedeutung hat die Konfliktdiagnose vor der Intervention?", options: ["A) Sie ist optional", "B) Sie kostet nur Zeit", "C) Falsche Diagnose führt zu falscher Intervention", "D) Sie ist nur bei schwerwiegenden Konflikten nötig"], correct: 2, explanation: "Eine falsche Diagnose führt zwangsläufig zu einer falschen Intervention. Eine Sachintervention bei einem Beziehungskonflikt scheitert; Mediation auf Stufe 7 hilft nicht mehr." },
+            { id: 53, text: "Welcher Konfliktstil entspricht dem „Kompromiss“?", options: ["A) Hohe Kooperation, niedrige Durchsetzung", "B) Mittlere Kooperation, mittlere Durchsetzung", "C) Niedrige Kooperation, hohe Durchsetzung", "D) Niedrige Kooperation, niedrige Durchsetzung"], correct: 1, explanation: "Der Kompromiss-Stil liegt mittig auf beiden Achsen: Beide Parteien geben etwas auf, beide bekommen etwas. Pragmatische Lösung." },
+            { id: 54, text: "Welche der folgenden ist eine zentrale Konfliktpräventionsmaßnahme im PDL-Vertrieb?", options: ["A) Maximale Geheimhaltung der Pool-Daten", "B) Pool-Check vor jeder Auftragszusage", "C) Verzicht auf schriftliche Verträge", "D) Ausschließliche Telefonkommunikation"], correct: 1, explanation: "Ein verbindlicher Pool-Check vor Auftragszusagen verhindert unrealistische Versprechen an Kunden und damit Konflikte mit Recruiting und Disposition." },
+            { id: 55, text: "Welcher Anspruch ergibt sich aus dem Allgemeines Gleichbehandlungsgesetz für die Vermittlungspraxis in der Personaldienstleistungsbranche?", options: ["A) Recht auf Vermittlung nach Wunschkriterien des Kunden", "B) Pflicht zur diskriminierungsfreien Vermittlung", "C) Bevorzugung deutscher Bewerber", "D) Beliebige Auswahl ohne Begründung"], correct: 1, explanation: "Das Allgemeines Gleichbehandlungsgesetz (Allgemeines Gleichbehandlungsgesetz) verpflichtet zur diskriminierungsfreien Vermittlung. Der GVP-Kodex verstärkt diese Pflicht durch Selbstverpflichtung." },
+            { id: 56, text: "Was passiert auf Stufe 8 (Zersplitterung) nach Glasl?", options: ["A) Erste Diskussion beginnt", "B) Kompromiss wird gesucht", "C) Komplette Zerstörung der gegnerischen Strukturen wird angestrebt", "D) Mediation greift erfolgreich"], correct: 2, explanation: "Auf Stufe 8 (Zersplitterung) ist das Ziel die komplette Zerstörung der gegnerischen Strukturen. Existenzbedrohung wird in Kauf genommen." },
+            { id: 57, text: "Welche Eskalationsstufe markiert den Übergang von Win-Lose zu Lose-Lose?", options: ["A) Stufe 3 zu 4", "B) Stufe 5 zu 6", "C) Stufe 6 zu 7", "D) Stufe 8 zu 9"], correct: 2, explanation: "Der Übergang von Stufe 6 zu Stufe 7 markiert den Wechsel von Win-Lose zu Lose-Lose. Ab hier wird der eigene Schaden bewusst in Kauf genommen." },
+            { id: 58, text: "Welche Funktion erfüllen Verbündete und Koalitionen auf Stufe 4 nach Glasl?", options: ["A) Sie fördern eine sachliche Lösung", "B) Sie sollen die eigene Position stärken und das Image des Gegners beschädigen", "C) Sie sind irrelevant", "D) Sie sind eine deeskalative Maßnahme"], correct: 1, explanation: "Auf Stufe 4 werden Verbündete gesucht, um die eigene Position zu stärken und das Image der Gegenpartei aktiv zu beschädigen – ein wesentlicher Eskalationsschritt." },
+            { id: 59, text: "Was ist die wichtigste Voraussetzung dafür, dass ein Konflikt auf Stufen 1–3 selbst gelöst werden kann?", options: ["A) Externe Mediation", "B) Erhalten der Kommunikation und Kooperationsbereitschaft beider Parteien", "C) Sanktionsdrohungen", "D) Trennung der Parteien"], correct: 1, explanation: "Auf den Stufen 1–3 ist die Kooperationsbereitschaft noch vorhanden. Solange die Parteien miteinander reden und Lösungen suchen, ist Selbsthilfe möglich." },
+            { id: 60, text: "Welche der folgenden Aussagen zur Mediation als Glasl-Intervention ist KORREKT?", options: ["A) Mediation ist nur auf Stufen 7–9 sinnvoll", "B) Mediation ist auf Stufen 3–5 typisch und wirksam", "C) Mediation ersetzt jede Konfliktdiagnose", "D) Mediation ist gesetzlich verpflichtend"], correct: 1, explanation: "Externe Mediation ist nach Glasl auf den Stufen 3–5 typisch wirksam. Auf Stufen 7–9 helfen nur noch Machteingriffe von außen – nicht mehr Mediation allein." }
+        ]
+    }
+];
+
+let answered = {};
+let checked  = {};
+let showAll  = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() {
+    const flat = [];
+    sections.forEach(s => s.questions.forEach(q => flat.push(q)));
+    return flat;
+}
+const flatQ = allQuestions();
+
+function render() {
+    const container = document.getElementById('quizContainer');
+    let html = '';
+    let globalIdx = 0;
+    sections.forEach((sec, si) => {
+        html += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach((q, qi) => {
+            const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+            const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+            html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+            html += `<p class="question-text">${q.text}</p>`;
+            html += `<ul class="options-list">`;
+            q.options.forEach((opt, oi) => {
+                let cls = '';
+                if (checked[q.id]) {
+                    if (oi === q.correct) cls = 'correct-opt';
+                    else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+                } else if (answered[q.id] === oi) {
+                    cls = 'selected';
+                }
+                const dis = checked[q.id] ? 'disabled' : '';
+                const chk = answered[q.id] === oi ? 'checked' : '';
+                html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+            });
+            html += `</ul>`;
+            const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+            if (checked[q.id]) {
+                const isCorr = answered[q.id] === q.correct;
+                const fbClass = isCorr ? 'correct' : 'incorrect';
+                const fbText = isCorr
+                    ? `<strong>Richtig!</strong> ${q.explanation}`
+                    : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+                html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+            } else {
+                html += `<div class="feedback" id="fb-${q.id}"></div>`;
+            }
+            html += `</div>`;
+            globalIdx++;
+        });
+    });
+    if (!showAll) {
+        html += `<div class="nav-row">`;
+        html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+        html += `<span style="font-weight:600;color:#004a99;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+        html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+        html += `</div>`;
+    }
+    container.innerHTML = html;
+    updateProgress();
+}
+
+function selectOption(qid, idx) {
+    if (checked[qid]) return;
+    answered[qid] = idx;
+    render();
+}
+
+function checkAnswer(qid) {
+    if (answered[qid] === undefined || checked[qid]) return;
+    checked[qid] = true;
+    render();
+    updateProgress();
+}
+
+function navigate(dir) {
+    currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir));
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+    const done = Object.keys(checked).length;
+    const pct = Math.round((done / totalQ) * 100);
+    document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+    document.getElementById('progressPct').textContent = `${pct} %`;
+    document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+    const done = Object.keys(checked).length;
+    if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+    let correct = 0;
+    flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+    const pct = Math.round((correct / done) * 100);
+    document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+    let gradeText = '';
+    let gradeClass = 'pass';
+    if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+    else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+    else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+    else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+    else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+    else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+    const gEl = document.getElementById('gradeText');
+    gEl.textContent = gradeText;
+    gEl.className = 'grade ' + gradeClass;
+    let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+    sections.forEach(sec => {
+        let sCorr = 0, sTotal = 0;
+        sec.questions.forEach(q => {
+            if (checked[q.id]) {
+                sTotal++;
+                if (answered[q.id] === q.correct) sCorr++;
+            }
+        });
+        const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+        tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+    });
+    tbl += '</table>';
+    document.getElementById('sectionBreakdown').innerHTML = tbl;
+    document.getElementById('resultsPanel').classList.add('show');
+    document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+    answered = {};
+    checked = {};
+    currentQ = 0;
+    document.getElementById('resultsPanel').classList.remove('show');
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () {
+    showAll = this.checked;
+    render();
+});
+
+function shuffleQuizOptions() {
+    let seed = 42;
+    function seededRandom() {
+        seed = (seed * 16807 + 0) % 2147483647;
+        return (seed - 1) / 2147483646;
+    }
+    sections.forEach(sec => {
+        sec.questions.forEach(q => {
+            const correctText = q.options[q.correct];
+            const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+            for (let i = cleaned.length - 1; i > 0; i--) {
+                const j = Math.floor(seededRandom() * (i + 1));
+                [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+            }
+            const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+            const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+            q.options = cleaned.map((c, i) => prefixes[i] + c);
+            q.correct = cleaned.indexOf(correctClean);
+        });
+    });
+}
+shuffleQuizOptions();
+
+render();
+</script>
+</body>
+</html>

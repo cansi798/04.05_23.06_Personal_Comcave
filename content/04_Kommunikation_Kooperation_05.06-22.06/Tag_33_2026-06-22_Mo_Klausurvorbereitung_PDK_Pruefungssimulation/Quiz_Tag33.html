@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Tag 33 &ndash; Klausurvorbereitung Personaldienstleistungskaufmann/-frau Pr&uuml;fungssimulation</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #00325f 0%, #004b87 50%, #0082b4 100%); color: #fff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+.header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+.header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+.toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+.toolbar button, .toolbar .toggle-label { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.toolbar button:hover { background: #00325f; }
+.toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+.toggle-label input { accent-color: #004b87; width: 18px; height: 18px; cursor: pointer; }
+.progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+.progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+.progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #004b87, #0082b4); border-radius: 6px; transition: width 0.4s ease; }
+.container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+.section-title { background: #00325f; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+.section-title:first-child { margin-top: 0; }
+.question-card { background: #fff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+.question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.question-card.correct-card { border-left: 5px solid #28a745; }
+.question-card.incorrect-card { border-left: 5px solid #dc3545; }
+.question-number { display: inline-block; background: #e8f0fe; color: #004b87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+.question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+.options-list { list-style: none; }
+.options-list li { margin-bottom: 0.5rem; }
+.options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+.options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+.options-list input[type="radio"] { accent-color: #004b87; margin-top: 3px; flex-shrink: 0; }
+.options-list label.selected { background: #e8f0fe; border-color: #004b87; }
+.options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+.options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+.check-btn { margin-top: 0.8rem; background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.check-btn:hover { background: #00325f; }
+.check-btn:disabled { background: #8faec8; cursor: default; }
+.feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+.feedback.show { display: block; }
+.feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.nav-btn { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.nav-btn:hover { background: #00325f; }
+.nav-btn:disabled { background: #8faec8; cursor: default; }
+.results-panel { background: #fff; border: 2px solid #004b87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.results-panel.show { display: block; }
+.results-panel h2 { color: #00325f; margin-bottom: 0.8rem; }
+.score-big { font-size: 3rem; font-weight: 700; color: #004b87; }
+.grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+.grade.pass { color: #28a745; }
+.grade.fail { color: #dc3545; }
+.section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+.section-breakdown table { width: 100%; border-collapse: collapse; }
+.section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+.section-breakdown th { background: #e8f0fe; color: #00325f; text-align: left; }
+.references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+.references h3 { color: #00325f; margin-bottom: 0.8rem; font-size: 1.1rem; }
+.references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+.footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+@media print { body { background: #fff; } .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; } .header { background: #00325f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; } .section-title { break-after: avoid; } .feedback.show { display: block !important; } }
+@media (max-width: 600px) { .header { padding: 1.4rem 0.8rem; } .question-card { padding: 1rem; } .toolbar { flex-direction: column; align-items: stretch; text-align: center; } }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<header class="header">
+<h1>Quiz Tag 33 &ndash; Klausurvorbereitung Personaldienstleistungskaufmann/-frau</h1>
+<div class="subtitle">Pr&uuml;fungssimulation Bl&ouml;cke 1&ndash;5 (60 Fragen, alle Lerninhalte)</div>
+<div class="meta">
+<span>&copy; Can Siebert</span>
+<span>Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026</span>
+<span>60 Fragen &bull; Multiple Choice</span>
+</div>
+</header>
+<div class="toolbar">
+<label class="toggle-label"><input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen</label>
+<div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+<button onclick="showResults()">Ergebnis anzeigen</button>
+<button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+</div>
+</div>
+<div class="progress-container">
+<div class="progress-info">
+<span id="progressText">0 von 60 beantwortet</span>
+<span id="progressPct">0 %</span>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+<div class="container" id="quizContainer"></div>
+<div class="container">
+<div class="results-panel" id="resultsPanel">
+<h2>Dein Ergebnis</h2>
+<div class="score-big" id="scoreBig"></div>
+<div class="grade" id="gradeText"></div>
+<div class="section-breakdown" id="sectionBreakdown"></div>
+<button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+</div>
+</div>
+<div class="references">
+<h3>Literaturverzeichnis (APA 7)</h3>
+<p>Bundesministerium der Justiz. (2005). <em>Berufsbildungsgesetz</em>. https://www.gesetze-im-internet.de/bbig_2005/</p>
+<p>Bundesministerium der Justiz. (2017). <em>Arbeitnehmer&uuml;berlassungsgesetz (A&Uuml;G)</em>. Reform 01.04.2017.</p>
+<p>Schulz von Thun, F. (2019). <em>Miteinander reden 1: St&ouml;rungen und Kl&auml;rungen</em>. Rowohlt.</p>
+<p>Glasl, F. (2020). <em>Konfliktmanagement</em> (12. Aufl.). Haupt.</p>
+<p>Kerzner, H. (2022). <em>Project Management: A Systems Approach</em> (13. Aufl.). Wiley.</p>
+<p>Bundesagentur f&uuml;r Arbeit. (2024). <em>Statistik der Bundesagentur für Arbeit &ndash; Arbeitsmarktbericht</em>. https://statistik.arbeitsagentur.de</p>
+</div>
+<footer class="footer">&copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026</footer>
+<script>
+const sections = [
+{
+title: "Block 1 – Integrative Unternehmensprozesse (Fragen 1–12)",
+questions: [
+{id:1,text:"Was ist die zentrale Funktion eines Personaldienstleistungsunternehmens (Personaldienstleistungsunternehmen)?",options:["A) Unbefristete Festanstellung aller Bewerber","B) Brücke zwischen Arbeitsuchenden und Kundenbetrieben","C) Auslagerung der gesamten HR-Abteilung","D) Nur Outplacement-Beratung"],correct:1,explanation:"PDL-Unternehmen vermitteln und verleihen Personal -- sie sind Brücke zwischen Arbeitsuchenden/Zeitarbeitnehmerinnen und Zeitarbeitnehmer und Kundenbetrieben."},
+{id:2,text:"Welches Gesetz regelt die Arbeitnehmerüberlassung in Deutschland?",options:["A) Berufsbildungsgesetz","B) Arbeitnehmerüberlassungsgesetz","C) HGB","D) BGB"],correct:1,explanation:"Das Arbeitnehmerüberlassungsgesetz regelt die Zeitarbeit. Reformiert 01.04.2017."},
+{id:3,text:"Wie lange darf ein Zeitarbeitnehmerin oder Zeitarbeitnehmer maximal an einen Kundenbetrieb überlassen werden?",options:["A) 6 Monate","B) 12 Monate","C) 18 Monate","D) 24 Monate"],correct:2,explanation:"§ 1 b Arbeitnehmerüberlassungsgesetz: max. 18 Monate Überlassungsdauer (kann tariflich abweichen)."},
+{id:4,text:"Ab wann gilt der Equal-Pay-Grundsatz im Arbeitnehmerüberlassungsgesetz?",options:["A) Ab 3 Monaten","B) Ab 6 Monaten","C) Ab 9 Monaten","D) Ab 12 Monaten"],correct:2,explanation:"Equal Pay greift nach 9 Monaten ununterbrochener Überlassung an denselben Kundenbetrieb."},
+{id:5,text:"Wer ist der Tarifpartner der DGB-Gewerkschaften in der Zeitarbeitsbranche?",options:["A) Industrie- und Handelskammer","B) BDA","C) Gesamtverband der Personaldienstleister","D) ver.di"],correct:2,explanation:"Der Gesamtverband der Personaldienstleister (früher iGZ) ist Tarifpartner der DGB-Gewerkschaften im Branchentarif Zeitarbeit."},
+{id:6,text:"Welche Behörde erteilt die Erlaubnis zur Arbeitnehmerüberlassung?",options:["A) Industrie- und Handelskammer","B) Bundesagentur für Arbeit","C) Finanzamt","D) Gewerbeamt"],correct:1,explanation:"Die Bundesagentur für Arbeit erteilt nach § 1 Arbeitnehmerüberlassungsgesetz die Erlaubnis zur Arbeitnehmerüberlassung."},
+{id:7,text:"Welche Rechtsform ist für PDL-Unternehmen typisch?",options:["A) Ausschließlich Stiftung","B) GmbH, AG oder e. K.","C) Nur öffentlich-rechtliche Körperschaft","D) Nur Genossenschaft"],correct:1,explanation:"PDL-Unternehmen sind meist GmbH, AG oder e. K., überwiegend mittelständisch organisiert."},
+{id:8,text:"Welcher marktwirtschaftliche Faktor beeinflusst Personaldienstleistungsunternehmen besonders stark?",options:["A) Die Konjunkturlage","B) Die Wetterlage","C) Die EU-Außenhandelsbilanz","D) Die Hochschulquote"],correct:0,explanation:"Konjunktur ist der Haupttreiber: Bei Aufschwung steigt der ZAN-Bedarf, bei Abschwung sinkt er."},
+{id:9,text:"Wie viele Zeitarbeitnehmer sind in Deutschland ungefähr beschäftigt?",options:["A) Ca. 100.000","B) Ca. 300.000","C) Ca. 700.000","D) Ca. 2 Millionen"],correct:2,explanation:"Laut BA-Statistik 2024 sind rund 700.000 Zeitarbeitnehmerinnen und Zeitarbeitnehmer in DE beschäftigt."},
+{id:10,text:"Welche volkswirtschaftliche Funktion erfüllt Personaldienstleistungsunternehmen primär?",options:["A) Regulator des Steueraufkommens","B) Konjunkturpuffer und Arbeitsmarkt-Brücke","C) Hochschulfinanzierung","D) Sozialversicherungsträger"],correct:1,explanation:"Personaldienstleistungsunternehmen ist Konjunkturpuffer (flexibler Personalbestand) und Brücke in den Arbeitsmarkt."},
+{id:11,text:"Welche Akteure stehen in einem typischen PDL-Dreiecksverhältnis?",options:["A) Personaldienstleistungsunternehmen, Zeitarbeitnehmerinnen und Zeitarbeitnehmer, Kundenbetrieb","B) Industrie- und Handelskammer, Zeitarbeitnehmerinnen und Zeitarbeitnehmer, Berufsschule","C) Bundesagentur für Arbeit, Personaldienstleistungsunternehmen, Finanzamt","D) Auszubildender, Ausbilder, Prüfungsausschuss"],correct:0,explanation:"PDL-Dreieck: Personaldienstleistungsunternehmen (Arbeitgeber), Zeitarbeitnehmerinnen und Zeitarbeitnehmer (Arbeitnehmer), Kundenbetrieb (Einsatzort)."},
+{id:12,text:"Was bedeutet „Digitalisierung“ für ein PDL-Unternehmen konkret?",options:["A) Nur Online-Werbung","B) KI-gestütztes Recruiting, ATS-Systeme, digitale Disposition","C) Verzicht auf alle Mitarbeiter","D) Nur Cloud-Buchhaltung"],correct:1,explanation:"Digitalisierung umfasst KI-Recruiting, Bewerbermanagementsysteme (Bewerbermanagementsystem), digitale Disposition und Lohnabrechnung."}
+]},
+{
+title: "Block 2 – Arbeitsgestaltung A1–A7 (Fragen 13–24)",
+questions: [
+{id:13,text:"Welche drei Lernformen werden unterschieden?",options:["A) Mathematisch, sprachlich, künstlerisch","B) Formell, nonformal, informell","C) Theoretisch, praktisch, virtuell","D) Aktiv, passiv, digital"],correct:1,explanation:"Lernformen: formell (z. B. Berufsschule), nonformal (innerbetriebliche Schulung), informell (Erfahrungslernen)."},
+{id:14,text:"Was beschreibt der PDCA-Zyklus?",options:["A) Personalauswahlverfahren","B) Plan -- Do -- Check -- Act (Qualitätsregelkreis)","C) Projektphasenmodell","D) Konfliktstufen"],correct:1,explanation:"Plan-Do-Check-Act-Zyklus = Plan-Do-Check-Act, der Deming-Qualitätsregelkreis (KVP)."},
+{id:15,text:"Welche Methode hilft bei der Priorisierung von Aufgaben?",options:["A) SWOT","B) Eisenhower-Matrix (wichtig/dringend)","C) BCG-Portfolio","D) ABC-Vertrieb"],correct:1,explanation:"Die Eisenhower-Matrix priorisiert nach Wichtigkeit und Dringlichkeit (4 Quadranten)."},
+{id:16,text:"Welche Schnittstellen sind im PDL-Tagesgeschäft besonders kritisch?",options:["A) Vertrieb -- Recruiting -- Disposition -- Lohn","B) Marketing -- IT -- Logistik","C) Forschung -- Entwicklung -- Produktion","D) Einkauf -- Lager -- Versand"],correct:0,explanation:"Im Personaldienstleistungsunternehmen: Vertrieb (Auftrag) ↔ Recruiting (Bewerber) ↔ Disposition (Einsatz) ↔ Lohn."},
+{id:17,text:"Welcher Leistungskennzahl misst Kundentreue / Empfehlungsbereitschaft?",options:["A) ROI","B) Net Promoter Score (Net Promoter Score)","C) EBIT","D) BWA"],correct:1,explanation:"Der Net Promoter Score misst die Wahrscheinlichkeit der Weiterempfehlung (Skala -100 bis +100)."},
+{id:18,text:"Welcher Faktor wirkt direkt auf die Qualität einer Dienstleistung?",options:["A) Nur die Gebäudegröße","B) Fachliche, soziale, prozessuale, technische Faktoren","C) Nur das Marketingbudget","D) Nur die Geografie"],correct:1,explanation:"Qualitätsfaktoren: fachlich, sozial, prozessual und technisch."},
+{id:19,text:"Was ist eine „Stehzeit“ im PDL-Kontext?",options:["A) Mittagspause der Disponenten","B) Zeit, in der Zeitarbeitnehmerinnen und Zeitarbeitnehmer unbeschäftigt aber bezahlt sind","C) Zeit zwischen Bewerbung und Einstellung","D) Wartezeit auf den Bus"],correct:1,explanation:"Stehzeit: Zeitarbeitnehmerinnen und Zeitarbeitnehmer ohne Einsatz, aber unter Vertrag und bezahlt -- Kostenfaktor für Personaldienstleistungsunternehmen."},
+{id:20,text:"Was ist Kundenzufriedenheit im PDL-Geschäft?",options:["A) Nice-to-have, nicht relevant","B) Top-KPI – Basis für Folgeaufträge","C) Nur für Werbung wichtig","D) Identisch mit Bewerberzufriedenheit"],correct:1,explanation:"Kundenzufriedenheit ist Top-KPI; sie sichert Folgeaufträge und Empfehlungen."},
+{id:21,text:"Was ist ein Reklamationsmanagement?",options:["A) Werbung für neue Kunden","B) Strukturierte Bearbeitung von Beschwerden zur Verbesserung","C) Verkauf von Reklame","D) Nur Buchhaltung"],correct:1,explanation:"Reklamationsmanagement: systematische Erfassung, Bearbeitung und Auswertung von Beschwerden."},
+{id:22,text:"Welche Methode dient der kontinuierlichen Verbesserung?",options:["A) KVP / Kaizen","B) Big-Bang","C) Outsourcing","D) Downsizing"],correct:0,explanation:"KVP (Kontinuierlicher Verbesserungsprozess) / Kaizen: kleine, ständige Verbesserungen."},
+{id:23,text:"Wer ist im PDL-Kontext typischerweise der „Auftraggeber“ bei einem Personalprojekt?",options:["A) Der Zeitarbeitnehmerinnen und Zeitarbeitnehmer","B) Der Kundenbetrieb","C) Die Industrie- und Handelskammer","D) Die Berufsschule"],correct:1,explanation:"Der Kundenbetrieb beauftragt die Personaldienstleistungsunternehmen mit der Personalbereitstellung -- er ist Auftraggeber."},
+{id:24,text:"Was ist eine ABC-Analyse?",options:["A) Klassifikation der Berufe","B) Klassifikation nach Wichtigkeit (A=hoch, C=niedrig)","C) Sortierung nach Alphabet","D) Audit-Verfahren"],correct:1,explanation:"ABC-Analyse: A-Aufgaben/Kunden = sehr wichtig (ca. 80 % Wert), C = wenig wichtig."}
+]},
+{
+title: "Block 3 – Projektmanagement P1–P15 (Fragen 25–36)",
+questions: [
+{id:25,text:"Wie definiert DIN 69901 ein Projekt?",options:["A) Routinetätigkeit","B) Einmalig, zeitlich begrenzt, neuartig, komplex","C) Dauerhafte Linienaufgabe","D) Reine Forschungstätigkeit"],correct:1,explanation:"DIN 69901: Projekt = einmalig, zeitlich begrenzt, neuartig, komplex, mit definiertem Ziel."},
+{id:26,text:"Welche Projektart ist ein Recruiting-Projekt typischerweise?",options:["A) Investitionsprojekt","B) Personal-/Organisationsprojekt","C) Forschungsprojekt","D) Bauprojekt"],correct:1,explanation:"Recruiting ist ein Personal-/Organisationsprojekt."},
+{id:27,text:"Was steht im Lastenheft?",options:["A) WIE die Lösung umgesetzt wird (Auftragnehmer)","B) WAS gefordert wird (Auftraggeber-Sicht)","C) Steuerunterlagen","D) Mitarbeiterliste"],correct:1,explanation:"Lastenheft = WAS, Auftraggeber-Sicht. Pflichtenheft = WIE, Auftragnehmer-Sicht."},
+{id:28,text:"Was bedeutet Spezifisch, Messbar, Akzeptiert, Realistisch und Terminiert bei Projektzielen?",options:["A) Schnell, Modern, Aktiv, Real, Top","B) Spezifisch, Messbar, Akzeptiert, Realistisch, Terminiert","C) Sparsam, Modular, Agil, Robust, Teamorientiert","D) Strukturiert, Methodisch, Aktiv, Reif, Transparent"],correct:1,explanation:"Spezifisch, Messbar, Akzeptiert, Realistisch und Terminiert = Spezifisch, Messbar, Akzeptiert (auch: Achievable), Realistisch, Terminiert."},
+{id:29,text:"Welche Stakeholder-Analyse-Dimensionen werden typischerweise verwendet?",options:["A) Alter und Geschlecht","B) Macht und Interesse","C) Einkommen und Bildung","D) Wohnort und Familienstand"],correct:1,explanation:"Stakeholder-Matrix: Macht (hoch/niedrig) × Interesse (hoch/niedrig) -- 4 Felder."},
+{id:30,text:"Welche Projektorganisation hat doppelte Berichtslinien?",options:["A) Linien-PM","B) Stab-PM","C) Matrix-PM","D) Reine PM-Org"],correct:2,explanation:"Matrix-PM: Doppelunterstellung Linie ↔ Projekt; Konfliktpotenzial, aber flexibel."},
+{id:31,text:"Was ist die 100 %-Regel im Projektstrukturplan?",options:["A) Alle Termine zu 100 % einhalten","B) Summe aller Arbeitspakete = Projektumfang","C) 100 % der MA müssen mitarbeiten","D) 100 % Eigenkapital nötig"],correct:1,explanation:"PSP-100 %-Regel: Die Summe aller AP umfasst exakt den Projektumfang -- nicht mehr, nicht weniger."},
+{id:32,text:"Was zeigt ein Gantt-Diagramm?",options:["A) Vorgängerlogik","B) Zeitachse mit Vorgängen als Balken","C) Risikobewertung","D) Stakeholder-Gewichtung"],correct:1,explanation:"Gantt = Balkendiagramm über Zeitachse, zeigt Dauer und Parallelität von Vorgängen."},
+{id:33,text:"Was zeigt ein Netzplan im Unterschied zu Gantt?",options:["A) Nur Kosten","B) Logische Vorgängerbeziehungen und kritischen Pfad","C) Mitarbeiter-Adressen","D) Risiken"],correct:1,explanation:"Netzplan: Logik der Abhängigkeiten + kritischer Pfad (längste Kette ohne Puffer)."},
+{id:34,text:"Wofür stehen SPI und CPI in der Earned-Value-Analyse?",options:["A) Standard- und Compliance-Index","B) Schedule Performance Index / Cost Performance Index","C) Sales Process / Customer Performance","D) Strategie und Controlling-Plan"],correct:1,explanation:"SPI = Termintreue (BCWP/BCWS), CPI = Kostentreue (BCWP/ACWP). Werte > 1 = gut."},
+{id:35,text:"Was gehört zur Projektabschluss-Dokumentation?",options:["A) Nur Rechnungen","B) Abschlussbericht, Lessons Learned, Erfahrungssicherung","C) Werbeprospekte","D) Persönliche Notizen ausschließlich"],correct:1,explanation:"Projektabschluss: Abschlussbericht, Lessons-Learned-Workshop, Archivierung (10 Jahre Steuerrelevanz)."},
+{id:36,text:"Welche Maßnahme bei Soll-Ist-Abweichung > 10 %?",options:["A) Nichts tun","B) Eskalation an Lenkungsausschuss + Gegenmaßnahmen","C) Projekt sofort abbrechen","D) Externe Beratung verbieten"],correct:1,explanation:"Bei kritischen Abweichungen: Eskalation an LA, Ursachenanalyse, Gegenmaßnahmen (Scope/Zeit/Ressourcen)."}
+]},
+{
+title: "Block 4 – Berufsfelderschließung B1–B3 (Fragen 37–48)",
+questions: [
+{id:37,text:"Welche Berufsfelder bedient die PDL-Branche besonders?",options:["A) Nur Forschung","B) Gewerblich, kaufmännisch, IT, Medizin/Pflege","C) Nur Hochschulberufe","D) Nur Landwirtschaft"],correct:1,explanation:"Personaldienstleistungsunternehmen bedient gewerblich (Lager/Produktion), kaufmännisch (Büro), IT/Engineering, Medizin/Pflege."},
+{id:38,text:"Welche zentrale Online-Datenbank der Bundesagentur für Arbeit enthält rund 3.000 Berufsprofile?",options:["A) Indeed","B) Berufenet","C) StepStone","D) LinkedIn"],correct:1,explanation:"Berufenet ist die zentrale Berufsdatenbank der Bundesagentur für Arbeit."},
+{id:39,text:"Wofür steht KldB 2010?",options:["A) Klassifikation der Lehrberufe","B) Klassifikation der Berufe 2010 (BA-Code)","C) Kammerverzeichnis","D) Tarifkatalog"],correct:1,explanation:"KldB 2010 = Klassifikation der Berufe 2010 der Bundesagentur für Arbeit, 5-stelliger Code."},
+{id:40,text:"Welche Quelle bietet kurze Berufsvideos zur Orientierung?",options:["A) Berufenet","B) BERUFE.TV","C) Statistisches Bundesamt","D) BMBF"],correct:1,explanation:"BERUFE.TV ist das Filmportal der Bundesagentur für Arbeit mit Berufsvideos."},
+{id:41,text:"Welche vier Kompetenzbereiche unterscheidet man typischerweise?",options:["A) Lesen, Schreiben, Rechnen, IT","B) Fach-, Methoden-, Sozial-, Personalkompetenz","C) Theorie, Praxis, Forschung, Lehre","D) Plan, Tun, Prüfen, Anpassen"],correct:1,explanation:"Klassische 4 Kompetenzen: Fach-, Methoden-, Sozial-, Personalkompetenz."},
+{id:42,text:"Was ist ein Anforderungsprofil?",options:["A) Lebenslauf-Schablone","B) Beschreibung der notwendigen Qualifikationen für eine Stelle","C) Steuererklärung","D) Teilnahmebescheinigung"],correct:1,explanation:"Anforderungsprofil: Hard Skills + Soft Skills + Erfahrung + Verfügbarkeit für eine konkrete Stelle."},
+{id:43,text:"Welches Gesetz muss bei einer Stellenausschreibung zwingend beachtet werden?",options:["A) Allgemeines Gleichbehandlungsgesetz (Allgemeines Gleichbehandlungsgesetz)","B) HGB","C) UWG","D) MarkenG"],correct:0,explanation:"Allgemeines Gleichbehandlungsgesetz verbietet Diskriminierung in Stellenanzeigen (Geschlecht, Alter, Herkunft, Religion, Behinderung, sex. Identität)."},
+{id:44,text:"Was ist eine Engpassanalyse?",options:["A) Logistik-Methode","B) Identifikation von Mangelberufen am Arbeitsmarkt","C) Engpass im Verkehr","D) IT-Bandbreitenanalyse"],correct:1,explanation:"Engpassanalyse der Bundesagentur für Arbeit: identifiziert Berufe mit signifikantem Fachkräftemangel."},
+{id:45,text:"Welche Berufe sind 2024 besonders Mangelberufe in DE?",options:["A) Bibliothekare","B) Pflegefachkräfte, Erzieher, IT-Spezialisten, MINT","C) Friseure","D) Verkäufer ausschließlich"],correct:1,explanation:"Mangelberufe 2024 laut Bundesagentur für Arbeit: Pflege, Erzieher, IT-Spezialisten, MINT-Berufe."},
+{id:46,text:"Was bedeutet „New Work“?",options:["A) Überstundenkultur","B) Sinnorientierte, flexible Arbeitsformen (Bergmann)","C) Schichtarbeit","D) 60-Std-Woche"],correct:1,explanation:"New Work (Frithjof Bergmann): sinnorientierte, selbstbestimmte Arbeit; flexible Modelle, Remote, 4-Tage-Woche."},
+{id:47,text:"Was treibt den demografischen Wandel in DE?",options:["A) Sinkende Geburtenrate + steigende Lebenserwartung","B) Zunehmende Hochschulquote","C) EU-Erweiterung","D) Steuerreform"],correct:0,explanation:"Demografie: niedrige Geburtenrate + höhere Lebenserwartung → alternde Gesellschaft, Fachkräftemangel."},
+{id:48,text:"Was ist Aufstiegs-BAföG?",options:["A) Studien-BAföG","B) Staatliche Förderung für Aufstiegsfortbildungen (z. B. Meister, Fachwirt)","C) Existenzgründungsdarlehen","D) Wohngeld"],correct:1,explanation:"Aufstiegs-BAföG: Förderung für berufliche Aufstiegsfortbildungen (Meister, Fachwirt, Erzieher etc.)."}
+]},
+{
+title: "Block 5 – Kommunikation und Kooperation K1–K6 (Fragen 49–60)",
+questions: [
+{id:49,text:"Wie viele Ohren hat der Empfänger laut Schulz von Thun?",options:["A) 2","B) 3","C) 4","D) 5"],correct:2,explanation:"4 Ohren: Sach, Selbstoffenbarung, Beziehung, Appell."},
+{id:50,text:"Welche Ebene des 4-Ohren-Modells beschreibt „Was soll ich tun?“?",options:["A) Sachebene","B) Selbstoffenbarung","C) Beziehung","D) Appell"],correct:3,explanation:"Appellohr: Was möchte der Sender, dass ich tue?"},
+{id:51,text:"Was ist aktives Zuhören?",options:["A) Schweigend zuhören","B) Paraphrasieren, Spiegeln, Rückfragen","C) Notizen machen","D) Mitschneiden"],correct:1,explanation:"Aktives Zuhören: Inhalte paraphrasieren, Gefühle spiegeln, Rückfragen stellen."},
+{id:52,text:"Welche Kommunikation ist im Recruiting für Candidate Experience entscheidend?",options:["A) Standardisierte Massenmails","B) Wertschätzende, schnelle, transparente Kommunikation","C) Keine Rückmeldung","D) Nur per Brief"],correct:1,explanation:"Candidate Experience profitiert von wertschätzender, schneller, transparenter Kommunikation an allen Touchpoints."},
+{id:53,text:"Welche Methode strukturiert Feedback in W-W-W?",options:["A) Wahrnehmung-Wirkung-Wunsch","B) Was-Wann-Wer","C) Warum-Wozu-Wie","D) Wer-Wo-Wann"],correct:0,explanation:"WWW-Feedback: Wahrnehmung (was beobachte ich), Wirkung (wie wirkt es auf mich), Wunsch (was wünsche ich)."},
+{id:54,text:"Welche Botschaftsform ist im konstruktiven Feedback bevorzugt?",options:["A) Du-Botschaft","B) Ich-Botschaft","C) Wir-Botschaft","D) Sie-Botschaft"],correct:1,explanation:"Ich-Botschaften vermeiden Schuldzuweisungen und beschreiben die eigene Wahrnehmung."},
+{id:55,text:"Wie viele Eskalationsstufen unterscheidet das Glasl-Modell?",options:["A) 5","B) 7","C) 9","D) 12"],correct:2,explanation:"Glasl: 9 Stufen (1-3 Win-Win, 4-6 Win-Lose, 7-9 Lose-Lose)."},
+{id:56,text:"Welche Glasl-Stufe entspricht typischerweise der „Mediation“?",options:["A) Stufen 1-3","B) Stufen 4-6","C) Stufen 7-9","D) Stufe 10"],correct:1,explanation:"Stufen 4-6 (Win-Lose) können meist nur noch durch externe Mediation gelöst werden."},
+{id:57,text:"Was ist eine Konfliktart im Unterschied zu Eskalationsstufen?",options:["A) Identisch","B) Sach-, Beziehungs-, Verteilungs-, Wertekonflikt","C) Nur Sachkonflikt","D) Nur Wertekonflikt"],correct:1,explanation:"Konflikt»arten« beschreiben WAS strittig ist; Glasl-Stufen beschreiben WIE eskaliert."},
+{id:58,text:"Welche externe Unterstützung kommt bei Konflikten in Personaldienstleistungsunternehmen infrage?",options:["A) Nur Anwalt","B) Betriebsrat, Gesamtverband der Personaldienstleister, Anwalt, Bundesagentur für Arbeit, IHK-Mediation","C) Nur Polizei","D) Nur Familie"],correct:1,explanation:"Externe Hilfe: Betriebsrat (intern Personaldienstleistungsunternehmen), Gesamtverband der Personaldienstleister (Tarif), Anwalt (Recht), Bundesagentur für Arbeit (Beratung), IHK-Mediation."},
+{id:59,text:"Was ist Disposition im PDL-Kontext?",options:["A) Schichtplanung und ZAN-Einsatzsteuerung","B) Wareneinkauf","C) Marketing","D) Finanzplanung"],correct:0,explanation:"Disposition: tägliche Schichtplanung, ZAN-Einsatzsteuerung, Krankheits-/Urlaubsmanagement."},
+{id:60,text:"Welche Pflichten hat ein Auszubildender nach § 13 Berufsbildungsgesetz (BVaDiG 2024)?",options:["A) 4 Pflichten","B) 6 Pflichten","C) 8 Pflichten","D) 12 Pflichten"],correct:2,explanation:"§ 13 Berufsbildungsgesetz nach BVaDiG 2024: 8 Pflichten (Lernen, Berufsschule, Berichtsheft, Weisungen, Betriebsordnung, Sorgfalt, Schweigepflicht, Gerätepflege)."}
+]}
+];
+
+let answered = {};
+let checked = {};
+let showAll = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() {
+    const flat = [];
+    sections.forEach(s => s.questions.forEach(q => flat.push(q)));
+    return flat;
+}
+const flatQ = allQuestions();
+
+function render() {
+    const container = document.getElementById('quizContainer');
+    let html = '';
+    let globalIdx = 0;
+    sections.forEach((sec, si) => {
+        html += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach((q, qi) => {
+            const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+            const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+            html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+            html += `<p class="question-text">${q.text}</p>`;
+            html += `<ul class="options-list">`;
+            q.options.forEach((opt, oi) => {
+                let cls = '';
+                if (checked[q.id]) {
+                    if (oi === q.correct) cls = 'correct-opt';
+                    else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+                } else if (answered[q.id] === oi) {
+                    cls = 'selected';
+                }
+                const dis = checked[q.id] ? 'disabled' : '';
+                const chk = answered[q.id] === oi ? 'checked' : '';
+                html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+            });
+            html += `</ul>`;
+            const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+            if (checked[q.id]) {
+                const isCorr = answered[q.id] === q.correct;
+                const fbClass = isCorr ? 'correct' : 'incorrect';
+                const fbText = isCorr
+                    ? `<strong>Richtig!</strong> ${q.explanation}`
+                    : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+                html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+            } else {
+                html += `<div class="feedback" id="fb-${q.id}"></div>`;
+            }
+            html += `</div>`;
+            globalIdx++;
+        });
+    });
+    if (!showAll) {
+        html += `<div class="nav-row">`;
+        html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+        html += `<span style="font-weight:600;color:#004b87;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+        html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+        html += `</div>`;
+    }
+    container.innerHTML = html;
+    updateProgress();
+}
+
+function selectOption(qid, idx) { if (checked[qid]) return; answered[qid] = idx; render(); }
+function checkAnswer(qid) { if (answered[qid] === undefined || checked[qid]) return; checked[qid] = true; render(); updateProgress(); }
+function navigate(dir) { currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir)); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function updateProgress() {
+    const done = Object.keys(checked).length;
+    const pct = Math.round((done / totalQ) * 100);
+    document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+    document.getElementById('progressPct').textContent = `${pct} %`;
+    document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+    const done = Object.keys(checked).length;
+    if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+    let correct = 0;
+    flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+    const pct = Math.round((correct / done) * 100);
+    document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+    let gradeText = ''; let gradeClass = 'pass';
+    if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+    else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+    else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+    else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+    else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+    else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+    const gEl = document.getElementById('gradeText');
+    gEl.textContent = gradeText; gEl.className = 'grade ' + gradeClass;
+    let tbl = '<table><tr><th>Block</th><th>Richtig</th><th>Prozent</th></tr>';
+    sections.forEach(sec => {
+        let sCorr = 0, sTotal = 0;
+        sec.questions.forEach(q => {
+            if (checked[q.id]) { sTotal++; if (answered[q.id] === q.correct) sCorr++; }
+        });
+        const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+        tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+    });
+    tbl += '</table>';
+    document.getElementById('sectionBreakdown').innerHTML = tbl;
+    document.getElementById('resultsPanel').classList.add('show');
+    document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+    answered = {}; checked = {}; currentQ = 0;
+    document.getElementById('resultsPanel').classList.remove('show');
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () { showAll = this.checked; render(); });
+
+function shuffleQuizOptions() {
+    let seed = 42;
+    function seededRandom() { seed = (seed * 16807 + 0) % 2147483647; return (seed - 1) / 2147483646; }
+    sections.forEach(sec => {
+        sec.questions.forEach(q => {
+            const correctText = q.options[q.correct];
+            const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+            for (let i = cleaned.length - 1; i > 0; i--) {
+                const j = Math.floor(seededRandom() * (i + 1));
+                [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+            }
+            const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+            const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+            q.options = cleaned.map((c, i) => prefixes[i] + c);
+            q.correct = cleaned.indexOf(correctClean);
+        });
+    });
+}
+shuffleQuizOptions();
+
+render();
+</script>
+</body>
+</html>

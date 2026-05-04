@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Tag 13 – Kompetenzprofile (gewerblich, kfm., IT, Medizin/Pflege)</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #00325f 0%, #004b87 50%, #0082b4 100%); color: #fff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+.header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+.header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+.toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+.toolbar button, .toolbar .toggle-label { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.toolbar button:hover { background: #00325f; }
+.toggle-label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; user-select: none; }
+.toggle-label input { accent-color: #004b87; width: 18px; height: 18px; cursor: pointer; }
+.progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+.progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+.progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0082b4, #00bfff); border-radius: 6px; transition: width 0.4s ease; }
+.container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+.section-title { background: #00325f; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+.section-title:first-child { margin-top: 0; }
+.question-card { background: #fff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+.question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.question-card.correct-card { border-left: 5px solid #28a745; }
+.question-card.incorrect-card { border-left: 5px solid #dc3545; }
+.question-number { display: inline-block; background: #e8f0fe; color: #004b87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+.question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+.options-list { list-style: none; }
+.options-list li { margin-bottom: 0.5rem; }
+.options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+.options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+.options-list input[type="radio"] { accent-color: #004b87; margin-top: 3px; flex-shrink: 0; }
+.options-list label.selected { background: #e8f0fe; border-color: #004b87; }
+.options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+.options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+.check-btn { margin-top: 0.8rem; background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.check-btn:hover { background: #00325f; }
+.check-btn:disabled { background: #8faec8; cursor: default; }
+.feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+.feedback.show { display: block; }
+.feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.nav-btn { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+.nav-btn:hover { background: #00325f; }
+.nav-btn:disabled { background: #8faec8; cursor: default; }
+.results-panel { background: #fff; border: 2px solid #004b87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.results-panel.show { display: block; }
+.results-panel h2 { color: #00325f; margin-bottom: 0.8rem; }
+.score-big { font-size: 3rem; font-weight: 700; color: #004b87; }
+.grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+.grade.pass { color: #28a745; }
+.grade.fail { color: #dc3545; }
+.section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+.section-breakdown table { width: 100%; border-collapse: collapse; }
+.section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+.section-breakdown th { background: #e8f0fe; color: #00325f; text-align: left; }
+.references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+.references h3 { color: #00325f; margin-bottom: 0.8rem; font-size: 1.1rem; }
+.references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+.footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+@media print { body { background: #fff; } .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; } .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; } .feedback.show { display: block !important; } }
+@media (max-width: 600px) { .header { padding: 1.4rem 0.8rem; } .question-card { padding: 1rem; } .toolbar { flex-direction: column; align-items: stretch; text-align: center; } }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header class="header">
+<h1>Quiz Tag 13 &ndash; Kompetenzprofile in der Personaldienstleistung</h1>
+<div class="subtitle">Gewerblich-technisch &bull; Kaufm&auml;nnisch &bull; IT &bull; Medizin/Pflege</div>
+<div class="meta">
+  <span>&copy; Can Siebert</span>
+  <span>Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026 &bull; Block 4 &bull; B1 (2/3)</span>
+  <span>60 Fragen &bull; Multiple Choice</span>
+</div>
+</header>
+
+<div class="toolbar">
+  <label class="toggle-label"><input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen</label>
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+    <button onclick="showResults()">Ergebnis anzeigen</button>
+    <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+  </div>
+</div>
+
+<div class="progress-container">
+  <div class="progress-info">
+    <span id="progressText">0 von 60 beantwortet</span>
+    <span id="progressPct">0 %</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+  <div class="results-panel" id="resultsPanel">
+    <h2>Dein Ergebnis</h2>
+    <div class="score-big" id="scoreBig"></div>
+    <div class="grade" id="gradeText"></div>
+    <div class="section-breakdown" id="sectionBreakdown"></div>
+    <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+  </div>
+</div>
+
+<div class="references">
+  <h3>Literaturverzeichnis (APA 7)</h3>
+  <p>Bundesagentur f&uuml;r Arbeit. (2024). <em>Fachkr&auml;ftebedarf &ndash; Engpassanalyse 2024</em>. Statistik der Bundesagentur für Arbeit, N&uuml;rnberg.</p>
+  <p>Bundesinstitut f&uuml;r Berufsbildung (BIBB). (2024). <em>Datenreport zum Berufsbildungsbericht 2024</em>. BIBB, Bonn.</p>
+  <p>Erpenbeck, J., &amp; von Rosenstiel, L. (2017). <em>Handbuch Kompetenzmessung</em> (3. Aufl.). Sch&auml;ffer-Poeschel.</p>
+  <p>Gesamtverband der Personaldienstleister &amp; DGB. (2022). <em>Tarifvertrag Gesamtverband der Personaldienstleister/DGB &ndash; Branchentarif Zeitarbeit</em>.</p>
+  <p>North, K., Reinhardt, K., &amp; Sieber-Suter, B. (2018). <em>Kompetenzmanagement in der Praxis</em> (3. Aufl.). Springer Gabler.</p>
+  <p>U.S. Office of Personnel Management. (2020). <em>Knowledge, Skills, and Abilities (KSA) Framework</em>.</p>
+</div>
+
+<footer class="footer">&copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Stand 05/2026</footer>
+
+<script>
+const sections = [
+  {
+    title: "Abschnitt 1: Begriffe & KSA-Modell (Fragen 1-10)",
+    questions: [
+      { id: 1, text: "Was bezeichnet der Begriff 'Qualifikation' in der PDL-Praxis präzise?", options: ["A) Die Fähigkeit, in unbekannten Situationen selbstorganisiert zu handeln","B) Einen formal nachgewiesenen Abschluss, ein Zertifikat oder eine Berechtigung","C) Eine im Bewerbungsgespräch gezeigte Verhaltensweise","D) Eine isolierte einzelne Software-Fertigkeit"], correct: 1, explanation: "Qualifikation = was im Zeugnis steht. Beispiele: Gesellenbrief, IHK-Prüfung, Staatsexamen, Gabelstaplerschein." },
+      { id: 2, text: "Wofür stehen die Buchstaben K, S und A im KSA-Modell?", options: ["A) Kommunikation, Sozialkompetenz, Anpassung","B) Knowledge, Skills, Abilities","C) Kenntnisse, Sachlichkeit, Aufmerksamkeit","D) Kompetenz, Spezialisierung, Allgemeinbildung"], correct: 1, explanation: "KSA = Knowledge (Wissen), Skills (Fertigkeiten), Abilities (übertragbare kognitive/körperliche Eigenschaften). Modell stammt vom U.S. Office of Personnel Management." },
+      { id: 3, text: "Welche Aussage zum Unterschied zwischen 'Skill' und 'Kompetenz' trifft zu?", options: ["A) Skill und Kompetenz sind synonym verwendbar","B) Skill ist eine trainierbare Einzelfertigkeit; Kompetenz ist die Fähigkeit, in neuen Situationen selbstorganisiert zu handeln","C) Skill ist ein DQR-Niveau; Kompetenz nicht","D) Kompetenz ist immer formal zertifiziert, Skill nie"], correct: 1, explanation: "Skill = isoliert messbare, trainierte Einzelfertigkeit (z.B. SAP HCM). Kompetenz = ganzheitliche Handlungsfähigkeit (Erpenbeck/Rosenstiel)." },
+      { id: 4, text: "Welche der folgenden Eigenschaften gehört zu den 'Abilities' im KSA-Modell?", options: ["A) Bedienung von SAP HCM","B) Kenntnis des HGB","C) Hand-Auge-Koordination","D) Excel S-Verweis"], correct: 2, explanation: "Abilities sind übertragbare kognitive oder körperliche Eigenschaften. Hand-Auge-Koordination ist klassisches A. SAP HCM und Excel sind Skills, HGB-Kenntnis ist Knowledge." },
+      { id: 5, text: "Welche Eselsbrücke passt zum KSA-Modell?", options: ["A) Person-Aktion-Sozial-Fach","B) Kopf-Hand-Herz","C) Plan-Do-Check-Act","D) Situation-Task-Action-Result"], correct: 1, explanation: "Kopf = Knowledge, Hand = Skills, Herz/Charakter = Abilities. PASF ist Heyse/Erpenbeck, Plan-Do-Check-Act-Zyklus ist Qualitätsmanagement, STAR ist Interview-Methode." },
+      { id: 6, text: "Welcher der folgenden Punkte ist KEIN Element von Knowledge?", options: ["A) Kenntnis der OWASP-Top-10","B) Wissen über FIFO/LIFO-Prinzipien","C) Belastbarkeit über 8 Stunden Schicht","D) Kenntnis der ADR-Gefahrgut-Klassen"], correct: 2, explanation: "Belastbarkeit ist eine Ability (übertragbare Eigenschaft). Alle anderen sind theoretisches Fachwissen (Knowledge)." },
+      { id: 7, text: "Wann wird im KSA-Modell von einem 'Skill' gesprochen?", options: ["A) Bei einer formal zertifizierten Berufsausbildung","B) Bei einer trainierbaren, oft tool- oder werkzeugbezogenen Einzelfertigkeit","C) Bei einer angeborenen kognitiven Eigenschaft","D) Bei einem akademischen Abschluss"], correct: 1, explanation: "Skill = trainierbare, isoliert messbare Einzelfertigkeit, häufig software- oder werkzeugbezogen (z.B. SAP, React, Schweißen MAG, Stapler fahren)." },
+      { id: 8, text: "Welche Recruiter-Faustregel beschreibt den Umgang mit den drei Begriffen am besten?", options: ["A) 'Qualifikation = Zeugnis. Skill = Anforderung. Kompetenz = Wirkung.'","B) 'Qualifikation = Skill = Kompetenz, alles dasselbe.'","C) 'Nur Qualifikation zählt im Bewerbungsgespräch.'","D) 'Skill kann man nicht testen.'"], correct: 0, explanation: "Diese Faustregel hilft, im Recruiting auf jeder Ebene gezielt zu prüfen: Zeugnis vorlegen lassen, Skills testen, Kompetenzen über Verhaltensfragen erschließen." },
+      { id: 9, text: "Wer entwickelte das ursprüngliche KSA-Modell?", options: ["A) Die Bundesagentur für Arbeit","B) John Erpenbeck und Lutz von Rosenstiel","C) Das U.S. Office of Personnel Management","D) Die International Labour Organization (ILO)"], correct: 2, explanation: "Das KSA-Modell wurde ursprünglich vom U.S. Office of Personnel Management (OPM) für die Stellenbewertung im US-Bundesdienst entwickelt." },
+      { id: 10, text: "Welcher Vorteil ergibt sich aus der konsequenten Trennung von K, S und A im Anforderungsprofil?", options: ["A) Es ist gesetzlich vorgeschrieben","B) Anforderungen werden sortenrein erfasst und Bewerber gezielt diagnostiziert","C) Es spart Lizenzkosten für CRM-Systeme","D) Es verhindert die Equal-Pay-Pflicht"], correct: 1, explanation: "Die saubere Trennung verhindert, dass Abilities (am wichtigsten für den Erfolg im Einsatz) im Anforderungsprofil vergessen werden -- eine häufige Fehlerquelle." }
+    ]
+  },
+  {
+    title: "Abschnitt 2: Berufsfeld gewerblich-technisch (Fragen 11-20)",
+    questions: [
+      { id: 11, text: "Welcher Anteil aller Zeitarbeitsverhältnisse entfällt in Deutschland etwa auf das gewerblich-technische Berufsfeld?", options: ["A) Ca. 10 %","B) Ca. 30 %","C) Ca. 60 %","D) Ca. 90 %"], correct: 2, explanation: "Ca. 60 % aller Überlassungen entfallen auf gewerblich-technische Tätigkeiten (Helfer, Fachkräfte, Spezialisten in Lager, Produktion, Bauumfeld). Quelle: BA-Statistik 2024." },
+      { id: 12, text: "Welche Ausbildung dauert im gewerblich-technischen Bereich KEINE drei Jahre?", options: ["A) Fachkraft für Lagerlogistik","B) Industriemechaniker:in","C) Fachlagerist:in","D) Mechatroniker:in"], correct: 2, explanation: "Fachlagerist:in dauert 2 Jahre (Industrie- und Handelskammer), Fachkraft für Lagerlogistik 3 Jahre. Beide Berufe können anschließend zur Fachkraft aufgestockt werden." },
+      { id: 13, text: "Welche Aussage zur Überlassung in das Bauhauptgewerbe ist korrekt?", options: ["A) Sie ist generell ohne Einschränkungen erlaubt.","B) Sie ist nach § 1b Arbeitnehmerüberlassungsgesetz grundsätzlich verboten, mit eng definierten Ausnahmen.","C) Sie ist nur Pflegekräften vorbehalten.","D) Sie ist nur für Bauhilfen erlaubt."], correct: 1, explanation: "§ 1b Arbeitnehmerüberlassungsgesetz verbietet die AÜ in Bauhauptbetriebe grundsätzlich (Schutz vor Lohndumping). Ausnahme: Überlassung zwischen Bauhauptbetrieben mit identischer Tarifbindung seit mind. 3 Jahren." },
+      { id: 14, text: "Welches Schweiß-Verfahren bezeichnet der Code 141 nach DIN EN ISO 9606?", options: ["A) MAG-Schweißen","B) E-Hand-Schweißen","C) WIG-Schweißen","D) Autogenschweißen"], correct: 2, explanation: "141 = WIG (Wolfram-Inert-Gas, hochwertig für Edelstahl). 135 = MAG, 111 = E-Hand. Pro Verfahren ist ein eigenes Zertifikat nötig." },
+      { id: 15, text: "Wie lange ist die G25-Untersuchung in der Regel gültig?", options: ["A) 12 Monate","B) 24 Monate","C) 36 Monate","D) 60 Monate"], correct: 2, explanation: "Die G25-Untersuchung (Eignung für Fahr-, Steuer- und Überwachungstätigkeiten, z.B. Stapler) ist in der Regel 36 Monate gültig." },
+      { id: 16, text: "Welcher Schein ist Voraussetzung zum Führen von Flurförderzeugen?", options: ["A) DGUV V68 (Gabelstaplerschein)","B) ADR-Schein","C) Fahrlehrerschein","D) AdA-Schein"], correct: 0, explanation: "Der Gabelstaplerschein nach DGUV V68 (vormals BGV D27) ist gesetzlich vorgeschrieben. Lebenslang gültig, aber mit jährlicher Unterweisung verbunden." },
+      { id: 17, text: "Welche Prüfposition entspricht einer Überkopf-Schweißnaht?", options: ["A) PA","B) PB","C) PE","D) PG"], correct: 2, explanation: "PE = Überkopf-Schweißnaht. PA = waagrecht, PB = horizontal-vertikal, PG = fallend. Wer Überkopf schweißen muss, braucht PE-Zulassung." },
+      { id: 18, text: "Welche CNC-Steuerungen sind NICHT direkt austauschbar?", options: ["A) Es ist völlig egal, welche Steuerung der CNC-Bediener kennt","B) Siemens 840D, Heidenhain TNC und Fanuc sind unterschiedliche Steuerungen mit eigenem Bedienkonzept","C) Alle CNC-Steuerungen verwenden ein einheitliches Bedienkonzept","D) Jeder Zerspaner kennt automatisch alle Steuerungen"], correct: 1, explanation: "Die drei Hauptfamilien (Siemens 840D, Heidenhain TNC, Fanuc) haben unterschiedliche Bedienlogik. Ein Heidenhain-Bediener ist nicht automatisch auch Siemens-tauglich." },
+      { id: 19, text: "Welches Zertifikat ist für Einsätze in Chemieanlagen oder Raffinerien typischerweise verpflichtend?", options: ["A) AdA-Schein","B) SCC-Schein","C) ECDL","D) ITIL Foundation"], correct: 1, explanation: "SCC = Sicherheits-Certificate-Contractors. Pflicht in Chemie/Raffinerie/Petrochemie. Gültigkeit 36 Monate. AdA = Ausbildereignung; ECDL/ITIL sind IT/Büro." },
+      { id: 20, text: "Welche Anforderung ist bei einem Kommissionierer mit Pick-by-Voice typischerweise besonders wichtig?", options: ["A) Master-Abschluss","B) Englischkenntnisse C2","C) Hör- und Reaktionsfähigkeit","D) Akademischer Werdegang in Logistik"], correct: 2, explanation: "Pick-by-Voice nutzt Sprachsteuerung mit Headset. Hörvermögen, Reaktionsschnelligkeit, klare Aussprache und Konzentrationsfähigkeit (Abilities) sind entscheidend." }
+    ]
+  },
+  {
+    title: "Abschnitt 3: Berufsfeld kaufmännisch & Vertrieb (Fragen 21-30)",
+    questions: [
+      { id: 21, text: "Welcher Marktanteil entfällt etwa auf kaufmännische Berufe in der Zeitarbeit?", options: ["A) Ca. 5 %","B) Ca. 18 %","C) Ca. 35 %","D) Ca. 50 %"], correct: 1, explanation: "Ca. 18 % aller Überlassungen, mit besonders hoher Try-\\&-Hire-Quote (Übernahme in Festanstellung)." },
+      { id: 22, text: "Was bedeutet 'Try \\& Hire' in der Personaldienstleistung?", options: ["A) Zwingender Probelauf nach 18 Monaten","B) Verlängerte Probezeit über die AÜ mit anschließender Übernahme in Festanstellung","C) Gesetzliche Probezeit nach § 622 BGB","D) Einsatz auf Werkvertrag"], correct: 1, explanation: "Try \\& Hire = Kunde 'probiert' Überlassene Mitarbeitende und übernimmt sie nach Bewährung. Für Personaldienstleistungsunternehmen: Vermittlungsprovision; für Mitarbeitende: stabiler Job; für Kunden: gezeigte Leistung statt nur Lebenslauf." },
+      { id: 23, text: "Welche der folgenden Software-Kategorien ist typischer Skill in der Buchhaltung?", options: ["A) Adobe Photoshop","B) DATEV / SAP FI","C) AutoCAD","D) Pro/ENGINEER"], correct: 1, explanation: "DATEV (Mittelstand) und SAP FI (Konzern) sind die Standard-Buchhaltungssysteme. Adobe/CAD sind Design/Konstruktion." },
+      { id: 24, text: "Welcher Beruf zählt laut Engpassanalyse 2024 der Bundesagentur für Arbeit zu den kaufmännischen Engpassberufen?", options: ["A) Hilfsbuchhalter:in","B) Bilanzbuchhalter:in","C) Praktikant:in im Vertrieb","D) Werkstudent:in Büromanagement"], correct: 1, explanation: "Bilanzbuchhalter:innen, Steuerfachangestellte, Lohn-/Gehaltsbuchhalter:innen und Personalreferent:innen sind klassische Engpassberufe (BA-Engpassanalyse 2024)." },
+      { id: 25, text: "Welche Eigenschaft ist im KSA-Profil eines Vertriebsmitarbeitenden eine typische 'Ability'?", options: ["A) CRM-Kenntnis","B) Frustrationstoleranz","C) Kenntnis von AGB","D) Präsentationsfähigkeit mit PowerPoint"], correct: 1, explanation: "Frustrationstoleranz ist eine Persistenz-Eigenschaft (Ability), entscheidend im Vertrieb. CRM-Kenntnis und PowerPoint sind Skills, AGB-Kenntnis ist Knowledge." },
+      { id: 26, text: "Welche Doppelrolle hat 'Vertrieb' in der Personaldienstleistung?", options: ["A) Vertrieb wird in der Personaldienstleistungsbranche nicht benötigt","B) Vertrieb ist sowohl Bedarfsfeld für Kundenunternehmen als auch Schlüsselfunktion in der eigenen PDL-Niederlassung","C) Vertrieb ersetzt die Disposition","D) Vertrieb ist nur für Marketing zuständig"], correct: 1, explanation: "Vertrieb ist (1) ein gefragtes Profil bei Kundenunternehmen (B2B-Außendienst, Innendienst) und (2) gleichzeitig die Akquise-Schlüsselrolle in der PDL-Niederlassung selbst." },
+      { id: 27, text: "Welche Software-Kategorie gehört typischerweise zum CRM-Skill?", options: ["A) Salesforce, HubSpot, Bullhorn, Zvoove","B) AutoCAD, Inventor, Solidworks","C) GitHub, GitLab, Bitbucket","D) DATEV, Lexware, Sage"], correct: 0, explanation: "Customer-Relationship-Management-System = Customer Relationship Management. Salesforce/HubSpot sind Marktführer; Bullhorn/Zvoove sind PDL-Spezialisten." },
+      { id: 28, text: "Welche der folgenden Kennzahlen ist KEINE typische Leistungskennzahl im PDL-Vertrieb?", options: ["A) Akquise-Termine pro Woche","B) Anzahl neu überlassener Kräfte pro Monat","C) Durchschnittliche Bearbeitungszeit pro Kommissionierauftrag","D) Rohertragsmarge je Mitarbeitendem"], correct: 2, explanation: "Bearbeitungszeit pro Kommissionierauftrag ist eine Lager-KPI, nicht Vertrieb. Die anderen drei sind klassische PDL-Vertriebs-KPIs." },
+      { id: 29, text: "Welcher der folgenden Skills ist im Anforderungsprofil 'Sachbearbeitung Buchhaltung' am wichtigsten?", options: ["A) Programmierung in Python","B) Excel-Kenntnisse inkl. S-Verweis und Pivot-Tabellen","C) Bedienung von CNC-Steuerungen","D) Adobe Premiere"], correct: 1, explanation: "Excel mit S-Verweis (jetzt XVERWEIS) und Pivot-Tabellen ist die Kern-Skill in der Buchhaltung. Python ist schön, aber kein Standard." },
+      { id: 30, text: "Wie sollte ein PDL-Disponent mit DSGVO-Sensibilität umgehen?", options: ["A) Sie ist im HR-Umfeld ein Muss-Kriterium","B) Sie ist nur für IT-Profile relevant","C) Sie ist seit 2020 abgeschafft","D) Sie ist nur für Bürgermeister relevant"], correct: 0, explanation: "Im HR-Umfeld arbeiten Sachbearbeiter mit Personaldaten -- DSGVO-Sensibilität ist Pflicht-Kriterium und sollte im Interview über Verhaltensfragen geprüft werden." }
+    ]
+  },
+  {
+    title: "Abschnitt 4: Berufsfeld IT (Fragen 31-40)",
+    questions: [
+      { id: 31, text: "Welche Senioritaets-Stufe entspricht typischerweise 0-2 Jahren Berufserfahrung in der IT?", options: ["A) Junior","B) Mid-Level","C) Senior","D) Lead"], correct: 0, explanation: "Junior = 0-2 Jahre, Mid = 3-5 Jahre, Senior = 6+ Jahre, Lead/Principal = Team-/technische Führung. Strikte Tarif-Differenzierung." },
+      { id: 32, text: "Welcher Skill gehört zu einem typischen Frontend-Entwickler-Profil?", options: ["A) ABAP, S/4HANA Customizing","B) React 18+, TypeScript, Tailwind","C) AutoCAD, Inventor","D) DATEV, SAP FI"], correct: 1, explanation: "Frontend-Stack 2026 typischerweise React 18+, TypeScript, Tailwind, Next.js, Vite. ABAP ist SAP-Backend, AutoCAD ist Konstruktion, DATEV ist Buchhaltung." },
+      { id: 33, text: "Welches Zertifikat ist im Cloud-Bereich (AWS) ein klassisches Mid-Level-Ziel?", options: ["A) AWS SAA-C03 (Solutions Architect Associate)","B) Stapler-Schein G25","C) Schweißer DIN EN ISO 9606","D) AdA-Schein"], correct: 0, explanation: "AWS SAA-C03 (Solutions Architect Associate) ist das Standard-AWS-Zertifikat für Cloud-Engineers. Die anderen sind völlig anderer Bereiche." },
+      { id: 34, text: "Welche der folgenden Aussagen zum IT-Recruiting ist eine wichtige Faustregel?", options: ["A) Skills bleiben über Jahrzehnte unverändert","B) Skills altern, Abilities bleiben","C) Abilities sind unwichtig","D) Bewerber sollten 100 % Stack-Überlappung haben"], correct: 1, explanation: "Skills altern (neue Frameworks alle 2-3 Jahre); Lernbereitschaft und Problemlösungs-Denken (Abilities) bleiben. Daher: Cultural Fit > Hashtag-Skills." },
+      { id: 35, text: "Welche Mindest-Stack-Schnittmenge sollte ein Bewerber laut Faustregel mitbringen, um sinnvoll als IT-Überlassener vorgeschlagen zu werden?", options: ["A) 30 %","B) 50 %","C) 70 %","D) 100 %"], correct: 2, explanation: "Faustregel: ca. 70 % Stack-Schnittmenge plus nachgewiesene Lernbereitschaft. 100 % findet man oft nicht; ohne 70 % Einarbeitung zu lang." },
+      { id: 36, text: "Was ist das Kernziel einer NIS2-Umsetzung im Unternehmen?", options: ["A) Die DSGVO abzulösen","B) Die Cybersicherheit kritischer Einrichtungen zu verbessern","C) Den Mindestlohn anzuheben","D) Den TV-GVP-Tarif abzuschaffen"], correct: 1, explanation: "NIS2-Richtlinie (EU, seit Okt. 2024 in Umsetzung) verpflichtet kritische Sektoren zu Cybersicherheits-Maßnahmen. Treibt Bedarf an IT-Security-Spezialist:innen." },
+      { id: 37, text: "Welches Zertifikat ist ein klassisches IT-Sicherheits-Senior-Zertifikat?", options: ["A) Stapler-Schein","B) CISSP","C) Pflegeexamen","D) Hebammen-B.Sc."], correct: 1, explanation: "CISSP = Certified Information Systems Security Professional, Standard-Senior-Zertifikat in der Cybersecurity. Andere genannte sind völlig anderer Bereiche." },
+      { id: 38, text: "Welcher Bereich zählt NICHT zur klassischen IT-Administration?", options: ["A) Windows-Administration (Active Directory, Exchange)","B) Linux-Administration","C) Network Engineering","D) Bilanzbuchhaltung"], correct: 3, explanation: "Bilanzbuchhaltung ist ein kaufmännisches Berufsfeld. Windows/Linux/Network sind Kern der IT-Administration." },
+      { id: 39, text: "Welche der folgenden Aussagen zu DevOps-Profilen trifft zu?", options: ["A) Es geht ausschließlich um Programmierung","B) DevOps verbindet Entwicklung und Betrieb mit Tools wie Kubernetes, Docker, Terraform, GitLab CI","C) DevOps ist ein veraltetes Konzept","D) DevOps-Profile arbeiten ohne Versionskontrolle"], correct: 1, explanation: "DevOps = Development + Operations. Tools: Kubernetes (CKA-Zertifikat), Docker, Terraform (IaC), GitLab CI, Prometheus. Kombination Skill + Mindset." },
+      { id: 40, text: "Welcher Tarifaspekt unterscheidet IT von gewerblich-technisch im TV-GVP?", options: ["A) Es gibt keinen Unterschied","B) IT ist tariflich nicht abgedeckt","C) IT-Eingruppierungen liegen in den oberen Entgeltgruppen (EG 7-9)","D) IT-Mitarbeitende werden gar nicht überlassen"], correct: 2, explanation: "IT-Profile werden in den oberen EGs des TV-GVP eingeordnet, näher am Marktverdienst. Branchenzuschläge erhöhen die Eingruppierung weiter." }
+    ]
+  },
+  {
+    title: "Abschnitt 5: Berufsfeld Medizin/Pflege (Fragen 41-50)",
+    questions: [
+      { id: 41, text: "Was führte das Pflegeberufegesetz (PflBG) 2017/2020 in Deutschland ein?", options: ["A) Die Abschaffung der Pflegeberufe","B) Die generalistische Pflegeausbildung zur Pflegefachfrau / Pflegefachmann (3 Jahre)","C) Die verpflichtende Akademisierung aller Pflegeberufe","D) Die Verkürzung der Pflegeausbildung auf 1 Jahr"], correct: 1, explanation: "PflBG führte die generalistische Pflegeausbildung ein -- Zusammenführung der früheren drei Berufe (Altenpflege, Gesundheits-/Krankenpflege, Gesundheits-/Kinderkrankenpflege). Vertiefung im 3. Lehrjahr möglich." },
+      { id: 42, text: "Welche Fachrichtungen gibt es bei MTA?", options: ["A) Es gibt nur eine MTA-Fachrichtung","B) Labor (L), Radiologie (R), Funktionsdiagnostik (F), Veterinär (V)","C) Pharmazie, Logistik, Verwaltung","D) Frontend, Backend, DevOps"], correct: 1, explanation: "Vier MTA-Fachrichtungen: MTLA (Labor), MTRA (Radiologie), MTFA (Funktionsdiagnostik), MTVA (Veterinär). Keine Austauschbarkeit zwischen den Richtungen!" },
+      { id: 43, text: "Wie ist die Hebammen-Ausbildung seit 2020 in Deutschland strukturiert?", options: ["A) Als 1-jährige Schulausbildung","B) Als verpflichtendes duales Studium (B.Sc. Hebammenkunde, 6-7 Semester)","C) Als 3-monatiger Kurs","D) Als reines Praktikum ohne formale Ausbildung"], correct: 1, explanation: "Seit 2020 ist die Hebammen-Ausbildung in Deutschland akademisiert -- duales Studium mit Bachelor of Science Hebammenkunde, 6-7 Semester." },
+      { id: 44, text: "Was bedeutet ATA?", options: ["A) Anwendungsspezialist Technik Anlagen","B) Anästhesietechnische Assistenz","C) Aktiver Teamleiter Außendienst","D) Akkreditierter Tarifausschuss"], correct: 1, explanation: "ATA = Anästhesietechnische Assistenz. Ausbildung 3 Jahre. Tätig in Vorbereitung und Begleitung von Anästhesie und OP. Nicht zu verwechseln mit OTA (Operationstechnische Assistenz)." },
+      { id: 45, text: "Welche Sondervorschrift gilt für die Überlassung in Pflegeeinrichtungen seit 2017 (§ 10a Arbeitnehmerüberlassungsgesetz mit Ergänzungen 2023)?", options: ["A) Die AÜG-Standardregeln gelten unverändert","B) Equal Pay greift erst nach 18 Monaten","C) Equal Pay greift ab dem ersten Einsatztag, Tarifbindung TVöD-P/TVAW","D) Überlassung in Pflegeeinrichtungen ist gänzlich verboten"], correct: 2, explanation: "Pflege-AÜG-Sondervorschriften: Equal Pay ab Tag 1 (kein 9-Monats-Verzug), Tarifbindung TVöD-P bzw. TVAW, Verbot der Überlassung in den eigenen Träger, Begrenzung Springer-Modelle." },
+      { id: 46, text: "Was ist eine 'vorbehaltene Tätigkeit' für Pflegefachkräfte?", options: ["A) Eine Tätigkeit, die nur examinierte Pflegefachkräfte ausführen dürfen, z. B. Pflegeprozesssteuerung","B) Eine Tätigkeit, die ausschließlich von Ärzten ausgeführt wird","C) Eine Tätigkeit, die nur von Pflegehelfern ausgeführt werden darf","D) Eine Tätigkeit, die jede:r unabhängig von Qualifikation ausführen kann"], correct: 0, explanation: "Vorbehaltene Tätigkeiten (§ 4 PflBG) dürfen nur examinierte Pflegefachkräfte ausführen: Erhebung des individuellen Pflegebedarfs, Organisation/Steuerung des Pflegeprozesses, Analyse/Evaluation/Sicherung der Qualität." },
+      { id: 47, text: "Welche typische Ability ist bei Pflegefachkräften besonders wichtig?", options: ["A) Programmierkenntnisse","B) Empathie, Belastbarkeit und Stressresistenz","C) Schweißqualifikation","D) Buchhaltungswissen"], correct: 1, explanation: "Pflege erfordert hohe emotionale (Empathie), körperliche (Heben/Drehen) und mentale (Schichtarbeit, schwierige Angehörige) Belastbarkeit -- alles klassische Abilities." },
+      { id: 48, text: "Welcher Beruf ist der korrekte Abschluss nach 3 Jahren Ausbildung in der zahnmedizinischen Praxis?", options: ["A) PTA","B) ZFA","C) MTA-L","D) ATA"], correct: 1, explanation: "ZFA = Zahnmedizinische Fachangestellte (3 Jahre, IHK-/Zahnärztekammer-Prüfung). Aufgaben: Stuhlassistenz, Hygiene, Praxismanagement, Abrechnung." },
+      { id: 49, text: "Welche Pflegedokumentations-Tools sind in deutschen Pflegeeinrichtungen verbreitet?", options: ["A) DATEV, SAP FI, Lexware","B) LEP, ePA, SIS","C) GitHub, GitLab, Bitbucket","D) AutoCAD, Inventor"], correct: 1, explanation: "LEP = LeistungsErfassung in der Pflege; ePA = elektronische Pflegeakte; SIS = Strukturierte Informationssammlung. Standardwerkzeuge in der Pflege-Doku." },
+      { id: 50, text: "Wie lange dauert die PTA-Ausbildung?", options: ["A) 1 Jahr","B) 2,5 Jahre + 6 Monate Praktikum","C) 5 Jahre","D) 6 Monate"], correct: 1, explanation: "PTA = Pharmazeutisch-technische Assistenz: 2,5 Jahre Schule plus 6 Monate Praktikum in einer öffentlichen Apotheke. Anschließend staatliche Prüfung." }
+    ]
+  },
+  {
+    title: "Abschnitt 6: Modelle und Anforderungsprofile (Fragen 51-60)",
+    questions: [
+      { id: 51, text: "Welche vier Kompetenzklassen unterscheidet das Modell von Heyse/Erpenbeck?", options: ["A) Knowledge, Skills, Abilities, Attitudes","B) Personal, Aktivität/Handlung, Sozial-kommunikativ, Fach/Methode","C) Bronze, Silber, Gold, Platin","D) Anfänger, Fortgeschrittene, Profis, Experten"], correct: 1, explanation: "Heyse/Erpenbeck (KODE®): P (Personal), A (Aktivität/Handlung), S (Sozial-kommunikativ), F (Fach/Methode). Eselsbrücke: PASF." },
+      { id: 52, text: "Welcher Ansatz beschreibt das Deutscher Qualifikationsrahmen/EQR-Modell?", options: ["A) 8 Niveaustufen mit Outcome-Orientierung","B) 4 Kompetenzklassen mit KODE-Test","C) 3 Skill-Stufen Junior/Mid/Senior","D) Eine Methode des Bewerber-Interviews"], correct: 0, explanation: "Deutscher Qualifikationsrahmen (Deutscher Qualifikationsrahmen) und EQR (Europäischer QR) verwenden 8 Niveaus, beschreiben Outcomes (Was kann die Person?), nicht Inputs." },
+      { id: 53, text: "Wofür stehen die Buchstaben STAR im Bewerber-Interview?", options: ["A) Skills, Trainings, Abilities, Resilienz","B) Situation, Task, Action, Result","C) Sender, Transmitter, Antenne, Receiver","D) Status, Tarif, Anrechnung, Rentenpunkte"], correct: 1, explanation: "STAR-Methode: Situation -- Task -- Action -- Result. Verhaltensbasierte Interview-Methode zur Erfassung von Kompetenzen über konkrete Vergangenheits-Situationen." },
+      { id: 54, text: "Wann sollte ein Anforderungspunkt als 'Muss' (statt 'Kann') in einem Profil eingetragen werden?", options: ["A) Wenn der Kunde es nett findet","B) Wenn er gesetzliche Pflicht ist oder ohne ihn der Job unmöglich wäre","C) Bei jedem Punkt, um Kompetenzen zu sichern","D) Bei keiner Anforderung"], correct: 1, explanation: "Faustregel: Muss = Gesetz oder Showstopper. Alles andere ist Kann (in 4-8 Wochen anlernbar). Lieber drei harte Muss-Kriterien als zehn weiche -- sonst Suche zu lang." },
+      { id: 55, text: "Wie viele Bestandteile hat ein gutes Anforderungsprofil typischerweise?", options: ["A) 2 Bestandteile","B) 6 Bestandteile (Bezeichnung, Aufgaben, KSA, Rahmen, Dauer/Volumen, Vergütung)","C) 12 Bestandteile","D) 20 Bestandteile"], correct: 1, explanation: "Sechs Bestandteile: Stellenbezeichnung, Aufgabengebiete, KSA-Anforderungen (Muss/Kann), Rahmenbedingungen (Stunden/Schicht/Standort), Dauer/Volumen, Vergütungsrahmen." },
+      { id: 56, text: "Welche der folgenden Anforderungen würden Sie bei einer Stelle 'Lagerhelfer mit Stapler' als 'Muss' eintragen?", options: ["A) Master-Abschluss BWL","B) Gültiger Gabelstapler-Schein nach DGUV V68","C) AWS SAA-C03","D) Reisekosten-Erstattung"], correct: 1, explanation: "Der Stapler-Schein ist gesetzlich vorgeschrieben (Pflicht-Muss). Master-BWL, AWS-Zertifikat sind völlig fachfremd; Reisekosten sind kein Bewerber-Kriterium." },
+      { id: 57, text: "Welche Bedeutung hat der Begriff 'Cultural Fit' im IT-Recruiting?", options: ["A) Die ethnische Herkunft des Bewerbers","B) Die Passung zwischen Werten/Arbeitsstil des Bewerbers und dem Team/Unternehmen","C) Eine kulinarische Vorliebe","D) Eine bestimmte Programmiersprache"], correct: 1, explanation: "Cultural Fit beschreibt die Passung zwischen persönlichen Werten/Arbeitsstil und Team-/Unternehmenskultur. Wichtig für langfristige Bindung; im IT-Recruiting oft entscheidender als reine Skill-Passung." },
+      { id: 58, text: "Welcher Anteil entfällt etwa auf Medizin/Pflege im PDL-Markt?", options: ["A) Ca. 1 %","B) Ca. 8 %","C) Ca. 25 %","D) Ca. 50 %"], correct: 1, explanation: "Ca. 8 %, mit wachsender Tendenz durch Fachkräftemangel. Pflege ist Sonderfeld mit eigenen Tarifen und AÜG-Sondervorschriften." },
+      { id: 59, text: "In welchem Berufsfeld sind 'PASF-Kompetenzen' nach Heyse/Erpenbeck am wichtigsten zu prüfen?", options: ["A) Nur in der IT","B) In allen Berufsfeldern -- ergänzt KSA gut um Verhaltensdimensionen","C) Nur in der Pflege","D) Nur in der Buchhaltung"], correct: 1, explanation: "PASF ergänzt KSA um Verhaltens-/Persönlichkeits-Dimensionen. In allen Berufsfeldern relevant; besonders bei Schlüsselstellen und Führungspositionen." },
+      { id: 60, text: "Welche Kombination ist die 'Kurzform' der Tag-13-Kernbotschaft?", options: ["A) 'Qualifikation = Skill = Kompetenz'","B) 'Qualifikation = Zeugnis. Skill = Anforderung. Kompetenz = Wirkung.'","C) 'Equal Pay nach 9 Monaten'","D) 'Bauhauptgewerbe ist erlaubt'"], correct: 1, explanation: "Diese Faustregel sortiert die drei Begriffe prägnant: Zeugnis (formaler Nachweis), Anforderung (Skill in Stellenanzeige), Wirkung (gezeigte Kompetenz im Einsatz)." }
+    ]
+  }
+];
+
+let answered = {};
+let checked  = {};
+let showAll  = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() { const flat = []; sections.forEach(s => s.questions.forEach(q => flat.push(q))); return flat; }
+const flatQ = allQuestions();
+
+function render() {
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  let globalIdx = 0;
+  sections.forEach((sec, si) => {
+    html += `<div class="section-title">${sec.title}</div>`;
+    sec.questions.forEach((q, qi) => {
+      const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+      const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+      html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+      html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+      html += `<p class="question-text">${q.text}</p>`;
+      html += `<ul class="options-list">`;
+      q.options.forEach((opt, oi) => {
+        let cls = '';
+        if (checked[q.id]) {
+          if (oi === q.correct) cls = 'correct-opt';
+          else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+        } else if (answered[q.id] === oi) { cls = 'selected'; }
+        const dis = checked[q.id] ? 'disabled' : '';
+        const chk = answered[q.id] === oi ? 'checked' : '';
+        html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+      });
+      html += `</ul>`;
+      const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+      html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+      if (checked[q.id]) {
+        const isCorr = answered[q.id] === q.correct;
+        const fbClass = isCorr ? 'correct' : 'incorrect';
+        const fbText = isCorr ? `<strong>Richtig!</strong> ${q.explanation}` : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+        html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+      } else {
+        html += `<div class="feedback" id="fb-${q.id}"></div>`;
+      }
+      html += `</div>`;
+      globalIdx++;
+    });
+  });
+  if (!showAll) {
+    html += `<div class="nav-row">`;
+    html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+    html += `<span style="font-weight:600;color:#004b87;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+    html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+    html += `</div>`;
+  }
+  container.innerHTML = html;
+  updateProgress();
+}
+
+function selectOption(qid, idx) { if (checked[qid]) return; answered[qid] = idx; render(); }
+function checkAnswer(qid) { if (answered[qid] === undefined || checked[qid]) return; checked[qid] = true; render(); updateProgress(); }
+function navigate(dir) { currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir)); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function updateProgress() {
+  const done = Object.keys(checked).length;
+  const pct = Math.round((done / totalQ) * 100);
+  document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+  document.getElementById('progressPct').textContent = `${pct} %`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+  const done = Object.keys(checked).length;
+  if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+  let correct = 0;
+  flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+  const pct = Math.round((correct / done) * 100);
+  document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+  let gradeText = ''; let gradeClass = 'pass';
+  if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+  else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+  else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+  else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+  else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+  else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+  const gEl = document.getElementById('gradeText'); gEl.textContent = gradeText; gEl.className = 'grade ' + gradeClass;
+  let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+  sections.forEach(sec => {
+    let sCorr = 0, sTotal = 0;
+    sec.questions.forEach(q => { if (checked[q.id]) { sTotal++; if (answered[q.id] === q.correct) sCorr++; } });
+    const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+    tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+  });
+  tbl += '</table>';
+  document.getElementById('sectionBreakdown').innerHTML = tbl;
+  document.getElementById('resultsPanel').classList.add('show');
+  document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+  answered = {}; checked = {}; currentQ = 0;
+  document.getElementById('resultsPanel').classList.remove('show');
+  render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () { showAll = this.checked; render(); });
+
+function shuffleQuizOptions() {
+  let seed = 42;
+  function seededRandom() { seed = (seed * 16807 + 0) % 2147483647; return (seed - 1) / 2147483646; }
+  sections.forEach(sec => {
+    sec.questions.forEach(q => {
+      const correctText = q.options[q.correct];
+      const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+      for (let i = cleaned.length - 1; i > 0; i--) {
+        const j = Math.floor(seededRandom() * (i + 1));
+        [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+      }
+      const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+      const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+      q.options = cleaned.map((c, i) => prefixes[i] + c);
+      q.correct = cleaned.indexOf(correctClean);
+    });
+  });
+}
+shuffleQuizOptions();
+render();
+</script>
+</body>
+</html>

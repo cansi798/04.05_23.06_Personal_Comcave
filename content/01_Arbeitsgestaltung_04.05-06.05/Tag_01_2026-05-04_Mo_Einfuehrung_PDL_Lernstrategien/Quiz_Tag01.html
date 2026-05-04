@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tag 01 – Einf&uuml;hrung PDL-Branche &amp; Lernstrategien (Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026)</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #1a1a2e;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #00325f 0%, #004b87 50%, #0082b4 100%);
+            color: #ffffff;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+        .header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+        .header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+        .toolbar button, .toolbar .toggle-label { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .toolbar button:hover { background: #00325f; }
+        .toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+        .toggle-label input { accent-color: #004b87; width: 18px; height: 18px; cursor: pointer; }
+        .progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+        .progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0082b4, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+        .container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+        .section-title { background: #00325f; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+        .section-title:first-child { margin-top: 0; }
+        .question-card { background: #ffffff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+        .question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .question-card.correct-card { border-left: 5px solid #28a745; }
+        .question-card.incorrect-card { border-left: 5px solid #dc3545; }
+        .question-number { display: inline-block; background: #e8f0fe; color: #004b87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+        .question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+        .options-list { list-style: none; }
+        .options-list li { margin-bottom: 0.5rem; }
+        .options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+        .options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+        .options-list input[type="radio"] { accent-color: #004b87; margin-top: 3px; flex-shrink: 0; }
+        .options-list label.selected { background: #e8f0fe; border-color: #004b87; }
+        .options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+        .options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+        .check-btn { margin-top: 0.8rem; background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .check-btn:hover { background: #00325f; }
+        .check-btn:disabled { background: #8faec8; cursor: default; }
+        .feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .nav-btn { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .nav-btn:hover { background: #00325f; }
+        .nav-btn:disabled { background: #8faec8; cursor: default; }
+        .results-panel { background: #ffffff; border: 2px solid #004b87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .results-panel.show { display: block; }
+        .results-panel h2 { color: #00325f; margin-bottom: 0.8rem; }
+        .score-big { font-size: 3rem; font-weight: 700; color: #004b87; }
+        .grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+        .grade.pass { color: #28a745; }
+        .grade.fail { color: #dc3545; }
+        .section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+        .section-breakdown table { width: 100%; border-collapse: collapse; }
+        .section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+        .section-breakdown th { background: #e8f0fe; color: #00325f; text-align: left; }
+        .references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+        .references h3 { color: #00325f; margin-bottom: 0.8rem; font-size: 1.1rem; }
+        .references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+        .footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+        @media print {
+            body { background: #fff; }
+            .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; }
+            .header { background: #00325f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+            .section-title { break-after: avoid; }
+            .feedback.show { display: block !important; }
+        }
+        @media (max-width: 600px) {
+            .header { padding: 1.4rem 0.8rem; }
+            .question-card { padding: 1rem; }
+            .toolbar { flex-direction: column; align-items: stretch; text-align: center; }
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1>Quiz Tag 01 &ndash; Einf&uuml;hrung PDL-Branche &amp; Lernstrategien</h1>
+    <div class="subtitle">Lehrgang Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer &middot; Lerninhalte I0 + I1 + I2 + A1</div>
+    <div class="meta">
+        <span>&copy; Can Siebert</span>
+        <span>Stand 05/2026</span>
+        <span>60 Fragen &bull; Multiple Choice</span>
+    </div>
+</header>
+
+<div class="toolbar">
+    <label class="toggle-label">
+        <input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen
+    </label>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <button onclick="showResults()">Ergebnis anzeigen</button>
+        <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-info">
+        <span id="progressText">0 von 60 beantwortet</span>
+        <span id="progressPct">0 %</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+    <div class="results-panel" id="resultsPanel">
+        <h2>Dein Ergebnis</h2>
+        <div class="score-big" id="scoreBig"></div>
+        <div class="grade" id="gradeText"></div>
+        <div class="section-breakdown" id="sectionBreakdown"></div>
+        <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="references">
+    <h3>Literaturverzeichnis (APA 7)</h3>
+    <p>Bundesministerium der Justiz. (2025). <em>Berufsbildungsgesetz</em>. https://www.gesetze-im-internet.de/bbig_2005/</p>
+    <p>Bundesministerium der Justiz. (2024). <em>Arbeitnehmer&uuml;berlassungsgesetz (A&Uuml;G)</em>. https://www.gesetze-im-internet.de/a_g/</p>
+    <p>Bundesministerium der Justiz. (2008). <em>Verordnung &uuml;ber die Berufsausbildung zum Personaldienstleistungskaufmann (PersDLKfAusbV)</em>. https://www.gesetze-im-internet.de/persdienstlausbv/</p>
+    <p>Cirillo, F. (2018). <em>The Pomodoro Technique</em>. Currency.</p>
+    <p>Fleming, N. D. (2001). <em>VARK – A Guide to Learning Styles</em>. https://vark-learn.com</p>
+    <p>Gesamtverband der Personaldienstleister e.V. (Gesamtverband der Personaldienstleister). (2024). <em>Branchenzahlen 2024</em>. https://www.personaldienstleister.de</p>
+    <p>Weinstein, C. E., &amp; Mayer, R. E. (1986). The teaching of learning strategies. In M. C. Wittrock (Hrsg.), <em>Handbook of Research on Teaching</em> (S. 315–327). Macmillan.</p>
+</div>
+
+<footer class="footer">
+    &copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Lehrgang Personaldienstleistungskaufmann/-frau Mai&ndash;Juni 2026 | Stand 05/2026
+</footer>
+
+<script>
+const sections = [
+    {
+        title: "Abschnitt 1: PDL-Branche, Stellung & Rechtsform (Fragen 1–10)",
+        questions: [
+            { id: 1, text: "Welche Tätigkeit gehört typischerweise zum Kerngeschäft eines Personaldienstleisters?", options: ["A) Direktverkauf von Konsumgütern an Endkunden", "B) Arbeitnehmerüberlassung (AÜ) und Personalvermittlung", "C) Investitionsgüter-Leasing", "D) Versicherungsvertrieb"], correct: 1, explanation: "Personaldienstleister erbringen Dienstleistungen rund um Vermittlung, Überlassung und Entwicklung von Personal. Kerngeschäfte sind Arbeitnehmerüberlassung, Personalvermittlung, Outsourcing und Master-Vendor-Modelle." },
+            { id: 2, text: "Welches Gesetz regelt die Erlaubnispflicht für die gewerbsmäßige Arbeitnehmerüberlassung?", options: ["A) Berufsbildungsgesetz", "B) HGB", "C) Arbeitnehmerüberlassungsgesetz", "D) BetrVG"], correct: 2, explanation: "Das Arbeitnehmerüberlassungsgesetz regelt die AÜ. Nach § 1 Arbeitnehmerüberlassungsgesetz benötigt jeder gewerbsmäßige Verleiher eine Erlaubnis der Bundesagentur für Arbeit." },
+            { id: 3, text: "Welche Behörde erteilt zentral die Erlaubnis nach § 1 Arbeitnehmerüberlassungsgesetz?", options: ["A) Industrie- und Handelskammer", "B) Agentur für Arbeit Düsseldorf", "C) Finanzamt", "D) Bundesministerium für Arbeit und Soziales"], correct: 1, explanation: "Die AÜ-Erlaubnis wird zentral von der Agentur für Arbeit Düsseldorf erteilt. Erstanträge sind befristet (1 Jahr); nach drei Jahren kann eine unbefristete Erlaubnis ausgesprochen werden." },
+            { id: 4, text: "Welche der folgenden Rechtsformen ist bei mittelständischen Personaldienstleistern besonders verbreitet?", options: ["A) Verein (e.V.)", "B) Stiftung", "C) GmbH bzw. GmbH & Co. KG", "D) öffentliche Körperschaft"], correct: 2, explanation: "Die GmbH (Stammkapital 25.000 EUR) und die GmbH & Co. KG (Haftungsbegrenzung + steuerliche Vorteile) sind im PDL-Mittelstand besonders verbreitet, da sie Haftung begrenzen und steuerlich flexibel sind." },
+            { id: 5, text: "Welches Drei-Personen-Verhältnis ist typisch für die Arbeitnehmerüberlassung?", options: ["A) Verleiher – Entleiher – Leiharbeitnehmer:in (Zeitarbeitnehmerinnen und Zeitarbeitnehmer)", "B) Bewerber:in – Industrie- und Handelskammer – Bundesagentur für Arbeit", "C) Arbeitgeber – Betriebsrat – Gewerkschaft", "D) Hersteller – Händler – Kunde"], correct: 0, explanation: "In der AÜ bestehen drei Beziehungen: (1) Arbeitsvertrag Personaldienstleistungsunternehmen–Zeitarbeitnehmerinnen und Zeitarbeitnehmer, (2) AÜV Personaldienstleistungsunternehmen–Kundenbetrieb, (3) faktisches Weisungsverhältnis Kundenbetrieb–Zeitarbeitnehmerinnen und Zeitarbeitnehmer (kein Arbeitsvertrag)." },
+            { id: 6, text: "Wer zahlt im Drei-Personen-Verhältnis der AÜ den Lohn an den/die Zeitarbeitnehmerinnen und Zeitarbeitnehmer?", options: ["A) Der Kundenbetrieb (Entleiher)", "B) Der Personaldienstleister (Verleiher)", "C) Die Bundesagentur für Arbeit", "D) Die Berufsgenossenschaft"], correct: 1, explanation: "Der Arbeitsvertrag besteht zwischen dem Personaldienstleister und dem/der Zeitarbeitnehmerinnen und Zeitarbeitnehmer. Der Verleiher ist deshalb der Lohnzahler. Der Kundenbetrieb zahlt nur den Stundensatz an den Verleiher."},
+            { id: 7, text: "Welche Vertragsart wird zwischen Personaldienstleister und Kundenbetrieb geschlossen?", options: ["A) Arbeitsvertrag", "B) Kaufvertrag", "C) Arbeitnehmerüberlassungsvertrag (AÜV)", "D) Mietvertrag"], correct: 2, explanation: "Zwischen Verleiher und Entleiher wird ein AÜV geschlossen, in dem die Überlassung einer konkreten Person, Stundensatz, Einsatzort und Anforderungsprofil vereinbart sind." },
+            { id: 8, text: "Welche typische Funktion hat ein:e Niederlassungsleiter:in (NL) in einem PDL-Unternehmen?", options: ["A) Lohnabrechnung erstellen", "B) Stundenzettel der Zeitarbeitnehmerinnen und Zeitarbeitnehmer prüfen", "C) Gesamtverantwortung für P&L, Personalführung, Top-Akquise", "D) Bewerber sourcen und Vorstellungsgespräche führen"], correct: 2, explanation: "Niederlassungsleiter:innen tragen die Gesamtverantwortung für die Niederlassung: Profit & Loss, Personalführung, strategische Kundenakquise und Reporting an die Zentrale." },
+            { id: 9, text: "Welche Aufgaben übernimmt das Backoffice einer PDL-Niederlassung typischerweise?", options: ["A) Vertragswesen, Lohnabrechnung, Stundenerfassung, Mahnwesen", "B) Bewerberauswahl und Vorstellungsgespräche", "C) Neukundenakquise und Angebotskalkulation", "D) Führung der Niederlassung"], correct: 0, explanation: "Das Backoffice übernimmt administrative Aufgaben: Erstellung von Arbeitsverträgen, Lohnabrechnung, Stundenerfassung der Zeitarbeitnehmerinnen und Zeitarbeitnehmer, Mahnwesen und Reisekosten." },
+            { id: 10, text: "Welche Aussage zum/zur Disponent:in ist korrekt?", options: ["A) Er/sie ist für die Buchhaltung verantwortlich", "B) Er/sie plant die Einsätze der Zeitarbeitnehmerinnen und Zeitarbeitnehmer bei den Kunden und betreut sie", "C) Er/sie verhandelt Tarifverträge mit den Gewerkschaften", "D) Er/sie ist nur für neue Bewerber:innen zuständig"], correct: 1, explanation: "Disponent:innen planen die Einsätze der Zeitarbeitnehmerinnen und Zeitarbeitnehmer bei den Kundenbetrieben (Disposition), betreuen sie während des Einsatzes und stellen die Schnittstelle zum Kunden sicher." }
+        ]
+    },
+    {
+        title: "Abschnitt 2: Bedeutung der Personaldienstleistungsbranche (Fragen 11–20)",
+        questions: [
+            { id: 11, text: "Wie viele Zeitarbeitnehmer:innen (Zeitarbeitnehmerinnen und Zeitarbeitnehmer) gibt es ungefähr in Deutschland (Stand 2024)?", options: ["A) ca. 100.000", "B) ca. 250.000", "C) ca. 750.000", "D) ca. 2 Millionen"], correct: 2, explanation: "In Deutschland gibt es rund 750.000 Zeitarbeitnehmerinnen und Zeitarbeitnehmer – etwa 1,8 % der Gesamtbeschäftigung (Quelle: GVP-Branchenzahlen 2024)." },
+            { id: 12, text: "Welche Funktion der Zeitarbeit beschreibt den Effekt, dass Zeitarbeitnehmerinnen und Zeitarbeitnehmer häufig vom Kundenbetrieb in Festanstellung übernommen werden?", options: ["A) Brückenfunktion", "B) Klebefunktion / Klebeeffekt", "C) Konjunkturpufferfunktion", "D) Spezialisierungsfunktion"], correct: 1, explanation: "Der Klebeeffekt (oder die Klebefunktion) beschreibt die Übernahme von Zeitarbeitnehmerinnen und Zeitarbeitnehmer in eine Festanstellung beim Kundenbetrieb. Etwa 30–40 % der Zeitarbeitnehmerinnen und Zeitarbeitnehmer werden so übernommen." },
+            { id: 13, text: "Welche zwei Verbände fusionierten zum 01.01.2022 zum Gesamtverband der Personaldienstleister?", options: ["A) DGB und BDA", "B) iGZ und BAP", "C) BIBB und BMBF", "D) Industrie- und Handelskammer und HWK"], correct: 1, explanation: "Am 01.01.2022 fusionierten der iGZ (Interessenverband Deutscher Zeitarbeitsunternehmen) und der BAP (Bundesarbeitgeberverband der Personaldienstleister) zum Gesamtverband der Personaldienstleister (Gesamtverband der Personaldienstleister e.V.)." },
+            { id: 14, text: "Welcher Tarifvertrag regelt die Mindestlöhne in der deutschen Zeitarbeitsbranche?", options: ["A) TVoeD", "B) Tarifvertrag Metall- und Elektroindustrie", "C) TV-GVP (vormals iGZ-/BAP-Tarifverträge)", "D) BAT"], correct: 2, explanation: "Der TV-GVP (vor der Fusion: getrennte Tarifverträge von iGZ und BAP) regelt die Mindestentgelte, Branchenzuschläge, Urlaub und Arbeitszeitkonten in der Zeitarbeit." },
+            { id: 15, text: "Welche Branchen sind die größten Abnehmer von Zeitarbeit in Deutschland?", options: ["A) Anwaltskanzleien und Notariate", "B) Logistik, Automotive/Metall, Pflege, Lebensmittelindustrie", "C) Theater und Museen", "D) Land- und Forstwirtschaft"], correct: 1, explanation: "Die größten Abnehmer sind Logistik (Lager, Versand), Automotive/Metall, Pflege und Lebensmittelindustrie – alle Branchen mit hohem oder schwankendem Personalbedarf." },
+            { id: 16, text: "Was ist die Brückenfunktion der Zeitarbeit?", options: ["A) Verbindung zwischen Bund und Ländern", "B) Übergang von Arbeitslosigkeit oder Quereinstieg in den ersten Arbeitsmarkt", "C) Verbindung zwischen Industrie- und Handelskammer und HWK", "D) Brückenfinanzierung von Unternehmen"], correct: 1, explanation: "Die Brückenfunktion beschreibt, dass Zeitarbeit Personen den Übergang aus Arbeitslosigkeit oder dem Quereinstieg in den ersten Arbeitsmarkt ermöglicht." },
+            { id: 17, text: "Wie reagiert die Zeitarbeit auf konjunkturelle Schwankungen im Vergleich zur Gesamtbeschäftigung?", options: ["A) Sie ist völlig unabhängig", "B) Sie schwankt deutlich stärker (bis ca. 5x)", "C) Sie schwankt schwächer", "D) Sie reagiert immer entgegengesetzt"], correct: 1, explanation: "Die Zeitarbeit reagiert besonders sensibel auf Konjunktur und schwankt bis zu 5x stärker als die Gesamtbeschäftigung – daher die Bezeichnung „Atmungsmuskel der Wirtschaft“." },
+            { id: 18, text: "Wie hoch ist der Anteil der Zeitarbeit an der gesamten Beschäftigung in Deutschland ca.?", options: ["A) 0,1 %", "B) 1,8 %", "C) 12 %", "D) 25 %"], correct: 1, explanation: "Der Anteil der Zeitarbeit liegt bei ca. 1,8 % der sozialversicherungspflichtig Beschäftigten. Klein im Anteil, aber groß in der arbeitsmarktpolitischen Bedeutung." },
+            { id: 19, text: "Welche der folgenden Aussagen über den Gesamtverband der Personaldienstleister ist korrekt?", options: ["A) Er ist eine staatliche Behörde", "B) Er vertritt die Interessen der Personaldienstleister, verhandelt Tarifverträge und bietet Rechtsberatung", "C) Er ist die Zuständige Stelle für die PDK-Prüfung", "D) Er ist Teil der Bundesagentur für Arbeit"], correct: 1, explanation: "Der Gesamtverband der Personaldienstleister ist der private Branchenverband der Personaldienstleister. Er vertritt politische Interessen, verhandelt den TV-GVP, bietet Rechtsberatung und Schulungen und setzt Branchenstandards." },
+            { id: 20, text: "Welche Funktion der Zeitarbeit liegt vor, wenn ein Online-Händler im Weihnachtsgeschäft kurzfristig 50 zusätzliche Lagermitarbeiter:innen benötigt?", options: ["A) Spezialisierungsfunktion", "B) Flexibilisierungsfunktion", "C) Brückenfunktion", "D) Klebefunktion"], correct: 1, explanation: "Die Flexibilisierungsfunktion ermöglicht Kundenbetrieben, kurzfristige Auftragsspitzen, saisonale Schwankungen und projektbezogenen Personalbedarf abzudecken, ohne langfristige Kostenbindung." }
+        ]
+    },
+    {
+        title: "Abschnitt 3: Marktwirtschaftliche Einflüsse / Political, Economic, Social, Technological, Environmental and Legal (Fragen 21–30)",
+        questions: [
+            { id: 21, text: "Wofür steht das Akronym Political, Economic, Social, Technological, Environmental and Legal?", options: ["A) Personal, Effizienz, Strategie, Technologie, Erfolg, Logistik", "B) Political, Economic, Social, Technological, Ecological, Legal", "C) Produkt, Effekt, Service, Team, Erfolg, Loyalität", "D) Personalmanagement-System mit ELearning"], correct: 1, explanation: "Political, Economic, Social, Technological, Environmental and Legal steht für Political, Economic, Social, Technological, Ecological und Legal – sechs Dimensionen makroökonomischer Einflussfaktoren auf ein Unternehmen." },
+            { id: 22, text: "Welche der folgenden Faktoren zählt zur Dimension „S“ (Sozial-demografisch) im PESTEL-Modell?", options: ["A) Mindestlohn", "B) Konjunktur", "C) Demografischer Wandel und Fachkräftemangel", "D) DSGVO"], correct: 2, explanation: "Demografischer Wandel, Fachkräftemangel, veränderte Arbeitseinstellungen (New Work) und Diversität fallen unter die sozial-demografische Dimension." },
+            { id: 23, text: "Welche der folgenden Entwicklungen wird allgemein als einer der „4 D-Trends“ der PDL-Branche bezeichnet?", options: ["A) Deflation", "B) Demografie", "C) Diskontierung", "D) Devaluation"], correct: 1, explanation: "Die 4 D-Trends sind: Demografie, Digitalisierung, Diversifizierung, Dekarbonisierung. Sie prägen die strategische Ausrichtung der PDL-Branche." },
+            { id: 24, text: "Welche Auswirkung hat der demografische Wandel voraussichtlich auf die PDL-Branche?", options: ["A) Zeitarbeitnehmerinnen und Zeitarbeitnehmer werden überflüssig", "B) Zeitarbeitnehmerinnen und Zeitarbeitnehmer werden knapper, Löhne steigen, Margen unter Druck", "C) Der Bedarf an Personaldienstleistungen sinkt drastisch", "D) Die AÜ wird verboten"], correct: 1, explanation: "Bis 2035 verlassen ca. 7 Mio. Babyboomer den deutschen Arbeitsmarkt. Folge: Zeitarbeitnehmerinnen und Zeitarbeitnehmer werden knapper, Löhne steigen, Margen geraten unter Druck – gleichzeitig steigt der Bedarf bei den Kunden." },
+            { id: 25, text: "Was bezeichnet „Active Sourcing“ im Recruiting?", options: ["A) Passives Warten auf Bewerber", "B) Direkte Ansprache von Kandidat:innen durch Recruiter:innen (z.B. via LinkedIn)", "C) Auswahl von Lieferanten für Bürobedarf", "D) Outsourcing der Personalabteilung"], correct: 1, explanation: "Active Sourcing bezeichnet die direkte Ansprache potenzieller Kandidat:innen durch Recruiter:innen über LinkedIn, XING, Direktansprache, Karrieremessen – im Gegensatz zur passiven Bewerbungsannahme." },
+            { id: 26, text: "Wie heisst ein typisches digitales System zur Verwaltung von Bewerbungen in einem Personaldienstleister?", options: ["A) ERP", "B) Customer-Relationship-Management-System", "C) Bewerbermanagementsystem (Applicant Tracking System)", "D) DMS"], correct: 2, explanation: "Ein Bewerbermanagementsystem (Applicant Tracking System) wie TalentLink, Persis oder Workday verwaltet Bewerbungen, automatisiert Workflows und unterstützt KI-Matching. Customer-Relationship-Management-System dient der Kundenverwaltung, ERP der Unternehmenssteuerung." },
+            { id: 27, text: "Welcher PESTEL-Faktor steht bei der Einführung der EU-KI-Verordnung im Vordergrund?", options: ["A) Ökologisch", "B) Politisch und Rechtlich", "C) Sozial-demografisch", "D) Ökonomisch"], correct: 1, explanation: "Die EU-KI-Verordnung (AI Act) ist sowohl politisch (politische Initiative der EU) als auch rechtlich (Verordnung mit unmittelbarer Geltung) einzuordnen. Sie wirkt direkt auf KI-gestützte Recruiting-Tools." },
+            { id: 28, text: "Welche der folgenden Plattformen gehört NICHT zu den klassischen Bewerbermanagement-Systemen (Bewerbermanagementsystem), sondern ist eine vermittelnde Plattform/On-Demand-Anbieter?", options: ["A) TalentLink", "B) Persis", "C) Zenjob", "D) Workday"], correct: 2, explanation: "Zenjob ist eine On-Demand-Plattform, die Studierende minutengenau auf Schichten vermittelt. Sie ist ein Wettbewerber/Substitut zur klassischen Zeitarbeit, kein Bewerbermanagementsystem." },
+            { id: 29, text: "Welche der folgenden Aussagen zur Wirkung der Konjunktur auf die Zeitarbeit ist falsch?", options: ["A) In Hochkonjunktur sind Bewerber knapp", "B) In Rezessionen werden Zeitarbeitnehmerinnen und Zeitarbeitnehmer typischerweise zuerst reduziert", "C) Die Zeitarbeit reagiert träger als die Gesamtwirtschaft", "D) Die Zeitarbeit gilt als „Atmungsmuskel der Wirtschaft“"], correct: 2, explanation: "Falsch: Die Zeitarbeit reagiert NICHT träger, sondern deutlich SENSIBLER (bis 5x stärker) als die Gesamtwirtschaft. Sie folgt der Konjunktur früher und stärker." },
+            { id: 30, text: "Was beschreibt der „Recruiting-Funnel“?", options: ["A) Eine technische Trichteranlage zum Aktensortieren", "B) Den schrittweisen Auswahlprozess von Kandidaten von der Ansprache bis zur Einstellung", "C) Eine Methode zum Lohnabrechnen", "D) Ein KI-System zur Lohnberechnung"], correct: 1, explanation: "Der Recruiting-Funnel modelliert den Bewerberprozess als Trichter: vom breiten Interesse über Bewerbung, Vorauswahl, Interview bis zur Einstellung. Auf jeder Stufe verringert sich die Zahl der Kandidaten." }
+        ]
+    },
+    {
+        title: "Abschnitt 4: AÜG-Recht & Magic Numbers 18-9-3 (Fragen 31–40)",
+        questions: [
+            { id: 31, text: "Wie lange darf ein:e Zeitarbeitnehmerinnen und Zeitarbeitnehmer nach aktueller AÜG-Regelung maximal an denselben Kundenbetrieb überlassen werden?", options: ["A) 6 Monate", "B) 12 Monate", "C) 18 Monate", "D) 24 Monate"], correct: 2, explanation: "Nach § 1b Arbeitnehmerüberlassungsgesetz beträgt die Höchstüberlassungsdauer 18 Monate pro Kundenbetrieb. Tarifvertraglich kann diese Frist jedoch verlängert werden (z.B. TV-GVP/IG Metall: bis 48 Monate)." },
+            { id: 32, text: "Nach wie vielen Monaten Einsatz beim selben Kunden gilt spätestens Equal Pay?", options: ["A) 3 Monate", "B) 6 Monate", "C) 9 Monate", "D) 12 Monate"], correct: 2, explanation: "Equal Pay (gleiches Entgelt wie vergleichbare Stammbelegschaft) gilt spätestens nach 9 Monaten Einsatz beim selben Kunden. Mit Branchenzuschlägen kann das gestaffelt früher eintreten." },
+            { id: 33, text: "Was passiert, wenn ein PDL-Unternehmen ohne Erlaubnis nach § 1 Arbeitnehmerüberlassungsgesetz verleiht?", options: ["A) Es passiert nichts, solange kein Schaden entsteht", "B) Bußgeld bis 30.000 EUR und der Arbeitsvertrag Zeitarbeitnehmerinnen und Zeitarbeitnehmer/Verleiher gilt als Arbeitsvertrag mit dem Entleiher (§ 10 Arbeitnehmerüberlassungsgesetz)", "C) Nur eine schriftliche Verwarnung", "D) Verlust der IHK-Mitgliedschaft"], correct: 1, explanation: "Ohne AÜ-Erlaubnis drohen empfindliche Bußgelder bis 30.000 EUR (im Wiederholungsfall mehr) und der Arbeitsvertrag wird kraft Gesetz auf den Entleiher übergeleitet (Fiktionswirkung nach § 10 Arbeitnehmerüberlassungsgesetz)." },
+            { id: 34, text: "Welche Pflicht hat der Verleiher nach Arbeitnehmerüberlassungsgesetz vor Beginn des Einsatzes?", options: ["A) Kennzeichnungspflicht (AÜ als solche im AÜV ausweisen) und Konkretisierungspflicht (konkreten Zeitarbeitnehmerinnen und Zeitarbeitnehmer benennen)", "B) Anmeldung beim Finanzamt", "C) Anmeldung im Handelsregister", "D) Prüfung der Kreditwürdigkeit"], correct: 0, explanation: "Nach § 1 Abs. 1 S. 5 + 6 Arbeitnehmerüberlassungsgesetz bestehen Kennzeichnungspflicht (AÜ als solche im AÜV ausweisen, nicht als Werkvertrag tarnen) und Konkretisierungspflicht (konkrete Person vorab benennen)." },
+            { id: 35, text: "Welche Versicherung ist beim Arbeitsunfall eines/einer Zeitarbeitnehmerinnen und Zeitarbeitnehmer am Einsatzort beim Kunden zuständig?", options: ["A) Berufsgenossenschaft des Kundenbetriebs", "B) Berufsgenossenschaft des Verleihers (Personaldienstleisters)", "C) Private Unfallversicherung des/der Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "D) Krankenkasse"], correct: 1, explanation: "Sonderregel im Arbeitnehmerüberlassungsgesetz: Auch bei Einsätzen beim Kunden ist die Berufsgenossenschaft des VERLEIHERS zuständig, nicht die des Entleihers, da der Arbeitsvertrag mit dem Verleiher besteht." },
+            { id: 36, text: "Welche der folgenden Pflichten gehört zum Equal-Pay-Grundsatz?", options: ["A) Gleicher Lohn für Zeitarbeitnehmerinnen und Zeitarbeitnehmer ab dem ersten Tag im Vergleich zum Stamm", "B) Gleicher Lohn ist nach gesetzlicher Regelung spätestens nach 9 Monaten geschuldet (kann tariflich anders geregelt sein)", "C) Gleicher Lohn nur bei Auslandseinsätzen", "D) Gleicher Lohn ausschließlich bei Konzernen"], correct: 1, explanation: "Equal Pay greift spätestens nach 9 Monaten Einsatz beim selben Kunden. Mit Branchenzuschlägen kann sich der Zeitraum verkürzen oder gestaffelt erfolgen, wobei Equal Pay auch früher gelten kann." },
+            { id: 37, text: "Welche der folgenden Aussagen zur „3 Magic Numbers 18-9-3“ ist falsch?", options: ["A) 18 = Monate Höchstüberlassungsdauer", "B) 9 = Monate bis Equal Pay", "C) 3 = Beziehungen im Drei-Personen-Verhältnis", "D) 18 = Tage Urlaub pro Jahr"], correct: 3, explanation: "Falsch: 18 steht in der AÜG-Magic-Number-Regel für 18 MONATE Höchstüberlassungsdauer, nicht für Urlaubstage. Die 3 Zahlen 18-9-3 stehen für HÖÜ, Equal-Pay-Frist und 3 Beziehungen." },
+            { id: 38, text: "Welche der folgenden Vertragsarten besteht NICHT im Drei-Personen-Verhältnis?", options: ["A) Arbeitsvertrag Personaldienstleistungsunternehmen–Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "B) Arbeitsvertrag Kundenbetrieb–Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "C) AÜV Personaldienstleistungsunternehmen–Kundenbetrieb", "D) Faktisches Weisungsverhältnis Kundenbetrieb–Zeitarbeitnehmerinnen und Zeitarbeitnehmer"], correct: 1, explanation: "Falsch wäre ein Arbeitsvertrag zwischen Kundenbetrieb und Zeitarbeitnehmerinnen und Zeitarbeitnehmer. Im Drei-Personen-Verhältnis besteht kein Arbeitsvertrag zwischen diesen beiden – nur ein faktisches Weisungsverhältnis." },
+            { id: 39, text: "Wer ist im Konzept des Drei-Personen-Verhältnisses berechtigt, dem/der Zeitarbeitnehmerinnen und Zeitarbeitnehmer am Einsatzort konkrete Arbeitsanweisungen zu erteilen?", options: ["A) Niemand, Zeitarbeitnehmerinnen und Zeitarbeitnehmer sind selbständig", "B) Nur der Verleiher", "C) Der Kundenbetrieb (Entleiher) im Rahmen des faktischen Weisungsverhältnisses", "D) Die Berufsgenossenschaft"], correct: 2, explanation: "Der Kundenbetrieb (Entleiher) hat das faktische Weisungsrecht am Einsatzort – das ist die Besonderheit der AÜ. Der Lohn kommt vom Verleiher, die Anweisung vom Entleiher." },
+            { id: 40, text: "Was passiert nach 3 Jahren befristeter AÜ-Erlaubnis im Regelfall?", options: ["A) Die Erlaubnis erlischt automatisch", "B) Sie kann unbefristet erteilt werden (Daueranzeige)", "C) Sie wird auf 5 Jahre verlängert", "D) Es ist eine neue Prüfung nötig"], correct: 1, explanation: "Erst-AÜ-Erlaubnisse sind 1 Jahr befristet, können verlängert werden, und nach (in der Regel) 3 Jahren beanstandungsfreier Tätigkeit kann die Erlaubnis unbefristet erteilt werden („Daueranzeige“)." }
+        ]
+    },
+    {
+        title: "Abschnitt 5: Lernformen & § 2 Berufsbildungsgesetz (Fragen 41–50)",
+        questions: [
+            { id: 41, text: "Wie viele Lernorte nennt § 2 Berufsbildungsgesetz?", options: ["A) 1", "B) 2", "C) 3", "D) 4"], correct: 2, explanation: "§ 2 Berufsbildungsgesetz nennt drei Lernorte: (1) Betriebe der Wirtschaft, (2) berufsbildende Schulen, (3) sonstige Berufsbildungseinrichtungen (außerbetrieblich). Manche sprechen daher vom „Trialen System“." },
+            { id: 42, text: "Welcher Lernort wird in § 2 Berufsbildungsgesetz explizit als „sonstige Berufsbildungseinrichtung“ bezeichnet und ist außerbetrieblich?", options: ["A) Industrie- und Handelskammer", "B) Überbetriebliche Bildungsstätte (ÜBL) bzw. private Bildungsträger", "C) Hochschule", "D) Kindertagesstätte"], correct: 1, explanation: "Überbetriebliche Bildungsstätten (ÜBL), Bildungsträger wie Comcave oder GVP-Lehrgangsanbieter sind die in § 2 Nr. 3 Berufsbildungsgesetz genannten außerbetrieblichen Lernorte." },
+            { id: 43, text: "Welche Reihenfolge entspricht der klassischen Vier-Stufen-Methode der Unterweisung?", options: ["A) Vormachen – Vorbereiten – Üben – Nachmachen", "B) Vorbereiten – Vormachen+Erklären – Nachmachen lassen – Üben", "C) Erklären – Prüfen – Wiederholen – Bewerten", "D) Lesen – Diskutieren – Üben – Prüfen"], correct: 1, explanation: "Die klassische Vier-Stufen-Methode: 1. Vorbereiten (Lernziel, Material), 2. Vormachen+Erklären (Demo), 3. Nachmachen lassen (Auszubildende:r führt aus), 4. Üben (selbstständig mit Kontrolle)." },
+            { id: 44, text: "Welche der folgenden Lernformen ist KEINE Lernform im Sinne der Berufsbildung?", options: ["A) Berufsschulisches Lernen", "B) Betriebliches Lernen", "C) E-Learning / Blended Learning", "D) Lernform XY (frei erfunden)"], correct: 3, explanation: "Berufsschulisches Lernen, betriebliches Lernen und E-Learning/Blended Learning sind etablierte Lernformen. „Lernform XY“ ist frei erfunden – reine Negativ-Antwort." },
+            { id: 45, text: "Was ist ein typisches Beispiel für betriebliches Lernen in einem PDL-Unternehmen?", options: ["A) Lehrgangsstunden in der Berufsschule", "B) Mitlaufen bei einem Vorstellungsgespräch oder Anlernen am Bewerbermanagementsystem", "C) Selbstübung mit Karteikarten zu Hause", "D) Hochschulvorlesung"], correct: 1, explanation: "Betriebliches Lernen findet unmittelbar im Arbeitsprozess statt (Learning by Doing). In der Personaldienstleistungsunternehmen z.B. Mitlaufen bei einem Vorstellungsgespräch, Anlernen am Bewerbermanagementsystem oder Begleitung im Vertriebsgespräch." },
+            { id: 46, text: "Welcher der folgenden Begriffe beschreibt ein synchrones Live-Online-Format zum Lernen?", options: ["A) Karteikarten-Lernen", "B) Webinar (z.B. GVP-Webinar)", "C) Lehrbuch-Lektüre", "D) Pomodoro-Technik"], correct: 1, explanation: "Ein Webinar ist ein synchrones Live-Online-Format mit gleichzeitiger Teilnahme aller über Video. Es gehört zum E-Learning bzw. zu Live-Online-Lernformen." },
+            { id: 47, text: "Was bedeutet „Blended Learning“?", options: ["A) Reines Online-Lernen", "B) Mischform aus Präsenz- und Online-Lernen", "C) Lernen im Ausland", "D) Lernen ohne Lehrperson"], correct: 1, explanation: "Blended Learning bezeichnet die Mischform aus Präsenz- und Online-Lernen. Beispiel: PDK-Lehrgang mit Präsenztagen + Online-Quizzes + Podcast." },
+            { id: 48, text: "Welche der folgenden Aussagen zur PersDLKfAusbV ist korrekt?", options: ["A) Sie wurde 1968 erlassen", "B) Sie regelt die Berufsausbildung zum Personaldienstleistungskaufmann/zur Personaldienstleistungskauffrau (seit 2008)", "C) Sie ist eine private Selbstverpflichtung der Gesamtverband der Personaldienstleister", "D) Sie gilt nur in NRW"], correct: 1, explanation: "Die Verordnung über die Berufsausbildung zum Personaldienstleistungskaufmann (PersDLKfAusbV) regelt seit 2008 die 3-jährige duale Ausbildung zum/zur Personaldienstleistungskaufmann/-frau." },
+            { id: 49, text: "Welche der folgenden Aussagen unterscheidet die Begriffe „Lernform“ und „Lernstrategie“ korrekt?", options: ["A) Lernform = Vorgehensweise im Kopf, Lernstrategie = Setting (Wo? Wie? Mit wem?)", "B) Lernform = Setting (Wo? Wie? Mit wem?), Lernstrategie = bewusste Vorgehensweise zur Wissensverarbeitung", "C) Lernform und Lernstrategie sind identisch", "D) Lernform = Prüfungsform, Lernstrategie = Schul-Curriculum"], correct: 1, explanation: "Lernform = das organisatorische Setting (Lernort, Lehrperson, Format); Lernstrategie = die bewusste Vorgehensweise des/der Lernenden zur Verarbeitung von Wissen (z.B. Wiederholen, Elaborieren)." },
+            { id: 50, text: "Was ist ein typisches Coaching-/Mentoring-Format in einer PDL-Niederlassung?", options: ["A) Vorlesung mit 200 Teilnehmern", "B) Patenmodell für neue Disponent:innen", "C) Massen-E-Mail an alle Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "D) Newsletter-Versand"], correct: 1, explanation: "Coaching und Mentoring finden eins-zu-eins statt. In der Personaldienstleistungsunternehmen ist das klassische Beispiel das Patenmodell, bei dem ein:e erfahrene:r Disponent:in neue Mitarbeiter:innen über mehrere Wochen begleitet." }
+        ]
+    },
+    {
+        title: "Abschnitt 6: Lernstrategien & Lerntechniken (Fragen 51–60)",
+        questions: [
+            { id: 51, text: "Welche drei Hauptkategorien von Lernstrategien unterscheiden Weinstein & Mayer (1986)?", options: ["A) Visuell, Auditiv, Kinästhetisch", "B) Kognitiv, Metakognitiv, Ressourcenbezogen", "C) Theoretisch, Praktisch, Reflexiv", "D) Lesen, Hören, Schreiben"], correct: 1, explanation: "Weinstein & Mayer (1986) unterscheiden: (1) kognitive Strategien (Wiederholen, Elaborieren, Organisieren), (2) metakognitive Strategien (Planen, Überwachen, Bewerten), (3) ressourcenbezogene Strategien (innere + äußere Ressourcen)." },
+            { id: 52, text: "Welche der folgenden ist eine METAKOGNITIVE Lernstrategie?", options: ["A) Karteikarten schreiben", "B) Eine Mind-Map erstellen", "C) Lernziele setzen und den eigenen Fortschritt überwachen", "D) Mit Klassenkamerad:innen diskutieren"], correct: 2, explanation: "Metakognitive Strategien beschreiben das Nachdenken über das eigene Lernen – dazu gehören Planung (Lernziele setzen), Überwachung (Fortschritt prüfen) und Bewertung (Selbsttest)." },
+            { id: 53, text: "Was bedeutet das Akronym VARK im Lernkontext?", options: ["A) Visuell, Auditiv, Read/Write, Kinästhetisch (Lernstile nach Fleming)", "B) Verleiher, Auftrag, Recruiting, Kunde", "C) Vorbereiten, Anleiten, Reflektieren, Kontrollieren", "D) Vier Arten der Prüfung"], correct: 0, explanation: "VARK = Visuell (Bilder), Auditiv (Hören), Read/Write (Lesen, Schreiben), Kinästhetisch (Tun). Modell von Neil D. Fleming (2001) zur Lernstil-Klassifizierung." },
+            { id: 54, text: "Wie sind die Zeitintervalle der klassischen Pomodoro-Technik?", options: ["A) 90 Min. arbeiten, 30 Min. Pause", "B) 25 Min. arbeiten, 5 Min. Pause; nach 4 Pomodoros eine längere Pause (15–30 Min.)", "C) 60 Min. arbeiten, 10 Min. Pause", "D) 45 Min. arbeiten, 15 Min. Pause"], correct: 1, explanation: "Klassische Pomodoro: 25 Min. fokussiert, 5 Min. Pause. Nach 4 Pomodoros eine längere Pause (15–30 Min.). Methode von Francesco Cirillo (1980er)." },
+            { id: 55, text: "Was zeigte Hermann Ebbinghaus (1885) experimentell?", options: ["A) Lerninhalte werden ohne Wiederholung schnell vergessen (exponentielle Vergessenskurve)", "B) Lernen ist genetisch determiniert", "C) Schlaf ist schädlich für das Lernen", "D) Computer lernen besser als Menschen"], correct: 0, explanation: "Ebbinghaus zeigte mit Experimenten an sich selbst, dass ohne Wiederholung Lerninhalte exponentiell vergessen werden – nach 20 Min. ca. 40 %, nach 1 Tag ca. 2/3 vergessen." },
+            { id: 56, text: "Was ist Spaced Repetition?", options: ["A) Wiederholung in immer kürzeren Abständen", "B) Gezielte Wiederholung in zeitlich gestaffelt wachsenden Abständen (Tag, Tage, Woche, Monat)", "C) Einmaliges Wiederholen vor der Prüfung", "D) Pomodoro-Variante"], correct: 1, explanation: "Spaced Repetition (verteiltes Wiederholen) nutzt zeitlich versetzte Wiederholungen in wachsenden Abständen (z.B. nach 1 Tag, 3 Tagen, 1 Woche, 1 Monat) zur dauerhaften Verankerung. Software: Anki, Quizlet." },
+            { id: 57, text: "Was beschreibt die SQ3R-Lesemethode?", options: ["A) Survey – Question – Read – Recite – Review", "B) Schreiben, Quizzen, Rechnen, Reden, Reflektieren", "C) Suchen, Quellen, Referenz, Rezitieren, Resultat", "D) Studieren, Quereinsteigen, Reisen, Recruiten, Repetieren"], correct: 0, explanation: "Survey-Question-Read-Recite-Review-Methode: (1) Survey – überblicken, (2) Question – Fragen formulieren, (3) Read – aktiv lesen, (4) Recite – wiedergeben, (5) Review – wiederholen. Effektive Methode für Lehrbücher und Skripte." },
+            { id: 58, text: "Welche Tools eignen sich besonders gut für Spaced Repetition?", options: ["A) Word und Excel", "B) Anki, Quizlet, Brainscape", "C) Photoshop und Illustrator", "D) WhatsApp und Telegram"], correct: 1, explanation: "Anki, Quizlet und Brainscape sind Karteikarten-Apps mit eingebauten Spaced-Repetition-Algorithmen. Sie berechnen automatisch das nächste optimale Wiederholungsdatum für jede Karte." },
+            { id: 59, text: "Wie sortiert die Eisenhower-Matrix Aufgaben?", options: ["A) Nach Wichtigkeit und Dringlichkeit (2x2-Matrix)", "B) Nach Lautstärke und Tonhöhe", "C) Nach Helligkeit und Farbe", "D) Nach Länge und Breite"], correct: 0, explanation: "Die Eisenhower-Matrix sortiert Aufgaben in einer 2x2-Matrix nach Wichtigkeit (y-Achse) und Dringlichkeit (x-Achse): A wichtig+dringend, B wichtig nicht dringend, C nicht wichtig+dringend, D weglassen." },
+            { id: 60, text: "Was bedeutet der Lerncode P–V–W?", options: ["A) Personal, Vertrieb, Wissen", "B) Planen, Varieren, Wiederholen", "C) Prüfen, Vergleichen, Wiederholen", "D) Pomodoro, Vortrag, Workshop"], correct: 1, explanation: "P–V–W steht für Planen (Lernplan, Eisenhower), Varieren (mehrere Methoden, VARK) und Wiederholen (Spaced Repetition, Pomodoro) – die drei Grundsätze einer effektiven Prüfungsvorbereitung." }
+        ]
+    }
+];
+
+let answered = {};
+let checked  = {};
+let showAll  = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() {
+    const flat = [];
+    sections.forEach(s => s.questions.forEach(q => flat.push(q)));
+    return flat;
+}
+const flatQ = allQuestions();
+
+function render() {
+    const container = document.getElementById('quizContainer');
+    let html = '';
+    let globalIdx = 0;
+
+    sections.forEach((sec, si) => {
+        html += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach((q, qi) => {
+            const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+            const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+            html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+            html += `<p class="question-text">${q.text}</p>`;
+            html += `<ul class="options-list">`;
+            q.options.forEach((opt, oi) => {
+                let cls = '';
+                if (checked[q.id]) {
+                    if (oi === q.correct) cls = 'correct-opt';
+                    else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+                } else if (answered[q.id] === oi) {
+                    cls = 'selected';
+                }
+                const dis = checked[q.id] ? 'disabled' : '';
+                const chk = answered[q.id] === oi ? 'checked' : '';
+                html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+            });
+            html += `</ul>`;
+            const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+
+            if (checked[q.id]) {
+                const isCorr = answered[q.id] === q.correct;
+                const fbClass = isCorr ? 'correct' : 'incorrect';
+                const fbText = isCorr
+                    ? `<strong>Richtig!</strong> ${q.explanation}`
+                    : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+                html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+            } else {
+                html += `<div class="feedback" id="fb-${q.id}"></div>`;
+            }
+
+            html += `</div>`;
+            globalIdx++;
+        });
+    });
+
+    if (!showAll) {
+        html += `<div class="nav-row">`;
+        html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+        html += `<span style="font-weight:600;color:#004b87;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+        html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+        html += `</div>`;
+    }
+
+    container.innerHTML = html;
+    updateProgress();
+}
+
+function selectOption(qid, idx) {
+    if (checked[qid]) return;
+    answered[qid] = idx;
+    render();
+}
+
+function checkAnswer(qid) {
+    if (answered[qid] === undefined || checked[qid]) return;
+    checked[qid] = true;
+    render();
+    updateProgress();
+}
+
+function navigate(dir) {
+    currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir));
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+    const done = Object.keys(checked).length;
+    const pct = Math.round((done / totalQ) * 100);
+    document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+    document.getElementById('progressPct').textContent = `${pct} %`;
+    document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+    const done = Object.keys(checked).length;
+    if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+
+    let correct = 0;
+    flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+    const pct = Math.round((correct / done) * 100);
+
+    document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+
+    let gradeText = '';
+    let gradeClass = 'pass';
+    if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+    else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+    else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+    else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+    else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+    else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+
+    const gEl = document.getElementById('gradeText');
+    gEl.textContent = gradeText;
+    gEl.className = 'grade ' + gradeClass;
+
+    let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+    sections.forEach(sec => {
+        let sCorr = 0, sTotal = 0;
+        sec.questions.forEach(q => {
+            if (checked[q.id]) {
+                sTotal++;
+                if (answered[q.id] === q.correct) sCorr++;
+            }
+        });
+        const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+        tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+    });
+    tbl += '</table>';
+    document.getElementById('sectionBreakdown').innerHTML = tbl;
+
+    document.getElementById('resultsPanel').classList.add('show');
+    document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+    answered = {};
+    checked = {};
+    currentQ = 0;
+    document.getElementById('resultsPanel').classList.remove('show');
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () {
+    showAll = this.checked;
+    render();
+});
+
+function shuffleQuizOptions() {
+    let seed = 42;
+    function seededRandom() {
+        seed = (seed * 16807 + 0) % 2147483647;
+        return (seed - 1) / 2147483646;
+    }
+    sections.forEach(sec => {
+        sec.questions.forEach(q => {
+            const correctText = q.options[q.correct];
+            const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+            for (let i = cleaned.length - 1; i > 0; i--) {
+                const j = Math.floor(seededRandom() * (i + 1));
+                [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+            }
+            const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+            const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+            q.options = cleaned.map((c, i) => prefixes[i] + c);
+            q.correct = cleaned.indexOf(correctClean);
+        });
+    });
+}
+shuffleQuizOptions();
+
+render();
+</script>
+</body>
+</html>

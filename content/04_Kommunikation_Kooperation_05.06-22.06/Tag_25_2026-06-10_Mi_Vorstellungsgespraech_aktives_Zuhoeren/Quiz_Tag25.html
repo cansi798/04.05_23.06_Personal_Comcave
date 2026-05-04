@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tag 25 &ndash; Vorstellungsgespr&auml;ch und aktives Zuh&ouml;ren</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #1a1a2e;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #003366 0%, #004a99 50%, #0066cc 100%);
+            color: #ffffff;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+        .header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+        .header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+        .toolbar button, .toolbar .toggle-label { background: #004a99; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .toolbar button:hover { background: #003366; }
+        .toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+        .toggle-label input { accent-color: #004a99; width: 18px; height: 18px; cursor: pointer; }
+        .progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+        .progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0066cc, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+        .container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+        .section-title { background: #003366; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+        .section-title:first-child { margin-top: 0; }
+        .question-card { background: #ffffff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+        .question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .question-card.correct-card { border-left: 5px solid #28a745; }
+        .question-card.incorrect-card { border-left: 5px solid #dc3545; }
+        .question-number { display: inline-block; background: #e8f0fe; color: #004a99; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+        .question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+        .options-list { list-style: none; }
+        .options-list li { margin-bottom: 0.5rem; }
+        .options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+        .options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+        .options-list input[type="radio"] { accent-color: #004a99; margin-top: 3px; flex-shrink: 0; }
+        .options-list label.selected { background: #e8f0fe; border-color: #004a99; }
+        .options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+        .options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+        .check-btn { margin-top: 0.8rem; background: #004a99; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .check-btn:hover { background: #003366; }
+        .check-btn:disabled { background: #8faec8; cursor: default; }
+        .feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .nav-btn { background: #004a99; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .nav-btn:hover { background: #003366; }
+        .nav-btn:disabled { background: #8faec8; cursor: default; }
+        .results-panel { background: #ffffff; border: 2px solid #004a99; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .results-panel.show { display: block; }
+        .results-panel h2 { color: #003366; margin-bottom: 0.8rem; }
+        .score-big { font-size: 3rem; font-weight: 700; color: #004a99; }
+        .grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+        .grade.pass { color: #28a745; }
+        .grade.fail { color: #dc3545; }
+        .section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+        .section-breakdown table { width: 100%; border-collapse: collapse; }
+        .section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+        .section-breakdown th { background: #e8f0fe; color: #003366; text-align: left; }
+        .references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+        .references h3 { color: #003366; margin-bottom: 0.8rem; font-size: 1.1rem; }
+        .references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+        .footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+        @media print {
+            body { background: #fff; }
+            .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; }
+            .header { background: #003366 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+            .section-title { break-after: avoid; }
+            .feedback.show { display: block !important; }
+        }
+        @media (max-width: 600px) {
+            .header { padding: 1.4rem 0.8rem; }
+            .question-card { padding: 1rem; }
+            .toolbar { flex-direction: column; align-items: stretch; text-align: center; }
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1>Quiz Tag 25 &ndash; Vorstellungsgespr&auml;ch und aktives Zuh&ouml;ren</h1>
+    <div class="subtitle">Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026 &ndash; WISO Comcave Integrative Unternehmensprozesse Personal</div>
+    <div class="meta">
+        <span>&copy; Can Siebert</span>
+        <span>Stand 05/2026</span>
+        <span>60 Fragen &bull; Multiple Choice</span>
+    </div>
+</header>
+
+<div class="toolbar">
+    <label class="toggle-label">
+        <input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen
+    </label>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <button onclick="showResults()">Ergebnis anzeigen</button>
+        <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-info">
+        <span id="progressText">0 von 60 beantwortet</span>
+        <span id="progressPct">0 %</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+    <div class="results-panel" id="resultsPanel">
+        <h2>Dein Ergebnis</h2>
+        <div class="score-big" id="scoreBig"></div>
+        <div class="grade" id="gradeText"></div>
+        <div class="section-breakdown" id="sectionBreakdown"></div>
+        <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="references">
+    <h3>Literaturverzeichnis (APA 7)</h3>
+    <p>Bay, R. H. (2014). <em>Erfolgreiche Gespr&auml;che durch aktives Zuh&ouml;ren</em> (7. Aufl.). expert-Verlag.</p>
+    <p>BAP. (2018). <em>Leitfaden Bewerbermanagement in der Zeitarbeit</em>. Bundesverband der Personaldienstleister.</p>
+    <p>H&ouml;hn, B. (2020). <em>Recruiting in der Zeitarbeit &ndash; Schnell, fair und erfolgreich</em>. Springer Gabler.</p>
+    <p>Hoffman, C. C. &amp; McPhail, S. M. (2009). Behavioral Consistency in Selection: The STAR Method. <em>International Journal of Selection and Assessment, 17</em>(1), 3&ndash;14.</p>
+    <p>Kienbaum Institut. (2022). <em>Recruiting in Zeiten des Fachkr&auml;ftemangels</em>. Kienbaum.</p>
+    <p>Rogers, C. R. &amp; Farson, R. E. (2010). <em>Active Listening</em>. Martino Publishing.</p>
+    <p>Schuler, H. (2018). <em>Das Einstellungsinterview</em> (2. Aufl.). Hogrefe.</p>
+    <p>StepStone Group. (2023). <em>Candidate Experience Studie 2023</em>. StepStone.</p>
+</div>
+
+<footer class="footer">
+    &copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026 | Stand 05/2026
+</footer>
+
+<script>
+const sections = [
+    {
+        title: "Abschnitt 1: Candidate Experience und Recruiting-Funnel (Fragen 1-10)",
+        questions: [
+            { id: 1, text: "Was bezeichnet der Begriff Candidate Experience?", options: ["A) Die Berufserfahrung des Bewerbers", "B) Die Gesamtheit aller Erfahrungen, die ein Bewerber im Bewerbungsprozess macht", "C) Die Erfahrung des Recruiters im Interview", "D) Die Probezeit des neuen Mitarbeiters"], correct: 1, explanation: "Candidate Experience (CX) ist die Gesamtheit aller Erfahrungen eines Bewerbers im Bewerbungsprozess - von der Stellenanzeige bis zum Onboarding bzw. zur Absage." },
+            { id: 2, text: "Wie viele Stufen umfasst der klassische Recruiting-Funnel?", options: ["A) Drei", "B) Vier", "C) Fuenf", "D) Sechs"], correct: 2, explanation: "Der Recruiting-Funnel umfasst fuenf Stufen: Awareness, Interest, Application, Selection, Hire/Onboarding." },
+            { id: 3, text: "Welche Stufe steht am Anfang des Recruiting-Funnels?", options: ["A) Selection", "B) Application", "C) Awareness", "D) Hire"], correct: 2, explanation: "Awareness (Aufmerksamkeit) ist die erste Stufe: Der Bewerber wird auf den Personaldienstleistungsunternehmen aufmerksam, z.B. durch Stellenanzeigen oder Empfehlungen." },
+            { id: 4, text: "Welche durchschnittliche Conversion-Rate hat die Stufe Application?", options: ["A) 100%", "B) 30%", "C) 5%", "D) 1%"], correct: 2, explanation: "Aus 100 Sichtkontakten werden in der Regel ca. 5 Bewerbungen - das entspricht einer Conversion-Rate von ca. 5% auf Stufe 3." },
+            { id: 5, text: "Was ist ein typischer Touchpoint in der Awareness-Phase?", options: ["A) Vertragsunterzeichnung", "B) Stellenanzeige in einer Jobboerse", "C) Vorstellungsgespraech", "D) Onboarding-Gespraech"], correct: 1, explanation: "In der Awareness-Phase erfolgen Touchpoints wie Stellenanzeigen auf Indeed/StepStone, Social Recruiting und Empfehlungsprogramme." },
+            { id: 6, text: "Was bedeutet TikTok-Recruiting?", options: ["A) Recruiting ueber TikTok-Werbeanzeigen und Kurzvideos", "B) Recruiting ohne digitale Hilfsmittel", "C) Recruiting nur fuer Akademiker", "D) Recruiting via Telefonbuch"], correct: 0, explanation: "TikTok-Recruiting nutzt die Plattform fuer kurze Werbevideos, Mitarbeiter-Testimonials und Stellenanzeigen - besonders wirksam bei jungen Bewerbern." },
+            { id: 7, text: "Wie lange sollte eine Eingangsbestaetigung der Bewerbung maximal dauern?", options: ["A) 1 Woche", "B) 24 Stunden", "C) 3 Wochen", "D) 1 Monat"], correct: 1, explanation: "Die automatische Eingangsbestaetigung sollte innerhalb von 24 Stunden erfolgen - Standard im professionellen Recruiting." },
+            { id: 8, text: "Welcher Anteil der Bewerber bricht laut StepStone-Studie 2023 ab, wenn der Bewerbungsprozess laenger als 3 Wochen dauert?", options: ["A) 20%", "B) 40%", "C) 60%", "D) 80%"], correct: 2, explanation: "Laut StepStone Candidate Experience Studie 2023 brechen 60% der Bewerber ab, wenn der Bewerbungsprozess laenger als 3 Wochen dauert." },
+            { id: 9, text: "Was ist ein Welcome-Package in der Onboarding-Phase?", options: ["A) Eine Geldpraemie", "B) Ein Paket mit Arbeitskleidung, Sicherheitsschuhen und ggf. PSA", "C) Eine Schulungsbroschuere", "D) Ein Versicherungsantrag"], correct: 1, explanation: "Das Welcome-Package enthaelt typischerweise Arbeitskleidung, Sicherheitsschuhe und persoenliche Schutzausruestung (PSA) - es signalisiert Wertschaetzung am ersten Arbeitstag." },
+            { id: 10, text: "Um wie viel Prozent reduziert ein gutes Onboarding nachweislich die Frueh-Fluktuation?", options: ["A) 10%", "B) 25%", "C) 40%", "D) 80%"], correct: 2, explanation: "Studien (z.B. Kienbaum 2022) zeigen, dass professionelles Onboarding die Frueh-Fluktuation um etwa 40% reduziert." }
+        ]
+    },
+    {
+        title: "Abschnitt 2: Aktives Zuhoeren nach Carl R. Rogers (Fragen 11-20)",
+        questions: [
+            { id: 11, text: "Wer entwickelte das Konzept des aktiven Zuhoerens?", options: ["A) Sigmund Freud", "B) Carl R. Rogers gemeinsam mit Richard Farson", "C) Friedemann Schulz von Thun", "D) Marshall Rosenberg"], correct: 1, explanation: "Carl R. Rogers entwickelte das Konzept des Active Listening 1957 gemeinsam mit Richard Farson an der University of Chicago." },
+            { id: 12, text: "Welche drei Grundhaltungen sind die Basis des aktiven Zuhoerens nach Rogers?", options: ["A) Strenge, Distanz, Sachlichkeit", "B) Echtheit/Kongruenz, Wertschaetzung/Akzeptanz, Empathie", "C) Autoritaet, Kontrolle, Disziplin", "D) Schweigen, Lauschen, Nachfragen"], correct: 1, explanation: "Die drei Rogerschen Grundhaltungen sind: Echtheit (Kongruenz), Wertschaetzung (Akzeptanz) und Empathie." },
+            { id: 13, text: "Welche Stufe steht am Anfang der vier Stufen des aktiven Zuhoerens?", options: ["A) Paraphrasieren", "B) Aufnehmendes Zuhoeren", "C) Verbalisieren von Gefuehlen", "D) Sinngehalt erfassen"], correct: 1, explanation: "Stufe 1 ist das Aufnehmende Zuhoeren - Aufmerksamkeit zeigen, Blickkontakt halten, mit Mhm/Ja signalisieren." },
+            { id: 14, text: "Was bedeutet Paraphrasieren?", options: ["A) Das Gesagte woertlich wiederholen", "B) Das Gesagte mit eigenen Worten wiedergeben, um Verstaendnis zu pruefen", "C) Das Gegenteil sagen", "D) Den Sprecher unterbrechen"], correct: 1, explanation: "Paraphrasieren ist Stufe 2: Das Gesagte mit eigenen Worten wiedergeben (z.B. \"Wenn ich Sie richtig verstehe...\") um Verstaendnis zu pruefen." },
+            { id: 15, text: "Auf welcher Stufe werden Gefuehle des Sprechers benannt?", options: ["A) Stufe 1 (Aufnehmend)", "B) Stufe 2 (Paraphrasieren)", "C) Stufe 3 (Verbalisieren von Gefuehlen)", "D) Stufe 4 (Sinngehalt erfassen)"], correct: 2, explanation: "Stufe 3 ist das Verbalisieren von Gefuehlen, z.B. \"Das hat Sie geaergert\" oder \"Sie wirken enttaeuscht\"." },
+            { id: 16, text: "Welche Stufe stellt die hoechste Form des aktiven Zuhoerens dar?", options: ["A) Aufnehmendes Zuhoeren", "B) Paraphrasieren", "C) Verbalisieren von Gefuehlen", "D) Sinngehalt erfassen"], correct: 3, explanation: "Stufe 4 - Sinngehalt erfassen - ist die hoechste Stufe. Hier werden Sinnzusammenhaenge erkannt und benannt." },
+            { id: 17, text: "Was bedeutet Kongruenz im Sinne von Rogers?", options: ["A) Strenge", "B) Echtheit, Authentizitaet im Gespraech", "C) Schweigen", "D) Mathematische Gleichheit"], correct: 1, explanation: "Kongruenz nach Rogers bedeutet Echtheit, Authentizitaet - der Zuhoerer spielt keine Rolle, sondern ist sich selbst." },
+            { id: 18, text: "Welches ist KEINE Stoerquelle aktiven Zuhoerens?", options: ["A) Eigene Vorurteile", "B) Multitasking waehrend des Gespraechs", "C) Bewusstes Schweigen-Aushalten", "D) Vorzeitiges Bewerten"], correct: 2, explanation: "Bewusstes Schweigen-Aushalten ist eine Technik aktiven Zuhoerens, KEINE Stoerquelle. Stoerquellen sind Vorurteile, Multitasking, vorzeitiges Bewerten und Unterbrechen." },
+            { id: 19, text: "Was sind W-Fragen?", options: ["A) Geschlossene Ja/Nein-Fragen", "B) Offene Fragen, die mit Wer, Was, Wann, Wie, Warum beginnen", "C) Werbe-Fragen", "D) Wiederholungsfragen"], correct: 1, explanation: "W-Fragen sind offene Fragen, die mit Wer, Was, Wann, Wie, Warum, Wo beginnen. Sie laden zu ausfuehrlichen Antworten ein." },
+            { id: 20, text: "Was ist eine Ich-Botschaft?", options: ["A) Eine Aussage in der Du-Form", "B) Eine Aussage in der Ich-Form, die eigene Wahrnehmung beschreibt", "C) Eine Selfie-Nachricht", "D) Eine Mail vom Chef"], correct: 1, explanation: "Eine Ich-Botschaft beschreibt die eigene Wahrnehmung in der Ich-Form (\"Mir geht es darum...\") statt vorwurfsvoller Du-Botschaften." }
+        ]
+    },
+    {
+        title: "Abschnitt 3: Vorstellungsgespraech und Phasenstruktur (Fragen 21-30)",
+        questions: [
+            { id: 21, text: "Aus wie vielen Phasen besteht ein klassisches Vorstellungsgespraech?", options: ["A) Drei", "B) Vier", "C) Fuenf", "D) Sieben"], correct: 2, explanation: "Das klassische Vorstellungsgespraech umfasst fuenf Phasen: Eroeffnung/Eisbrecher, Selbstpraesentation, Vertiefung/STAR, Bewerber-Fragen, Abschluss." },
+            { id: 22, text: "Wie lang sollte ein professionelles Vorstellungsgespraech in der Personaldienstleistungsbranche etwa dauern?", options: ["A) 5-10 Minuten", "B) 15-20 Minuten", "C) 45-60 Minuten", "D) 2-3 Stunden"], correct: 2, explanation: "Ein professionelles Praesenz-Vorstellungsgespraech dauert in der Regel 45-60 Minuten. Telefoninterviews koennen kuerzer sein (20-30 Min)." },
+            { id: 23, text: "Was ist ein Eisbrecher?", options: ["A) Ein Geraet zum Aufbrechen von Gefrierfaellen", "B) Eine Smalltalk-Phase zur Auflockerung der Anfangssituation", "C) Eine schwere Pruefungsfrage", "D) Eine Vertragsklausel"], correct: 1, explanation: "Der Eisbrecher ist die einleitende Smalltalk-Phase im Vorstellungsgespraech, die Stresspegel senken und entspannte Atmosphaere schaffen soll." },
+            { id: 24, text: "Welcher der folgenden Eisbrecher ist UNGEEIGNET?", options: ["A) \"Haben Sie gut hergefunden?\"", "B) \"Moechten Sie ein Wasser?\"", "C) \"Sie sind ja ganz schoen nervoes!\"", "D) \"Wie war Ihre Anreise?\""], correct: 2, explanation: "\"Sie sind ja ganz schoen nervoes\" verstaerkt die Anspannung und ist ungeeignet. Geeignete Eisbrecher sind neutral-freundlich." },
+            { id: 25, text: "Worauf basiert die Drei-Saeulen-Struktur der Selbstpraesentation?", options: ["A) Ausbildung, Berufserfahrung, Hobbies", "B) Wer bin ich?, Was kann ich?, Was will ich?", "C) Vergangenheit, Gegenwart, Zukunft", "D) Familie, Beruf, Freizeit"], correct: 1, explanation: "Die Drei-Saeulen-Struktur der Selbstpraesentation: Wer bin ich? (Hintergrund), Was kann ich? (Kompetenzen), Was will ich? (Motivation)." },
+            { id: 26, text: "Welche Phase enthaelt die kompetenzbasierten STAR-Fragen?", options: ["A) Phase 1 (Eisbrecher)", "B) Phase 2 (Selbstpraesentation)", "C) Phase 3 (Vertiefung)", "D) Phase 5 (Abschluss)"], correct: 2, explanation: "Phase 3 (Vertiefung/Kompetenzfragen) ist die Hauptphase mit STAR-basierten kompetenzbasierten Fragen, die 15-25 Minuten dauert." },
+            { id: 27, text: "Was sollte am Ende des Vorstellungsgespraechs (Phase 5) konkret kommuniziert werden?", options: ["A) Nur eine Verabschiedung", "B) Die naechsten Schritte und ein konkreter Entscheidungstermin", "C) Ein Vertragsangebot", "D) Eine Absage"], correct: 1, explanation: "In Phase 5 (Abschluss) muessen die naechsten Schritte und ein konkreter Entscheidungstermin (z.B. \"bis Freitag\") kommuniziert werden." },
+            { id: 28, text: "Welche Information sollte der Recruiter dem Bewerber in Phase 4 NICHT vorenthalten?", options: ["A) Stundenlohn und Branchenzuschlag", "B) Privatadresse des Geschaeftsfuehrers", "C) Persoenliche Lebensverhaeltnisse anderer Zeitarbeitnehmerinnen und Zeitarbeitnehmer", "D) Geheime Vertragskonditionen anderer Mitarbeiter"], correct: 0, explanation: "Stundenlohn und Branchenzuschlag muessen offen kommuniziert werden - dies ist Teil professioneller Information." },
+            { id: 29, text: "Was kennzeichnet eine gute Aufgabe des Recruiters in Phase 2?", options: ["A) Sofort unterbrechen, um Zeit zu sparen", "B) Aktiv zuhoeren, Notizen machen, Anker fuer Vertiefungsfragen finden", "C) Den Bewerber sofort bewerten", "D) Telefonate annehmen"], correct: 1, explanation: "In Phase 2 sollte der Recruiter aktiv zuhoeren, Notizen machen und Anker fuer Vertiefungsfragen identifizieren - die Phase 3 baut darauf auf." },
+            { id: 30, text: "Warum sollte der Recruiter den Bewerber persoenlich aus dem Wartebereich abholen?", options: ["A) Aus Hoeflichkeit und um Vertrauen aufzubauen", "B) Weil es Pflicht ist", "C) Um Kosten zu sparen", "D) Weil es schneller geht"], correct: 0, explanation: "Das persoenliche Abholen aus dem Wartebereich ist eine wichtige Geste der Wertschaetzung und baut Vertrauen auf - Teil der Candidate Experience." }
+        ]
+    },
+    {
+        title: "Abschnitt 4: STAR-Methode und Frageformen (Fragen 31-40)",
+        questions: [
+            { id: 31, text: "Wofuer steht das Akronym STAR?", options: ["A) Stellung, Tarif, Aufgabe, Recht", "B) Situation, Task, Action, Result", "C) Schnell, Top, Aktiv, Reaktiv", "D) Stress, Test, Antwort, Reflexion"], correct: 1, explanation: "STAR steht fuer Situation, Task, Action, Result - eine strukturierte Fragetechnik fuer kompetenzbasierte Interviews." },
+            { id: 32, text: "Welcher Bestandteil der STAR-Methode beschreibt das eigene Handeln?", options: ["A) Situation", "B) Task", "C) Action", "D) Result"], correct: 2, explanation: "Action ist das eigene Handeln des Bewerbers in der beschriebenen Situation - sollte in der Ich-Form formuliert sein." },
+            { id: 33, text: "Was ist der Vorteil der STAR-Methode gegenueber hypothetischen Fragen?", options: ["A) Sie ist kuerzer", "B) Sie misst tatsaechliches Verhalten in der Vergangenheit, was als Praediktor fuer kuenftiges Verhalten dient", "C) Sie ist einfacher zu beantworten", "D) Sie ist juristisch nicht relevant"], correct: 1, explanation: "STAR misst reales Verhalten - der beste Praediktor fuer kuenftiges Verhalten. Hypothetische Fragen erlauben dem Bewerber, sich Antworten auszudenken." },
+            { id: 34, text: "Welche Antwort folgt typischerweise dem STAR-Schema?", options: ["A) Hypothetische Spekulation", "B) Konkrete Beschreibung einer realen Situation, Aufgabe, Handlung und Ergebnis", "C) Allgemeine Einschaetzung", "D) Politische Stellungnahme"], correct: 1, explanation: "Eine STAR-Antwort beschreibt konkret eine reale Situation, Aufgabe, eigene Handlung (Ich-Form!) und das messbare Ergebnis." },
+            { id: 35, text: "Worauf sollten Recruiter bei der Action-Phase besonders achten?", options: ["A) Auf die Wir-Form", "B) Auf die Ich-Form (eigene Verantwortung)", "C) Auf die Sie-Form", "D) Auf hypothetische Aussagen"], correct: 1, explanation: "Recruiter sollten auf die Ich-Form achten - manche Bewerber nutzen Wir-Form, um eigene Schwaechen zu kaschieren oder Erfolge anderer fuer sich zu reklamieren." },
+            { id: 36, text: "Was ist eine offene Frage?", options: ["A) Eine Frage, auf die mit Ja oder Nein geantwortet werden kann", "B) Eine Frage mit W-Wort, die ausfuehrliche Antworten provoziert", "C) Eine unhoefliche Frage", "D) Eine vergessene Frage"], correct: 1, explanation: "Offene Fragen beginnen mit W-Woertern (Wie, Was, Wann) und provozieren ausfuehrliche, erzaehlende Antworten." },
+            { id: 37, text: "Welche Frage ist eine geschlossene Frage?", options: ["A) \"Wie wuerden Sie reagieren?\"", "B) \"Haben Sie einen Fuehrerschein Klasse B?\"", "C) \"Beschreiben Sie eine Konfliktsituation.\"", "D) \"Was motiviert Sie?\""], correct: 1, explanation: "\"Haben Sie einen Fuehrerschein Klasse B?\" ist eine geschlossene Frage - sie kann mit Ja oder Nein beantwortet werden." },
+            { id: 38, text: "Was ist eine Sondierungsfrage?", options: ["A) Eine politisch heikle Frage", "B) Eine Vertiefungsfrage zur Klaerung von Inhalten", "C) Eine Werbefrage", "D) Eine Stressfrage"], correct: 1, explanation: "Sondierungsfragen sind Vertiefungsfragen wie \"Koennten Sie das genauer ausfuehren?\" - sie dienen der Klaerung von Inhalten." },
+            { id: 39, text: "Wann ist eine Stressfrage angemessen?", options: ["A) Immer", "B) Nur bei Stellen, in denen tatsaechlich hohe Stressbelastung relevant ist; Einsatz mit Bedacht", "C) Bei jedem Bewerber", "D) Nie"], correct: 1, explanation: "Stressfragen sind nur bei Stellen mit tatsaechlich hoher Stressbelastung gerechtfertigt - in der Zeitarbeit selten erforderlich. Sie koennen die Atmosphaere belasten." },
+            { id: 40, text: "Welche Fragetechnik wird im Vertrieb haeufig genutzt, um Beduerfnisse zu erkunden?", options: ["A) Ja/Nein-Fragen", "B) Stressfragen", "C) Offene W-Fragen", "D) Suggestivfragen"], correct: 2, explanation: "Offene W-Fragen sind die zentrale Vertriebstechnik zur Beduerfnisklaerung, sie laden den Gespraechspartner zum Erzaehlen ein." }
+        ]
+    },
+    {
+        title: "Abschnitt 5: Rechtliche Aspekte und Allgemeines Gleichbehandlungsgesetz (Fragen 41-50)",
+        questions: [
+            { id: 41, text: "Wofuer steht das Akronym Allgemeines Gleichbehandlungsgesetz?", options: ["A) Arbeits-Gewerkschafts-Gesetz", "B) Allgemeines Gleichbehandlungsgesetz", "C) Arbeitsgeber-Gehaltsgesetz", "D) Allgemeines Gewerbegesetz"], correct: 1, explanation: "Allgemeines Gleichbehandlungsgesetz = Allgemeines Gleichbehandlungsgesetz, in Kraft seit 2006. Es schuetzt vor Diskriminierung im Arbeitsleben." },
+            { id: 42, text: "Welche Frage ist im Vorstellungsgespraech UNZULAESSIG?", options: ["A) \"Haben Sie einen Fuehrerschein?\"", "B) \"Wie viel Berufserfahrung haben Sie?\"", "C) \"Sind Sie schwanger?\"", "D) \"Wie sind Sie auf uns aufmerksam geworden?\""], correct: 2, explanation: "Die Frage nach Schwangerschaft ist nach Allgemeines Gleichbehandlungsgesetz und BAG-Rechtsprechung unzulaessig - eine Diskriminierung wegen Geschlecht waere die Folge." },
+            { id: 43, text: "Was bedeutet das Recht zur Luege?", options: ["A) Recht des Arbeitgebers, zu luegen", "B) Recht des Bewerbers, auf unzulaessige Fragen unwahr zu antworten", "C) Recht der Behoerde, zu luegen", "D) Pflicht zur Wahrheit"], correct: 1, explanation: "Das Recht zur Luege erlaubt dem Bewerber, auf unzulaessige Fragen (z.B. nach Schwangerschaft) unwahr zu antworten - der Arbeitgeber kann sich nicht auf diese Luege berufen." },
+            { id: 44, text: "Wie hoch kann der Schadensersatz nach Paragraph 15 Allgemeines Gleichbehandlungsgesetz bei einer unzulaessigen Frage sein?", options: ["A) 100 Euro", "B) 1 Monatsgehalt", "C) 3 Monatsgehaelter", "D) 1 Jahresgehalt"], correct: 2, explanation: "Nach Paragraph 15 Allgemeines Gleichbehandlungsgesetz kann der Schadensersatz bei diskriminierenden Massnahmen (auch unzulaessigen Fragen) bis zu 3 Monatsgehaelter betragen." },
+            { id: 45, text: "Wie lang ist die Klagefrist nach Paragraph 15 Abs. 4 Allgemeines Gleichbehandlungsgesetz?", options: ["A) 1 Woche", "B) 2 Monate", "C) 6 Monate", "D) 3 Jahre"], correct: 1, explanation: "Die Klagefrist nach Paragraph 15 Abs. 4 Allgemeines Gleichbehandlungsgesetz betraegt 2 Monate ab Kenntnis der Diskriminierung." },
+            { id: 46, text: "Wie lange duerfen Bewerberdaten nach einer Absage in der Regel gespeichert werden?", options: ["A) 1 Tag", "B) 6 Monate", "C) 5 Jahre", "D) Unbegrenzt"], correct: 1, explanation: "Nach Absage gilt eine Loeschfrist von 6 Monaten (Klagefrist 2 Monate + Sicherheitsmarge zur Verteidigung gegen AGG-Klagen)." },
+            { id: 47, text: "Welche Frage ist im Vorstellungsgespraech ZULAESSIG?", options: ["A) Schwerbehinderung", "B) Religionszugehoerigkeit (bei nicht-kirchlichen Arbeitgebern)", "C) Vorhandensein eines Fuehrerscheins, wenn dieser fuer die Stelle benoetigt wird", "D) Familienplanung"], correct: 2, explanation: "Die Frage nach einem Fuehrerschein ist zulaessig, wenn er fuer die Stelle erforderlich ist - sachliche Eignungsfrage." },
+            { id: 48, text: "Wann darf nach Vorstrafen gefragt werden?", options: ["A) Immer", "B) Nur wenn relevant fuer die Stelle (z.B. Geldhandel, Sicherheitsbereich)", "C) Nie", "D) Nur bei jugendlichen Bewerbern"], correct: 1, explanation: "Vorstrafen duerfen nur erfragt werden, wenn sie fuer die Stelle einschlaegig relevant sind, z.B. Vermoegensdelikte bei Stellen im Geldhandel." },
+            { id: 49, text: "Welche Rechtsgrundlage gilt fuer Bewerberdatenverarbeitung?", options: ["A) Strafgesetzbuch", "B) Paragraph 26 Bundesdatenschutzgesetz", "C) Grundgesetz Artikel 5", "D) HGB"], correct: 1, explanation: "Paragraph 26 Bundesdatenschutzgesetz (Bundesdatenschutzgesetz) regelt die Verarbeitung personenbezogener Daten von Beschaeftigten und Bewerbern." },
+            { id: 50, text: "Was ist ein Talentpool?", options: ["A) Eine Datenbank fuer Bewerber, die spaeter relevant sein koennten", "B) Ein Schwimmbecken", "C) Eine Sportveranstaltung", "D) Eine Versicherung"], correct: 0, explanation: "Ein Talentpool ist eine Datenbank fuer Bewerber, die aktuell nicht eingestellt werden, aber spaeter relevant sein koennten - nur mit ausdruecklicher Einwilligung erlaubt." }
+        ]
+    },
+    {
+        title: "Abschnitt 6: Gehaltsverhandlung und PDL-Praxis (Fragen 51-60)",
+        questions: [
+            { id: 51, text: "Wofuer steht BATNA?", options: ["A) Best Alternative To a Negotiated Agreement", "B) Bundesarbeitsamt-Tarifabkommen", "C) Berufsausbildung Tarifvertrag", "D) Bewerber-Auswahl-Test-Norm-A"], correct: 0, explanation: "BATNA = Best Alternative To a Negotiated Agreement - die beste Alternative zur Verhandlungsloesung. Wer eine starke BATNA hat, verhandelt selbstbewusster." },
+            { id: 52, text: "Wofuer steht ZOPA?", options: ["A) Zentrale Organisation Personal Arbeit", "B) Zone Of Possible Agreement", "C) Zwischen Organisation Person Arbeit", "D) Zone Optimal Personal Arbeit"], correct: 1, explanation: "ZOPA = Zone Of Possible Agreement - der Verhandlungsbereich, in dem Einigung moeglich ist. Liegen Vorstellungen ausserhalb der ZOPA, scheitert die Verhandlung." },
+            { id: 53, text: "Wer entwickelte das Harvard-Konzept?", options: ["A) Carl Rogers", "B) Roger Fisher und William Ury", "C) Marshall Rosenberg", "D) Friedemann Schulz von Thun"], correct: 1, explanation: "Das Harvard-Konzept wurde von Roger Fisher und William Ury an der Harvard Law School entwickelt (Buch \"Getting to Yes\", 1981)." },
+            { id: 54, text: "Welches ist KEIN Prinzip des Harvard-Konzepts?", options: ["A) Personen und Probleme trennen", "B) Nicht Positionen, sondern Interessen verhandeln", "C) Win-Win-Optionen suchen", "D) Mit allen Mitteln gewinnen"], correct: 3, explanation: "Mit allen Mitteln gewinnen ist KEIN Prinzip - im Gegenteil. Das Harvard-Konzept basiert auf: Personen/Probleme trennen, Interessen statt Positionen, Win-Win, objektive Kriterien." },
+            { id: 55, text: "Was ist die Ankertechnik?", options: ["A) Eine Bootsbau-Technik", "B) Wer zuerst eine Zahl nennt, setzt einen Anker, an dem sich die Verhandlung orientiert", "C) Eine Sicherungstechnik", "D) Eine Schiffstechnik"], correct: 1, explanation: "Die Ankertechnik: Wer zuerst eine konkrete Zahl nennt, setzt einen Anker. Der Verhandlungsverlauf orientiert sich oft an diesem Anker." },
+            { id: 56, text: "Wie viele Entgeltgruppen umfasst der BAP/iGZ-Tarifvertrag etwa?", options: ["A) Drei", "B) Fuenf", "C) Neun", "D) Fuenfzehn"], correct: 2, explanation: "Der BAP/iGZ-Tarifvertrag umfasst neun Entgeltgruppen (EG 1 bis EG 9), differenziert nach Taetigkeit." },
+            { id: 57, text: "Welche Tarifparteien handeln den Tarifvertrag fuer die Zeitarbeit aus?", options: ["A) ver.di und Bundesregierung", "B) BAP/iGZ-Arbeitgeberverband und DGB-Gewerkschaften", "C) Industrie- und Handelskammer und Arbeitsamt", "D) Bundesarbeitsgericht"], correct: 1, explanation: "Tarifparteien sind der Arbeitgeberverband BAP/iGZ und die DGB-Gewerkschaften (IG Metall, ver.di u.a.) - Tarifabschluesse ueber 90% der Personaldienstleistungsunternehmen." },
+            { id: 58, text: "Wann gilt Equal Pay in der Zeitarbeit?", options: ["A) Sofort", "B) Nach 9 Monaten Einsatzdauer beim selben Kunden", "C) Nach 1 Jahr Probezeit", "D) Nie"], correct: 1, explanation: "Equal Pay (gleicher Lohn fuer gleiche Arbeit) greift in der Zeitarbeit nach 9 Monaten Einsatzdauer beim selben Kunden (Paragraph 8 AUeG)." },
+            { id: 59, text: "Was ist eine Antrittspraemie?", options: ["A) Eine Geldpraemie als Verhandlungsanreiz bei Vertragsabschluss", "B) Ein Tarifausgleich", "C) Eine Sozialleistung", "D) Eine Steuer"], correct: 0, explanation: "Eine Antrittspraemie ist ein einmaliger Geldbetrag, der bei Vertragsabschluss als Anreiz gezahlt wird - wirksames Mittel bei knappen Qualifikationen." },
+            { id: 60, text: "Welche Aussage zum Telefoninterview ist KORREKT?", options: ["A) Es ersetzt das Praesenzgespraech immer komplett", "B) Es ist im Schnellrecruiting der Zeitarbeit ein wichtiges Filter-Instrument", "C) Es ist juristisch unzulaessig", "D) Es dauert immer 60 Minuten"], correct: 1, explanation: "Das Telefoninterview ist im Schnellrecruiting der Zeitarbeit ein wichtiges Schnellfilter-Instrument - klaert in 10-15 Minuten, ob ein Praesenzgespraech sinnvoll ist." }
+        ]
+    }
+];
+
+let answered = {};
+let checked  = {};
+let showAll  = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() {
+    const flat = [];
+    sections.forEach(s => s.questions.forEach(q => flat.push(q)));
+    return flat;
+}
+const flatQ = allQuestions();
+
+function render() {
+    const container = document.getElementById('quizContainer');
+    let html = '';
+    let globalIdx = 0;
+    sections.forEach((sec, si) => {
+        html += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach((q, qi) => {
+            const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+            const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+            html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+            html += `<p class="question-text">${q.text}</p>`;
+            html += `<ul class="options-list">`;
+            q.options.forEach((opt, oi) => {
+                let cls = '';
+                if (checked[q.id]) {
+                    if (oi === q.correct) cls = 'correct-opt';
+                    else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+                } else if (answered[q.id] === oi) {
+                    cls = 'selected';
+                }
+                const dis = checked[q.id] ? 'disabled' : '';
+                const chk = answered[q.id] === oi ? 'checked' : '';
+                html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+            });
+            html += `</ul>`;
+            const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+            if (checked[q.id]) {
+                const isCorr = answered[q.id] === q.correct;
+                const fbClass = isCorr ? 'correct' : 'incorrect';
+                const fbText = isCorr
+                    ? `<strong>Richtig!</strong> ${q.explanation}`
+                    : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+                html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+            } else {
+                html += `<div class="feedback" id="fb-${q.id}"></div>`;
+            }
+            html += `</div>`;
+            globalIdx++;
+        });
+    });
+    if (!showAll) {
+        html += `<div class="nav-row">`;
+        html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+        html += `<span style="font-weight:600;color:#004a99;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+        html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+        html += `</div>`;
+    }
+    container.innerHTML = html;
+    updateProgress();
+}
+
+function selectOption(qid, idx) {
+    if (checked[qid]) return;
+    answered[qid] = idx;
+    render();
+}
+
+function checkAnswer(qid) {
+    if (answered[qid] === undefined || checked[qid]) return;
+    checked[qid] = true;
+    render();
+    updateProgress();
+}
+
+function navigate(dir) {
+    currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir));
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+    const done = Object.keys(checked).length;
+    const pct = Math.round((done / totalQ) * 100);
+    document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+    document.getElementById('progressPct').textContent = `${pct} %`;
+    document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+    const done = Object.keys(checked).length;
+    if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+    let correct = 0;
+    flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+    const pct = Math.round((correct / done) * 100);
+    document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+    let gradeText = '';
+    let gradeClass = 'pass';
+    if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+    else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+    else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+    else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+    else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+    else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+    const gEl = document.getElementById('gradeText');
+    gEl.textContent = gradeText;
+    gEl.className = 'grade ' + gradeClass;
+    let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+    sections.forEach(sec => {
+        let sCorr = 0, sTotal = 0;
+        sec.questions.forEach(q => {
+            if (checked[q.id]) {
+                sTotal++;
+                if (answered[q.id] === q.correct) sCorr++;
+            }
+        });
+        const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+        tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+    });
+    tbl += '</table>';
+    document.getElementById('sectionBreakdown').innerHTML = tbl;
+    document.getElementById('resultsPanel').classList.add('show');
+    document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+    answered = {};
+    checked = {};
+    currentQ = 0;
+    document.getElementById('resultsPanel').classList.remove('show');
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () {
+    showAll = this.checked;
+    render();
+});
+
+function shuffleQuizOptions() {
+    let seed = 42;
+    function seededRandom() {
+        seed = (seed * 16807 + 0) % 2147483647;
+        return (seed - 1) / 2147483646;
+    }
+    sections.forEach(sec => {
+        sec.questions.forEach(q => {
+            const correctText = q.options[q.correct];
+            const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+            for (let i = cleaned.length - 1; i > 0; i--) {
+                const j = Math.floor(seededRandom() * (i + 1));
+                [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+            }
+            const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+            const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+            q.options = cleaned.map((c, i) => prefixes[i] + c);
+            q.correct = cleaned.indexOf(correctClean);
+        });
+    });
+}
+shuffleQuizOptions();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDK Personal-Kurs Mai-Juni 2026 | Materialien</title>
+  <style>
+    :root {
+      --ink: #122033;
+      --ink-2: #4b6378;
+      --accent: #0d5c8c;
+      --accent-2: #1780a1;
+      --soft: #eef4f8;
+      --card: #ffffff;
+      --line: #d6e0e8;
+      --ok: #1f7a3a;
+      --warn: #c25e0d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(13, 92, 140, 0.16), transparent 30%),
+        linear-gradient(180deg, #f7fbfd 0%, #edf3f7 100%);
+      min-height: 100vh;
+    }
+    header.site {
+      padding: 2.5rem 1.25rem 1.5rem;
+      background: linear-gradient(135deg, #0f3151 0%, #0d5c8c 60%, #1780a1 100%);
+      color: #fff;
+    }
+    header.site h1 {
+      margin: 0 0 0.4rem;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+    }
+    header.site p {
+      margin: 0 0 1rem;
+      max-width: 75ch;
+      line-height: 1.55;
+      opacity: 0.95;
+    }
+    .stats {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .stat {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.9rem;
+    }
+    .stat strong { font-size: 1.1rem; }
+    .toolbar {
+      max-width: 1180px;
+      margin: 1.25rem auto 0;
+      padding: 0 1.25rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .toolbar label { font-size: 0.9rem; color: var(--ink-2); }
+    .toolbar select, .toolbar input {
+      padding: 0.55rem 0.8rem;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      font-size: 0.95rem;
+      background: #fff;
+      color: var(--ink);
+      min-width: 220px;
+    }
+    .toolbar input { flex: 1; min-width: 180px; max-width: 360px; }
+    main {
+      max-width: 1180px;
+      margin: 1.25rem auto 3rem;
+      padding: 0 1.25rem;
+    }
+    .module {
+      margin-top: 2rem;
+    }
+    .module-title {
+      font-size: 1.15rem;
+      color: #0f3151;
+      margin: 0 0 0.85rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--accent);
+    }
+    .cards-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      box-shadow: 0 6px 18px rgba(18, 32, 51, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(18, 32, 51, 0.10);
+    }
+    .card.hidden { display: none; }
+    .card.highlight {
+      outline: 3px solid var(--accent-2);
+      outline-offset: 2px;
+    }
+    .card-head h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: #0f3151;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .date-badge {
+      font-weight: normal;
+      font-size: 0.8rem;
+      background: var(--soft);
+      color: var(--ink-2);
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+    }
+    .topic {
+      margin: 0;
+      color: var(--ink-2);
+      font-size: 0.92rem;
+      line-height: 1.4;
+    }
+    ul.resources {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .res a {
+      display: block;
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      background: var(--soft);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.88rem;
+      border-left: 3px solid var(--accent);
+      transition: background 0.15s;
+    }
+    .res a:hover { background: #dbe7f0; }
+    .res-quiz_html a { border-left-color: var(--ok); }
+    .res-quiz_pdf a { border-left-color: var(--ok); opacity: 0.85; }
+    .res-handout a { border-left-color: var(--accent); }
+    .res-praesentation a { border-left-color: var(--accent-2); }
+    .res-notizen a { border-left-color: #6c5b9a; }
+    .res-klausur a, .res-klausur_loesung a { border-left-color: var(--warn); }
+    footer {
+      padding: 1.5rem 1.25rem 2rem;
+      color: var(--ink-2);
+      text-align: center;
+      font-size: 0.88rem;
+    }
+    @media (max-width: 600px) {
+      .toolbar select, .toolbar input { min-width: 100%; }
+    }
+    /* Gate */
+    .gate-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0f3151 0%, #0d5c8c 60%, #1780a1 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 1rem;
+    }
+    .gate-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2rem 1.75rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+    }
+    .gate-card h2 { margin: 0 0 0.5rem; color: #0f3151; font-size: 1.4rem; }
+    .gate-card p { margin: 0 0 1.2rem; color: var(--ink-2); font-size: 0.95rem; }
+    .gate-card input {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+    .gate-card input:focus { border-color: var(--accent); outline: none; }
+    .gate-card button {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .gate-card button:hover { background: #0f3151; }
+    .gate-error {
+      color: #c0392b;
+      font-size: 0.88rem;
+      min-height: 1.2em;
+      margin-top: 0.5rem;
+    }
+    body.locked main, body.locked header.site, body.locked .toolbar, body.locked footer { filter: blur(8px); pointer-events: none; user-select: none; }
+  </style>
+</head>
+<body class="locked">
+  <div class="gate-overlay" id="gateOverlay">
+    <form class="gate-card" id="gateForm" autocomplete="off">
+      <h2>Zugang geschuetzt</h2>
+      <p>Bitte Zugangscode eingeben, um die Kursmaterialien zu oeffnen.</p>
+      <input type="password" id="gateInput" placeholder="Zugangscode" autofocus>
+      <button type="submit">Freischalten</button>
+      <div class="gate-error" id="gateError">&nbsp;</div>
+    </form>
+  </div>
+  <header class="site">
+    <h1>PDK Personal-Kurs Mai-Juni 2026</h1>
+    <p>Materialien zum Kurs „WISO Comcave - Integrative Unternehmensprozesse Personal" (Personaldienstleistungskaufmann/-frau IHK). Quizze laufen interaktiv im Browser, alle Handouts und Praesentationen als PDF.</p>
+    <div class="stats">
+      <span class="stat"><strong>23</strong> Tage</span>
+      <span class="stat"><strong>14</strong> Quizze</span>
+      <span class="stat"><strong>20</strong> Praesentationen</span>
+      <span class="stat"><strong>23</strong> Handouts</span>
+    </div>
+  </header>
+  <div class="toolbar">
+    <label for="daySelect">Schnellsprung:</label>
+    <select id="daySelect">
+      <option value="">-- Tag waehlen --</option>
+      <option value="01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien">Tag 01 (2026-05-04) -- Mo Einfuehrung PDL Lernstrategien</option><option value="01_Arbeitsgestaltung_04.05-06.05/Tag_02_2026-05-05_Di_Arbeitsplanung_Disposition_Recruitingalltag">Tag 02 (2026-05-05) -- Di Arbeitsplanung Disposition Recruitingalltag</option><option value="02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte">Tag 04 (2026-05-07) -- Do Projektbegriff Onsite Grosskundenprojekte</option><option value="02_Projektmanagement_07.05-19.05/Tag_05_2026-05-08_Fr_Lastenheft_Pflichtenheft_Auftragsklaerung_Anforderungsprofil">Tag 05 (2026-05-08) -- Fr Lastenheft Pflichtenheft Auftragsklaerung Anforderungsprofil</option><option value="02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation">Tag 07 (2026-05-12) -- Di Rollen Team Projektorganisation</option><option value="02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP">Tag 08 (2026-05-13) -- Mi Projektstrukturplan PSP</option><option value="02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation">Tag 10 (2026-05-18) -- Mo Soll-Ist-KPI Recruiting Fluktuation</option><option value="02_Projektmanagement_07.05-19.05/Tag_11_2026-05-19_Di_Projektdokumentation_Abschluss_LessonsLearned">Tag 11 (2026-05-19) -- Di Projektdokumentation Abschluss LessonsLearned</option><option value="03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin">Tag 13 (2026-05-21) -- Do Kompetenzprofile gewerblich kfm IT Medizin</option><option value="03_Berufsfelderschliessung_20.05-03.06/Tag_14_2026-05-22_Fr_Einsatzfelder_Branchenspezifika">Tag 14 (2026-05-22) -- Fr Einsatzfelder Branchenspezifika</option><option value="03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen">Tag 16 (2026-05-27) -- Mi Anforderungsprofile erstellen</option><option value="03_Berufsfelderschliessung_20.05-03.06/Tag_17_2026-05-28_Do_Stellenausschreibung_Praxis">Tag 17 (2026-05-28) -- Do Stellenausschreibung Praxis</option><option value="03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork">Tag 19 (2026-06-01) -- Mo Demografie Digitalisierung NewWork</option><option value="03_Berufsfelderschliessung_20.05-03.06/Tag_20_2026-06-02_Di_Mangelberufe_Zielbranchen_Akquise">Tag 20 (2026-06-02) -- Di Mangelberufe Zielbranchen Akquise</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL">Tag 22 (2026-06-05) -- Fr Kommunikationsmodelle Schulz v Thun PDL</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_23_2026-06-08_Mo_Kunde_Bewerber_ZAN_zielgruppengerecht">Tag 23 (2026-06-08) -- Mo Kunde Bewerber ZAN zielgruppengerecht</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren">Tag 25 (2026-06-10) -- Mi Vorstellungsgespraech aktives Zuhoeren</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_26_2026-06-11_Do_Mitarbeitergespraech_Feedback_im_Einsatz">Tag 26 (2026-06-11) -- Do Mitarbeitergespraech Feedback im Einsatz</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern">Tag 28 (2026-06-15) -- Mo Konfliktarten Kunde ZAN intern</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_29_2026-06-16_Di_Eskalation_Mediation_Beschwerdemanagement">Tag 29 (2026-06-16) -- Di Eskalation Mediation Beschwerdemanagement</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt">Tag 31 (2026-06-18) -- Do Betriebsrat GVP Anwalt</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation">Tag 33 (2026-06-22) -- Mo Klausurvorbereitung PDK Pruefungssimulation</option><option value="05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK">Tag 34 (2026-06-23) -- Di Klausur PDK IHK</option>
+    </select>
+    <input type="search" id="searchBox" placeholder="Suchen (Thema, Datum, Tag-Nummer)...">
+  </div>
+  <main id="modules">
+
+    <section class="module" data-module="01_Arbeitsgestaltung_04.05-06.05">
+      <h2 class="module-title">Modul 1 -- Arbeitsgestaltung (04.05-06.05)</h2>
+      <div class="cards-grid">
+        
+        <article class="card" data-day="01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien">
+          <header class="card-head">
+            <h3>Tag 01 <span class="date-badge">2026-05-04</span></h3>
+            <p class="topic">Mo Einfuehrung PDL Lernstrategien</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/Handout_Tag01.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/Praesentation_Tag01_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/Praesentation_Tag01.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/Quiz_Tag01.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien/Quiz_Tag01.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="01_Arbeitsgestaltung_04.05-06.05/Tag_02_2026-05-05_Di_Arbeitsplanung_Disposition_Recruitingalltag">
+          <header class="card-head">
+            <h3>Tag 02 <span class="date-badge">2026-05-05</span></h3>
+            <p class="topic">Di Arbeitsplanung Disposition Recruitingalltag</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/01_Arbeitsgestaltung_04.05-06.05/Tag_02_2026-05-05_Di_Arbeitsplanung_Disposition_Recruitingalltag/Handout_Tag02.pdf">Handout (PDF)</a></li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="module" data-module="02_Projektmanagement_07.05-19.05">
+      <h2 class="module-title">Modul 2 -- Projektmanagement (07.05-19.05)</h2>
+      <div class="cards-grid">
+        
+        <article class="card" data-day="02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte">
+          <header class="card-head">
+            <h3>Tag 04 <span class="date-badge">2026-05-07</span></h3>
+            <p class="topic">Do Projektbegriff Onsite Grosskundenprojekte</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/Handout_Tag04.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/Praesentation_Tag04_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/Praesentation_Tag04.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/Quiz_Tag04.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte/Quiz_Tag04.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="02_Projektmanagement_07.05-19.05/Tag_05_2026-05-08_Fr_Lastenheft_Pflichtenheft_Auftragsklaerung_Anforderungsprofil">
+          <header class="card-head">
+            <h3>Tag 05 <span class="date-badge">2026-05-08</span></h3>
+            <p class="topic">Fr Lastenheft Pflichtenheft Auftragsklaerung Anforderungsprofil</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/02_Projektmanagement_07.05-19.05/Tag_05_2026-05-08_Fr_Lastenheft_Pflichtenheft_Auftragsklaerung_Anforderungsprofil/Handout_Tag05.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/02_Projektmanagement_07.05-19.05/Tag_05_2026-05-08_Fr_Lastenheft_Pflichtenheft_Auftragsklaerung_Anforderungsprofil/Praesentation_Tag05_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/02_Projektmanagement_07.05-19.05/Tag_05_2026-05-08_Fr_Lastenheft_Pflichtenheft_Auftragsklaerung_Anforderungsprofil/Praesentation_Tag05.pdf">Praesentation (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation">
+          <header class="card-head">
+            <h3>Tag 07 <span class="date-badge">2026-05-12</span></h3>
+            <p class="topic">Di Rollen Team Projektorganisation</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/Handout_Tag07.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/Praesentation_Tag07_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/Praesentation_Tag07.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/Quiz_Tag07.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation/Quiz_Tag07.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP">
+          <header class="card-head">
+            <h3>Tag 08 <span class="date-badge">2026-05-13</span></h3>
+            <p class="topic">Mi Projektstrukturplan PSP</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/Handout_Tag08.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/Praesentation_Tag08_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/Praesentation_Tag08.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/Quiz_Tag08.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP/Quiz_Tag08.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation">
+          <header class="card-head">
+            <h3>Tag 10 <span class="date-badge">2026-05-18</span></h3>
+            <p class="topic">Mo Soll-Ist-KPI Recruiting Fluktuation</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/Handout_Tag10.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/Praesentation_Tag10_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/Praesentation_Tag10.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/Quiz_Tag10.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation/Quiz_Tag10.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="02_Projektmanagement_07.05-19.05/Tag_11_2026-05-19_Di_Projektdokumentation_Abschluss_LessonsLearned">
+          <header class="card-head">
+            <h3>Tag 11 <span class="date-badge">2026-05-19</span></h3>
+            <p class="topic">Di Projektdokumentation Abschluss LessonsLearned</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/02_Projektmanagement_07.05-19.05/Tag_11_2026-05-19_Di_Projektdokumentation_Abschluss_LessonsLearned/Handout_Tag11.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/02_Projektmanagement_07.05-19.05/Tag_11_2026-05-19_Di_Projektdokumentation_Abschluss_LessonsLearned/Praesentation_Tag11_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/02_Projektmanagement_07.05-19.05/Tag_11_2026-05-19_Di_Projektdokumentation_Abschluss_LessonsLearned/Praesentation_Tag11.pdf">Praesentation (PDF)</a></li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="module" data-module="03_Berufsfelderschliessung_20.05-03.06">
+      <h2 class="module-title">Modul 3 -- Berufsfelderschliessung (20.05-03.06)</h2>
+      <div class="cards-grid">
+        
+        <article class="card" data-day="03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin">
+          <header class="card-head">
+            <h3>Tag 13 <span class="date-badge">2026-05-21</span></h3>
+            <p class="topic">Do Kompetenzprofile gewerblich kfm IT Medizin</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/Handout_Tag13.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/Praesentation_Tag13_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/Praesentation_Tag13.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/Quiz_Tag13.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin/Quiz_Tag13.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="03_Berufsfelderschliessung_20.05-03.06/Tag_14_2026-05-22_Fr_Einsatzfelder_Branchenspezifika">
+          <header class="card-head">
+            <h3>Tag 14 <span class="date-badge">2026-05-22</span></h3>
+            <p class="topic">Fr Einsatzfelder Branchenspezifika</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_14_2026-05-22_Fr_Einsatzfelder_Branchenspezifika/Handout_Tag14.pdf">Handout (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen">
+          <header class="card-head">
+            <h3>Tag 16 <span class="date-badge">2026-05-27</span></h3>
+            <p class="topic">Mi Anforderungsprofile erstellen</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/Handout_Tag16.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/Praesentation_Tag16_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/Praesentation_Tag16.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/Quiz_Tag16.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen/Quiz_Tag16.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="03_Berufsfelderschliessung_20.05-03.06/Tag_17_2026-05-28_Do_Stellenausschreibung_Praxis">
+          <header class="card-head">
+            <h3>Tag 17 <span class="date-badge">2026-05-28</span></h3>
+            <p class="topic">Do Stellenausschreibung Praxis</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_17_2026-05-28_Do_Stellenausschreibung_Praxis/Handout_Tag17.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_17_2026-05-28_Do_Stellenausschreibung_Praxis/Praesentation_Tag17_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_17_2026-05-28_Do_Stellenausschreibung_Praxis/Praesentation_Tag17.pdf">Praesentation (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork">
+          <header class="card-head">
+            <h3>Tag 19 <span class="date-badge">2026-06-01</span></h3>
+            <p class="topic">Mo Demografie Digitalisierung NewWork</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/Handout_Tag19.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/Praesentation_Tag19_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/Praesentation_Tag19.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/Quiz_Tag19.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork/Quiz_Tag19.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="03_Berufsfelderschliessung_20.05-03.06/Tag_20_2026-06-02_Di_Mangelberufe_Zielbranchen_Akquise">
+          <header class="card-head">
+            <h3>Tag 20 <span class="date-badge">2026-06-02</span></h3>
+            <p class="topic">Di Mangelberufe Zielbranchen Akquise</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_20_2026-06-02_Di_Mangelberufe_Zielbranchen_Akquise/Handout_Tag20.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_20_2026-06-02_Di_Mangelberufe_Zielbranchen_Akquise/Praesentation_Tag20_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/03_Berufsfelderschliessung_20.05-03.06/Tag_20_2026-06-02_Di_Mangelberufe_Zielbranchen_Akquise/Praesentation_Tag20.pdf">Praesentation (PDF)</a></li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="module" data-module="04_Kommunikation_Kooperation_05.06-22.06">
+      <h2 class="module-title">Modul 4 -- Kommunikation & Kooperation (05.06-22.06)</h2>
+      <div class="cards-grid">
+        
+        <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL">
+          <header class="card-head">
+            <h3>Tag 22 <span class="date-badge">2026-06-05</span></h3>
+            <p class="topic">Fr Kommunikationsmodelle Schulz v Thun PDL</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/Handout_Tag22.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/Praesentation_Tag22_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/Praesentation_Tag22.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/Quiz_Tag22.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL/Quiz_Tag22.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_23_2026-06-08_Mo_Kunde_Bewerber_ZAN_zielgruppengerecht">
+          <header class="card-head">
+            <h3>Tag 23 <span class="date-badge">2026-06-08</span></h3>
+            <p class="topic">Mo Kunde Bewerber ZAN zielgruppengerecht</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_23_2026-06-08_Mo_Kunde_Bewerber_ZAN_zielgruppengerecht/Handout_Tag23.pdf">Handout (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_23_2026-06-08_Mo_Kunde_Bewerber_ZAN_zielgruppengerecht/Praesentation_Tag23.pdf">Praesentation (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren">
+          <header class="card-head">
+            <h3>Tag 25 <span class="date-badge">2026-06-10</span></h3>
+            <p class="topic">Mi Vorstellungsgespraech aktives Zuhoeren</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/Handout_Tag25.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/Praesentation_Tag25_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/Praesentation_Tag25.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/Quiz_Tag25.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren/Quiz_Tag25.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_26_2026-06-11_Do_Mitarbeitergespraech_Feedback_im_Einsatz">
+          <header class="card-head">
+            <h3>Tag 26 <span class="date-badge">2026-06-11</span></h3>
+            <p class="topic">Do Mitarbeitergespraech Feedback im Einsatz</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_26_2026-06-11_Do_Mitarbeitergespraech_Feedback_im_Einsatz/Handout_Tag26.pdf">Handout (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_26_2026-06-11_Do_Mitarbeitergespraech_Feedback_im_Einsatz/Praesentation_Tag26.pdf">Praesentation (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern">
+          <header class="card-head">
+            <h3>Tag 28 <span class="date-badge">2026-06-15</span></h3>
+            <p class="topic">Mo Konfliktarten Kunde ZAN intern</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/Handout_Tag28.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/Praesentation_Tag28_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/Praesentation_Tag28.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/Quiz_Tag28.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern/Quiz_Tag28.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_29_2026-06-16_Di_Eskalation_Mediation_Beschwerdemanagement">
+          <header class="card-head">
+            <h3>Tag 29 <span class="date-badge">2026-06-16</span></h3>
+            <p class="topic">Di Eskalation Mediation Beschwerdemanagement</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_29_2026-06-16_Di_Eskalation_Mediation_Beschwerdemanagement/Handout_Tag29.pdf">Handout (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt">
+          <header class="card-head">
+            <h3>Tag 31 <span class="date-badge">2026-06-18</span></h3>
+            <p class="topic">Do Betriebsrat GVP Anwalt</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/Handout_Tag31.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/Praesentation_Tag31_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/Praesentation_Tag31.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/Quiz_Tag31.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt/Quiz_Tag31.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+
+        <article class="card" data-day="04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation">
+          <header class="card-head">
+            <h3>Tag 33 <span class="date-badge">2026-06-22</span></h3>
+            <p class="topic">Mo Klausurvorbereitung PDK Pruefungssimulation</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/Handout_Tag33.pdf">Handout (PDF)</a></li><li class="res res-notizen"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/Praesentation_Tag33_Notizen.pdf">Praesentation mit Notizen (PDF)</a></li><li class="res res-praesentation"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/Praesentation_Tag33.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/Quiz_Tag33.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation/Quiz_Tag33.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="module" data-module="05_Klausur_23.06">
+      <h2 class="module-title">Modul 5 -- Klausur (23.06)</h2>
+      <div class="cards-grid">
+        
+        <article class="card" data-day="05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK">
+          <header class="card-head">
+            <h3>Tag 34 <span class="date-badge">2026-06-23</span></h3>
+            <p class="topic">Di Klausur PDK IHK</p>
+          </header>
+          <ul class="resources"><li class="res res-handout"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Handout_Tag34.pdf">Handout (PDF)</a></li><li class="res res-klausur_loesung"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Klausur_Tag34_Loesung.pdf">Klausur Loesung (PDF)</a></li><li class="res res-klausur"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Klausur_Tag34.pdf">Klausur (PDF)</a></li><li class="res res-praesentation"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Praesentation_Tag34.pdf">Praesentation (PDF)</a></li><li class="res res-quiz_html"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Quiz_Tag34.html">Quiz interaktiv (HTML)</a></li><li class="res res-quiz_pdf"><a href="content/05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK/Quiz_Tag34.pdf">Quiz Druckversion (PDF)</a></li></ul>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer>
+    &copy; 2026 Can Siebert &middot; Lehrgang Personaldienstleistungskaufmann/-frau Mai-Juni 2026
+    &middot; Repo: <a href="https://github.com/cansi798/04.05_23.06_Personal_Comcave">04.05_23.06_Personal_Comcave</a>
+  </footer>
+  <script>
+    // Zugangscode-Gate (clientseitig, kein echter Schutz - nur Sichtbarriere)
+    (function () {
+      const STORAGE_KEY = 'pdk_personal_unlocked_v1';
+      const ACCESS_CODE = 'Personal';
+      const overlay = document.getElementById('gateOverlay');
+      const form = document.getElementById('gateForm');
+      const input = document.getElementById('gateInput');
+      const err = document.getElementById('gateError');
+
+      function unlock() {
+        document.body.classList.remove('locked');
+        overlay.style.display = 'none';
+        try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+      }
+
+      try {
+        if (sessionStorage.getItem(STORAGE_KEY) === '1') {
+          unlock();
+        }
+      } catch (e) {}
+
+      form.addEventListener('submit', (ev) => {
+        ev.preventDefault();
+        if (input.value.trim() === ACCESS_CODE) {
+          err.textContent = '';
+          unlock();
+        } else {
+          err.textContent = 'Falscher Code. Bitte erneut versuchen.';
+          input.value = '';
+          input.focus();
+        }
+      });
+    })();
+
+    const daySelect = document.getElementById('daySelect');
+    const searchBox = document.getElementById('searchBox');
+    const cards = Array.from(document.querySelectorAll('.card'));
+
+    daySelect.addEventListener('change', () => {
+      const target = daySelect.value;
+      cards.forEach((c) => c.classList.remove('highlight'));
+      if (!target) return;
+      const card = cards.find((c) => c.dataset.day === target);
+      if (card) {
+        card.classList.add('highlight');
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+
+    searchBox.addEventListener('input', () => {
+      const q = searchBox.value.trim().toLowerCase();
+      cards.forEach((c) => {
+        const txt = c.textContent.toLowerCase();
+        c.classList.toggle('hidden', q && !txt.includes(q));
+      });
+      document.querySelectorAll('.module').forEach((m) => {
+        const visible = m.querySelectorAll('.card:not(.hidden)').length;
+        m.style.display = visible ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

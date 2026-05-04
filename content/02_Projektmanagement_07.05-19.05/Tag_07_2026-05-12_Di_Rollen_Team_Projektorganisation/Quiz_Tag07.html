@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Tag 07 &ndash; Projektrollen, Team &amp; Projektorganisation</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #003366 0%, #004B87 50%, #0082B4 100%); color: #fff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+.header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+.header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+.toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+.toolbar button, .toolbar .toggle-label { background: #004B87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.toolbar button:hover { background: #003366; }
+.toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+.toggle-label input { accent-color: #004B87; width: 18px; height: 18px; cursor: pointer; }
+.progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+.progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+.progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0082B4, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+.container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+.section-title { background: #003366; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+.section-title:first-child { margin-top: 0; }
+.question-card { background: #ffffff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+.question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.question-card.correct-card { border-left: 5px solid #28a745; }
+.question-card.incorrect-card { border-left: 5px solid #dc3545; }
+.question-number { display: inline-block; background: #e8f0fe; color: #004B87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+.question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+.options-list { list-style: none; }
+.options-list li { margin-bottom: 0.5rem; }
+.options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+.options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+.options-list input[type="radio"] { accent-color: #004B87; margin-top: 3px; flex-shrink: 0; }
+.options-list label.selected { background: #e8f0fe; border-color: #004B87; }
+.options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+.options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+.check-btn { margin-top: 0.8rem; background: #004B87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.check-btn:hover { background: #003366; }
+.check-btn:disabled { background: #8faec8; cursor: default; }
+.feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+.feedback.show { display: block; }
+.feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.nav-btn { background: #004B87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.nav-btn:hover { background: #003366; }
+.nav-btn:disabled { background: #8faec8; cursor: default; }
+.results-panel { background: #ffffff; border: 2px solid #004B87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.results-panel.show { display: block; }
+.results-panel h2 { color: #003366; margin-bottom: 0.8rem; }
+.score-big { font-size: 3rem; font-weight: 700; color: #004B87; }
+.grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+.grade.pass { color: #28a745; }
+.grade.fail { color: #dc3545; }
+.section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+.section-breakdown table { width: 100%; border-collapse: collapse; }
+.section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+.section-breakdown th { background: #e8f0fe; color: #003366; text-align: left; }
+.references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+.references h3 { color: #003366; margin-bottom: 0.8rem; font-size: 1.1rem; }
+.references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+.footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+@media print { body { background: #fff; } .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; } .header { background: #003366 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; } .section-title { break-after: avoid; } .feedback.show { display: block !important; } }
+@media (max-width: 600px) { .header { padding: 1.4rem 0.8rem; } .question-card { padding: 1rem; } .toolbar { flex-direction: column; align-items: stretch; text-align: center; } }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<header class="header">
+  <h1>Quiz Tag 07 &ndash; Projektrollen, Team &amp; Projektorganisation</h1>
+  <div class="subtitle">Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026 &ndash; Personaldienstleistungskaufmann/-frau</div>
+  <div class="meta"><span>&copy; Can Siebert</span><span>Stand 05/2026</span><span>60 Fragen &bull; Multiple Choice</span></div>
+</header>
+
+<div class="toolbar">
+  <label class="toggle-label"><input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen</label>
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+    <button onclick="showResults()">Ergebnis anzeigen</button>
+    <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+  </div>
+</div>
+
+<div class="progress-container">
+  <div class="progress-info"><span id="progressText">0 von 60 beantwortet</span><span id="progressPct">0 %</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+  <div class="results-panel" id="resultsPanel">
+    <h2>Dein Ergebnis</h2>
+    <div class="score-big" id="scoreBig"></div>
+    <div class="grade" id="gradeText"></div>
+    <div class="section-breakdown" id="sectionBreakdown"></div>
+    <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+  </div>
+</div>
+
+<div class="references">
+  <h3>Literaturverzeichnis (APA 7)</h3>
+  <p>AXELOS. (2017). <em>Managing Successful Projects with PRINCE2</em> (6. Aufl.). The Stationery Office.</p>
+  <p>Bundesministerium der Justiz. (2025). <em>Arbeitnehmer&uuml;berlassungsgesetz (A&Uuml;G)</em>. https://www.gesetze-im-internet.de/a_g/</p>
+  <p>DIN Deutsches Institut f&uuml;r Normung. (2009). <em>DIN 69901 &ndash; Projektmanagement &ndash; Projektmanagementsysteme</em>. Beuth Verlag.</p>
+  <p>Frese, E., Graumann, M., &amp; Theuvsen, L. (2012). <em>Grundlagen der Organisation</em> (10. Aufl.). Springer Gabler.</p>
+  <p>Kuster, J., Bachmann, C., Hubmann, M., Lippmann, R., &amp; Schneider, P. (2022). <em>Handbuch Projektmanagement: Agil &ndash; Klassisch &ndash; Hybrid</em> (5. Aufl.). Springer Gabler.</p>
+  <p>Patzak, G., &amp; Rattay, G. (2014). <em>Projektmanagement</em> (6. Aufl.). Linde Verlag.</p>
+  <p>Project Management Institute. (2021). <em>A Guide to the Project Management Body of Knowledge (PMBOK Guide)</em> (7. Aufl.). PMI.</p>
+  <p>Schelle, H., Ottmann, R., &amp; Pfeiffer, A. (2018). <em>Projektmanager</em> (5. Aufl.). GPM.</p>
+  <p>Vahs, D. (2019). <em>Organisation: Ein Lehr- und Managementbuch</em> (10. Aufl.). Sch&auml;ffer-Poeschel.</p>
+</div>
+
+<footer class="footer">&copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Stand 05/2026</footer>
+
+<script>
+const sections = [
+{title:"Abschnitt 1: Projektrollen Grundlagen (Fragen 1–10)",questions:[
+{id:1,text:"Welche vier Projektrollen werden in der klassischen PM-Literatur unterschieden?",options:["A) Auftraggeber, Auftragnehmer, Lieferant, Kunde","B) Projektleitung, Teammitglied, Lenkungsausschuss, Sponsor","C) Vorstand, Geschäftsführung, Abteilungsleiter, Mitarbeiter","D) Disponent, Recruiter, Vertrieb, Verwaltung"],correct:1,explanation:"Klassisch werden vier zentrale Projektrollen unterschieden: Projektleitung (operativ), Teammitglied (Arbeitspakete), Lenkungsausschuss (strategische Aufsicht) und Sponsor/Auftraggeber (Gesamtverantwortung)."},
+{id:2,text:"Wer trägt die operative Verantwortung für die Erreichung der Projektziele?",options:["A) Der Sponsor","B) Der Lenkungsausschuss","C) Die Projektleitung","D) Die Geschäftsführung"],correct:2,explanation:"Die Projektleitung trägt die operative Verantwortung für die Erreichung der Projektziele im magischen Dreieck Zeit-Kosten-Qualität."},
+{id:3,text:"Welche drei Größen bilden das ‚magische Dreieck‘ des Projektmanagements?",options:["A) Personen, Prozesse, Produkte","B) Zeit, Kosten, Qualität (Leistung)","C) Plan, Do, Check","D) Input, Output, Outcome"],correct:1,explanation:"Das magische Dreieck besteht aus Zeit, Kosten und Qualität (auch Leistung genannt). Eine Veränderung an einer Ecke beeinflusst immer die anderen zwei."},
+{id:4,text:"Wer ist im Projekt der Sponsor?",options:["A) Ein externer Geldgeber wie eine Bank","B) Eine Einzelperson mit Gesamtverantwortung, die Budget und Rückendeckung bereitstellt","C) Ein Werbepartner des Projekts","D) Der Pressesprecher des Unternehmens"],correct:1,explanation:"Der Sponsor ist eine Einzelperson (häufig aus der Geschäftsleitung) mit Gesamtverantwortung für den Projekterfolg. Er stellt Budget bereit und gibt der Projektleitung politische Rückendeckung."},
+{id:5,text:"Was ist der Hauptunterschied zwischen Sponsor und Lenkungsausschuss?",options:["A) Sponsor ist eine Person, Lenkungsausschuss ist ein Gremium","B) Beides ist identisch und nur eine Begriffsfrage","C) Sponsor ist intern, Lenkungsausschuss ist extern","D) Sponsor ist juristisch, Lenkungsausschuss ist operativ"],correct:0,explanation:"Der Sponsor ist eine Einzelperson mit Gesamtverantwortung, der Lenkungsausschuss ist ein Gremium mit strategischer Aufsicht. Der Sponsor sitzt in der Regel im Lenkungsausschuss vor."},
+{id:6,text:"Welche Aufgabe hat der Lenkungsausschuss?",options:["A) Operative Bearbeitung der Arbeitspakete","B) Tägliche Koordination der Teamarbeit","C) Strategische Aufsicht, Phasen-Reviews, Genehmigungen","D) Erstellung des Projektplans"],correct:2,explanation:"Der Lenkungsausschuss übt strategische Aufsicht aus. Er führt Phasen-Reviews durch, genehmigt Meilensteine und entscheidet bei Eskalationen über Zielanpassungen oder Budgetnachforderungen."},
+{id:7,text:"Wie häufig tagt typischerweise ein Lenkungsausschuss?",options:["A) Täglich","B) Wöchentlich","C) Alle 4–8 Wochen, an Meilensteinen","D) Nur bei Projektabschluss"],correct:2,explanation:"Der Lenkungsausschuss tagt typischerweise alle 4–8 Wochen oder zu definierten Meilensteinen. Tägliche oder wöchentliche Sitzungen wären Mikromanagement und nicht zielführend."},
+{id:8,text:"Was bedeutet ‚doppelte Berichtslinie‘ für ein Teammitglied?",options:["A) Es muss zwei verschiedene Berichte schreiben","B) Es berichtet fachlich an die Projektleitung und disziplinarisch an die Linienführung","C) Es hat zwei Stellen gleichzeitig","D) Es schreibt einen Bericht in zweifacher Ausfertigung"],correct:1,explanation:"In Matrix-Organisationen berichten Teammitglieder fachlich an die Projektleitung (Was wird im Projekt gemacht?) und disziplinarisch an ihre/n Linienvorgesetzte/n (Personalführung, Beurteilung, Urlaub)."},
+{id:9,text:"Welche Kompetenzen braucht eine Projektleitung in der PDL-Branche besonders?",options:["A) Nur fachliche Kompetenzen","B) Nur soziale Kompetenzen","C) Fachliche, soziale und branchenspezifische Kompetenzen (z.B. Arbeitnehmerüberlassungsgesetz, TV-GVP)","D) Ausschließlich juristische Kompetenzen"],correct:2,explanation:"Eine Projektleitung in der PDL-Branche benötigt fachliche Kompetenzen (PM-Methoden), soziale Kompetenzen (Führung, Konfliktmanagement) und branchenspezifische Kenntnisse (Arbeitnehmerüberlassungsgesetz, TV-GVP, Kundenbetreuung)."},
+{id:10,text:"Welche Rolle ‚deckt der Projektleitung den Rücken‘ bei Konflikten mit anderen Bereichen?",options:["A) Das Teammitglied","B) Der Sponsor","C) Der Auszubildende","D) Die Personalabteilung"],correct:1,explanation:"Der Sponsor (häufig Geschäftsführer:in) deckt der Projektleitung den Rücken, wenn Konflikte mit anderen Bereichen entstehen. Er hat die politische Macht, Blockaden zu lösen."}
+]},
+{title:"Abschnitt 2: Aufgaben der Projektleitung (Fragen 11–20)",questions:[
+{id:11,text:"Welche der folgenden Tätigkeiten gehört NICHT zu den Hauptaufgaben einer Projektleitung?",options:["A) Erstellung des Projektstrukturplans","B) Eigenhändige Ausführung aller Arbeitspakete","C) Statusberichte an den Lenkungsausschuss","D) Risikomanagement"],correct:1,explanation:"Die Projektleitung delegiert die Ausführung der Arbeitspakete an die Teammitglieder. Sie selbst plant, steuert und kontrolliert, führt aber nicht alle Aufgaben eigenhändig aus."},
+{id:12,text:"Was beinhaltet die Steuerungsfunktion der Projektleitung?",options:["A) Bedienung von Maschinen","B) Aufgabenverteilung, Motivation und Koordination des Teams","C) Buchhaltung","D) Werbung für das Projekt"],correct:1,explanation:"Die Steuerungsfunktion umfasst die Verteilung der Aufgaben an Teammitglieder, ihre Motivation und die Koordination ihrer Arbeit, um die Projektziele zu erreichen."},
+{id:13,text:"Welches Reporting-Element gehört zum Standardrepertoire einer Projektleitung?",options:["A) Nur mündliche Tagesberichte","B) Statusberichte, Soll-Ist-Vergleiche, Eskalationsmeldungen","C) Nur Quartalsbilanzen","D) Ausschließlich Pressemitteilungen"],correct:1,explanation:"Zur Reporting-Aufgabe der Projektleitung gehören regelmäßige Statusberichte, Soll-Ist-Vergleiche zu KPIs sowie Eskalationsmeldungen bei kritischen Abweichungen."},
+{id:14,text:"Wer dokumentiert das Projekt und erstellt den Abschlussbericht?",options:["A) Der Sponsor","B) Die Projektleitung","C) Der Lenkungsausschuss","D) Die Personalabteilung"],correct:1,explanation:"Die Projektdokumentation und der Abschlussbericht (Lessons Learned) sind Aufgaben der Projektleitung. Diese werden dann zur formalen Genehmigung dem Lenkungsausschuss vorgelegt."},
+{id:15,text:"Welches PM-Werkzeug nutzt die Projektleitung zur Verteilung der Verantwortlichkeiten?",options:["A) SWOT-Analyse","B) RACI-Matrix","C) Pareto-Diagramm","D) Marketing-Mix"],correct:1,explanation:"Die RACI-Matrix (Responsible, Accountable, Consulted, Informed) ordnet jeder Aufgabe klare Verantwortlichkeiten zu und verhindert Doppelarbeit oder Lücken."},
+{id:16,text:"Was ist eine zentrale Aufgabe der Projektleitung im Konfliktfall?",options:["A) Konflikte ignorieren, bis sie sich von selbst lösen","B) Konflikte aktiv ansprechen und moderieren","C) Sofort den Sponsor einschalten","D) Das Teammitglied entlassen"],correct:1,explanation:"Die Projektleitung hat die Aufgabe, Konflikte aktiv anzusprechen und zu moderieren. Wegsehen verschlimmert die Situation, sofortige Eskalation untergräbt die eigene Autorität."},
+{id:17,text:"Welche Rolle übernimmt die Projektleitung in der ‚Norming‘-Phase nach Tuckman?",options:["A) Strenge Anweisung","B) Strukturen verankern und Verantwortung übergeben","C) Mikromanagement","D) Nichts tun"],correct:1,explanation:"In der Norming-Phase entstehen gemeinsame Normen und Vertrauen wächst. Aufgabe der PL ist es, Strukturen zu verankern und schrittweise Verantwortung an das Team zu übergeben."},
+{id:18,text:"Wer entscheidet im Projekt über Budget-Nachforderungen?",options:["A) Die Projektleitung allein","B) Der Lenkungsausschuss bzw. Sponsor","C) Das Teammitglied","D) Die Berufsschule"],correct:1,explanation:"Über Budget-Nachforderungen entscheidet der Lenkungsausschuss bzw. der Sponsor, da das Budget vom Sponsor bereitgestellt wird. Die PL kann nur innerhalb des bewilligten Rahmens handeln."},
+{id:19,text:"Welche Aussage zur Projektleitung ist FALSCH?",options:["A) Die PL ist verantwortlich für Zeit, Kosten und Qualität","B) Die PL hat in jeder Organisationsform die volle disziplinarische Macht","C) Die PL berichtet an Lenkungsausschuss bzw. Sponsor","D) Die PL plant, steuert und kontrolliert das Projekt"],correct:1,explanation:"FALSCH ist Aussage B: Nur in der reinen Projektorganisation hat die PL volle disziplinarische Macht. In Matrix- oder Linien-PM ist die Macht der PL deutlich eingeschränkt."},
+{id:20,text:"Was ist eine Hauptaufgabe der Projektleitung im Kick-off-Workshop?",options:["A) Verträge unterschreiben","B) Ziele klären, Team kennenlernen, Spielregeln vereinbaren","C) Sofort die ersten Arbeitspakete selbst erledigen","D) Den Sponsor entlassen"],correct:1,explanation:"Im Kick-off-Workshop klärt die Projektleitung die Ziele mit dem Team, ermöglicht das gegenseitige Kennenlernen und vereinbart Spielregeln (Eskalationspfade, RACI, Meeting-Rhythmus)."}
+]},
+{title:"Abschnitt 3: Teammitglieder & Teamphasen (Fragen 21–30)",questions:[
+{id:21,text:"Welche fünf Phasen umfasst das Tuckman-Modell?",options:["A) Plan, Do, Check, Act, Review","B) Forming, Storming, Norming, Performing, Adjourning","C) Initiierung, Planung, Durchführung, Kontrolle, Abschluss","D) Analyse, Design, Entwicklung, Test, Betrieb"],correct:1,explanation:"Bruce Tuckman beschrieb 1965 vier Phasen (Forming, Storming, Norming, Performing) und fügte später Adjourning (Auflösung) hinzu."},
+{id:22,text:"Welche Tuckman-Phase ist von ersten Konflikten und Machtkämpfen geprägt?",options:["A) Forming","B) Storming","C) Norming","D) Performing"],correct:1,explanation:"In der Storming-Phase treten erste Konflikte und Machtkämpfe auf. Subgruppen können sich bilden. Die PL muss aktiv moderieren."},
+{id:23,text:"In welcher Phase erreicht ein Team seine höchste Produktivität?",options:["A) Forming","B) Storming","C) Norming","D) Performing"],correct:3,explanation:"In der Performing-Phase arbeitet das Team autonom und produktiv. Vertrauen ist gewachsen, Strukturen sind etabliert. Die PL kann sich auf Koordination beschränken."},
+{id:24,text:"Welche Bedeutung hat die Adjourning-Phase?",options:["A) Aufnahme neuer Mitglieder","B) Auflösung des Teams nach Projektende mit Lessons Learned","C) Verstärkung der Konflikte","D) Dauerhafte Etablierung des Teams"],correct:1,explanation:"In der Adjourning-Phase wird das Team aufgelöst. Aufgabe der PL ist es, Lessons Learned durchzuführen, Wertschätzung zu zeigen und die Reintegration in die Linie zu unterstützen."},
+{id:25,text:"Warum erreichen Recruiting-Teams in PDL-Projekten oft nur Storming oder Norming?",options:["A) Weil die Teammitglieder unmotiviert sind","B) Weil die kurze Projektdauer (4–6 Wochen) keine Zeit für Performing lässt","C) Weil das Arbeitnehmerüberlassungsgesetz es verbietet","D) Weil die Geschäftsführung das so will"],correct:1,explanation:"Bei kurzen Projekten (4–6 Wochen) reicht die Zeit oft nur für Forming und Storming. Performing braucht erfahrungsgemäß mehrere Monate Teamarbeit."},
+{id:26,text:"Welche drei Konfliktarten werden in Projekten typischerweise unterschieden?",options:["A) Sach-, Beziehungs-, Rollenkonflikt","B) Innen-, Außen-, Mittelkonflikt","C) Heiß-, Kalt-, Lauwarm-Konflikt","D) Erst-, Zweit-, Drittkonflikt"],correct:0,explanation:"Klassisch werden drei Konfliktarten unterschieden: Sachkonflikt (unterschiedliche Meinungen zur Lösung), Beziehungskonflikt (persönliche Antipathien) und Rollenkonflikt (unklare Verantwortung)."},
+{id:27,text:"Was ist ein typischer Rollenkonflikt in einer Matrix-Organisation?",options:["A) Der Drucker funktioniert nicht","B) Recruiting und Vertrieb streiten, wer mit dem Bewerber zum Kundengespräch geht","C) Zwei Mitarbeitende mögen sich nicht","D) Es gibt keinen Kaffee mehr"],correct:1,explanation:"Ein Rollenkonflikt entsteht, wenn unklar ist, wer für eine bestimmte Aufgabe verantwortlich ist. Wenn Recruiting und Vertrieb beide den Bewerber zum Kunden begleiten wollen, fehlt eine klare RACI-Zuordnung."},
+{id:28,text:"Welches Werkzeug hilft am besten zur Konfliktprävention?",options:["A) Verstecken","B) RACI-Matrix mit klaren Verantwortlichkeiten","C) Ignorieren","D) Mehr Stellenanzeigen schalten"],correct:1,explanation:"Die RACI-Matrix mit klar zugeordneten Verantwortlichkeiten ist eines der wichtigsten Werkzeuge zur Konfliktprävention, da sie Rollenkonflikte systematisch verhindert."},
+{id:29,text:"Wer berichtet in einer Matrix-Organisation disziplinarisch an wen?",options:["A) Teammitglied an Projektleitung","B) Teammitglied an Linienvorgesetzte:n","C) Projektleitung an Teammitglied","D) Lenkungsausschuss an Sponsor"],correct:1,explanation:"In der Matrix-Organisation berichten Teammitglieder disziplinarisch an ihre/n Linienvorgesetzte/n (Personalführung) und fachlich an die Projektleitung (Projektarbeit)."},
+{id:30,text:"Welche Personen kommen typischerweise als Teammitglieder in einem PDL-Großkundenprojekt zum Einsatz?",options:["A) Geschäftsführer:innen","B) Recruiter:innen, Disponent:innen, Vertriebsmitarbeiter:innen","C) Externe Berater:innen","D) Auszubildende der ersten Woche"],correct:1,explanation:"Typische Teammitglieder in einem PDL-Großkundenprojekt sind Recruiter:innen (Active Sourcing, Auswahl), Disponent:innen (Schichtplanung) und Vertriebsmitarbeiter:innen (Kundenschnittstelle)."}
+]},
+{title:"Abschnitt 4: Linien- und Stab-Organisation (Fragen 31–40)",questions:[
+{id:31,text:"Was charakterisiert die reine Linienorganisation (Linien-PM)?",options:["A) Es gibt eine eigene Projektleitung mit Weisungsrecht","B) Das Projekt wird vollständig in der bestehenden Linie abgewickelt","C) Mitarbeitende werden aus der Linie herausgelöst","D) Eine Stabsstelle koordiniert das Projekt"],correct:1,explanation:"In der reinen Linienorganisation wird das Projekt komplett in der bestehenden Hierarchie abgewickelt. Es gibt keine eigene Projektleitung mit Weisungsrecht."},
+{id:32,text:"Welcher Hauptvorteil spricht für die reine Linienorganisation?",options:["A) Hohe Macht der PL","B) Keine Strukturänderung notwendig, hohe Flexibilität","C) Volle Konzentration auf das Projekt","D) Klare Verantwortung"],correct:1,explanation:"Die reine Linienorganisation erfordert keine Strukturänderung, ist günstig und flexibel. Sie eignet sich für kleine, kurze Projekte."},
+{id:33,text:"Welcher Nachteil ist typisch für die Linienorganisation?",options:["A) Zu hoher administrativer Aufwand","B) Tagesgeschäft dominiert, Projekt bleibt liegen","C) Reintegration nach Projektende","D) Wissensverlust für die Linie"],correct:1,explanation:"In der Linienorganisation hat das Tagesgeschäft Vorrang. Projektaufgaben werden ‚nebenbei‘ erledigt und bleiben oft liegen."},
+{id:34,text:"Für welche Projekte eignet sich die Linienorganisation?",options:["A) Strategisch wichtige, große Projekte","B) Kleine, kurze Projekte mit niedriger Komplexität","C) 12-monatige Niederlassungseröffnung","D) Konzernweite Software-Einführung"],correct:1,explanation:"Die Linienorganisation eignet sich für kleine, kurze Projekte mit niedriger Komplexität, etwa die Einführung eines neuen Bewerbungsbogens."},
+{id:35,text:"Was charakterisiert die Stab-Linien-Organisation (Stab-PM)?",options:["A) Eine Stabsstelle koordiniert das Projekt mit Weisungsrecht","B) Eine Stabsstelle koordiniert das Projekt nur beratend, ohne Weisungsrecht","C) Mitarbeitende werden aus der Linie herausgelöst","D) Es gibt keine Linienstruktur mehr"],correct:1,explanation:"Bei Stab-PM wird eine Stabsstelle ‚Projektkoordination‘ geschaffen, die der Geschäftsleitung beratend zugeordnet ist. Sie hat ausdrücklich kein Weisungsrecht."},
+{id:36,text:"Wo ist eine Stabsstelle für Projektkoordination organisatorisch typischerweise angesiedelt?",options:["A) In der Buchhaltung","B) Bei der Geschäftsleitung","C) In der IT-Abteilung","D) Im Außendienst"],correct:1,explanation:"Stabsstellen sind typischerweise direkt bei der Geschäftsleitung angesiedelt. Sie erfüllen Beratungs- und Informationsfunktion ohne eigenes Weisungsrecht."},
+{id:37,text:"Welcher Hauptnachteil hat die Stab-PM?",options:["A) Hohe Personalkosten","B) Keine Durchsetzungsmacht der Stabsstelle","C) Vollständiger Wissensverlust","D) Komplette Strukturänderung erforderlich"],correct:1,explanation:"Die Stabsstelle hat keine Weisungsbefugnis. Sie kann nur beraten und informieren, aber nicht durchsetzen. Bei Konflikten mit der Linie ist sie machtlos."},
+{id:38,text:"In welchem Unternehmenstyp findet man Stab-PM häufig in der PDL-Branche?",options:["A) Kleinen Familienunternehmen","B) Großen Konzernen wie Randstad oder Adecco mit zentralem PMO","C) Solo-Selbstständigen","D) Vereinen"],correct:1,explanation:"In großen PDL-Konzernen mit eigenem Project Management Office (PMO) ist Stab-PM weiter verbreitet. Im Mittelstand dominieren Linien- und Matrix-PM."},
+{id:39,text:"Was ist die Grundidee einer Stabsstelle generell?",options:["A) Reine Ausführung","B) Beratung und Vorbereitung von Entscheidungen ohne Weisungsbefugnis","C) Strategische Führung","D) Kundenbetreuung"],correct:1,explanation:"Stabsstellen bereiten Entscheidungen für die Linienführung vor und beraten sie. Sie haben keine eigene Weisungsbefugnis gegenüber der Linie."},
+{id:40,text:"Welche Aussage zu Linien- und Stab-PM ist richtig?",options:["A) In Linien-PM hat die PL volle Macht","B) Stab-PM eignet sich für sehr große Projekte","C) Beide Formen lassen die Macht der PL gering","D) In Stab-PM gibt es keine Geschäftsführung"],correct:2,explanation:"Sowohl Linien-PM als auch Stab-PM lassen der Projektleitung nur sehr geringe (Linien-PM) oder geringe (Stab-PM) Macht. Sie eignen sich daher nur für kleine bis mittlere Projekte."}
+]},
+{title:"Abschnitt 5: Matrix- & Reine Projektorganisation (Fragen 41–50)",questions:[
+{id:41,text:"Was charakterisiert die Matrix-Organisation?",options:["A) Eine einfache Hierarchie","B) Doppelte Weisungsstruktur: PL fachlich, Linie disziplinarisch","C) Vollständige Auflösung der Linie","D) Keine Projektleitung"],correct:1,explanation:"Matrix-PM ist durch doppelte Weisungsstruktur gekennzeichnet: Mitarbeitende berichten fachlich an die Projektleitung und disziplinarisch an die Linienführung."},
+{id:42,text:"Welche Organisationsform ist in der Praxis am weitesten verbreitet?",options:["A) Reine Linienorganisation","B) Reine Projektorganisation","C) Matrix-Organisation","D) Stab-Linien-Organisation"],correct:2,explanation:"Die Matrix-Organisation ist in der Praxis die am weitesten verbreitete Form, weil sie Flexibilität und Ressourceneffizienz verbindet."},
+{id:43,text:"Welcher Vorteil zeichnet die Matrix-PM aus?",options:["A) Keine Konflikte","B) Hohe Flexibilität und effiziente Ressourcennutzung","C) Vollständige Macht der PL","D) Keine Koordination nötig"],correct:1,explanation:"Matrix-PM bietet hohe Flexibilität: Mitarbeitende bleiben in der Linie verankert und können parallel mehrere Projekte unterstützen. Das ermöglicht eine effiziente Ressourcennutzung."},
+{id:44,text:"Welcher Hauptnachteil hat die Matrix-PM?",options:["A) Hohe Kosten","B) Loyalitätskonflikte und hoher Koordinationsaufwand","C) Keine Strukturänderung möglich","D) Wissensverlust"],correct:1,explanation:"Die doppelte Weisungsstruktur führt häufig zu Loyalitätskonflikten und erfordert hohen Koordinationsaufwand. Klare Spielregeln (RACI) sind essenziell."},
+{id:45,text:"Welche Organisationsform eignet sich für ein typisches PDL-Großkundenprojekt (50 Lageristen, 6 Wochen, 5 Personen á 50%)?",options:["A) Linien-PM","B) Stab-PM","C) Matrix-PM","D) Reine PO"],correct:2,explanation:"Bei mittlerer Größe und Teilzeit-Personalbindung eignet sich die Matrix-PM am besten. Mitarbeitende bleiben im Tagesgeschäft, arbeiten aber parallel am Projekt."},
+{id:46,text:"Was charakterisiert die reine Projektorganisation (autonome PO)?",options:["A) Mitarbeitende bleiben in der Linie und arbeiten nebenbei","B) Mitarbeitende werden vollständig aus der Linie herausgelöst","C) Es gibt keine Projektleitung","D) Es ist nur ein Synonym für Linien-PM"],correct:1,explanation:"In der reinen Projektorganisation werden Mitarbeitende vollständig aus der Linie herausgelöst und bilden ein eigenständiges, temporäres Projektteam unter voller Macht der PL."},
+{id:47,text:"Welcher Vorteil zeichnet die reine PO aus?",options:["A) Keine Strukturänderung","B) Klare Verantwortung und hohe Identifikation","C) Geringer Aufwand","D) Volle Verfügbarkeit für das Tagesgeschäft"],correct:1,explanation:"Die reine PO bietet klare Verantwortung (PL hat volle Macht), schnelle Entscheidungswege und hohe Identifikation des Teams mit dem Projekt."},
+{id:48,text:"Welcher Nachteil ist typisch für die reine PO?",options:["A) Sehr niedrige Kosten","B) Hoher administrativer Aufwand und schwierige Reintegration nach Projektende","C) Keine Verantwortung","D) Keine Macht der PL"],correct:1,explanation:"Die reine PO ist administrativ aufwendig (eigene Strukturen, Verträge). Nach Projektende ist die Reintegration der Mitarbeitenden in die Linie oft schwierig."},
+{id:49,text:"Für welches PDL-Projekt eignet sich die reine PO am besten?",options:["A) Einführung eines neuen Bewerbungsbogens","B) Recruiting von 50 Lageristen für 6 Wochen","C) Eröffnung einer neuen Niederlassung Hamburg über 12 Monate mit 10 Vollzeit-Personen","D) Erstellung einer Stellenanzeige"],correct:2,explanation:"Eine Niederlassungseröffnung mit 12 Monaten Dauer, 10 Vollzeit-Personen und hoher strategischer Bedeutung rechtfertigt eine reine PO als Task Force."},
+{id:50,text:"Welche Aussage zur Macht der Projektleitung in den vier Organisationsformen ist richtig?",options:["A) Sie ist in allen Formen gleich","B) Sie nimmt von Linien-PM (sehr gering) bis reine PO (hoch) zu","C) Sie ist nur in Stab-PM hoch","D) Sie hängt nur vom Geschlecht der PL ab"],correct:1,explanation:"Die Macht der PL nimmt entlang des Kontinuums zu: Linien-PM (sehr gering) → Stab-PM (gering) → Matrix-PM (mittel, geteilt) → reine PO (hoch, vollständig)."}
+]},
+{title:"Abschnitt 6: PDL-Praxis & IHK-Prüfung (Fragen 51–60)",questions:[
+{id:51,text:"Welche Rolle übernimmt typischerweise die Niederlassungsleitung in einem PDL-Großkundenprojekt?",options:["A) Sponsor","B) Projektleitung","C) Teammitglied","D) Lenkungsausschuss-Mitglied ohne Funktion"],correct:1,explanation:"Die Niederlassungsleitung übernimmt typischerweise die Projektleitung in einem PDL-Großkundenprojekt, weil sie die operative Verantwortung für die Region trägt."},
+{id:52,text:"Welches Gesetz regelt die Arbeitnehmerüberlassung in Deutschland?",options:["A) Berufsbildungsgesetz","B) Arbeitnehmerüberlassungsgesetz","C) HGB","D) GewO"],correct:1,explanation:"Das Arbeitnehmerüberlassungsgesetz regelt die rechtlichen Rahmenbedingungen der Zeitarbeit, insbesondere Equal Pay und Höchstüberlassungsdauer."},
+{id:53,text:"Was bedeutet ‚Equal Pay‘ nach dem Arbeitnehmerüberlassungsgesetz?",options:["A) Alle Zeitarbeitnehmer:innen erhalten den gleichen Stundenlohn","B) Nach 9 Monaten Einsatz erhalten Zeitarbeitnehmer:innen den gleichen Lohn wie die Stammbelegschaft","C) Männer und Frauen verdienen gleich","D) Geschäftsführer:innen verdienen wie Mitarbeitende"],correct:1,explanation:"Equal Pay nach §8 Arbeitnehmerüberlassungsgesetz bedeutet: Nach 9 Monaten Einsatz beim selben Kundenbetrieb müssen Zeitarbeitnehmer:innen den gleichen Lohn wie die Stammbelegschaft erhalten."},
+{id:54,text:"Wer ist Tarifpartner für den TV-GVP / iGZ-DGB-Tarifvertrag?",options:["A) BAP und ver.di","B) Gesamtverband der Personaldienstleister und DGB-Gewerkschaften","C) Industrie- und Handelskammer und Bundesregierung","D) Arbeitgeberverband Bau und IG Bau"],correct:1,explanation:"Der TV-GVP wird zwischen dem Gesamtverband der Personaldienstleister (Gesamtverband der Personaldienstleister, Fusion aus iGZ und BAP 2022) und den DGB-Gewerkschaften abgeschlossen."},
+{id:55,text:"Welche Disziplin verantwortet in der PDL-Praxis die Schichtplanung?",options:["A) Recruiting","B) Disposition","C) Vertrieb","D) Geschäftsführung"],correct:1,explanation:"Die Disposition verantwortet die Schichtplanung, Einsatzsteuerung und tägliche Kommunikation mit den Zeitarbeitnehmer:innen im Einsatz beim Kunden."},
+{id:56,text:"Wer übernimmt im Großkundenprojekt typischerweise die Vertragsverhandlung mit dem Kundenbetrieb?",options:["A) Recruiting","B) Vertrieb","C) Auszubildende","D) Berufsschule"],correct:1,explanation:"Der Vertrieb verantwortet die Kundenakquise und die Verhandlung der Arbeitnehmerüberlassungsverträge. Recruiting findet anschließend Bewerber:innen, die zu den vereinbarten Konditionen passen."},
+{id:57,text:"Welche Methode hilft, im Kick-off-Workshop ein neues Recruiting-Team zusammenzubringen?",options:["A) Sofort an die Arbeit gehen ohne Vorstellung","B) Persönliche Vorstellung, gemeinsame Zielklärung, Spielregeln vereinbaren","C) Nur den PL kennenlernen","D) Den Workshop ausfallen lassen"],correct:1,explanation:"Im Kick-off-Workshop sollten alle Teammitglieder sich persönlich vorstellen, das Projektziel gemeinsam klären und Spielregeln (Eskalation, Meeting, RACI) vereinbaren."},
+{id:58,text:"Welche Norm definiert in Deutschland Projektmanagement-Begriffe?",options:["A) DIN EN 9001","B) DIN 69901","C) ISO 14001","D) ISO 27001"],correct:1,explanation:"Die DIN 69901 ist die deutsche Norm für Projektmanagement-Systeme. Sie definiert zentrale Begriffe und Prozesse des Projektmanagements."},
+{id:59,text:"Welches Vorgehensmodell beschreibt PRINCE2?",options:["A) Eine deutsche Norm","B) Eine britische Projektmanagement-Methode (PRojects IN Controlled Environments)","C) Ein Tarifvertrag","D) Eine Software"],correct:1,explanation:"PRINCE2 ist eine britische Projektmanagement-Methode (PRojects IN Controlled Environments), die international weit verbreitet ist und stark prozessorientiert arbeitet."},
+{id:60,text:"Welche der folgenden Aussagen zur PDL-Projektarbeit ist FALSCH?",options:["A) In Großkundenprojekten arbeiten Recruiting, Disposition und Vertrieb zusammen","B) Die Niederlassungsleitung übernimmt häufig die Projektleitung","C) Bei Projekten muss das Arbeitnehmerüberlassungsgesetz (z.B. Equal Pay) ignoriert werden","D) Eine RACI-Matrix kann Schnittstellenkonflikte reduzieren"],correct:2,explanation:"FALSCH ist Aussage C. Das Arbeitnehmerüberlassungsgesetz mit Regelungen zu Equal Pay, Höchstüberlassungsdauer und Branchenzuschlägen muss in jedem Projekt eingehalten werden – Bußgelder bei Verstoß bis 500.000 Euro."}
+]}
+];
+
+let answered = {};
+let checked = {};
+let showAll = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() { const flat = []; sections.forEach(s => s.questions.forEach(q => flat.push(q))); return flat; }
+const flatQ = allQuestions();
+
+function render() {
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  let globalIdx = 0;
+  sections.forEach((sec) => {
+    html += `<div class="section-title">${sec.title}</div>`;
+    sec.questions.forEach((q) => {
+      const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+      const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+      html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+      html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+      html += `<p class="question-text">${q.text}</p>`;
+      html += `<ul class="options-list">`;
+      q.options.forEach((opt, oi) => {
+        let cls = '';
+        if (checked[q.id]) {
+          if (oi === q.correct) cls = 'correct-opt';
+          else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+        } else if (answered[q.id] === oi) {
+          cls = 'selected';
+        }
+        const dis = checked[q.id] ? 'disabled' : '';
+        const chk = answered[q.id] === oi ? 'checked' : '';
+        html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+      });
+      html += `</ul>`;
+      const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+      html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+      if (checked[q.id]) {
+        const isCorr = answered[q.id] === q.correct;
+        const fbClass = isCorr ? 'correct' : 'incorrect';
+        const fbText = isCorr ? `<strong>Richtig!</strong> ${q.explanation}` : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+        html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+      } else {
+        html += `<div class="feedback" id="fb-${q.id}"></div>`;
+      }
+      html += `</div>`;
+      globalIdx++;
+    });
+  });
+  if (!showAll) {
+    html += `<div class="nav-row">`;
+    html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+    html += `<span style="font-weight:600;color:#004B87;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+    html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+    html += `</div>`;
+  }
+  container.innerHTML = html;
+  updateProgress();
+}
+
+function selectOption(qid, idx) { if (checked[qid]) return; answered[qid] = idx; render(); }
+function checkAnswer(qid) { if (answered[qid] === undefined || checked[qid]) return; checked[qid] = true; render(); updateProgress(); }
+function navigate(dir) { currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir)); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function updateProgress() {
+  const done = Object.keys(checked).length;
+  const pct = Math.round((done / totalQ) * 100);
+  document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+  document.getElementById('progressPct').textContent = `${pct} %`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+  const done = Object.keys(checked).length;
+  if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+  let correct = 0;
+  flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+  const pct = Math.round((correct / done) * 100);
+  document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+  let gradeText = ''; let gradeClass = 'pass';
+  if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+  else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+  else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+  else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+  else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+  else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+  const gEl = document.getElementById('gradeText');
+  gEl.textContent = gradeText;
+  gEl.className = 'grade ' + gradeClass;
+  let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+  sections.forEach(sec => {
+    let sCorr = 0, sTotal = 0;
+    sec.questions.forEach(q => { if (checked[q.id]) { sTotal++; if (answered[q.id] === q.correct) sCorr++; } });
+    const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+    tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+  });
+  tbl += '</table>';
+  document.getElementById('sectionBreakdown').innerHTML = tbl;
+  document.getElementById('resultsPanel').classList.add('show');
+  document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+  answered = {}; checked = {}; currentQ = 0;
+  document.getElementById('resultsPanel').classList.remove('show');
+  render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () { showAll = this.checked; render(); });
+
+function shuffleQuizOptions() {
+  let seed = 42;
+  function seededRandom() { seed = (seed * 16807 + 0) % 2147483647; return (seed - 1) / 2147483646; }
+  sections.forEach(sec => {
+    sec.questions.forEach(q => {
+      const correctText = q.options[q.correct];
+      const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+      for (let i = cleaned.length - 1; i > 0; i--) {
+        const j = Math.floor(seededRandom() * (i + 1));
+        [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+      }
+      const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+      const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+      q.options = cleaned.map((c, i) => prefixes[i] + c);
+      q.correct = cleaned.indexOf(correctClean);
+    });
+  });
+}
+shuffleQuizOptions();
+render();
+</script>
+</body>
+</html>

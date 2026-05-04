@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Tag 10 – Soll-Ist, KPIs Recruiting, EVA</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f0f4f8; color:#1a1a2e; line-height:1.6; min-height:100vh; }
+.header { background: linear-gradient(135deg,#003366 0%,#004a99 50%,#0066cc 100%); color:#fff; padding:2rem 1rem; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,.15); }
+.header h1 { font-size: clamp(1.4rem,3vw,2rem); margin-bottom:.3rem; letter-spacing:.5px; }
+.header .subtitle { font-size: clamp(.9rem,2vw,1.1rem); opacity:.9; }
+.header .meta { margin-top:.8rem; font-size:.85rem; opacity:.8; display:flex; justify-content:center; gap:1.5rem; flex-wrap:wrap; }
+.toolbar { max-width:960px; margin:1.5rem auto 0; padding:0 1rem; display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; justify-content:space-between; }
+.toolbar button, .toolbar .toggle-label { background:#004a99; color:#fff; border:none; padding:.55rem 1.2rem; border-radius:6px; cursor:pointer; font-size:.9rem; transition: background .2s; }
+.toolbar button:hover { background:#003366; }
+.toggle-label { display:flex; align-items:center; gap:.5rem; font-size:.9rem; cursor:pointer; user-select:none; }
+.toggle-label input { accent-color:#004a99; width:18px; height:18px; cursor:pointer; }
+.progress-container { max-width:960px; margin:1.2rem auto 0; padding:0 1rem; }
+.progress-info { display:flex; justify-content:space-between; font-size:.85rem; color:#555; margin-bottom:.3rem; }
+.progress-bar { width:100%; height:12px; background:#dce3ea; border-radius:6px; overflow:hidden; }
+.progress-fill { height:100%; width:0%; background:linear-gradient(90deg,#0066cc,#00aaff); border-radius:6px; transition: width .4s ease; }
+.container { max-width:960px; margin:1.5rem auto 2rem; padding:0 1rem; }
+.section-title { background:#003366; color:#fff; padding:.8rem 1.2rem; border-radius:8px 8px 0 0; font-size:1.1rem; margin-top:2rem; }
+.section-title:first-child { margin-top:0; }
+.question-card { background:#fff; border:1px solid #dce3ea; border-radius:0 0 8px 8px; margin-bottom:1.25rem; padding:1.4rem; box-shadow:0 2px 6px rgba(0,0,0,.06); transition: box-shadow .2s; }
+.question-card:hover { box-shadow:0 4px 12px rgba(0,0,0,.1); }
+.question-card.correct-card { border-left:5px solid #28a745; }
+.question-card.incorrect-card { border-left:5px solid #dc3545; }
+.question-number { display:inline-block; background:#e8f0fe; color:#004a99; font-weight:700; padding:.2rem .7rem; border-radius:4px; font-size:.85rem; margin-bottom:.6rem; }
+.question-text { font-size:1rem; font-weight:600; margin-bottom:1rem; line-height:1.5; }
+.options-list { list-style:none; }
+.options-list li { margin-bottom:.5rem; }
+.options-list label { display:flex; align-items:flex-start; gap:.6rem; padding:.65rem .9rem; border:2px solid #dce3ea; border-radius:6px; cursor:pointer; transition: background .15s,border-color .15s; font-size:.95rem; }
+.options-list label:hover { background:#f0f7ff; border-color:#a0c4e8; }
+.options-list input[type="radio"] { accent-color:#004a99; margin-top:3px; flex-shrink:0; }
+.options-list label.selected { background:#e8f0fe; border-color:#004a99; }
+.options-list label.correct-opt { background:#d4edda; border-color:#28a745; }
+.options-list label.incorrect-opt { background:#f8d7da; border-color:#dc3545; }
+.check-btn { margin-top:.8rem; background:#004a99; color:#fff; border:none; padding:.55rem 1.4rem; border-radius:6px; cursor:pointer; font-size:.9rem; transition:background .2s; }
+.check-btn:hover { background:#003366; }
+.check-btn:disabled { background:#8faec8; cursor:default; }
+.feedback { margin-top:.8rem; padding:.75rem 1rem; border-radius:6px; font-size:.9rem; display:none; }
+.feedback.show { display:block; }
+.feedback.correct { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
+.feedback.incorrect { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
+.nav-row { display:flex; justify-content:space-between; align-items:center; margin-top:1rem; }
+.nav-btn { background:#004a99; color:#fff; border:none; padding:.55rem 1.4rem; border-radius:6px; cursor:pointer; font-size:.9rem; transition:background .2s; }
+.nav-btn:hover { background:#003366; }
+.nav-btn:disabled { background:#8faec8; cursor:default; }
+.results-panel { background:#fff; border:2px solid #004a99; border-radius:10px; padding:2rem; text-align:center; margin-top:2rem; display:none; box-shadow:0 4px 16px rgba(0,0,0,.1); }
+.results-panel.show { display:block; }
+.results-panel h2 { color:#003366; margin-bottom:.8rem; }
+.score-big { font-size:3rem; font-weight:700; color:#004a99; }
+.grade { font-size:1.4rem; margin:.5rem 0 1rem; font-weight:600; }
+.grade.pass { color:#28a745; }
+.grade.fail { color:#dc3545; }
+.section-breakdown { text-align:left; max-width:600px; margin:1rem auto; }
+.section-breakdown table { width:100%; border-collapse:collapse; }
+.section-breakdown th, .section-breakdown td { padding:.5rem .75rem; border-bottom:1px solid #dce3ea; font-size:.9rem; }
+.section-breakdown th { background:#e8f0fe; color:#003366; text-align:left; }
+.references { max-width:960px; margin:2rem auto 3rem; padding:1.5rem; background:#fff; border-radius:8px; border:1px solid #dce3ea; }
+.references h3 { color:#003366; margin-bottom:.8rem; font-size:1.1rem; }
+.references p { font-size:.88rem; color:#333; margin-bottom:.5rem; padding-left:2rem; text-indent:-2rem; line-height:1.55; }
+.footer { text-align:center; padding:1.5rem 1rem; font-size:.8rem; color:#777; border-top:1px solid #dce3ea; }
+@media print { body { background:#fff; } .toolbar,.progress-container,.nav-row,.check-btn,.results-panel { display:none !important; } .header { background:#003366 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; } .question-card { break-inside:avoid; box-shadow:none; border:1px solid #ccc; } .feedback.show { display:block !important; } }
+@media (max-width:600px) { .header { padding:1.4rem .8rem; } .question-card { padding:1rem; } .toolbar { flex-direction:column; align-items:stretch; text-align:center; } }
+.hidden { display:none !important; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1>Quiz Tag 10 &ndash; Soll-Ist, KPIs Recruiting &amp; EVA</h1>
+  <div class="subtitle">Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer &ndash; Personaldienstleistungskaufmann/-frau 2026</div>
+  <div class="meta">
+    <span>&copy; Can Siebert</span>
+    <span>18.05.2026</span>
+    <span>60 Fragen &bull; Multiple Choice</span>
+  </div>
+</header>
+
+<div class="toolbar">
+  <label class="toggle-label">
+    <input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen
+  </label>
+  <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+    <button onclick="showResults()">Ergebnis anzeigen</button>
+    <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+  </div>
+</div>
+
+<div class="progress-container">
+  <div class="progress-info">
+    <span id="progressText">0 von 60 beantwortet</span>
+    <span id="progressPct">0 %</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+  <div class="results-panel" id="resultsPanel">
+    <h2>Dein Ergebnis</h2>
+    <div class="score-big" id="scoreBig"></div>
+    <div class="grade" id="gradeText"></div>
+    <div class="section-breakdown" id="sectionBreakdown"></div>
+    <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+  </div>
+</div>
+
+<div class="references">
+  <h3>Literaturverzeichnis (APA 7)</h3>
+  <p>DIN Deutsches Institut f&uuml;r Normung. (2009). <em>DIN 69901-2: Projektmanagement &ndash; Prozesse, Prozessmodell</em>. Beuth Verlag.</p>
+  <p>Fleming, Q. W. &amp; Koppelman, J. M. (2005). Earned Value Project Management. <em>CrossTalk Journal, 18</em>(7), 19&ndash;23.</p>
+  <p>Gesamtverband der Personaldienstleister. (2024). <em>Branchenkennzahlen 2024</em>. Gesamtverband der Personaldienstleister.</p>
+  <p>Kerzner, H. (2022). <em>Project Management: A Systems Approach</em> (13. Aufl.). Wiley.</p>
+  <p>Patzak, G. &amp; Rattay, G. (2014). <em>Projektmanagement</em> (6. Aufl.). Linde Verlag.</p>
+  <p>Project Management Institute. (2021). <em>PMBOK Guide</em> (7. Aufl.). PMI.</p>
+  <p>Schelle, H., Ottmann, R. &amp; Pfeiffer, A. (2018). <em>Projektmanager</em> (5. Aufl.). GPM.</p>
+  <p>StepStone. (2024). <em>Recruiting-KPI-Report 2024</em>. StepStone Deutschland.</p>
+</div>
+
+<footer class="footer">
+  &copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026 | Tag 10
+</footer>
+
+<script>
+const sections = [
+  {
+    title: "Abschnitt 1: Soll-Ist-Vergleich (Fragen 1–12)",
+    questions: [
+      { id:1, text:"Welche vier Dimensionen umfasst ein vollständiger Soll-Ist-Vergleich?", options:["A) Termin, Kosten, Leistung, Qualität","B) Plan, Ist, Soll, Forecast","C) Ressourcen, Risiken, Reichweite, Reife","D) Kunde, Lieferant, Mitarbeiter, Behörde"], correct:0, explanation:"Der vollständige Soll-Ist-Vergleich umfasst die vier Dimensionen Termin, Kosten, Leistung (Quantität/Scope) und Qualität (Eselsbrücke TKLQ)." },
+      { id:2, text:"Welche Norm definiert den Soll-Ist-Vergleich im deutschen PM?", options:["A) DIN ISO 9001","B) DIN 69901-2","C) DIN EN 16555","D) DIN 33430"], correct:1, explanation:"Die DIN 69901-2 ist die deutsche Norm für Projektmanagement-Prozesse und definiert auch den Soll-Ist-Vergleich." },
+      { id:3, text:"Welcher Regelkreis liegt dem Projektcontrolling zu Grunde?", options:["A) Political, Economic, Social, Technological, Environmental and Legal","B) Spezifisch, Messbar, Akzeptiert, Realistisch und Terminiert","C) Plan-Do-Check-Act-Zyklus","D) SWOT"], correct:2, explanation:"Der PDCA-Zyklus (Plan-Do-Check-Act) von Deming bildet den Regelkreis des Projektcontrollings: Plan = Soll, Do = Durchführung, Check = Soll-Ist, Act = Maßnahmen." },
+      { id:4, text:"Welche Berichtsfrequenz ist für ein 4-monatiges Recruiting-Projekt typisch?", options:["A) jährlich","B) täglich","C) 14-tägig","D) nur am Projektende"], correct:2, explanation:"Für mittelfristige Projekte (1–6 Monate) ist eine 14-tägige Berichtsfrequenz typisch, kombiniert mit Meilenstein-Berichten." },
+      { id:5, text:"Was ist eine 'positive Abweichung'?", options:["A) Eine Abweichung, die ignoriert werden darf","B) Eine Abweichung, bei der Ist besser als Soll ist","C) Eine Abweichung in Richtung Plan-Überschreitung","D) Eine moralisch positive Entscheidung"], correct:1, explanation:"Positive Abweichung = Ist besser als Soll (z.B. unter Budget, vor Termin). Auch sie muss analysiert werden, da sie auf Schätzfehler hindeuten kann." },
+      { id:6, text:"Welche Funktion erfüllt der Soll-Ist-Vergleich >NICHT<?", options:["A) Frühwarnung","B) Transparenz für Stakeholder","C) Steuerungsbasis","D) Automatische Korrektur"], correct:3, explanation:"Der Soll-Ist-Vergleich liefert Daten und Transparenz, korrigiert aber nicht automatisch – die Korrekturmaßnahmen muss die Projektleitung aktiv ableiten." },
+      { id:7, text:"Was ist eine typische Toleranzgrenze für die Kostendimension im PDL-Recruiting-Projekt?", options:["A) ± 50 %","B) ± 5 %","C) ± 0,1 %","D) keine Toleranz"], correct:1, explanation:"Eine typische Toleranzgrenze für Kosten liegt bei ± 5 % (grüner Bereich). Ab 15 % ist Eskalation an den Lenkungsausschuss üblich." },
+      { id:8, text:"Wo werden Recruiting-Ist-Werte vorrangig erhoben?", options:["A) Im Excel auf dem PL-Laptop","B) Im Bewerbermanagementsystem / Bewerbermanagementsystem","C) In den Sozialen Medien","D) Im Bundesanzeiger"], correct:1, explanation:"Das Bewerbermanagementsystem (Applicant Tracking System) ist das primäre Erhebungstool für Recruiting-KPIs wie TTH, Funnel-Daten, Conversion-Raten." },
+      { id:9, text:"Was passiert bei einer 'kritischen Abweichung'?", options:["A) Sie wird stillschweigend dokumentiert","B) Eskalation und Maßnahmen sind erforderlich","C) Das Projekt wird sofort abgebrochen","D) Der Auftraggeber wird gekündigt"], correct:1, explanation:"Bei kritischen Abweichungen außerhalb der Toleranz sind Eskalation und Korrekturmaßnahmen zwingend erforderlich." },
+      { id:10, text:"Welche Aussage zum 'magischen Dreieck' im PM ist richtig?", options:["A) Es gibt vier gleichberechtigte Ecken","B) Termin, Kosten und Leistung/Qualität stehen in Wechselwirkung","C) Es gilt nur für Bauprojekte","D) Es betrifft nur die Kostenseite"], correct:1, explanation:"Das magische Dreieck umfasst Termin, Kosten und Leistung/Qualität – eine Veränderung an einer Ecke wirkt zwangsläufig auf die anderen." },
+      { id:11, text:"Was bedeutet 'tolerierbare Abweichung'?", options:["A) Sie wird ignoriert","B) Sie liegt innerhalb vorab definierter Schwellen, keine Maßnahme erforderlich","C) Sie wird im Risikoregister gelöscht","D) Sie wird vom Kunden bezahlt"], correct:1, explanation:"Tolerierbare Abweichungen liegen innerhalb der definierten Schwellenwerte und erfordern keine sofortige Steuerungsmaßnahme – sie werden aber dokumentiert." },
+      { id:12, text:"Was ist ein 'Meilenstein-Reporting'?", options:["A) Täglicher Statusbericht","B) Binäre Rückmeldung 'erreicht / nicht erreicht' zu definierten Zeitpunkten","C) Monatsabschluss der Buchhaltung","D) GVP-Kennzahlen-Report"], correct:1, explanation:"Meilenstein-Reporting liefert eine binäre Information (erreicht/nicht erreicht) zu vordefinierten Prüfpunkten im Projekt." }
+    ]
+  },
+  {
+    title: "Abschnitt 2: Abweichungsanalyse & Ursachen (Fragen 13–22)",
+    questions: [
+      { id:13, text:"Wie viele Mal wird in der 5-Why-Methode 'Warum?' gefragt?", options:["A) einmal","B) drei Mal","C) fünf Mal","D) zehn Mal"], correct:2, explanation:"Die 5-Why-Methode fragt fünfmal nacheinander 'Warum?', um von der Symptomebene zur Wurzelursache zu gelangen." },
+      { id:14, text:"Welche Methode wird auch 'Fischgräten-Diagramm' genannt?", options:["A) Pareto-Diagramm","B) Ishikawa-Diagramm","C) Gantt-Diagramm","D) Kano-Diagramm"], correct:1, explanation:"Das Ishikawa-Diagramm wird auch Fischgräten-Diagramm genannt; es strukturiert Ursachen typischerweise nach den 6 M (Mensch, Maschine, Methode, Material, Mitwelt, Messung)." },
+      { id:15, text:"Was besagt die Pareto-Analyse?", options:["A) 50 % der Ursachen verantworten 50 % der Probleme","B) 80 % der Ursachen verantworten 20 % der Probleme","C) 20 % der Ursachen verantworten 80 % der Probleme","D) Alle Ursachen sind gleich wichtig"], correct:2, explanation:"Die Pareto-Analyse (80/20-Regel) besagt, dass ca. 20 % der Ursachen für 80 % der Probleme verantwortlich sind." },
+      { id:16, text:"Welche der folgenden Kategorien gehört zu den 6 M des Ishikawa-Diagramms?", options:["A) Marketing","B) Maschine","C) Menge","D) Marge"], correct:1, explanation:"Die 6 M des Ishikawa: Mensch, Maschine, Methode, Material, Mitwelt, Messung. Marketing, Menge und Marge gehören nicht dazu." },
+      { id:17, text:"Was bedeutet die Abkürzung 'FMEA'?", options:["A) Finanz-Methoden-Evaluierungs-Analyse","B) Fehlermöglichkeits- und Einflussanalyse","C) Frequency-Margin-Estimation-Algorithm","D) Fluktuations-Marketing-Erfolgs-Analyse"], correct:1, explanation:"FMEA = Fehlermöglichkeits- und Einflussanalyse; eine systematische Bewertung von Fehlerursachen nach Auftretenswahrscheinlichkeit, Bedeutung und Entdeckung." },
+      { id:18, text:"Welcher Reaktionstyp behebt eine bereits bestehende Abweichung?", options:["A) korrektive Maßnahme","B) präventive Maßnahme","C) Akzeptanz","D) Eskalation"], correct:0, explanation:"Korrektive Maßnahmen beheben eine bereits eingetretene Abweichung (z.B. zusätzliche Recruiter einsetzen)." },
+      { id:19, text:"Was ist eine präventive Maßnahme?", options:["A) Sie hat bereits begonnen","B) Sie verhindert künftige Abweichungen","C) Sie eskaliert sofort","D) Sie reduziert das Budget"], correct:1, explanation:"Präventive Maßnahmen verhindern künftige Abweichungen, oft basierend auf Lessons Learned aus früheren Projekten." },
+      { id:20, text:"Wann ist eine Plananpassung notwendig?", options:["A) Bei jeder Abweichung","B) Wenn die Abweichung nicht mehr im ursprünglichen Plan heilbar ist","C) Nur am Projektende","D) Nie"], correct:1, explanation:"Plananpassung (Change Request) ist erforderlich, wenn die Abweichung nicht mehr im ursprünglichen Plan heilbar ist – z.B. Termin verschieben oder Scope reduzieren. Erfordert Genehmigung." },
+      { id:21, text:"Wer muss einer Plananpassung typischerweise zustimmen?", options:["A) Nur die Projektleitung","B) Der Auftraggeber bzw. Lenkungsausschuss","C) Die Bewerber:innen","D) Niemand"], correct:1, explanation:"Plananpassungen erfordern Genehmigung durch den Auftraggeber bzw. Lenkungsausschuss, da sie vereinbarte Vertragsinhalte berühren." },
+      { id:22, text:"Welcher Reaktionstyp ist die bewusste Hinnahme einer Abweichung?", options:["A) Akzeptanz","B) Eskalation","C) Plananpassung","D) Verzögerung"], correct:0, explanation:"Akzeptanz ist eine valide Reaktion bei kleinen Abweichungen, deren Korrektur unverhältnismäßigen Aufwand erfordern würde – sie wird im Risikoregister dokumentiert." }
+    ]
+  },
+  {
+    title: "Abschnitt 3: Eskalation & Risikomanagement (Fragen 23–32)",
+    questions: [
+      { id:23, text:"Auf welcher Stufe der Eskalation entscheidet der Lenkungsausschuss?", options:["A) Stufe 1","B) Stufe 2","C) Stufe 3","D) Stufe 4"], correct:2, explanation:"Der Lenkungsausschuss entscheidet typischerweise auf Stufe 3, wenn die Projektleitung ihre Befugnisse überschreitet (Plananpassung, Change Request, Budget)." },
+      { id:24, text:"Was gehört zwingend in eine Eskalationsmatrix?", options:["A) Wer eskaliert wann an wen","B) Die Löhne der Mitarbeitenden","C) Die Kunden-Telefonliste","D) Die Bilanz"], correct:0, explanation:"Eine Eskalationsmatrix muss klar regeln: Wer eskaliert wann (Schwellenwerte) an wen (Empfänger), mit welcher Reaktionszeit und Dokumentation." },
+      { id:25, text:"Welche der folgenden ist >keine< klassische Risikostrategie?", options:["A) Vermeiden","B) Vermindern","C) Multiplizieren","D) Übertragen"], correct:2, explanation:"Multiplizieren ist keine Risikostrategie. Die vier klassischen Strategien sind: Vermeiden, Vermindern, Übertragen, Akzeptieren (V V Ü A)." },
+      { id:26, text:"Wie wird die Risikobewertung durchgeführt?", options:["A) Eintrittswahrscheinlichkeit + Schadenshöhe","B) Eintrittswahrscheinlichkeit × Schadenshöhe","C) Eintrittswahrscheinlichkeit / Schadenshöhe","D) Eintrittswahrscheinlichkeit minus Schadenshöhe"], correct:1, explanation:"Risikobewertung = Eintrittswahrscheinlichkeit × Schadenshöhe. Werte ab 12 (in 5×5-Matrix) liegen in der roten Zone." },
+      { id:27, text:"Was ist 'Risikoübertragung' typischerweise?", options:["A) Ignorieren des Risikos","B) Versicherung oder vertragliche Weitergabe","C) Erhöhung des Budgets","D) Pufferzeit einfügen"], correct:1, explanation:"Risikoübertragung erfolgt z.B. über Versicherungen oder vertragliche Weitergabe an Subunternehmer / Dritte." },
+      { id:28, text:"Wann sollte die externe Eskalation an den Kunden erfolgen?", options:["A) Erst wenn der Termin bereits verstrichen ist","B) Frühzeitig bei drohender Verfehlung","C) Niemals","D) Nur bei Projektabschluss"], correct:1, explanation:"Externe Eskalation muss frühzeitig erfolgen, um Vertrauen zu erhalten. Späte Kommunikation gefährdet die Kundenbeziehung und kann zu Vertragsstrafen führen." },
+      { id:29, text:"Welcher Risikoeintrag ist im PDL-Bereich besonders typisch?", options:["A) Tarifänderung TV-GVP","B) Aktienkurs-Crash","C) Wechselkurs-Verlust","D) Rohstoff-Preisanstieg"], correct:0, explanation:"Tarifänderungen TV-GVP sind ein wiederkehrendes PDL-Branchenrisiko, da Tarifrunden in der Zeitarbeit alle 2–3 Jahre stattfinden." },
+      { id:30, text:"Was ist eine Eskalationsstufe 4 (höchste Stufe)?", options:["A) Tagesgeschehen","B) Lenkungsausschuss","C) Geschäftsführung / Auftraggeber","D) Teilprojektleiter"], correct:2, explanation:"Stufe 4 ist die höchste Eskalationsebene: Geschäftsführung / Auftraggeber bei Projektabbruch, Reputationsrisiko, Vertragsänderung." },
+      { id:31, text:"Was ist ein Risikoregister?", options:["A) Behördliches Verzeichnis aller Unternehmensrisiken","B) Liste der identifizierten Projektrisiken mit Bewertung und Maßnahmen","C) Bilanzanhang","D) Gewerkschaftsregister"], correct:1, explanation:"Das Risikoregister ist ein Projektdokument, das identifizierte Risiken, deren Bewertung (P×S) und vereinbarte Steuerungsmaßnahmen festhält." },
+      { id:32, text:"Wann ist die Risikostrategie 'Akzeptieren' sinnvoll?", options:["A) Bei kleinen Risiken, deren Korrektur unverhältnismäßig wäre","B) Immer","C) Niemals","D) Nur bei Großprojekten"], correct:0, explanation:"Akzeptieren ist sinnvoll bei kleinen Risiken, deren Eintrittsschaden geringer ist als der Aufwand einer Vermeidungs- oder Verminderungsmaßnahme." }
+    ]
+  },
+  {
+    title: "Abschnitt 4: KPIs im Recruiting (Fragen 33–46)",
+    questions: [
+      { id:33, text:"Was misst Time-to-Hire (TTH)?", options:["A) Tage zwischen Stellenausschreibung und Vertragsunterschrift","B) Tage zwischen Eintritt und Probezeit","C) Tage zwischen Ausschreibung und erstem Bewerber","D) Tage zwischen Onboarding und Produktivität"], correct:0, explanation:"Time-to-Hire = Tage zwischen Stellenausschreibung (oder erster Bewerbung) und Vertragsunterschrift / Eintritt der eingestellten Person." },
+      { id:34, text:"Welche Formel berechnet Cost-per-Hire (CPH) korrekt?", options:["A) externe Kosten / Bewerbungen","B) (externe + interne Kosten) / Anzahl Einstellungen","C) Personalkosten / Mitarbeiterzahl","D) Bewerbungen / Einstellungen"], correct:1, explanation:"CPH = (externe + interne Kosten der Personalbeschaffung) / Anzahl erfolgter Einstellungen. Beide Kostenarten müssen berücksichtigt werden." },
+      { id:35, text:"In welcher Spanne liegt die typische Time-to-Hire für Helfer in der Zeitarbeit?", options:["A) 1–3 Tage","B) 8–14 Tage","C) 30–45 Tage","D) 90–120 Tage"], correct:1, explanation:"Helferpositionen in der Zeitarbeit haben branchentypisch eine TTH von 8–14 Tagen – die kürzeste aller Berufsgruppen." },
+      { id:36, text:"In welcher Spanne liegt die typische Frühfluktuation in der Zeitarbeit-Probezeit?", options:["A) 5–10 %","B) 15–20 %","C) 30–45 %","D) 60–70 %"], correct:2, explanation:"Die Frühfluktuation in der Zeitarbeit-Probezeit liegt branchentypisch bei 30–45 % – deutlich höher als bei Festanstellung (5–12 %)." },
+      { id:37, text:"Welche Leistungskennzahl gehört zur >strategischen< Ebene?", options:["A) Time-to-Hire","B) Anzahl Klicks auf Stellenanzeige","C) Quality-of-Hire","D) Source-of-Hire-Verteilung"], correct:2, explanation:"Quality-of-Hire ist eine strategische Leistungskennzahl, da sie die Wirkung des Recruitings misst. TTH ist taktisch, Klicks und Source-of-Hire sind operativ." },
+      { id:38, text:"Was gehört zu den >externen< Cost-per-Hire-Kosten?", options:["A) Gehälter der internen Recruiter","B) Job-Board-Gebühren","C) Onboarding-Aufwand","D) ATS-Lizenzen"], correct:1, explanation:"Externe CPH-Kosten umfassen Anzeigen, Headhunter, Job-Boards, Personalmessen, Background-Checks. Recruiter-Gehälter, Onboarding und Bewerbermanagementsystem sind interne Kosten." },
+      { id:39, text:"Welche Leistungskennzahl misst die Verzögerung zwischen Anforderung der Position und Stellenbesetzung?", options:["A) Time-to-Hire","B) Time-to-Fill","C) Time-to-Productivity","D) Time-to-Market"], correct:1, explanation:"Time-to-Fill misst die Zeit zwischen Bedarfsanforderung durch den Fachbereich und Stellenbesetzung – inkludiert also auch interne Vorlaufzeiten." },
+      { id:40, text:"Wie wird die Fluktuationsrate (Schlüter-Formel) berechnet?", options:["A) Abgänge × 100","B) (Abgänge / Ø Personalbestand) × 100","C) Eintritte / Austritte","D) Probezeit-Abbrüche / Eintritte"], correct:1, explanation:"Schlüter-Formel: Fluktuationsrate = (Abgänge im Zeitraum / durchschnittlicher Personalbestand) × 100." },
+      { id:41, text:"Was ist die Offer-Acceptance-Rate?", options:["A) Anzahl erstellter Angebote","B) Angenommene Angebote / abgegebene Angebote × 100","C) Erfolgreiche Bewerbungen / abgesendete Bewerbungen","D) Verträge / Probezeit-Bestehensquote"], correct:1, explanation:"Offer-Acceptance-Rate = angenommene Angebote / abgegebene Angebote × 100; misst die Attraktivität des Arbeitgebers und der Konditionen." },
+      { id:42, text:"Welche der folgenden KPIs ist >operativ< (Funnel)?", options:["A) Quality-of-Hire","B) Retention-Rate","C) Anzahl Bewerbungen","D) Cost-per-Hire"], correct:2, explanation:"Anzahl Bewerbungen ist eine operative Funnel-KPI. CPH ist taktisch, Quality-of-Hire und Retention-Rate sind strategisch." },
+      { id:43, text:"Welche Aussage zur >Frühfluktuation< ist richtig?", options:["A) Sie ist im PDL-Bereich besonders niedrig","B) Sie ist branchentypisch hoch und die CPH ist dann effektiv verloren","C) Sie betrifft nur Führungskräfte","D) Sie ist gesetzlich verboten"], correct:1, explanation:"Frühfluktuation (Austritt $<$ 6 Monate) ist im PDL-Bereich branchentypisch hoch. Die investierte CPH ist dann wirtschaftlich verloren." },
+      { id:44, text:"Welche Branche hat typischerweise die längste Time-to-Hire?", options:["A) Helfer Zeitarbeit","B) Kaufmännische Sachbearbeitung","C) IT-Spezialisten","D) Pflegekräfte"], correct:2, explanation:"IT-Spezialisten haben typischerweise mit 60–90 Tagen die längste Time-to-Hire – wegen Fachkräftemangel und langen Vorlaufzeiten." },
+      { id:45, text:"Was ist Time-to-Productivity?", options:["A) Tage zwischen Eintritt und voller Leistungsfähigkeit","B) Tage zwischen Vertragsunterschrift und Eintritt","C) Tage zwischen Anforderung und Eintritt","D) Tage bis zur ersten Prämie"], correct:0, explanation:"Time-to-Productivity = Tage zwischen Eintritt und Erreichen der vollen Leistungsfähigkeit. Wichtige Kennzahl für Onboarding-Qualität." },
+      { id:46, text:"Welche Leistungskennzahl ist im Disponenten-Cockpit >kein< typischer Eintrag?", options:["A) Offene Anforderungen","B) Verfügbare Zeitarbeitnehmerinnen und Zeitarbeitnehmer im Pool","C) Equal-Pay-Quote","D) Aktienkurs des Konzerns"], correct:3, explanation:"Der Aktienkurs ist keine operative Disponenten-KPI. Offene Anforderungen, ZAN-Pool und Equal-Pay-Quote dagegen sind Standardeinträge." }
+    ]
+  },
+  {
+    title: "Abschnitt 5: Earned Value Analyse (Fragen 47–56)",
+    questions: [
+      { id:47, text:"Wofür steht 'EVA' im Projektmanagement?", options:["A) Erfolgs-Vorhersage-Analyse","B) Earned Value Analyse","C) Effizienz-Validierungs-Audit","D) Eskalations-Vermeidungs-Algorithmus"], correct:1, explanation:"EVA = Earned Value Analyse (Fertigstellungswertmethode). Sie verbindet Termin- und Kostencontrolling integriert in einer Methode." },
+      { id:48, text:"Was ist PV in der EVA?", options:["A) Personal-Volumen","B) Planned Value – was bis Stichtag fertig sein sollte","C) Praxis-Wert","D) Projekt-Variable"], correct:1, explanation:"PV (Planned Value) ist der geplante Wert: Was hätte bis zum Stichtag fertig sein sollen, in Geldeinheiten." },
+      { id:49, text:"Was ist EV in der EVA?", options:["A) Earned Value – was tatsächlich fertig ist, bewertet zu Plan-Kosten","B) Eingang-Volumen","C) Ergebnis-Variable","D) End-Value"], correct:0, explanation:"EV (Earned Value, Fertigstellungswert) = was tatsächlich fertig ist, bewertet zu Plan-Kosten. Wichtig: Plan-Kosten, nicht Ist-Kosten." },
+      { id:50, text:"Was ist AC in der EVA?", options:["A) Actual Cost – tatsächliche Kosten bis Stichtag","B) Average Cost","C) Anfängliche Kalkulation","D) Auftrags-Charta"], correct:0, explanation:"AC (Actual Cost) sind die tatsächlich entstandenen Kosten bis zum Stichtag." },
+      { id:51, text:"Wie wird die Cost Variance berechnet?", options:["A) CV = AC − EV","B) CV = EV − AC","C) CV = PV − AC","D) CV = EV / AC"], correct:1, explanation:"CV = EV − AC. Wenn CV $> 0$: unter Budget. Wenn CV $< 0$: über Budget." },
+      { id:52, text:"Wie wird die Schedule Variance berechnet?", options:["A) SV = EV − PV","B) SV = AC − PV","C) SV = PV / AC","D) SV = AC − EV"], correct:0, explanation:"SV = EV − PV. Wenn SV $> 0$: vor Plan. Wenn SV $< 0$: in Verzug." },
+      { id:53, text:"Wie wird der Cost Performance Index berechnet?", options:["A) CPI = AC / EV","B) CPI = PV / EV","C) CPI = EV / AC","D) CPI = EV / PV"], correct:2, explanation:"CPI = EV / AC. Index $= 1$: plangemäß. Index $> 1$: wirtschaftlich. Index $< 1$: unwirtschaftlich." },
+      { id:54, text:"Wie wird der Schedule Performance Index berechnet?", options:["A) SPI = EV / PV","B) SPI = EV / AC","C) SPI = AC / PV","D) SPI = PV / AC"], correct:0, explanation:"SPI = EV / PV. Index $= 1$: termingerecht. Index $> 1$: vor Plan. Index $< 1$: im Verzug." },
+      { id:55, text:"Was bedeutet ein CPI von 0,67?", options:["A) Das Projekt läuft wirtschaftlich","B) Für jeden investierten Euro werden nur 67 Cent Wertschöpfung erreicht","C) Das Projekt ist 67 % fertig","D) 67 % der Mitarbeiter sind ausgelastet"], correct:1, explanation:"CPI 0,67 bedeutet: Für jeden investierten Euro werden nur 67 Cent Wert geschaffen. Das Projekt läuft unwirtschaftlich, EAC verschlechtert sich entsprechend." },
+      { id:56, text:"Wie wird das Estimate at Completion (EAC) berechnet?", options:["A) EAC = BAC × CPI","B) EAC = BAC + CPI","C) EAC = BAC / CPI","D) EAC = AC + PV"], correct:2, explanation:"EAC = BAC / CPI. EAC ist die Prognose der Gesamtkosten bei Projektabschluss, BAC = Budget at Completion (ursprüngliches Gesamtbudget)." }
+    ]
+  },
+  {
+    title: "Abschnitt 6: Praxis & PDL-Spezifika (Fragen 57–60)",
+    questions: [
+      { id:57, text:"Welche Equal-Pay-Frist gilt nach dem Arbeitnehmerüberlassungsgesetz für Zeitarbeitnehmende?", options:["A) sofort ab erstem Einsatztag","B) nach 3 Monaten","C) nach 9 Monaten","D) nach 24 Monaten"], correct:2, explanation:"Nach § 8 Arbeitnehmerüberlassungsgesetz gilt Equal Pay für Zeitarbeitnehmende spätestens nach 9 Monaten beim Kundenbetrieb (mit Tarifabweichungen bis 15 Monate möglich)." },
+      { id:58, text:"Was ist die maximale Höchstüberlassungsdauer nach dem Arbeitnehmerüberlassungsgesetz?", options:["A) 9 Monate","B) 12 Monate","C) 18 Monate","D) 24 Monate"], correct:2, explanation:"Die AÜG-Höchstüberlassung beträgt 18 Monate beim selben Kundenbetrieb (§ 1 Abs. 1b Arbeitnehmerüberlassungsgesetz)." },
+      { id:59, text:"Welcher Tarifvertrag ist im PDL-Bereich relevant?", options:["A) TVöD","B) TV-L","C) TV-GVP","D) MTV"], correct:2, explanation:"Der Tarifvertrag der Zeit- und Personaldienstleister Gesamtverband der Personaldienstleister (TV-GVP) ist seit 01.01.2022 der zentrale Branchentarifvertrag." },
+      { id:60, text:"Welche Reaktion ist bei einem CPI von 0,72 und SPI von 0,68 in einem Recruiting-Projekt zwingend?", options:["A) Nichts tun","B) Eskalation an Lenkungsausschuss und Maßnahmenpaket einleiten","C) Projekt sofort abbrechen","D) Kunden direkt zur Vertragsstrafe bitten"], correct:1, explanation:"Bei CPI/SPI deutlich unter 1 (hier: 28–32 % schlechter als Plan) ist Eskalation an den Lenkungsausschuss und ein Maßnahmenpaket (korrektiv + ggf. Plananpassung) zwingend." }
+    ]
+  }
+];
+
+let answered = {};
+let checked = {};
+let showAll = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() {
+  const flat = [];
+  sections.forEach(s => s.questions.forEach(q => flat.push(q)));
+  return flat;
+}
+const flatQ = allQuestions();
+
+function render() {
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  let globalIdx = 0;
+  sections.forEach((sec, si) => {
+    html += `<div class="section-title">${sec.title}</div>`;
+    sec.questions.forEach((q, qi) => {
+      const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+      const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+      html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+      html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+      html += `<p class="question-text">${q.text}</p>`;
+      html += `<ul class="options-list">`;
+      q.options.forEach((opt, oi) => {
+        let cls = '';
+        if (checked[q.id]) {
+          if (oi === q.correct) cls = 'correct-opt';
+          else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+        } else if (answered[q.id] === oi) {
+          cls = 'selected';
+        }
+        const dis = checked[q.id] ? 'disabled' : '';
+        const chk = answered[q.id] === oi ? 'checked' : '';
+        html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+      });
+      html += `</ul>`;
+      const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+      html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+      if (checked[q.id]) {
+        const isCorr = answered[q.id] === q.correct;
+        const fbClass = isCorr ? 'correct' : 'incorrect';
+        const fbText = isCorr
+          ? `<strong>Richtig!</strong> ${q.explanation}`
+          : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+        html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+      } else {
+        html += `<div class="feedback" id="fb-${q.id}"></div>`;
+      }
+      html += `</div>`;
+      globalIdx++;
+    });
+  });
+  if (!showAll) {
+    html += `<div class="nav-row">`;
+    html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+    html += `<span style="font-weight:600;color:#004a99;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+    html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+    html += `</div>`;
+  }
+  container.innerHTML = html;
+  updateProgress();
+}
+
+function selectOption(qid, idx) {
+  if (checked[qid]) return;
+  answered[qid] = idx;
+  render();
+}
+
+function checkAnswer(qid) {
+  if (answered[qid] === undefined || checked[qid]) return;
+  checked[qid] = true;
+  render();
+  updateProgress();
+}
+
+function navigate(dir) {
+  currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir));
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  const done = Object.keys(checked).length;
+  const pct = Math.round((done / totalQ) * 100);
+  document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+  document.getElementById('progressPct').textContent = `${pct} %`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+  const done = Object.keys(checked).length;
+  if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+  let correct = 0;
+  flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+  const pct = Math.round((correct / done) * 100);
+  document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+  let gradeText = '';
+  let gradeClass = 'pass';
+  if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+  else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+  else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+  else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+  else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+  else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+  const gEl = document.getElementById('gradeText');
+  gEl.textContent = gradeText;
+  gEl.className = 'grade ' + gradeClass;
+  let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+  sections.forEach(sec => {
+    let sCorr = 0, sTotal = 0;
+    sec.questions.forEach(q => {
+      if (checked[q.id]) { sTotal++; if (answered[q.id] === q.correct) sCorr++; }
+    });
+    const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+    tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+  });
+  tbl += '</table>';
+  document.getElementById('sectionBreakdown').innerHTML = tbl;
+  document.getElementById('resultsPanel').classList.add('show');
+  document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+  answered = {};
+  checked = {};
+  currentQ = 0;
+  document.getElementById('resultsPanel').classList.remove('show');
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () {
+  showAll = this.checked;
+  render();
+});
+
+function shuffleQuizOptions() {
+  let seed = 42;
+  function seededRandom() {
+    seed = (seed * 16807 + 0) % 2147483647;
+    return (seed - 1) / 2147483646;
+  }
+  sections.forEach(sec => {
+    sec.questions.forEach(q => {
+      const correctText = q.options[q.correct];
+      const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+      for (let i = cleaned.length - 1; i > 0; i--) {
+        const j = Math.floor(seededRandom() * (i + 1));
+        [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+      }
+      const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+      const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+      q.options = cleaned.map((c, i) => prefixes[i] + c);
+      q.correct = cleaned.indexOf(correctClean);
+    });
+  });
+}
+shuffleQuizOptions();
+render();
+</script>
+</body>
+</html>

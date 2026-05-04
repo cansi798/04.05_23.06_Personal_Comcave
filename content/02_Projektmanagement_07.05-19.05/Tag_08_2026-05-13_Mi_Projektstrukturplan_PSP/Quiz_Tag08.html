@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Tag 08 &ndash; Projektstrukturplan</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #003366 0%, #004B87 50%, #0082B4 100%); color: #fff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+.header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+.header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+.toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+.toolbar button, .toolbar .toggle-label { background: #004B87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.toolbar button:hover { background: #003366; }
+.toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+.toggle-label input { accent-color: #004B87; width: 18px; height: 18px; cursor: pointer; }
+.progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+.progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+.progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0082B4, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+.container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+.section-title { background: #003366; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+.section-title:first-child { margin-top: 0; }
+.question-card { background: #ffffff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+.question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.question-card.correct-card { border-left: 5px solid #28a745; }
+.question-card.incorrect-card { border-left: 5px solid #dc3545; }
+.question-number { display: inline-block; background: #e8f0fe; color: #004B87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+.question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+.options-list { list-style: none; }
+.options-list li { margin-bottom: 0.5rem; }
+.options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+.options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+.options-list input[type="radio"] { accent-color: #004B87; margin-top: 3px; flex-shrink: 0; }
+.options-list label.selected { background: #e8f0fe; border-color: #004B87; }
+.options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+.options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+.check-btn { margin-top: 0.8rem; background: #004B87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.check-btn:hover { background: #003366; }
+.check-btn:disabled { background: #8faec8; cursor: default; }
+.feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+.feedback.show { display: block; }
+.feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.nav-btn { background: #004B87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.nav-btn:hover { background: #003366; }
+.nav-btn:disabled { background: #8faec8; cursor: default; }
+.results-panel { background: #ffffff; border: 2px solid #004B87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.results-panel.show { display: block; }
+.results-panel h2 { color: #003366; margin-bottom: 0.8rem; }
+.score-big { font-size: 3rem; font-weight: 700; color: #004B87; }
+.grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+.grade.pass { color: #28a745; }
+.grade.fail { color: #dc3545; }
+.section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+.section-breakdown table { width: 100%; border-collapse: collapse; }
+.section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+.section-breakdown th { background: #e8f0fe; color: #003366; text-align: left; }
+.references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+.references h3 { color: #003366; margin-bottom: 0.8rem; font-size: 1.1rem; }
+.references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+.footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+@media print { body { background: #fff; } .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; } .header { background: #003366 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; } .section-title { break-after: avoid; } .feedback.show { display: block !important; } }
+@media (max-width: 600px) { .header { padding: 1.4rem 0.8rem; } .question-card { padding: 1rem; } .toolbar { flex-direction: column; align-items: stretch; text-align: center; } }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<header class="header">
+  <h1>Quiz Tag 08 &ndash; Projektstrukturplan</h1>
+  <div class="subtitle">Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026 &ndash; Personaldienstleistungskaufmann/-frau</div>
+  <div class="meta"><span>&copy; Can Siebert</span><span>Stand 05/2026</span><span>60 Fragen &bull; Multiple Choice</span></div>
+</header>
+
+<div class="toolbar">
+  <label class="toggle-label"><input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen</label>
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+    <button onclick="showResults()">Ergebnis anzeigen</button>
+    <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+  </div>
+</div>
+
+<div class="progress-container">
+  <div class="progress-info"><span id="progressText">0 von 60 beantwortet</span><span id="progressPct">0 %</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+  <div class="results-panel" id="resultsPanel">
+    <h2>Dein Ergebnis</h2>
+    <div class="score-big" id="scoreBig"></div>
+    <div class="grade" id="gradeText"></div>
+    <div class="section-breakdown" id="sectionBreakdown"></div>
+    <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+  </div>
+</div>
+
+<div class="references">
+  <h3>Literaturverzeichnis (APA 7)</h3>
+  <p>Burghardt, M. (2018). <em>Projektmanagement: Leitfaden f&uuml;r die Planung, &Uuml;berwachung und Steuerung von Projekten</em> (10. Aufl.). Publicis MCD.</p>
+  <p>DIN Deutsches Institut f&uuml;r Normung. (2009). <em>DIN 69901 &ndash; Projektmanagement &ndash; Projektmanagementsysteme</em>. Beuth Verlag.</p>
+  <p>Drews, G., &amp; Hillebrand, N. (2010). <em>Lexikon der Projektmanagement-Methoden</em> (2. Aufl.). Haufe.</p>
+  <p>Kuster, J. et al. (2022). <em>Handbuch Projektmanagement</em> (5. Aufl.). Springer Gabler.</p>
+  <p>Patzak, G., &amp; Rattay, G. (2014). <em>Projektmanagement</em> (6. Aufl.). Linde Verlag.</p>
+  <p>Project Management Institute. (2021). <em>PMBOK Guide</em> (7. Aufl.). PMI.</p>
+  <p>Schelle, H., Ottmann, R., &amp; Pfeiffer, A. (2018). <em>Projektmanager</em> (5. Aufl.). GPM.</p>
+</div>
+
+<footer class="footer">&copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Stand 05/2026</footer>
+
+<script>
+const sections = [
+{title:"Abschnitt 1: PSP-Grundlagen (Fragen 1–10)",questions:[
+{id:1,text:"Wie wird der Projektstrukturplan auf Englisch genannt?",options:["A) Project Schedule","B) Work Breakdown Structure (WBS)","C) Project Charter","D) Project Roadmap"],correct:1,explanation:"Der englische Begriff für Projektstrukturplan ist Work Breakdown Structure (WBS). Er ist international etabliert und wird auch im deutschen PM-Sprachgebrauch verwendet."},
+{id:2,text:"Welche Norm definiert in Deutschland den Projektstrukturplan?",options:["A) DIN EN 9001","B) ISO 14001","C) DIN 69901","D) DIN EN 13816"],correct:2,explanation:"Die deutsche Norm DIN 69901 definiert in Teil 2 den Projektstrukturplan und in Teil 5 das Arbeitspaket."},
+{id:3,text:"Was ist die zentrale Funktion des Projektstrukturplan?",options:["A) Festlegung der Projektkosten","B) Vollständige hierarchische Darstellung aller Projektelemente","C) Nominierung des Projektleiters","D) Ausschreibung der Aufträge"],correct:1,explanation:"Der Projektstrukturplan stellt vollständig und hierarchisch alle Elemente eines Projekts (Teilprojekte, Teilaufgaben, Arbeitspakete) dar."},
+{id:4,text:"Welche Aussage zum Projektstrukturplan ist FALSCH?",options:["A) Er enthält alle Projektaufgaben","B) Er ist hierarchisch aufgebaut","C) Er enthält die zeitliche Reihenfolge der Aufgaben","D) Er ist Grundlage für Ablauf- und Kostenplan"],correct:2,explanation:"FALSCH ist Aussage C: Der Projektstrukturplan enthält KEINE zeitliche Reihenfolge. Diese wird erst im Ablaufplan (Gantt-Diagramm, Netzplan) definiert."},
+{id:5,text:"Was besagt die 100-%-Regel des Projektstrukturplan?",options:["A) Das Projekt muss zu 100% gelingen","B) Die Summe aller untergeordneten Elemente einer Ebene muss 100% der übergeordneten Aufgabe abdecken","C) Alle Mitarbeitenden müssen zu 100% verfügbar sein","D) Das Budget muss zu 100% ausgeschöpft werden"],correct:1,explanation:"Die 100-%-Regel besagt: Die Summe aller untergeordneten Elemente einer Ebene muss 100% der übergeordneten Aufgabe abdecken. Sie sichert Vollständigkeit."},
+{id:6,text:"Welches PM-Sprichwort fasst die Bedeutung des Projektstrukturplan zusammen?",options:["A) Zeit ist Geld","B) Was nicht im Projektstrukturplan steht, wird im Projekt nicht gemacht","C) Der Kunde ist König","D) Vertrauen ist gut, Kontrolle ist besser"],correct:1,explanation:"„Was nicht im Projektstrukturplan steht, wird im Projekt nicht gemacht“ verdeutlicht die zentrale Bedeutung der vollständigen Aufgabenerfassung im Projektstrukturplan."},
+{id:7,text:"Welches Element ist KEIN Bestandteil des Projektstrukturplan?",options:["A) Teilprojekte","B) Arbeitspakete","C) Stundenpläne und Termine","D) Teilaufgaben"],correct:2,explanation:"Der Projektstrukturplan enthält Teilprojekte, Teilaufgaben und Arbeitspakete – aber KEINE Stundenpläne oder Termine. Die Zeitplanung erfolgt im Ablaufplan."},
+{id:8,text:"Welche Funktion erfüllt der Projektstrukturplan NICHT?",options:["A) Strukturierung des Projekts","B) Verantwortungszuordnung","C) Eigenhändige Ausführung der Arbeit","D) Reporting-Basis"],correct:2,explanation:"Der Projektstrukturplan führt die Arbeit nicht selbst aus – er ist ein Planungsdokument. Er strukturiert, ordnet Verantwortung zu und dient als Reporting-Basis."},
+{id:9,text:"Wie viele Ebenen sollte ein gut strukturierter Projektstrukturplan üblicherweise haben?",options:["A) Nur eine","B) 3 bis 5 Ebenen","C) Mindestens 10","D) Es spielt keine Rolle"],correct:1,explanation:"In der Praxis bewähren sich 3 bis 5 Hierarchieebenen. Weniger ist zu grob, mehr wird unübersichtlich."},
+{id:10,text:"Welche Ebene 0 hat der Projektstrukturplan?",options:["A) Das einzelne Arbeitspaket","B) Das Gesamtprojekt","C) Die Tätigkeit","D) Die Teilaufgabe"],correct:1,explanation:"Die Ebene 0 ist das Gesamtprojekt selbst. Darunter folgen Teilprojekte (Ebene 1), Teilaufgaben (Ebene 2) und Arbeitspakete (Ebene 3)."}
+]},
+{title:"Abschnitt 2: Hierarchie und Codierung (Fragen 11–20)",questions:[
+{id:11,text:"Welche Bezeichnung trägt die Ebene 1 in einem Projektstrukturplan?",options:["A) Tätigkeit","B) Teilprojekt / Hauptphase","C) Subtask","D) Meilenstein"],correct:1,explanation:"Die Ebene 1 enthält die Teilprojekte oder Hauptphasen, also die größten Einheiten unterhalb des Gesamtprojekts."},
+{id:12,text:"Welche Codierung gehört typischerweise zu einem Arbeitspaket auf Ebene 3?",options:["A) 0","B) 1","C) 1.1","D) 1.1.1"],correct:3,explanation:"Auf Ebene 3 (Arbeitspaket) ist die typische Codierung dreistellig, z.B. 1.1.1 oder 2.3.1. Die Tiefe der Nummerierung entspricht der Hierarchieebene."},
+{id:13,text:"Was bedeutet die Codierung „2.3.1“ in einem Projektstrukturplan?",options:["A) Teilprojekt 2, Teilaufgabe 3, Arbeitspaket 1","B) 231 Personentage","C) Datum 2.3.1","D) 2 Stunden, 3 Minuten, 1 Sekunde"],correct:0,explanation:"Die Codierung 2.3.1 bedeutet: Teilprojekt 2, darin Teilaufgabe 3, darin Arbeitspaket 1. Die Hierarchie ist an der Tiefe der Punkt-Notation ablesbar."},
+{id:14,text:"Welche Faustregel beschreibt die optimale Größe eines Arbeitspakets?",options:["A) 1/10-Regel","B) 8/80-Regel","C) 80/20-Regel","D) 5/95-Regel"],correct:1,explanation:"Die 8/80-Regel besagt: Ein AP sollte zwischen 8 Stunden (1 Tag) und 80 Stunden (2 Wochen) Aufwand haben."},
+{id:15,text:"Welche Konsequenz hat ein zu großes Arbeitspaket (>80 Stunden)?",options:["A) Höhere Effizienz","B) Mangelnde Steuerbarkeit und unklarer Fortschritt","C) Bessere Übersicht","D) Geringere Kosten"],correct:1,explanation:"Zu große APs lassen sich schlecht steuern, der Fortschritt bleibt lange unklar, das Reporting wird oberflächlich. Daher 80h als Obergrenze."},
+{id:16,text:"Welche Konsequenz hat ein zu kleines Arbeitspaket (<8 Stunden)?",options:["A) Sehr fokussierte Arbeit","B) Hoher Verwaltungsaufwand und Mikromanagement","C) Bessere Reporting-Qualität","D) Klarere Verantwortung"],correct:1,explanation:"Zu kleine APs erzeugen disproportional hohen Verwaltungsaufwand. Es entsteht Mikromanagement, das Team fühlt sich überreguliert."},
+{id:17,text:"Welche Regel besagt, dass ein AP nicht länger dauern darf als zwei Reporting-Perioden?",options:["A) 100-%-Regel","B) Reporting-Periode-Regel","C) 8/80-Regel","D) Pareto-Regel"],correct:1,explanation:"Die Reporting-Periode-Regel: AP-Dauer ≤ 2 Reporting-Perioden. Bei wöchentlichem Reporting also max. 2 Wochen pro AP."},
+{id:18,text:"Wie viele Verantwortliche sollte ein Arbeitspaket haben?",options:["A) Mindestens drei","B) Genau eine Person","C) Das ganze Team","D) Den Sponsor"],correct:1,explanation:"Ein AP hat genau EINE/N Verantwortliche/N (Single Point of Accountability). Mehr Beteiligte können in der RACI-Matrix erfasst werden."},
+{id:19,text:"Welches der folgenden Elemente ist KEIN Standard-Bestandteil einer AP-Karte?",options:["A) AP-Nummer","B) Verantwortliche/r","C) Kundenrabatt","D) Liefer-Ergebnis"],correct:2,explanation:"Ein „Kundenrabatt“ gehört nicht in eine AP-Karte. Standardelemente sind Nummer, Bezeichnung, Verantwortliche/r, Beschreibung, Liefer-Ergebnis, Aufwand, Termin, Abnahmekriterien etc."},
+{id:20,text:"Welche Aussage zur Hierarchie im Projektstrukturplan ist richtig?",options:["A) Alle Ebenen müssen gleich tief gegliedert werden","B) Verschiedene Hauptphasen können unterschiedlich tief gegliedert sein","C) Nur Ebene 1 muss vollständig sein","D) Ebene 0 ist das Arbeitspaket"],correct:1,explanation:"Verschiedene Hauptphasen können unterschiedlich tief gegliedert sein – wichtig ist die 100-%-Regel pro Ebene. Eine einfache Phase braucht weniger Tiefe als eine komplexe."}
+]},
+{title:"Abschnitt 3: Gliederungsprinzipien (Fragen 21–30)",questions:[
+{id:21,text:"Welche drei Gliederungsprinzipien werden für den Projektstrukturplan unterschieden?",options:["A) Vertikal, horizontal, diagonal","B) Objektorientiert, funktionsorientiert, gemischt","C) Klein, mittel, groß","D) Theoretisch, praktisch, gemischt"],correct:1,explanation:"Die drei Gliederungsprinzipien sind: objektorientiert (nach Liefergegenständen), funktionsorientiert (nach Tätigkeiten/Funktionen) und gemischt (Kombination)."},
+{id:22,text:"Bei welchem Gliederungsprinzip wird nach Liefergegenständen oder Komponenten gegliedert?",options:["A) Funktionsorientiert","B) Objektorientiert","C) Gemischt","D) Zeitorientiert"],correct:1,explanation:"Bei objektorientierter Gliederung folgt der Projektstrukturplan den Liefergegenständen oder Komponenten – z.B. beim Hausbau Keller, EG, OG, Dach."},
+{id:23,text:"Welches Beispiel zeigt einen funktionsorientierten Projektstrukturplan?",options:["A) Hausbau: Keller, EG, OG, Dach","B) Hausbau: Planung, Genehmigung, Rohbau, Innenausbau, Übergabe","C) Software: Datenbank, GUI, API","D) Auto: Karosserie, Motor, Innenraum"],correct:1,explanation:"Hausbau: Planung, Genehmigung, Rohbau, Innenausbau, Übergabe ist ein funktionsorientierter Projektstrukturplan – er folgt den Tätigkeiten/Phasen, nicht den Liefergegenständen."},
+{id:24,text:"Welches Gliederungsprinzip eignet sich am besten für ein Recruiting-Projekt?",options:["A) Objektorientiert","B) Funktionsorientiert","C) Vertikal","D) Diagonal"],correct:1,explanation:"Recruiting-Projekte gliedern sich gut funktionsorientiert: Akquise, Auswahl, Einstellung, Onboarding, Steuerung. Objekte (Personen) wären nicht sinnvoll."},
+{id:25,text:"Was ist der Hauptvorteil eines objektorientierten Projektstrukturplan?",options:["A) Klare Liefergegenstände, einfaches Reporting je Objekt","B) Klare Aufgabenzuordnung an Fachbereiche","C) Hohe Flexibilität","D) Keine Strukturänderung"],correct:0,explanation:"Der objektorientierte Projektstrukturplan zeigt klar, welche Liefergegenstände erstellt werden. Reporting kann pro Objekt erfolgen – z.B. „Keller fertig zu 80%“."},
+{id:26,text:"Was ist der Hauptnachteil eines objektorientierten Projektstrukturplan?",options:["A) Funktionen verteilen sich über mehrere Objekte (Doppelarbeit)","B) Unklarer Aufbau","C) Zu wenig Detailtiefe","D) Keine Kostenkontrolle"],correct:0,explanation:"Im objektorientierten Projektstrukturplan wiederholen sich gleiche Funktionen über mehrere Objekte – das kann zu Doppelarbeit und unklarer Verantwortung führen."},
+{id:27,text:"Welcher Vorteil zeichnet einen funktionsorientierten Projektstrukturplan aus?",options:["A) Schnelle Fertigstellung","B) Klare Aufgabenzuordnung an Fachbereiche und Standardisierbarkeit","C) Keine Verantwortlichkeiten","D) Kein Reporting nötig"],correct:1,explanation:"Funktionsorientierte PSPs ermöglichen klare Aufgabenzuordnung an Fachbereiche (z.B. Recruiting an Recruiter:innen) und sind gut standardisierbar."},
+{id:28,text:"Wann eignet sich ein gemischter Projektstrukturplan besonders?",options:["A) Nie – immer rein objekt- oder funktionsorientiert wählen","B) Bei komplexen Projekten, in denen beides relevant ist","C) Nur bei IT-Projekten","D) Nur bei Bau-Projekten"],correct:1,explanation:"Gemischte PSPs sind in der Praxis sehr verbreitet, da viele Projekte sowohl klare Liefergegenstände als auch klare Funktionsphasen haben."},
+{id:29,text:"Was ist die Ebene 1 im PDL-Projekt „Recruiting 50 Lageristen“ (funktionsorientiert)?",options:["A) Lagerist 1, 2, 3 ... 50","B) Akquise, Auswahl, Einstellung, Onboarding, Einsatzsteuerung","C) Frühschicht, Spätschicht, Nachtschicht","D) Januar, Februar, März"],correct:1,explanation:"Funktionsorientiert heißt: Ebene 1 = Phasen des Recruiting-Prozesses. Akquise, Auswahl, Einstellung, Onboarding und Einsatzsteuerung sind die Hauptphasen."},
+{id:30,text:"Welche Aussage zur Wahl des Gliederungsprinzips ist richtig?",options:["A) Es gibt nur ein richtiges Prinzip für alle Projekte","B) Die Wahl hängt vom Projekttyp ab","C) Das Prinzip wird zufällig gewählt","D) Nur die PL entscheidet, niemand sonst hat ein Wort dazu"],correct:1,explanation:"Die Wahl des Gliederungsprinzips hängt vom Projekttyp ab. Bauprojekte → eher objektorientiert, Recruiting → funktionsorientiert, viele Projekte → gemischt."}
+]},
+{title:"Abschnitt 4: Arbeitspakete und AP-Karten (Fragen 31–40)",questions:[
+{id:31,text:"Was ist ein Arbeitspaket nach DIN 69901-5?",options:["A) Eine Sammlung von Briefen","B) In sich geschlossene Aufgabenstellung mit definiertem Ergebnis und Aufwand","C) Eine Gehaltszahlung","D) Ein Stapel Akten"],correct:1,explanation:"Nach DIN 69901-5 ist ein AP eine in sich geschlossene Aufgabenstellung, die bis zu einem festgelegten Zeitpunkt mit definiertem Ergebnis und Aufwand vollbracht werden kann."},
+{id:32,text:"Welches Feld muss eine AP-Karte mindestens enthalten?",options:["A) Lieblingsfarbe","B) AP-Nummer, Verantwortliche/r, Liefer-Ergebnis, Aufwand","C) Stundenlohn","D) Geburtstag"],correct:1,explanation:"Pflichtfelder einer AP-Karte sind: AP-Nummer, Verantwortliche/r, Liefer-Ergebnis und Aufwand. Weitere Felder (Termin, Risiken, Abnahme) sind empfehlenswert."},
+{id:33,text:"Was ist ein „Liefer-Ergebnis“ (Deliverable) eines Arbeitspakets?",options:["A) Die Tätigkeit, die ausgeführt wird","B) Das konkrete, messbare Ergebnis am Ende des AP","C) Die Anzahl der Mitarbeitenden","D) Das Budget"],correct:1,explanation:"Das Liefer-Ergebnis ist das konkrete, messbare Ergebnis (z.B. „30 Bewerber:innen im Bewerbermanagementsystem“). Es ist NICHT die Tätigkeit selbst („LinkedIn ansprechen“)."},
+{id:34,text:"Was ist ein Abnahmekriterium für ein AP?",options:["A) Eine Bewertung durch die Personalabteilung","B) Ein objektiv prüfbares Kriterium, wann das AP als „fertig“ gilt","C) Ein zufälliger Stichprobentest","D) Die Meinung des Sponsors"],correct:1,explanation:"Abnahmekriterien sind objektiv prüfbare Bedingungen, die erfüllt sein müssen, damit das AP als fertig gilt. Z.B. „mind. 30 vollständige Bewerbungen“."},
+{id:35,text:"Welche typischen Fehler sollten bei der AP-Definition vermieden werden?",options:["A) Klare Verantwortung","B) Zu großes/kleines AP, mehrere Verantwortliche, unklares Ergebnis","C) Detaillierte AP-Karte","D) 100-%-Regel beachten"],correct:1,explanation:"Typische Fehler sind: AP zu groß/klein, mehrere Verantwortliche, unklares Ergebnis, fehlende Abnahmekriterien, Tagesgeschäft im Projektstrukturplan."},
+{id:36,text:"Welcher Inhalt gehört NICHT in ein PSP-AP?",options:["A) Erstellung eines Arbeitsvertrags","B) Sicherheitsunterweisung am Einsatzort","C) Allgemeines E-Mail-Bearbeiten als Tagesgeschäft","D) Bewerberauswahl"],correct:2,explanation:"Allgemeines Tagesgeschäft (E-Mail-Bearbeiten, Telefonate ohne Projektbezug) gehört nicht in den Projektstrukturplan. Nur projektspezifische Aufgaben werden aufgenommen."},
+{id:37,text:"Was bedeutet „Voraussetzungen / Inputs“ in einer AP-Karte?",options:["A) Die Persönlichkeit des Verantwortlichen","B) Was muss vorher fertig sein, damit dieses AP starten kann?","C) Das Gehalt","D) Die Mitarbeiterzufriedenheit"],correct:1,explanation:"„Voraussetzungen / Inputs“ beschreibt, was vorher erledigt sein muss. Z.B. „Anforderungsprofil freigegeben“ als Input für „Active Sourcing“."},
+{id:38,text:"Welcher der folgenden Sätze ist ein gutes Liefer-Ergebnis?",options:["A) „Recruiting machen“","B) „LinkedIn-Suche durchführen“","C) „30 qualifizierte Bewerber:innen im Bewerbermanagementsystem“","D) „E-Mails beantworten“"],correct:2,explanation:"„30 qualifizierte Bewerber:innen im Bewerbermanagementsystem“ ist messbar und konkret. Die anderen sind entweder zu vage oder nur Tätigkeiten, keine Ergebnisse."},
+{id:39,text:"Wofür ist die AP-Karte das wichtigste Dokument?",options:["A) Für die Steuererklärung","B) Für die operative Steuerung des Projekts","C) Für die Werbung","D) Für die Bilanz"],correct:1,explanation:"Die AP-Karte ist das wichtigste operative Steuerungsdokument. Sie enthält alle Informationen, die für die Bearbeitung und Kontrolle eines APs nötig sind."},
+{id:40,text:"Welcher Aspekt sollte zu jedem AP dokumentiert werden, um Risiken im Blick zu behalten?",options:["A) Lieblingsessen des Verantwortlichen","B) Bekannte Risiken / Annahmen","C) Sportverein","D) Kontonummer"],correct:1,explanation:"Bekannte Risiken und Annahmen sollten in jeder AP-Karte dokumentiert werden, damit die PL frühzeitig gegensteuern kann."}
+]},
+{title:"Abschnitt 5: PSP-Erstellung & PDL-Praxis (Fragen 41–50)",questions:[
+{id:41,text:"Was ist die korrekte Reihenfolge der PSP-Erstellung (Top-Down)?",options:["A) APs → Teilaufgaben → Phasen → Projektziel","B) Projektziel → Hauptphasen → Teilaufgaben → APs","C) Sponsor → Lenkungsausschuss → Team","D) Beliebig"],correct:1,explanation:"Top-Down beginnt beim Projektziel und arbeitet nach unten: Projektziel → Hauptphasen (Ebene 1) → Teilaufgaben (Ebene 2) → Arbeitspakete (Ebene 3)."},
+{id:42,text:"Was charakterisiert die Bottom-Up-Methode der PSP-Erstellung?",options:["A) Von den APs ausgehen, gruppieren zu Phasen","B) Von der Geschäftsführung ausgehen","C) Nach Geld sortieren","D) Nach Alphabet sortieren"],correct:0,explanation:"Bottom-Up sammelt zunächst alle denkbaren Aufgaben (Brainstorming) und gruppiert sie schrittweise zu Teilaufgaben und Hauptphasen."},
+{id:43,text:"Welcher Vorteil hat das Bottom-Up-Verfahren?",options:["A) Schnelle Fertigstellung","B) Erfahrungswissen des Teams fließt ein","C) Niedrige Kosten","D) Keine Diskussion nötig"],correct:1,explanation:"Bottom-Up nutzt das Erfahrungswissen des Teams: Mitarbeitende sammeln Aufgaben, die der PL möglicherweise nicht im Blick hatte."},
+{id:44,text:"Welcher Nachteil hat das Bottom-Up-Verfahren?",options:["A) Es ist immer falsch","B) Gefahr von Lücken und Überschneidungen","C) Zu wenig Aufgaben","D) Zu hohe Kosten"],correct:1,explanation:"Bottom-Up kann zu Lücken (vergessene Aufgaben) und Überschneidungen (Doppelaufnahme) führen, da kein Top-Down-Strukturrahmen existiert."},
+{id:45,text:"Wie heißen die fünf Hauptphasen im PDL-Beispielprojekt „Recruiting 50 Lageristen“?",options:["A) Plan, Do, Check, Act, Review","B) Akquise, Auswahl, Einstellung, Onboarding, Einsatzsteuerung","C) Initiierung, Planung, Durchführung, Abschluss","D) Januar, Februar, März, April, Mai"],correct:1,explanation:"Die fünf Hauptphasen sind: Akquise, Auswahl, Einstellung, Onboarding und Einsatzsteuerung. Diese Struktur ist branchenüblich."},
+{id:46,text:"Welche Teilaufgabe gehört in der Phase „Akquise“?",options:["A) Telefon-Screening","B) Active Sourcing über LinkedIn","C) Sicherheitsunterweisung","D) Schichtplanung"],correct:1,explanation:"Active Sourcing ist eine typische Teilaufgabe der Akquise-Phase. Telefon-Screening gehört in „Auswahl“, Sicherheitsunterweisung in „Onboarding“, Schichtplanung in „Einsatzsteuerung“."},
+{id:47,text:"In welcher Phase wird der Arbeitnehmerüberlassungsvertrag (ANÜ) mit dem Kundenbetrieb geschlossen?",options:["A) Akquise","B) Auswahl","C) Einstellung","D) Onboarding"],correct:2,explanation:"Der ANÜ-Vertrag mit dem Kundenbetrieb wird in der Phase „Einstellung“ geschlossen, parallel zu den Arbeitsverträgen mit den Bewerber:innen."},
+{id:48,text:"Welche Teilaufgabe gehört in die Phase „Onboarding“?",options:["A) Stellenanzeige schalten","B) Sicherheitsunterweisung gemäß DGUV","C) Stundenerfassung und Lohnabrechnung","D) Telefon-Screening"],correct:1,explanation:"Die Sicherheitsunterweisung gemäß DGUV ist Bestandteil des Onboardings. Sie ist gesetzlich vorgeschrieben (ArbSchG, DGUV)."},
+{id:49,text:"Welcher Plausibilitätscheck gehört NICHT zur Endkontrolle des Projektstrukturplan?",options:["A) Vollständigkeit","B) 100-%-Regel","C) Überschneidungsfreiheit","D) Lieblingsfarbe der Verantwortlichen"],correct:3,explanation:"Plausibilitätschecks beziehen sich auf Vollständigkeit, 100-%-Regel, Überschneidungsfreiheit, klare Verantwortung und Einhaltung der 8/80-Regel. Lieblingsfarben sind irrelevant."},
+{id:50,text:"Wer sollte bei der finalen PSP-Abstimmung beteiligt sein?",options:["A) Nur die PL allein","B) Team und Lenkungsausschuss","C) Nur der Praktikant","D) Niemand"],correct:1,explanation:"Der Projektstrukturplan sollte mit dem Team (operative Plausibilität) und dem Lenkungsausschuss (strategische Genehmigung) abgestimmt werden."}
+]},
+{title:"Abschnitt 6: Projektstrukturplan, Software & Folgepläne (Fragen 51–60)",questions:[
+{id:51,text:"Was kommt nach dem Projektstrukturplan im Projektplanungsprozess?",options:["A) Nichts","B) Ablaufplan / Gantt, Ressourcenplan, Risikoanalyse, Reporting","C) Sofortige Realisierung ohne weitere Planung","D) Auflösung des Teams"],correct:1,explanation:"Nach dem Projektstrukturplan folgen Ablaufplan (Gantt, Netzplan), Ressourcenplan, Risikoanalyse und das laufende Reporting."},
+{id:52,text:"Welche Software-Tools eignen sich für die PSP-Erstellung?",options:["A) Nur MS Project","B) MS Project, XMind, Excel, Jira, Asana – je nach Projektgröße","C) Nur Word","D) Keine – nur per Hand"],correct:1,explanation:"Es gibt viele geeignete Tools: MS Project (große Projekte), XMind (Brainstorming), Excel (kleine Projekte), Jira/Trello (agile Teams), Asana/Monday (verteilte Teams)."},
+{id:53,text:"Welches Tool eignet sich besonders gut für die Brainstorming-Phase eines Projektstrukturplan?",options:["A) MS Project","B) XMind oder MindManager","C) Excel","D) Outlook"],correct:1,explanation:"Mindmapping-Tools wie XMind oder MindManager unterstützen das visuelle Brainstorming und die intuitive Strukturierung von Gedanken."},
+{id:54,text:"Welches Tool reicht für ein typisches PDL-Großkundenprojekt aus?",options:["A) Eine Konzern-Software für 100.000 Euro","B) Excel oder MeisterTask","C) Nur ein Notizbuch","D) Keine"],correct:1,explanation:"Für typische PDL-Großkundenprojekte (5–6 Wochen, 5–10 Personen) reicht Excel oder eine schlanke Web-Lösung wie MeisterTask aus."},
+{id:55,text:"Warum sollte erst der Projektstrukturplan, dann der Ablaufplan erstellt werden?",options:["A) Weil das Gesetz es vorschreibt","B) Weil sonst Aufgaben vergessen oder unscharf definiert werden","C) Weil es so im IHK-Handbuch steht","D) Weil die Software es so verlangt"],correct:1,explanation:"Wer mit dem Ablaufplan (Gantt) beginnt, vergisst typischerweise Aufgaben und denkt zu früh in Terminen. Der Projektstrukturplan zwingt zur vollständigen Aufgabenerfassung."},
+{id:56,text:"Welche Norm definiert das Arbeitspaket?",options:["A) DIN 69900","B) DIN 69901-5","C) ISO 9001","D) DIN EN 13816"],correct:1,explanation:"DIN 69901-5 definiert den Begriff „Arbeitspaket“: in sich geschlossene Aufgabenstellung mit definiertem Ergebnis und Aufwand."},
+{id:57,text:"Welche Aussage zur PSP-Software ist richtig?",options:["A) Software löst alle Planungsprobleme automatisch","B) Software ist Werkzeug – die Denkleistung bleibt beim Menschen","C) Ohne Software ist kein Projektstrukturplan möglich","D) Software macht den Projektstrukturplan überflüssig"],correct:1,explanation:"Software ist nur ein Werkzeug. Die Strukturierungsarbeit (Welche Phasen? Welche APs? Welche Reihenfolge?) muss der Mensch leisten."},
+{id:58,text:"Wo wird der Projektstrukturplan in der PDL-Praxis besonders eingesetzt?",options:["A) Bei der täglichen Routinearbeit","B) Bei Großkundenprojekten und Niederlassungseröffnungen","C) Bei der Steuererklärung","D) Bei der Betriebsversammlung"],correct:1,explanation:"Der Projektstrukturplan kommt in der PDL-Branche besonders bei Großkundenprojekten (50+ Stellen) und Niederlassungseröffnungen zum Einsatz."},
+{id:59,text:"Welche der folgenden Aussagen zum Projektstrukturplan ist FALSCH?",options:["A) Der Projektstrukturplan ist hierarchisch aufgebaut","B) Der Projektstrukturplan enthält Arbeitspakete","C) Der Projektstrukturplan enthält die zeitliche Reihenfolge der Aufgaben","D) Der Projektstrukturplan ist Grundlage für den Ablaufplan"],correct:2,explanation:"FALSCH ist Aussage C. Der Projektstrukturplan enthält KEINE zeitliche Reihenfolge – die kommt im Ablaufplan (Gantt-Diagramm, Netzplan)."},
+{id:60,text:"Was ist die wichtigste Lehre aus Tag 08 für die IHK-Prüfung?",options:["A) PSPs sind nutzlos","B) Der Projektstrukturplan ist das zentrale Strukturierungsinstrument im Projektmanagement und Grundlage aller weiteren Pläne","C) Man kann ohne Projektstrukturplan planen","D) PSPs gibt es nur in Deutschland"],correct:1,explanation:"Der Projektstrukturplan ist das zentrale Strukturierungsinstrument. Wer ihn nicht beherrscht, kann weder Ablauf, noch Kosten, noch Reporting sauber planen. IHK-relevant!"}
+]}
+];
+
+let answered = {};
+let checked = {};
+let showAll = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() { const flat = []; sections.forEach(s => s.questions.forEach(q => flat.push(q))); return flat; }
+const flatQ = allQuestions();
+
+function render() {
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  let globalIdx = 0;
+  sections.forEach((sec) => {
+    html += `<div class="section-title">${sec.title}</div>`;
+    sec.questions.forEach((q) => {
+      const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+      const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+      html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+      html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+      html += `<p class="question-text">${q.text}</p>`;
+      html += `<ul class="options-list">`;
+      q.options.forEach((opt, oi) => {
+        let cls = '';
+        if (checked[q.id]) {
+          if (oi === q.correct) cls = 'correct-opt';
+          else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+        } else if (answered[q.id] === oi) {
+          cls = 'selected';
+        }
+        const dis = checked[q.id] ? 'disabled' : '';
+        const chk = answered[q.id] === oi ? 'checked' : '';
+        html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+      });
+      html += `</ul>`;
+      const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+      html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+      if (checked[q.id]) {
+        const isCorr = answered[q.id] === q.correct;
+        const fbClass = isCorr ? 'correct' : 'incorrect';
+        const fbText = isCorr ? `<strong>Richtig!</strong> ${q.explanation}` : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+        html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+      } else {
+        html += `<div class="feedback" id="fb-${q.id}"></div>`;
+      }
+      html += `</div>`;
+      globalIdx++;
+    });
+  });
+  if (!showAll) {
+    html += `<div class="nav-row">`;
+    html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+    html += `<span style="font-weight:600;color:#004B87;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+    html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+    html += `</div>`;
+  }
+  container.innerHTML = html;
+  updateProgress();
+}
+
+function selectOption(qid, idx) { if (checked[qid]) return; answered[qid] = idx; render(); }
+function checkAnswer(qid) { if (answered[qid] === undefined || checked[qid]) return; checked[qid] = true; render(); updateProgress(); }
+function navigate(dir) { currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir)); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function updateProgress() {
+  const done = Object.keys(checked).length;
+  const pct = Math.round((done / totalQ) * 100);
+  document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+  document.getElementById('progressPct').textContent = `${pct} %`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+  const done = Object.keys(checked).length;
+  if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+  let correct = 0;
+  flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+  const pct = Math.round((correct / done) * 100);
+  document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+  let gradeText = ''; let gradeClass = 'pass';
+  if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+  else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+  else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+  else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+  else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+  else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+  const gEl = document.getElementById('gradeText');
+  gEl.textContent = gradeText;
+  gEl.className = 'grade ' + gradeClass;
+  let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+  sections.forEach(sec => {
+    let sCorr = 0, sTotal = 0;
+    sec.questions.forEach(q => { if (checked[q.id]) { sTotal++; if (answered[q.id] === q.correct) sCorr++; } });
+    const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+    tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+  });
+  tbl += '</table>';
+  document.getElementById('sectionBreakdown').innerHTML = tbl;
+  document.getElementById('resultsPanel').classList.add('show');
+  document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+  answered = {}; checked = {}; currentQ = 0;
+  document.getElementById('resultsPanel').classList.remove('show');
+  render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () { showAll = this.checked; render(); });
+
+function shuffleQuizOptions() {
+  let seed = 42;
+  function seededRandom() { seed = (seed * 16807 + 0) % 2147483647; return (seed - 1) / 2147483646; }
+  sections.forEach(sec => {
+    sec.questions.forEach(q => {
+      const correctText = q.options[q.correct];
+      const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+      for (let i = cleaned.length - 1; i > 0; i--) {
+        const j = Math.floor(seededRandom() * (i + 1));
+        [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+      }
+      const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+      const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+      q.options = cleaned.map((c, i) => prefixes[i] + c);
+      q.correct = cleaned.indexOf(correctClean);
+    });
+  });
+}
+shuffleQuizOptions();
+render();
+</script>
+</body>
+</html>

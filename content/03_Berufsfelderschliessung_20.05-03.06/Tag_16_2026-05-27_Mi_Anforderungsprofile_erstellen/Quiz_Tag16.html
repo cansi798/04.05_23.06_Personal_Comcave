@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tag 16 – Anforderungsprofile erstellen</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+        .header { background: linear-gradient(135deg, #003366 0%, #004a99 50%, #0066cc 100%); color: #ffffff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+        .header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+        .header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+        .toolbar button, .toolbar .toggle-label { background: #004a99; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .toolbar button:hover { background: #003366; }
+        .toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+        .toggle-label input { accent-color: #004a99; width: 18px; height: 18px; cursor: pointer; }
+        .progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+        .progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0066cc, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+        .container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+        .section-title { background: #003366; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+        .section-title:first-child { margin-top: 0; }
+        .question-card { background: #ffffff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+        .question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .question-card.correct-card { border-left: 5px solid #28a745; }
+        .question-card.incorrect-card { border-left: 5px solid #dc3545; }
+        .question-number { display: inline-block; background: #e8f0fe; color: #004a99; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+        .question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+        .options-list { list-style: none; }
+        .options-list li { margin-bottom: 0.5rem; }
+        .options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+        .options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+        .options-list input[type="radio"] { accent-color: #004a99; margin-top: 3px; flex-shrink: 0; }
+        .options-list label.selected { background: #e8f0fe; border-color: #004a99; }
+        .options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+        .options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+        .check-btn { margin-top: 0.8rem; background: #004a99; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .check-btn:hover { background: #003366; }
+        .check-btn:disabled { background: #8faec8; cursor: default; }
+        .feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .nav-btn { background: #004a99; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .nav-btn:hover { background: #003366; }
+        .nav-btn:disabled { background: #8faec8; cursor: default; }
+        .results-panel { background: #ffffff; border: 2px solid #004a99; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .results-panel.show { display: block; }
+        .results-panel h2 { color: #003366; margin-bottom: 0.8rem; }
+        .score-big { font-size: 3rem; font-weight: 700; color: #004a99; }
+        .grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+        .grade.pass { color: #28a745; }
+        .grade.fail { color: #dc3545; }
+        .section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+        .section-breakdown table { width: 100%; border-collapse: collapse; }
+        .section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+        .section-breakdown th { background: #e8f0fe; color: #003366; text-align: left; }
+        .references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+        .references h3 { color: #003366; margin-bottom: 0.8rem; font-size: 1.1rem; }
+        .references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+        .footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+        @media print {
+            body { background: #fff; }
+            .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; }
+            .header { background: #003366 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+            .section-title { break-after: avoid; }
+            .feedback.show { display: block !important; }
+        }
+        @media (max-width: 600px) {
+            .header { padding: 1.4rem 0.8rem; }
+            .question-card { padding: 1rem; }
+            .toolbar { flex-direction: column; align-items: stretch; text-align: center; }
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1>Quiz Tag 16 &ndash; Anforderungsprofile erstellen</h1>
+    <div class="subtitle">Hard &amp; Soft Skills, Muss/Soll, AKV-Matrix &ndash; Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026</div>
+    <div class="meta">
+        <span>&copy; Can Siebert</span>
+        <span>Stand 05/2026</span>
+        <span>60 Fragen &bull; Multiple Choice</span>
+    </div>
+</header>
+
+<div class="toolbar">
+    <label class="toggle-label">
+        <input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen
+    </label>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <button onclick="showResults()">Ergebnis anzeigen</button>
+        <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-info">
+        <span id="progressText">0 von 60 beantwortet</span>
+        <span id="progressPct">0 %</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+    <div class="results-panel" id="resultsPanel">
+        <h2>Dein Ergebnis</h2>
+        <div class="score-big" id="scoreBig"></div>
+        <div class="grade" id="gradeText"></div>
+        <div class="section-breakdown" id="sectionBreakdown"></div>
+        <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="references">
+    <h3>Literaturverzeichnis (APA 7)</h3>
+    <p>Bundesministerium der Justiz. (2006). <em>Allgemeines Gleichbehandlungsgesetz</em>. BGBl. I S. 1897. https://www.gesetze-im-internet.de/agg/</p>
+    <p>Bundesministerium der Justiz. (2025). <em>Arbeitnehmer&uuml;berlassungsgesetz (A&Uuml;G)</em>. https://www.gesetze-im-internet.de/a_g/</p>
+    <p>Bundesagentur f&uuml;r Arbeit. (2026). <em>BERUFENET</em>. https://web.arbeitsagentur.de/berufenet/</p>
+    <p>Lorenz, M. &amp; Rohrschneider, U. (2020). <em>Erfolgreiche Personalauswahl</em> (3. Aufl.). Springer Gabler.</p>
+    <p>Schuler, H. (2014). <em>Psychologische Personalauswahl</em> (4. Aufl.). Hogrefe.</p>
+    <p>Kanning, U. P. (2017). <em>Personalauswahl zwischen Anspruch und Wirklichkeit</em>. Springer.</p>
+</div>
+
+<footer class="footer">
+    &copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026 | Stand 05/2026
+</footer>
+
+<script>
+const sections = [
+    {
+        title: "Abschnitt 1: Grundlagen Anforderungsprofil (Fragen 1–10)",
+        questions: [
+            { id: 1, text: "Was ist ein Anforderungsprofil?", options: ["A) Eine Beschreibung der Aufgaben einer Stelle", "B) Die systematische Beschreibung aller Kompetenzen, Qualifikationen und persönlichen Eigenschaften, die zur erfolgreichen Ausübung einer Stelle nötig sind", "C) Ein Arbeitsvertrag mit dem Mitarbeiter", "D) Eine Auflistung der Arbeitsplatzausstattung"], correct: 1, explanation: "Das Anforderungsprofil beschreibt die Anforderungen an die Person -- spiegelbildlich zur Stellenbeschreibung, die die Aufgaben definiert." },
+            { id: 2, text: "Wodurch unterscheidet sich Stellenbeschreibung von Anforderungsprofil?", options: ["A) Sie sind identisch", "B) Stellenbeschreibung = 'Wer kann das tun?', Anforderungsprofil = 'Was ist zu tun?'", "C) Stellenbeschreibung = 'Was ist zu tun?', Anforderungsprofil = 'Wer kann das tun?'", "D) Beide beschreiben nur Aufgaben"], correct: 2, explanation: "Stellenbeschreibung = Aufgaben (Was). Anforderungsprofil = Voraussetzungen an die Person (Wer)." },
+            { id: 3, text: "Welche Funktion hat das Anforderungsprofil in der Personaldienstleistung NICHT?", options: ["A) Auftragsklärung mit dem Kunden", "B) Vorauswahl im Bewerberpool", "C) Eingruppierung für Equal Pay", "D) Festlegung des Verkaufspreises beim Kunden"], correct: 3, explanation: "Verkaufspreis ist Sache der Vertriebskalkulation, nicht des Profils. Profil dient operativ und rechtlich (ÄUG, Allgemeines Gleichbehandlungsgesetz)." },
+            { id: 4, text: "Welche Aussage zu Hard Skills ist korrekt?", options: ["A) Hard Skills sind nur durch Interviews messbar", "B) Hard Skills sind messbare, formal nachweisbare Qualifikationen", "C) Hard Skills sind Persönlichkeitsmerkmale", "D) Hard Skills sind nur Soft Skills"], correct: 1, explanation: "Hard Skills sind durch Zeugnisse, Zertifikate und Arbeitsproben prüfbar." },
+            { id: 5, text: "Welche der folgenden Kompetenzen ist KEIN Hard Skill?", options: ["A) SAP-Kenntnisse", "B) Englisch B2", "C) Belastbarkeit", "D) Führerschein C/CE"], correct: 2, explanation: "Belastbarkeit ist ein Soft Skill (Personalkompetenz). SAP, Sprachniveau und Führerschein sind Hard Skills." },
+            { id: 6, text: "Welche Kompetenz gehört zur Sozialkompetenz?", options: ["A) Excel-Kenntnisse", "B) Berufserfahrung", "C) Teamfähigkeit", "D) Zeitmanagement"], correct: 2, explanation: "Sozialkompetenz: Teamfähigkeit, Empathie, Konfliktfähigkeit. Zeitmanagement = Selbstkompetenz, Excel/Erfahrung = Hard Skills." },
+            { id: 7, text: "Welcher Bereich gehört NICHT zu den vier Bereichen eines Anforderungsprofils?", options: ["A) Hard Skills", "B) Soft Skills", "C) Formale Anforderungen", "D) Verkaufspreis"], correct: 3, explanation: "Die vier Bereiche sind: Hard, Soft, Formale Anforderungen, Persönlichkeitsmerkmale." },
+            { id: 8, text: "Welche Aussage zu Soft Skills trifft zu?", options: ["A) Sie sind durch Zeugnisse leicht nachweisbar", "B) Sie sind überfachliche Kompetenzen, schwer messbar, oft entscheidend für Einsatzerfolg", "C) Sie sind in jedem Stellenprofil identisch", "D) Sie sind nur für Führungskräfte relevant"], correct: 1, explanation: "Soft Skills sind überfachliche Kompetenzen wie Teamfähigkeit oder Belastbarkeit; schwer messbar, aber für den Einsatzerfolg oft entscheidend." },
+            { id: 9, text: "Welcher Praxis-Spruch verdeutlicht die Bedeutung von Hard und Soft Skills?", options: ["A) Hard Skills entscheiden über das Bewerbungsgespräch, Soft Skills über die Probezeit", "B) Soft Skills sind unwichtig für die Probezeit", "C) Hard Skills sind unwichtig für das Gespräch", "D) Hard Skills entscheiden über alles"], correct: 0, explanation: "Faustregel: Hard Skills bringen ins Gespräch (Filter), Soft Skills entscheiden, ob die Person die Probezeit besteht." },
+            { id: 10, text: "Was gehört zu den formalen Anforderungen?", options: ["A) Führungszeugnis nach §72a SGB VIII", "B) Teamfähigkeit", "C) Excel-Kenntnisse", "D) Empathie"], correct: 0, explanation: "Führungszeugnis, Berufserlaubnis, ArbMedVV-Untersuchungen, Aufenthaltserlaubnis sind formale Anforderungen." }
+        ]
+    },
+    {
+        title: "Abschnitt 2: Muss- und Soll-Kriterien (Fragen 11–20)",
+        questions: [
+            { id: 11, text: "Was sind Muss-Kriterien?", options: ["A) Wünschenswerte Eigenschaften", "B) Unverzichtbare Voraussetzungen, ohne deren Erfüllung der/die Bewerber/in ausscheidet (K.O.-Kriterien)", "C) Zusätzliche Pluspunkte", "D) Vorteilhafte Branchenkenntnisse"], correct: 1, explanation: "Muss-Kriterien sind K.O.-Kriterien -- ohne sie wird die Bewerbung nicht weiter bearbeitet." },
+            { id: 12, text: "Was sind Soll-Kriterien?", options: ["A) Verbindliche K.O.-Voraussetzungen", "B) Wünschenswerte Eigenschaften, die die Eignung erhöhen, aber nicht zwingend erforderlich sind", "C) Diskriminierende Anforderungen", "D) Aufgaben des Mitarbeiters"], correct: 1, explanation: "Soll-Kriterien (Kann-Kriterien) erhöhen die Eignung, sind aber nicht Bedingung." },
+            { id: 13, text: "Was ist ein klassischer Disponentenfehler bei Anforderungsprofilen?", options: ["A) Zu wenige Soft Skills", "B) Zu viele Muss-Kriterien (mehr als 7) führen zu einem leeren Bewerberpool", "C) Zu präzise Anforderungen", "D) Zu viele Soll-Kriterien"], correct: 1, explanation: "Faustregel: max. 5 Muss + max. 5 Soll. Mehr als 7 Muss = leerer Pool." },
+            { id: 14, text: "Welche Anforderung ist typischerweise ein Muss-Kriterium für eine Pflegefachkraft?", options: ["A) Fremdsprachenkenntnisse", "B) Berufserlaubnis nach Pflegeberufegesetz (PflBG)", "C) Führerschein der Klasse C", "D) MS-Office-Erfahrung"], correct: 1, explanation: "Ohne Berufserlaubnis darf in Deutschland niemand als Pflegefachkraft arbeiten -- klares K.O.-Kriterium." },
+            { id: 15, text: "Wie wird die Bewertungslogik für Muss-Kriterien typischerweise angewandt?", options: ["A) 0 bis 3 Punkte", "B) 0 bis 1 Punkt", "C) Binär (0 oder 10 Punkte) -- entweder erfüllt oder nicht", "D) Frei zwischen 0 und 100"], correct: 2, explanation: "Muss-Kriterien werden binär bewertet -- erfüllt oder nicht. Soll-Kriterien werden mit 0–3 Punkten skaliert." },
+            { id: 16, text: "Welche Kombination ist eine Faustregel für Anforderungsprofile?", options: ["A) max. 3 Muss + 3 Soll", "B) max. 5 Muss + max. 5 Soll", "C) max. 10 Muss + 10 Soll", "D) so viele wie möglich"], correct: 1, explanation: "Best Practice: Maximal 5 Muss-Kriterien plus maximal 5 Soll-Kriterien." },
+            { id: 17, text: "Welche Aussage zur Klassifizierung ist falsch?", options: ["A) Muss-Kriterien sind unverzichtbar", "B) Soll-Kriterien sind wünschenswert", "C) Soll-Kriterien können K.O.-Charakter haben", "D) Wunsch-Kriterien sind nice-to-have"], correct: 2, explanation: "Soll-Kriterien sind nie K.O. -- sonst wären sie Muss-Kriterien." },
+            { id: 18, text: "Was bedeutet 'K.O.-Kriterium'?", options: ["A) Knockout -- bei Nicht-Erfüllung scheidet die Bewerbung aus", "B) Kompetenz-Original", "C) Kommunikations-Outcome", "D) Konferenz-Output"], correct: 0, explanation: "K.O.-Kriterium = Knockout. Ohne Erfüllung kein weiteres Verfahren." },
+            { id: 19, text: "Welche Anforderung ist typischerweise ein Soll-Kriterium?", options: ["A) Eingetragene Berufserlaubnis bei einer Apothekerin", "B) Mindestalter 18 Jahre nach §34a GewO im Sicherheitsgewerbe", "C) Branchenerfahrung von mehr als 5 Jahren statt der geforderten 3", "D) Führerschein C/CE bei Berufskraftfahrer/in"], correct: 2, explanation: "Branchenerfahrung darüber hinaus = Soll. Berufserlaubnis, Mindestalter, Führerschein C/CE = Muss." },
+            { id: 20, text: "Welche Empfehlung gilt für die Verteilung von Muss/Soll/Wunsch in Anforderungsprofilen?", options: ["A) Alle Anforderungen als Muss klassifizieren", "B) Disziplin in der Priorisierung -- nur das Wesentliche als Muss", "C) Alle Anforderungen gleich behandeln", "D) Auf Soll-Kriterien verzichten"], correct: 1, explanation: "Disziplin: Wirklich nur das Notwendige als Muss. Sonst leerer Bewerberpool." }
+        ]
+    },
+    {
+        title: "Abschnitt 3: AKV-Matrix (Fragen 21–30)",
+        questions: [
+            { id: 21, text: "Wofür stehen die drei Buchstaben in der AKV-Matrix?", options: ["A) Auftrag, Kunde, Vertrieb", "B) Aufgabe, Kompetenz, Verantwortung", "C) Akquise, Kalkulation, Verkauf", "D) Anforderung, Kandidat, Vermittlung"], correct: 1, explanation: "AKV = Aufgabe, Kompetenz, Verantwortung. Klassisches Instrument der Stellenanalyse." },
+            { id: 22, text: "Was ist das Kongruenzprinzip in der AKV-Matrix?", options: ["A) Aufgabe und Kompetenz sind getrennt zu betrachten", "B) Aufgabe = Kompetenz = Verantwortung -- alle drei müssen übereinstimmen", "C) Verantwortung muss höher sein als Aufgabe", "D) Kompetenz hat Vorrang vor Verantwortung"], correct: 1, explanation: "Das Kongruenzprinzip: Aufgaben, Kompetenzen und Verantwortung müssen übereinstimmen, ein gleichseitiges Dreieck." },
+            { id: 23, text: "Was bedeutet 'Kompetenz' in der AKV-Matrix?", options: ["A) Fähigkeit (das Können)", "B) Befugnis (das Dürfen)", "C) Wissen (das Kennen)", "D) Wille (das Wollen)"], correct: 1, explanation: "In der AKV-Matrix bedeutet Kompetenz Befugnis -- die Erlaubnis, eine Aufgabe wahrzunehmen (Entscheidungs-, Unterschriftsvollmacht etc.)." },
+            { id: 24, text: "Was passiert, wenn eine Stelle mehr Verantwortung als Kompetenz hat?", options: ["A) Optimaler Zustand", "B) Frustration und Konflikte, da der Stelleninhaber nicht handeln darf, aber zur Verantwortung gezogen wird", "C) Kein Problem", "D) Führt automatisch zur Beförderung"], correct: 1, explanation: "Mehr Verantwortung als Kompetenz = Frustration, Konflikte. Verletzung des Kongruenzprinzips." },
+            { id: 25, text: "Wie hilft die AKV-Matrix bei der Erstellung von Anforderungsprofilen?", options: ["A) Sie ersetzt das Profil", "B) Für jede Aufgabe (A) lassen sich die nötigen Kompetenzen und damit Anforderungen ableiten", "C) Sie zeigt nur die Verantwortung an", "D) Sie ist nur für Vertriebsstellen relevant"], correct: 1, explanation: "Die AKV-Matrix ist ein Werkzeug zur systematischen Ableitung von Anforderungen aus Aufgaben." },
+            { id: 26, text: "Welche Visualisierung der AKV-Matrix ist klassisch?", options: ["A) Linie", "B) Gleichseitiges Dreieck mit drei gleichen Seiten", "C) Quadrat", "D) Kreis"], correct: 1, explanation: "Gleichseitiges Dreieck symbolisiert die Gleichgewichtigkeit der drei Dimensionen." },
+            { id: 27, text: "Was ist ein typisches Beispiel für die Aufgabe (A) eines Disponenten?", options: ["A) SAP entwickeln", "B) Schichtplanung für 30 Mitarbeitende", "C) Buchhaltung erstellen", "D) Gehälter auszahlen"], correct: 1, explanation: "Schichtplanung ist eine typische Disponentenaufgabe (A) in der Personaldienstleistung." },
+            { id: 28, text: "Welche Kompetenz (im Sinne der AKV-Befugnis) braucht ein Disponent für die Schichtplanung?", options: ["A) Vollmacht zur Änderung des Plans bis 24 Stunden vor der Schicht", "B) Pflicht zur Buchhaltung", "C) Recht zur Kundenakquise", "D) Verantwortung für den Jahresabschluss"], correct: 0, explanation: "Aus der Aufgabe Schichtplanung folgt die Befugnis, Pläne (eigenständig) zu ändern." },
+            { id: 29, text: "Welche Verantwortung (V) folgt typisch aus der Disponentenaufgabe?", options: ["A) Verantwortung für Pünktlichkeit aller Einsätze und Krankheitsausgleich", "B) Verantwortung für den Jahresabschluss", "C) Verantwortung für die Marketing-Strategie", "D) Verantwortung für die Produktentwicklung"], correct: 0, explanation: "Aus der Aufgabe Schichtplanung folgt die Verantwortung für Pünktlichkeit der Einsätze." },
+            { id: 30, text: "Welcher Zusammenhang zwischen AKV und Anforderungsprofil besteht?", options: ["A) Kein Zusammenhang", "B) Aus den Spalten 'Kompetenz' und 'Verantwortung' lassen sich die benötigten Eigenschaften der Person ableiten", "C) Die AKV ersetzt das Anforderungsprofil komplett", "D) Das Anforderungsprofil widerspricht der AKV"], correct: 1, explanation: "Die AKV-Matrix ist Vorarbeit. Aus jeder Zeile leitet sich eine Anforderung an die Person ab." }
+        ]
+    },
+    {
+        title: "Abschnitt 4: Skills-Pyramide & Kompetenzextraktion (Fragen 31–40)",
+        questions: [
+            { id: 31, text: "Was bildet die Basis der Kompetenzpyramide?", options: ["A) Persönlichkeitsmerkmale", "B) Soft Skills", "C) Formale Voraussetzungen wie Schulabschluss und Berufserlaubnis", "D) Hard Skills"], correct: 2, explanation: "Die Pyramide beginnt unten mit formalen Voraussetzungen, dann Hard Skills, dann Methodenkompetenz, dann Soft Skills, oben Persönlichkeit." },
+            { id: 32, text: "Was bildet die Spitze der Kompetenzpyramide?", options: ["A) Berufsausbildung", "B) Persönlichkeitsmerkmale (Werte, Mindset, Motivation)", "C) Sprachkenntnisse", "D) Berufserlaubnis"], correct: 1, explanation: "Persönlichkeitsmerkmale stehen an der Spitze -- am schwersten messbar, oft entscheidend." },
+            { id: 33, text: "Welche Faustregel gilt für die Kompetenzpyramide?", options: ["A) Je niedriger in der Pyramide, desto wichtiger", "B) Je höher in der Pyramide, desto schwerer messbar -- aber desto wichtiger für den Einsatzerfolg", "C) Alle Ebenen sind gleich messbar", "D) Soft Skills sind immer leichter messbar als Hard Skills"], correct: 1, explanation: "Je höher in der Pyramide, desto härter zu messen, desto wichtiger für den Erfolg in der Praxis." },
+            { id: 34, text: "Welche Methode hilft bei der Extraktion von Kompetenzen aus Stellenanzeigen?", options: ["A) Kaffee trinken und nachdenken", "B) Sechs-Schritte-Methode: Verben markieren, Kompetenzen ableiten, Hard/Soft trennen, Muss/Soll klassifizieren, Plausibilität prüfen, Profil-Template", "C) Anzeige wörtlich kopieren", "D) Anforderungen erfinden"], correct: 1, explanation: "Strukturierte 6-Schritte-Methode: Aufgabenverben markieren, Kompetenzen ableiten, klassifizieren, plausibilisieren, in Vorlage übertragen." },
+            { id: 35, text: "Was steht an erster Stelle bei der Kompetenzextraktion aus einer Anzeige?", options: ["A) Gehälter aushandeln", "B) Aufgaben-Verben markieren (Was macht die Person?)", "C) Vertragsbedingungen besprechen", "D) Kollegen befragen"], correct: 1, explanation: "Schritt 1 ist immer das Markieren der Tätigkeiten/Verben in der Anzeige -- daraus folgen alle weiteren Schritte." },
+            { id: 36, text: "Aus welcher Aussage in einer Stellenanzeige leitet sich SAP-Kompetenz als Muss-Kriterium ab?", options: ["A) 'körperliche Belastbarkeit'", "B) 'Sie betreuen Kundenaufträge in SAP'", "C) 'Englisch verhandlungssicher'", "D) 'Reisebereitschaft'"], correct: 1, explanation: "Wenn die Aufgabe SAP-basiert ist, ist SAP-Kompetenz zwingend (Muss)." },
+            { id: 37, text: "Wie viele Aufgaben sollten in einem Anforderungsprofil typisch priorisiert sein?", options: ["A) 1 bis 2", "B) 5 bis 7 priorisierte Aufgaben", "C) mindestens 20", "D) genau 100"], correct: 1, explanation: "Best Practice: 5–7 priorisierte Hauptaufgaben. Mehr ist unübersichtlich." },
+            { id: 38, text: "Welche Branchen sind besonders relevant für die Personaldienstleistung?", options: ["A) Nur Gewerblich-technisch", "B) Gewerblich-technisch, Kaufmännisch, IT/Engineering, Medizin/Pflege", "C) Nur IT", "D) Nur Pflege"], correct: 1, explanation: "Die vier Hauptbranchen der Personaldienstleistungsunternehmen sind Gewerblich-technisch, Kaufmännisch, IT/Engineering, Medizin/Pflege." },
+            { id: 39, text: "Was ist die KldB 2010?", options: ["A) Klassifikation der Berufe 2010 der Bundesagentur für Arbeit -- 5-stelliger Code zur einheitlichen Berufsklassifikation", "B) Kfz-Klassifikation", "C) Klimazonen-Datenbank", "D) Kommunalrechtliche Berufordnung"], correct: 0, explanation: "KldB 2010 ist die Klassifikation der Berufe 2010 der Bundesagentur für Arbeit, 5-stelliger Code." },
+            { id: 40, text: "Welche Online-Datenbank liefert detaillierte Berufsbeschreibungen für die Profilerstellung?", options: ["A) Wikipedia", "B) BERUFENET der Bundesagentur für Arbeit", "C) Facebook", "D) LinkedIn ausschließlich"], correct: 1, explanation: "BERUFENET ist die Standarddatenbank der Bundesagentur für Arbeit mit umfassenden Berufsbeschreibungen, Tätigkeiten und Anforderungen." }
+        ]
+    },
+    {
+        title: "Abschnitt 5: AGG-Konformität (Fragen 41–50)",
+        questions: [
+            { id: 41, text: "Welches Gesetz verbietet Diskriminierung in Stellenausschreibungen?", options: ["A) Berufsbildungsgesetz", "B) Allgemeines Gleichbehandlungsgesetz von 2006", "C) BGB", "D) HGB"], correct: 1, explanation: "Allgemeines Gleichbehandlungsgesetz = Allgemeines Gleichbehandlungsgesetz, in Kraft seit 18. August 2006." },
+            { id: 42, text: "Welche Diskriminierungsmerkmale schützt das Allgemeines Gleichbehandlungsgesetz nach §1?", options: ["A) Nur Geschlecht", "B) Rasse/ethnische Herkunft, Geschlecht, Religion/Weltanschauung, Behinderung, Alter, sexuelle Identität", "C) Nur Behinderung", "D) Nur Alter"], correct: 1, explanation: "Allgemeines Gleichbehandlungsgesetz §1 schützt 6 Merkmale: ethnische Herkunft, Geschlecht, Religion/Weltanschauung, Behinderung, Alter, sexuelle Identität." },
+            { id: 43, text: "Welche Formulierung ist diskriminierend?", options: ["A) 'Bewerbungen von schwerbehinderten Menschen werden bei gleicher Eignung bevorzugt'", "B) 'Junger, dynamischer Mitarbeiter gesucht'", "C) 'Sehr gute Deutschkenntnisse (C1) erforderlich'", "D) 'Lagerist/in (m/w/d), körperlich belastbar'"], correct: 1, explanation: "'Jung, dynamisch' ist Altersdiskriminierung. AGG-konform: 'engagiert/motiviert'." },
+            { id: 44, text: "Welche Formulierung ist AGG-konform?", options: ["A) 'Muttersprachler Deutsch'", "B) 'Deutschkenntnisse C2 nach GER'", "C) 'Nur Bewerber unter 30 Jahren'", "D) 'Mann für das Lager'"], correct: 1, explanation: "Statt 'Muttersprachler' (ethnische Herkunft) besser konkretes GER-Niveau angeben." },
+            { id: 45, text: "Was bedeutet die Beweislastumkehr nach §22 Allgemeines Gleichbehandlungsgesetz?", options: ["A) Der Bewerber muss alles beweisen", "B) Wenn der Bewerber Indizien für Diskriminierung vorträgt, muss der Arbeitgeber beweisen, dass keine Diskriminierung vorlag", "C) Es gibt keine Beweislast", "D) Der Richter entscheidet ohne Beweise"], correct: 1, explanation: "§22 Allgemeines Gleichbehandlungsgesetz: Indizien des Bewerbers genügen. Arbeitgeber muss Gegenbeweis führen." },
+            { id: 46, text: "Welche Schadensersatzhöhe ist bei AGG-Verstößen typisch möglich?", options: ["A) Nichts", "B) Bis zu 3 Monatsgehälter (§15 Allgemeines Gleichbehandlungsgesetz)", "C) Lebenslange Rente", "D) Genau 100 EUR"], correct: 1, explanation: "§15 Allgemeines Gleichbehandlungsgesetz: Schadenersatz bis zur Höhe von 3 Monatsgehältern bei Bewerbungsdiskriminierung." },
+            { id: 47, text: "Was ist eine zulässige Differenzierung nach §8 Allgemeines Gleichbehandlungsgesetz?", options: ["A) Jede Diskriminierung", "B) Wenn das Merkmal eine wesentliche und entscheidende berufliche Anforderung darstellt (z.B. Frauenhausberatung)", "C) Wenn der Arbeitgeber es einfach so will", "D) Wenn der Bewerber zustimmt"], correct: 1, explanation: "§8 Allgemeines Gleichbehandlungsgesetz erlaubt Differenzierung bei wesentlicher berufsbedingter Anforderung -- z.B. Pfarrer/in einer Konfession." },
+            { id: 48, text: "Welche Geschlechterkennzeichnung in Stellenanzeigen ist heute Standard?", options: ["A) (m/w)", "B) (m/w/d) -- männlich, weiblich, divers", "C) Nur männlich", "D) Keine Kennzeichnung"], correct: 1, explanation: "Seit 22.12.2018 (BVerfG-Beschluss zum 3. Geschlecht) ist (m/w/d) Standard." },
+            { id: 49, text: "Welche Anforderung ist NICHT diskriminierend?", options: ["A) 'Nur Bewerber/innen ohne Migrationshintergrund'", "B) 'Pflegefachkraft (m/w/d) mit Berufserlaubnis nach PflBG'", "C) 'Junger Mitarbeiter für unser dynamisches Team'", "D) 'Mann für Außendienst'"], correct: 1, explanation: "Berufserlaubnis ist sachlich erforderlich -- AGG-konform und mit (m/w/d) gekennzeichnet." },
+            { id: 50, text: "Welche Indizien können einen AGG-Verdacht auslösen?", options: ["A) Eine sachliche Stellenausschreibung", "B) Stellenanzeige ohne (m/w/d), 'jung-dynamisch'-Formulierungen, 'Muttersprachler' u.ä.", "C) Ausschreibung mit GER-Niveau", "D) Tariftreue"], correct: 1, explanation: "Fehlendes (m/w/d), Altersbezeichnungen, ethnische Bezeichnungen sind klassische Indizien." }
+        ]
+    },
+    {
+        title: "Abschnitt 6: Personaldienstleistung-Praxis (Fragen 51–60)",
+        questions: [
+            { id: 51, text: "Welches Gesetz regelt die gewerbsmäßige Arbeitnehmerüberlassung?", options: ["A) Berufsbildungsgesetz", "B) Arbeitnehmerüberlassungsgesetz", "C) BGB", "D) StGB"], correct: 1, explanation: "Das Arbeitnehmerüberlassungsgesetz regelt die Zeitarbeit/Arbeitnehmerüberlassung -- inklusive Pflicht zur Eignungsprüfung." },
+            { id: 52, text: "Was bedeutet Equal Pay im Kontext der Zeitarbeit?", options: ["A) Gleicher Stundenlohn für alle Bewerber", "B) Nach 9 Monaten beim Kundenbetrieb gleiche Bezahlung wie Stammbelegschaft", "C) Gleicher Lohn unabhängig von der Branche", "D) Lohnt sich nicht"], correct: 1, explanation: "Equal Pay nach §8 Arbeitnehmerüberlassungsgesetz: Nach 9 Monaten Equal Pay (es sei denn, ein Branchen-/Tarifzuschlagstarif gilt)." },
+            { id: 53, text: "Welcher Verband ist heute der größte deutsche PDL-Verband?", options: ["A) BAP allein", "B) iGZ allein", "C) Gesamtverband der Personaldienstleister (Gesamtverband der Personaldienstleister, 2022 entstanden aus BAP+iGZ)", "D) DGB"], correct: 2, explanation: "Gesamtverband der Personaldienstleister ist 2022 aus dem Zusammenschluss von BAP und iGZ entstanden -- der größte PDL-Verband Deutschlands." },
+            { id: 54, text: "Welches Pflichtfeld gehört in ein PDL-Anforderungsprofil?", options: ["A) Privatadresse des Disponenten", "B) Stellenbezeichnung mit (m/w/d) und KldB-Nummer", "C) Familienstand des Bewerbers", "D) Religionszugehörigkeit"], correct: 1, explanation: "Standardfelder eines PDL-Profils: Stellenbezeichnung mit (m/w/d) und idealerweise KldB-Nr." },
+            { id: 55, text: "Welche Auftragsart ist NICHT typisch für Personaldienstleistungsunternehmen?", options: ["A) Zeitarbeit (Arbeitnehmerüberlassung)", "B) Personalvermittlung", "C) On-Site-Management", "D) Direkter Verkauf von Konsumgütern"], correct: 3, explanation: "Personaldienstleistungsunternehmen betreibt Zeitarbeit, Personalvermittlung, On-Site-Management -- keinen Konsumgüterverkauf." },
+            { id: 56, text: "Welche Untersuchung nach ArbMedVV ist für Bildschirmarbeit relevant?", options: ["A) G25", "B) G26", "C) G37", "D) G42"], correct: 2, explanation: "G37 = Bildschirmarbeit. G25 = Fahr-/Steuertätigkeit, G26 = Atemschutz." },
+            { id: 57, text: "Wer ist Adressat des Anforderungsprofils in einer Personaldienstleistungsunternehmen?", options: ["A) Nur der Bewerber", "B) Disposition, Recruiting, Vertrieb -- intern; ggf. der Kunde zur Bestätigung", "C) Nur die Industrie- und Handelskammer", "D) Nur das Finanzamt"], correct: 1, explanation: "Anforderungsprofil ist internes Arbeitsdokument der Personaldienstleistungsunternehmen und Bestätigungsgrundlage für den Kunden." },
+            { id: 58, text: "Was gehört zur Persönlichkeitsdimension im Anforderungsprofil und ist gleichzeitig AGG-sensibel?", options: ["A) Berufsausbildung", "B) Werte, Mindset, Auftreten -- nur soweit sie für die Stelle tatsächlich erforderlich sind", "C) Führerschein", "D) Sprachkenntnisse"], correct: 1, explanation: "Persönlichkeitsmerkmale sind das heikelste Feld -- nur soweit sie objektiv erforderlich sind." },
+            { id: 59, text: "Wo wird die Eignung des Mitarbeiters für den Kundeneinsatz dokumentiert?", options: ["A) Nirgends", "B) Im Anforderungsprofil und im Überlassungsvertrag (ÜV)", "C) Nur per Mail", "D) Nur mündlich"], correct: 1, explanation: "Anforderungsprofil + Überlassungsvertrag dokumentieren die Eignung -- wichtig für AÜG-Konformität." },
+            { id: 60, text: "Welche der folgenden Kombinationen kennzeichnet ein qualitativ gutes Anforderungsprofil?", options: ["A) 15 Muss-Kriterien, ohne Soll-Kriterien", "B) 5 Muss + 5 Soll, AGG-konform, gendergerecht (m/w/d), KldB-Nummer angegeben, AKV-basiert abgeleitet", "C) Nur Wunschliste des Kunden 1:1", "D) Keine schriftliche Form"], correct: 1, explanation: "Best Practice: 5+5, AGG-konform, gendergerecht, KldB-Nr, AKV-basiert hergeleitet." }
+        ]
+    }
+];
+
+let answered = {};
+let checked  = {};
+let showAll  = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() {
+    const flat = [];
+    sections.forEach(s => s.questions.forEach(q => flat.push(q)));
+    return flat;
+}
+const flatQ = allQuestions();
+
+function render() {
+    const container = document.getElementById('quizContainer');
+    let html = '';
+    let globalIdx = 0;
+    sections.forEach((sec, si) => {
+        html += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach((q, qi) => {
+            const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+            const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+            html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+            html += `<p class="question-text">${q.text}</p>`;
+            html += `<ul class="options-list">`;
+            q.options.forEach((opt, oi) => {
+                let cls = '';
+                if (checked[q.id]) {
+                    if (oi === q.correct) cls = 'correct-opt';
+                    else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+                } else if (answered[q.id] === oi) {
+                    cls = 'selected';
+                }
+                const dis = checked[q.id] ? 'disabled' : '';
+                const chk = answered[q.id] === oi ? 'checked' : '';
+                html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+            });
+            html += `</ul>`;
+            const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+            if (checked[q.id]) {
+                const isCorr = answered[q.id] === q.correct;
+                const fbClass = isCorr ? 'correct' : 'incorrect';
+                const fbText = isCorr
+                    ? `<strong>Richtig!</strong> ${q.explanation}`
+                    : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+                html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+            } else {
+                html += `<div class="feedback" id="fb-${q.id}"></div>`;
+            }
+            html += `</div>`;
+            globalIdx++;
+        });
+    });
+    if (!showAll) {
+        html += `<div class="nav-row">`;
+        html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+        html += `<span style="font-weight:600;color:#004a99;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+        html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+        html += `</div>`;
+    }
+    container.innerHTML = html;
+    updateProgress();
+}
+
+function selectOption(qid, idx) {
+    if (checked[qid]) return;
+    answered[qid] = idx;
+    render();
+}
+
+function checkAnswer(qid) {
+    if (answered[qid] === undefined || checked[qid]) return;
+    checked[qid] = true;
+    render();
+    updateProgress();
+}
+
+function navigate(dir) {
+    currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir));
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+    const done = Object.keys(checked).length;
+    const pct = Math.round((done / totalQ) * 100);
+    document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+    document.getElementById('progressPct').textContent = `${pct} %`;
+    document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+    const done = Object.keys(checked).length;
+    if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+    let correct = 0;
+    flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+    const pct = Math.round((correct / done) * 100);
+    document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+    let gradeText = '';
+    let gradeClass = 'pass';
+    if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+    else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+    else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+    else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+    else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+    else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+    const gEl = document.getElementById('gradeText');
+    gEl.textContent = gradeText;
+    gEl.className = 'grade ' + gradeClass;
+    let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+    sections.forEach(sec => {
+        let sCorr = 0, sTotal = 0;
+        sec.questions.forEach(q => {
+            if (checked[q.id]) {
+                sTotal++;
+                if (answered[q.id] === q.correct) sCorr++;
+            }
+        });
+        const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+        tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+    });
+    tbl += '</table>';
+    document.getElementById('sectionBreakdown').innerHTML = tbl;
+    document.getElementById('resultsPanel').classList.add('show');
+    document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+    answered = {};
+    checked = {};
+    currentQ = 0;
+    document.getElementById('resultsPanel').classList.remove('show');
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () {
+    showAll = this.checked;
+    render();
+});
+
+function shuffleQuizOptions() {
+    let seed = 42;
+    function seededRandom() {
+        seed = (seed * 16807 + 0) % 2147483647;
+        return (seed - 1) / 2147483646;
+    }
+    sections.forEach(sec => {
+        sec.questions.forEach(q => {
+            const correctText = q.options[q.correct];
+            const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+            for (let i = cleaned.length - 1; i > 0; i--) {
+                const j = Math.floor(seededRandom() * (i + 1));
+                [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+            }
+            const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+            const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+            q.options = cleaned.map((c, i) => prefixes[i] + c);
+            q.correct = cleaned.indexOf(correctClean);
+        });
+    });
+}
+shuffleQuizOptions();
+render();
+</script>
+</body>
+</html>

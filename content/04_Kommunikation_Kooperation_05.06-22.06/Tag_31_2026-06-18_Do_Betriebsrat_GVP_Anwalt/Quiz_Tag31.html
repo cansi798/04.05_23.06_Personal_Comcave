@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tag 31 &ndash; Externe Unterst&uuml;tzung: BR, Gesamtverband der Personaldienstleister, Anwalt, Bundesagentur für Arbeit, Industrie- und Handelskammer</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #003366 0%, #004a99 50%, #0066cc 100%);
+            color: #ffffff; padding: 2rem 1rem; text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+        .header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+        .header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+        .toolbar button, .toolbar .toggle-label { background: #004a99; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .toolbar button:hover { background: #003366; }
+        .toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+        .toggle-label input { accent-color: #004a99; width: 18px; height: 18px; cursor: pointer; }
+        .progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+        .progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0066cc, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+        .container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+        .section-title { background: #003366; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+        .section-title:first-child { margin-top: 0; }
+        .question-card { background: #ffffff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+        .question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .question-card.correct-card { border-left: 5px solid #28a745; }
+        .question-card.incorrect-card { border-left: 5px solid #dc3545; }
+        .question-number { display: inline-block; background: #e8f0fe; color: #004a99; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+        .question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+        .options-list { list-style: none; }
+        .options-list li { margin-bottom: 0.5rem; }
+        .options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+        .options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+        .options-list input[type="radio"] { accent-color: #004a99; margin-top: 3px; flex-shrink: 0; }
+        .options-list label.selected { background: #e8f0fe; border-color: #004a99; }
+        .options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+        .options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+        .check-btn { margin-top: 0.8rem; background: #004a99; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .check-btn:hover { background: #003366; }
+        .check-btn:disabled { background: #8faec8; cursor: default; }
+        .feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .nav-btn { background: #004a99; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .nav-btn:hover { background: #003366; }
+        .nav-btn:disabled { background: #8faec8; cursor: default; }
+        .results-panel { background: #ffffff; border: 2px solid #004a99; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .results-panel.show { display: block; }
+        .results-panel h2 { color: #003366; margin-bottom: 0.8rem; }
+        .score-big { font-size: 3rem; font-weight: 700; color: #004a99; }
+        .grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+        .grade.pass { color: #28a745; }
+        .grade.fail { color: #dc3545; }
+        .section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+        .section-breakdown table { width: 100%; border-collapse: collapse; }
+        .section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+        .section-breakdown th { background: #e8f0fe; color: #003366; text-align: left; }
+        .references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+        .references h3 { color: #003366; margin-bottom: 0.8rem; font-size: 1.1rem; }
+        .references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+        .footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+        @media print {
+            body { background: #fff; }
+            .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; }
+            .header { background: #003366 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+            .section-title { break-after: avoid; }
+            .feedback.show { display: block !important; }
+        }
+        @media (max-width: 600px) {
+            .header { padding: 1.4rem 0.8rem; }
+            .question-card { padding: 1rem; }
+            .toolbar { flex-direction: column; align-items: stretch; text-align: center; }
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1>Quiz Tag 31 &ndash; Externe Unterst&uuml;tzung: BR, Gesamtverband der Personaldienstleister, Anwalt, Bundesagentur für Arbeit, Industrie- und Handelskammer</h1>
+    <div class="subtitle">Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026 &ndash; K6 (Teil 2/2)</div>
+    <div class="meta">
+        <span>&copy; Can Siebert</span>
+        <span>Stand 05/2026</span>
+        <span>60 Fragen &bull; Multiple Choice</span>
+    </div>
+</header>
+
+<div class="toolbar">
+    <label class="toggle-label">
+        <input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen
+    </label>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <button onclick="showResults()">Ergebnis anzeigen</button>
+        <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-info">
+        <span id="progressText">0 von 60 beantwortet</span>
+        <span id="progressPct">0 %</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+    <div class="results-panel" id="resultsPanel">
+        <h2>Dein Ergebnis</h2>
+        <div class="score-big" id="scoreBig"></div>
+        <div class="grade" id="gradeText"></div>
+        <div class="section-breakdown" id="sectionBreakdown"></div>
+        <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="references">
+    <h3>Literaturverzeichnis (APA 7)</h3>
+    <p>Bundesarbeitsgericht. (2022). <em>Urteil vom 14. September 2022 &ndash; 4 AZR 287/21 zum Equal-Pay-Grundsatz nach &sect; 8 A&Uuml;G</em>. BAG-Pressemitteilung Nr. 33/22.</p>
+    <p>Bundesagentur f&uuml;r Arbeit. (2024). <em>Gesch&auml;ftsanweisungen zur Arbeitnehmer&uuml;berlassung</em>. Bundesagentur für Arbeit, N&uuml;rnberg.</p>
+    <p>Bundesministerium der Justiz. (2001). <em>Betriebsverfassungsgesetz (BetrVG)</em>. BGBl. I S. 2518.</p>
+    <p>Bundesministerium der Justiz. (2017). <em>Arbeitnehmer&uuml;berlassungsgesetz (A&Uuml;G)</em>. Reform 2017.</p>
+    <p>Bundesministerium der Justiz. (1969). <em>Tarifvertragsgesetz (TVG)</em>. BGBl. I.</p>
+    <p>Deutscher Industrie- und Handelskammertag. (2023). <em>Sachkundepr&uuml;fungen der Industrie- und Handelskammer</em>. Deutscher Industrie- und Handelskammertag.</p>
+    <p>Fitting, K., et al. (2022). <em>Betriebsverfassungsgesetz &ndash; Handkommentar</em> (31. Aufl.). Vahlen.</p>
+    <p>Gesamtverband der Personaldienstleister. (2024). <em>Tarifpolitik und Schiedsgerichtsbarkeit in der Zeitarbeit &ndash; Jahresbericht 2024</em>. Gesamtverband der Personaldienstleister, Berlin.</p>
+    <p>Schaub, G. (2021). Mitbestimmung des Betriebsrats bei personellen Einzelma&szlig;nahmen nach &sect; 99 BetrVG. <em>NZA</em>, 38(12), 817&ndash;823.</p>
+    <p>Wank, R. (2020). <em>Arbeitsrecht &ndash; Lehrbuch f&uuml;r Studium und Praxis</em> (6. Aufl.). Verlag Recht und Wirtschaft.</p>
+</div>
+
+<footer class="footer">
+    &copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Stand 05/2026 | Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026
+</footer>
+
+<script>
+const sections = [
+    {
+        title: "Abschnitt 1: Betriebsrat -- BetrVG Grundlagen (Fragen 1–12)",
+        questions: [
+            { id: 1, text: "Welches Gesetz regelt die Mitbestimmung des Betriebsrats?", options: ["A) Arbeitnehmerüberlassungsgesetz", "B) Betriebsverfassungsgesetz (BetrVG)", "C) Handelsgesetzbuch (HGB)", "D) Kündigungsschutzgesetz (KSchG)"], correct: 1, explanation: "Das BetrVG vom 25. September 2001 regelt die betriebliche Mitbestimmung in Deutschland." },
+            { id: 2, text: "Ab welcher Mindestgröße kann ein Betriebsrat gewählt werden?", options: ["A) Ab 3 wahlberechtigten Arbeitnehmern", "B) Ab 5 wahlberechtigten Arbeitnehmern, davon 3 wählbar", "C) Ab 10 wahlberechtigten Arbeitnehmern", "D) Ab 20 wahlberechtigten Arbeitnehmern"], correct: 1, explanation: "Nach § 1 BetrVG werden Betriebsräte in Betrieben mit mindestens 5 ständigen wahlberechtigten Arbeitnehmern gewählt, von denen 3 wählbar sind." },
+            { id: 3, text: "Wie viele Mitglieder hat ein Betriebsrat in einem Betrieb mit 80 wahlberechtigten Arbeitnehmern?", options: ["A) 1 Person", "B) 3 Personen", "C) 5 Personen", "D) 7 Personen"], correct: 2, explanation: "Bei 51–100 Arbeitnehmern besteht der Betriebsrat aus 5 Personen (§ 9 BetrVG)." },
+            { id: 4, text: "Welche Mitbestimmung regelt § 87 BetrVG?", options: ["A) Personelle Einzelmaßnahmen", "B) Kündigungsanhörung", "C) Soziale Mitbestimmung", "D) Wirtschaftliche Mitbestimmung"], correct: 2, explanation: "§ 87 BetrVG regelt die soziale Mitbestimmung in Bereichen wie Arbeitszeit, Pausen, Urlaubsgrundsätzen und Lohngestaltung." },
+            { id: 5, text: "Was bedeutet „erzwingbare Mitbestimmung“?", options: ["A) Der Arbeitgeber kann die Maßnahme allein durchführen", "B) Der Betriebsrat kann die Einigungsstelle anrufen, ohne BR-Zustimmung darf die Maßnahme nicht durchgeführt werden", "C) Der Betriebsrat hat nur Anhörungsrecht", "D) Der Arbeitgeber muss die Gewerkschaft beteiligen"], correct: 1, explanation: "Erzwingbare Mitbestimmung nach § 87 BetrVG bedeutet: ohne BR-Zustimmung darf die Maßnahme nicht erfolgen; Streitbeilegung über die Einigungsstelle." },
+            { id: 6, text: "Welcher Tatbestand zählt NICHT zu § 87 BetrVG?", options: ["A) Beginn und Ende der täglichen Arbeitszeit", "B) Auszahlung der Arbeitsentgelte", "C) Festlegung der Lohnhöhe als solche", "D) Aufstellung von Urlaubsgrundsätzen"], correct: 2, explanation: "Die Lohnhöhe als solche unterliegt nicht der Mitbestimmung; nur die Lohngestaltungsgrundsätze und Auszahlungsmodalitäten." },
+            { id: 7, text: "Was wurde 2021 als neuer Mitbestimmungstatbestand in § 87 BetrVG aufgenommen?", options: ["A) Datenschutzbestimmungen", "B) Mobile Arbeit / Homeoffice (Nr. 14)", "C) Betriebsversammlungen", "D) Kantinenbetrieb"], correct: 1, explanation: "Mit dem Betriebsrätemodernisierungsgesetz 2021 wurde mobile Arbeit / Homeoffice als Nr. 14 in § 87 Abs. 1 BetrVG aufgenommen." },
+            { id: 8, text: "Ab welcher Belegschaftsgröße gilt § 99 BetrVG?", options: ["A) Ab 5 wahlberechtigten Arbeitnehmern", "B) Ab 10 wahlberechtigten Arbeitnehmern", "C) Ab mehr als 20 wahlberechtigten Arbeitnehmern", "D) Ab 50 wahlberechtigten Arbeitnehmern"], correct: 2, explanation: "§ 99 BetrVG (personelle Einzelmaßnahmen) gilt in Betrieben mit mehr als 20 wahlberechtigten Arbeitnehmern." },
+            { id: 9, text: "Welche Maßnahmen unterliegen § 99 BetrVG?", options: ["A) Nur Einstellungen", "B) Einstellung, Eingruppierung, Umgruppierung, Versetzung", "C) Nur Kündigungen", "D) Lohnerhöhungen"], correct: 1, explanation: "§ 99 BetrVG erfasst alle vier personellen Einzelmaßnahmen: Einstellung, Eingruppierung, Umgruppierung und Versetzung." },
+            { id: 10, text: "Welche Frist hat der Betriebsrat zur Stellungnahme nach § 99 BetrVG?", options: ["A) 3 Tage", "B) 1 Woche", "C) 2 Wochen", "D) 1 Monat"], correct: 1, explanation: "Der Betriebsrat hat 1 Woche Zeit zur Stellungnahme (§ 99 Abs. 3 Satz 1 BetrVG); Schweigen gilt als Zustimmung." },
+            { id: 11, text: "Welcher Verweigerungsgrund nach § 99 Abs. 2 BetrVG existiert NICHT?", options: ["A) Verstoß gegen ein Gesetz oder Tarifvertrag", "B) Benachteiligung anderer Arbeitnehmer", "C) Wirtschaftliche Schwierigkeiten des Bewerbers", "D) Verstoß gegen den Betriebsfrieden"], correct: 2, explanation: "Wirtschaftliche Schwierigkeiten des Bewerbers sind kein Verweigerungsgrund. Die 6 Gründe sind: Gesetzes-/TV-Verstoß, Verstoß gg. Auswahlrichtlinie, Benachteiligung, Betriebsfriedensgefährdung, fehlende Stellenausschreibung, Diskriminierungsverdacht." },
+            { id: 12, text: "Was ist die Zustimmungsfiktion bei § 99 BetrVG?", options: ["A) Der BR muss aktiv zustimmen", "B) Wenn der BR innerhalb der Wochenfrist nicht antwortet, gilt die Zustimmung als erteilt", "C) Der AG kann die Maßnahme jederzeit durchführen", "D) Die Industrie- und Handelskammer entscheidet"], correct: 1, explanation: "Schweigt der BR innerhalb der Wochenfrist, gilt die Zustimmung als erteilt (Zustimmungsfiktion nach § 99 Abs. 3 Satz 2 BetrVG)." }
+        ]
+    },
+    {
+        title: "Abschnitt 2: § 102 BetrVG – Kündigung & Entleiher (Fragen 13–20)",
+        questions: [
+            { id: 13, text: "Was passiert, wenn eine Kündigung ohne BR-Anhörung ausgesprochen wird?", options: ["A) Sie ist gültig", "B) Sie ist unwirksam", "C) Sie kann nachträglich anerkannt werden", "D) Es entstehen nur Bußgelder"], correct: 1, explanation: "Eine ohne BR-Anhörung ausgesprochene Kündigung ist nach § 102 Abs. 1 Satz 3 BetrVG unwirksam – unabhängig vom Kündigungsgrund." },
+            { id: 14, text: "Welche Frist hat der BR bei einer ordentlichen Kündigung nach § 102 BetrVG?", options: ["A) 3 Tage", "B) 1 Woche", "C) 2 Wochen", "D) 1 Monat"], correct: 1, explanation: "Bei ordentlicher Kündigung hat der BR 1 Woche Zeit für Bedenken (§ 102 Abs. 2 Satz 1 BetrVG)." },
+            { id: 15, text: "Welche Frist hat der BR bei einer außerordentlichen Kündigung?", options: ["A) 3 Tage", "B) 1 Woche", "C) 2 Wochen", "D) 1 Monat"], correct: 0, explanation: "Bei außerordentlicher Kündigung hat der BR 3 Tage Zeit (§ 102 Abs. 2 Satz 3 BetrVG)." },
+            { id: 16, text: "Welche Wirkung hat ein BR-Widerspruch nach § 102 Abs. 3 BetrVG?", options: ["A) Die Kündigung ist sofort unwirksam", "B) Bei Kündigungsschutzklage entsteht ein Weiterbeschäftigungsanspruch", "C) Der AN bekommt automatisch eine Abfindung", "D) Die Kündigungsfrist verlängert sich um 6 Monate"], correct: 1, explanation: "Bei Widerspruch nach § 102 Abs. 3 BetrVG entsteht im Klagefall ein Weiterbeschäftigungsanspruch nach § 102 Abs. 5 BetrVG bis zum rechtskräftigen Urteil." },
+            { id: 17, text: "Welche Reaktionen kann der BR auf eine Kündigungsanhörung zeigen?", options: ["A) Nur Zustimmung", "B) Nur Widerspruch", "C) Zustimmung, Bedenken oder Widerspruch", "D) Nur Schweigen"], correct: 2, explanation: "Der BR kann zustimmen (auch durch Schweigen), Bedenken äußern oder bei Vorliegen der gesetzlichen Gründe widersprechen." },
+            { id: 18, text: "Wer muss die Anhörung des Entleiher-Betriebsrats nach § 14 Arbeitnehmerüberlassungsgesetz vornehmen?", options: ["A) Der Verleiher", "B) Der Entleiher", "C) Der Zeitarbeitnehmer", "D) Die Bundesagentur für Arbeit"], correct: 1, explanation: "Der Entleiher muss vor jeder Übernahme eines Leiharbeitnehmers den eigenen Betriebsrat nach § 99 BetrVG i.V.m. § 14 Abs. 3 Arbeitnehmerüberlassungsgesetz beteiligen." },
+            { id: 19, text: "Welcher Aussage zur \"doppelten Mitbestimmung\" ist korrekt?", options: ["A) Zeitarbeitnehmer haben nur im Verleiherbetrieb Mitbestimmung", "B) Zeitarbeitnehmer gehören auch dem Entleiherbetrieb an (§ 14 Abs. 2 Arbeitnehmerüberlassungsgesetz)", "C) Zeitarbeitnehmer haben gar keine Mitbestimmung", "D) Nur über 12 Monate Einsatz gilt der Entleiher-BR"], correct: 1, explanation: "Nach § 14 Abs. 2 Arbeitnehmerüberlassungsgesetz sind Zeitarbeitnehmer während ihres Einsatzes auch Angehörige des entleihenden Betriebs." },
+            { id: 20, text: "Welche Kündigung ist OHNE BR-Anhörung wirksam?", options: ["A) Außerordentliche Kündigung in der Probezeit", "B) Aufhebungsvertrag (kein Kündigung im Sinne des § 102 BetrVG)", "C) Kündigung wegen Krankheit", "D) Keine Kündigung; alle erfordern BR-Anhörung"], correct: 1, explanation: "Aufhebungsverträge sind keine Kündigungen und erfordern keine BR-Anhörung. Alle echten Kündigungen benötigen BR-Anhörung." }
+        ]
+    },
+    {
+        title: "Abschnitt 3: Gesamtverband der Personaldienstleister & Tarifverträge (Fragen 21–30)",
+        questions: [
+            { id: 21, text: "Wann entstand der Gesamtverband der Personaldienstleister?", options: ["A) 2017", "B) 2020", "C) 2022 durch Fusion von BAP und iGZ", "D) 2024"], correct: 2, explanation: "Der Gesamtverband der Personaldienstleister entstand 2022 durch Fusion der bisherigen Verbände BAP (Bundesarbeitgeberverband) und iGZ (Interessenverband)." },
+            { id: 22, text: "Wie viele Mitgliedsunternehmen hat der Gesamtverband der Personaldienstleister ungefähr?", options: ["A) 500", "B) 1.500", "C) 4.000", "D) 10.000"], correct: 2, explanation: "Der Gesamtverband der Personaldienstleister vertritt rund 4.000 Mitgliedsunternehmen mit über 750.000 Zeitarbeitnehmern." },
+            { id: 23, text: "Welche der folgenden Aufgaben übernimmt der Gesamtverband der Personaldienstleister NICHT?", options: ["A) Tarifpolitik", "B) Schiedsgerichtsbarkeit", "C) Erteilung der AÜG-Erlaubnis", "D) Service und Beratung"], correct: 2, explanation: "Die AÜG-Erlaubnis erteilt die Bundesagentur für Arbeit, nicht der Gesamtverband der Personaldienstleister." },
+            { id: 24, text: "Welcher Tarifvertrag regelt Mindestlöhne in der Zeitarbeit?", options: ["A) Gesamtverband der Personaldienstleister/DGB-Manteltarif", "B) Gesamtverband der Personaldienstleister/DGB-Entgelt-TV", "C) TV BeE", "D) Branchenzuschlagstarif"], correct: 1, explanation: "Der Gesamtverband der Personaldienstleister/DGB-Entgelttarifvertrag regelt die tariflichen Mindestlöhne in 9 Entgeltgruppen mit jährlicher Anpassung." },
+            { id: 25, text: "Wann beginnt der Branchenzuschlag im TV BZ Metall- und Elektroindustrie?", options: ["A) Ab dem 1. Einsatztag mit 15 %", "B) Erst nach 6 Wochen", "C) Erst nach 3 Monaten", "D) Erst nach 9 Monaten"], correct: 0, explanation: "Im TV BZ Metall- und Elektroindustrie beginnt der Branchenzuschlag bereits ab dem 1. Einsatztag mit 15 % auf den tariflichen Stundenlohn." },
+            { id: 26, text: "Welche Stufenfolge gilt im TV BZ Metall- und Elektroindustrie?", options: ["A) 5 % – 10 % – 15 % – 20 % – 25 %", "B) 10 % – 20 % – 30 % – 40 % – 50 %", "C) 15 % – 20 % – 30 % – 45 % – 50 %", "D) 20 % – 30 % – 40 % – 50 % – 60 %"], correct: 2, explanation: "Stufen: 1. Tag 15 %, nach 6 Wochen 20 %, nach 3 Monaten 30 %, nach 5 Monaten 45 %, ab 9 Monaten 50 %." },
+            { id: 27, text: "Wie ist das GVP-Schiedsgericht besetzt?", options: ["A) 1 Person (Volljurist)", "B) 3 Personen: 1 Vorsitz + 2 paritätische Beisitzer Gesamtverband der Personaldienstleister/DGB", "C) 5 Personen", "D) 7 Personen, davon 4 Anwaltsvertreter"], correct: 1, explanation: "Das GVP-Schiedsgericht ist mit 3 Personen besetzt: 1 Vorsitz (Volljurist mit Befähigung zum Richteramt) + je 1 Beisitzer von Gesamtverband der Personaldienstleister und DGB-Gewerkschaft." },
+            { id: 28, text: "Welcher Vorteil bietet das GVP-Schiedsgericht?", options: ["A) Bindende Entscheidung gegen Arbeitnehmer", "B) Schneller (3–6 Monate) und branchenkundig", "C) Kostenlos", "D) Öffentliches Verfahren"], correct: 1, explanation: "Das GVP-Schiedsgericht entscheidet schneller (3–6 Monate vs. 12–24 Monate Arbeitsgericht), die Schiedsrichter sind branchenkundig, und das Verfahren ist vertraulich." },
+            { id: 29, text: "Was bedeutet die \"Friedenspflicht\" nach § 1 TVG?", options: ["A) AN dürfen während TV-Laufzeit immer streiken", "B) Während TV-Laufzeit sind Streiks/Aussperrungen über tariflich geregelte Inhalte unzulässig", "C) Der AG muss immer Frieden bewahren", "D) Es gilt eine Streikpflicht"], correct: 1, explanation: "Die Friedenspflicht nach § 1 TVG verbietet während der TV-Laufzeit Streiks und Aussperrungen über tariflich geregelte Inhalte." },
+            { id: 30, text: "Welcher Tarifvertrag regelt Sonderbestimmungen bei Auftragsverlust?", options: ["A) Gesamtverband der Personaldienstleister/DGB-Manteltarif", "B) Gesamtverband der Personaldienstleister/DGB-Entgelt-TV", "C) TV BeE (Beendigung der Arbeitnehmerüberlassung)", "D) TV BZ"], correct: 2, explanation: "Der Tarifvertrag Beendigung der Arbeitnehmerüberlassung (TV BeE) regelt Sonderbestimmungen bei Auftragsverlust und Restrukturierung." }
+        ]
+    },
+    {
+        title: "Abschnitt 4: Anwalt & Kündigungsschutz (Fragen 31–40)",
+        questions: [
+            { id: 31, text: "Welche Mindestqualifikation hat ein Fachanwalt für Arbeitsrecht?", options: ["A) 1 Jahr Berufserfahrung", "B) 2 Jahre Schwerpunkt + 100 Mandate + 80 Stunden Fortbildung", "C) Promotion", "D) Habilitation"], correct: 1, explanation: "Ein Fachanwalt für Arbeitsrecht benötigt 2 Jahre besonderen Schwerpunkt, 100 nachgewiesene Mandate und 80 Stunden Fortbildung nach der Fachanwaltsordnung." },
+            { id: 32, text: "Welche Klagefrist gilt nach § 4 KSchG für eine Kündigungsschutzklage?", options: ["A) 1 Woche", "B) 2 Wochen", "C) 3 Wochen", "D) 1 Monat"], correct: 2, explanation: "Die Klagefrist beträgt 3 Wochen ab Zugang der Kündigung; sie ist eine Ausschlussfrist." },
+            { id: 33, text: "Welche Prüfungsschwerpunkte hat das Arbeitsgericht bei einer Kündigungsschutzklage?", options: ["A) Nur den Kündigungsgrund", "B) Kündigungsgrund, Sozialauswahl, BR-Anhörung", "C) Nur die Sozialauswahl", "D) Nur die BR-Anhörung"], correct: 1, explanation: "Das Arbeitsgericht prüft den Kündigungsgrund (verhaltens-, personen-, betriebsbedingt), die Sozialauswahl bei betriebsbedingten Kündigungen und die ordnungsgemäße BR-Anhörung." },
+            { id: 34, text: "Welche Faustformel gilt für die Abfindungshöhe?", options: ["A) 1 Bruttomonatsgehalt je Beschäftigungsjahr", "B) 0,5 Bruttomonatsgehalt je Beschäftigungsjahr", "C) 2 Bruttomonatsgehalte je Beschäftigungsjahr", "D) Pauschal 5.000 Euro"], correct: 1, explanation: "Faustformel: 0,5 Bruttomonatsgehalt je Beschäftigungsjahr. Diese Regel ist zwar nicht gesetzlich, aber in Vergleichen üblich." },
+            { id: 35, text: "Wann muss eine außerordentliche Kündigung nach § 626 BGB ausgesprochen werden?", options: ["A) Innerhalb von 1 Woche ab Kenntnis", "B) Innerhalb von 2 Wochen ab Kenntnis", "C) Innerhalb von 1 Monat ab Kenntnis", "D) Es gibt keine Frist"], correct: 1, explanation: "Eine außerordentliche Kündigung muss binnen 2 Wochen ab Kenntnis der kündigungsrelevanten Tatsachen erklärt werden (§ 626 Abs. 2 BGB)." },
+            { id: 36, text: "Welche Kriterien gelten für die Sozialauswahl nach § 1 Abs. 3 KSchG?", options: ["A) Nur Lebensalter", "B) Betriebszugehörigkeit, Lebensalter, Unterhaltspflichten, Schwerbehinderung", "C) Nur Betriebszugehörigkeit", "D) Geschlecht und Religion"], correct: 1, explanation: "Bei betriebsbedingten Kündigungen gelten nach § 1 Abs. 3 KSchG vier Sozialkriterien: Betriebszugehörigkeit, Lebensalter, Unterhaltspflichten und Schwerbehinderung." },
+            { id: 37, text: "Was hat das BAG am 14. September 2022 entschieden?", options: ["A) Equal-Pay gilt nur für deutsche Staatsbürger", "B) Verschärfung der Anforderungen an die Tariffähigkeit zur Abweichung vom Equal-Pay", "C) Equal-Pay wurde abgeschafft", "D) Branchenzuschläge sind unzulässig"], correct: 1, explanation: "Das BAG-Urteil 4 AZR 287/21 verschärfte die Anforderungen an Tarifverträge zur Abweichung vom Equal-Pay-Gebot." },
+            { id: 38, text: "Welcher dieser Anwaltsstündensätze gilt für Fachanwälte Arbeitsrecht?", options: ["A) 80–120 Euro", "B) 150–200 Euro", "C) 250–400 Euro", "D) 600–800 Euro"], correct: 2, explanation: "Fachanwälte für Arbeitsrecht verlangen typischerweise 250–400 Euro pro Stunde." },
+            { id: 39, text: "Was ist die Güteverhandlung in einem Kündigungsschutzverfahren?", options: ["A) Schluss-Hauptverhandlung", "B) Erster gerichtlicher Termin (ca. 4 Wochen nach Klage), oft mit Vergleich", "C) Mündliche Prüfung", "D) Schriftliches Vorverfahren"], correct: 1, explanation: "Die Güteverhandlung ist der erste Termin (binnen 4 Wochen nach Klage), in dem das Gericht eine gütliche Einigung anstrebt; ca. 80 % der Fälle enden mit Vergleich." },
+            { id: 40, text: "Wann lohnt sich ein Pauschalvertrag mit Fachanwalt für PDL-Betriebe?", options: ["A) Ab 5 Mitarbeitern", "B) Ab 10 Mitarbeitern", "C) Ab 50 Mitarbeitern", "D) Erst ab 500 Mitarbeitern"], correct: 2, explanation: "Faustregel: Ab 50 Mitarbeitern lohnt sich ein dauerhafter Pauschalvertrag mit ca. 1.000–2.500 Euro pro Monat." }
+        ]
+    },
+    {
+        title: "Abschnitt 5: Bundesagentur für Arbeit & AÜG-Erlaubnis (Fragen 41–52)",
+        questions: [
+            { id: 41, text: "Wer erteilt die AÜG-Erlaubnis?", options: ["A) Industrie- und Handelskammer", "B) Bundesagentur für Arbeit", "C) Gewerbeamt", "D) Arbeitsministerium"], correct: 1, explanation: "Die Bundesagentur für Arbeit ist nach § 1 Arbeitnehmerüberlassungsgesetz die zuständige Erlaubnisbehörde." },
+            { id: 42, text: "Wie hoch ist das Mindesteigenkapital für die AÜG-Erlaubnis?", options: ["A) 5.000 Euro", "B) 10.000 Euro", "C) 25.000 Euro", "D) 50.000 Euro"], correct: 1, explanation: "Antragsteller müssen ein Eigenkapital von mindestens 10.000 Euro nachweisen." },
+            { id: 43, text: "Wie lange ist die Erstmals-AÜG-Erlaubnis befristet?", options: ["A) 6 Monate", "B) 1 Jahr", "C) 2 Jahre", "D) 3 Jahre"], correct: 1, explanation: "Die erstmalige AÜG-Erlaubnis ist auf 1 Jahr befristet (§ 2 Abs. 4 Arbeitnehmerüberlassungsgesetz)." },
+            { id: 44, text: "Wann wird die AÜG-Erlaubnis unbefristet erteilt?", options: ["A) Sofort beim Erstantrag", "B) Nach 1 Jahr beanstandungsfrei", "C) Nach 3 Jahren beanstandungsfrei", "D) Nach 5 Jahren beanstandungsfrei"], correct: 2, explanation: "Nach insgesamt 3 Jahren beanstandungsfreier Tätigkeit (1+1+2 Jahre) wird die Erlaubnis unbefristet erteilt." },
+            { id: 45, text: "Welche Überlassungshöchstdauer gilt nach § 1 Abs. 1b Arbeitnehmerüberlassungsgesetz?", options: ["A) 12 Monate", "B) 18 Monate", "C) 24 Monate", "D) 36 Monate"], correct: 1, explanation: "Die Überlassungshöchstdauer beträgt 18 aufeinander folgende Monate; Abweichung durch Tarifvertrag möglich." },
+            { id: 46, text: "Wann gilt das Equal-Pay-Gebot zwingend ohne Branchenzuschläge?", options: ["A) Ab dem 1. Tag", "B) Nach 3 Monaten Einsatz", "C) Nach 9 Monaten Einsatz", "D) Nach 18 Monaten Einsatz"], correct: 2, explanation: "Equal-Pay nach § 8 Arbeitnehmerüberlassungsgesetz gilt zwingend ab dem 9. Monat Einsatz beim selben Entleiher (ohne Branchenzuschläge)." },
+            { id: 47, text: "Wann gilt Equal-Pay zwingend bei Anwendung von Branchenzuschlägen?", options: ["A) Nach 9 Monaten", "B) Nach 12 Monaten", "C) Nach 15 Monaten", "D) Nach 18 Monaten"], correct: 2, explanation: "Bei Anwendung von Branchenzuschlägen gilt Equal-Pay nach 15 Monaten Einsatz beim selben Entleiher." },
+            { id: 48, text: "Welches Bußgeld droht bei Verleih ohne AÜG-Erlaubnis?", options: ["A) bis 5.000 Euro", "B) bis 30.000 Euro", "C) bis 100.000 Euro", "D) bis 500.000 Euro"], correct: 1, explanation: "Verleih ohne AÜG-Erlaubnis kann mit Bußgeld bis 30.000 Euro nach § 16 Arbeitnehmerüberlassungsgesetz geahndet werden." },
+            { id: 49, text: "Welches Bußgeld droht bei Equal-Pay-Verstößen?", options: ["A) bis 30.000 Euro", "B) bis 100.000 Euro", "C) bis 250.000 Euro", "D) bis 500.000 Euro"], correct: 3, explanation: "Equal-Pay-Verstöße nach 9 Monaten können mit Bußgeld bis 500.000 Euro nach § 16 Abs. 1 Nr. 7a Arbeitnehmerüberlassungsgesetz geahndet werden." },
+            { id: 50, text: "Welcher Verstoß nach § 11 Abs. 5 Arbeitnehmerüberlassungsgesetz kann mit bis zu 500.000 Euro geahndet werden?", options: ["A) Überschreitung der Höchstdauer", "B) Streikbruch (Einsatz während Arbeitskampf im Entleiherbetrieb)", "C) Verleih ohne Erlaubnis", "D) Falsche Bezeichnung als Werkvertrag"], correct: 1, explanation: "Streikbruch nach § 11 Abs. 5 Arbeitnehmerüberlassungsgesetz (Einsatz von Zeitarbeitnehmern während eines Arbeitskampfes im Entleiherbetrieb) kann mit bis zu 500.000 Euro Bußgeld geahndet werden." },
+            { id: 51, text: "Was bedeutet AVGS?", options: ["A) Arbeitsverordnung Gemeinschaftsservice", "B) Aktivierungs- und Vermittlungsgutschein", "C) Allgemeines Vermittlungsgesetz", "D) Arbeitsvertrag-Genehmigungsschreiben"], correct: 1, explanation: "AVGS = Aktivierungs- und Vermittlungsgutschein. Vermittlungspauschale bis 2.000 Euro pro Vermittlung an Personaldienstleistungsunternehmen." },
+            { id: 52, text: "Was kann die Bundesagentur für Arbeit bei wiederholten AÜG-Verstößen tun?", options: ["A) Nichts, nur Bußgeld", "B) Erlaubnis widerrufen (§ 5 Arbeitnehmerüberlassungsgesetz)", "C) Strafanzeige stellen", "D) Verband ausschließen"], correct: 1, explanation: "Bei wiederholten oder schweren Verstößen kann die Bundesagentur für Arbeit nach § 5 Arbeitnehmerüberlassungsgesetz die Erlaubnis widerrufen – Existenzbedrohung des PDL-Betriebs." }
+        ]
+    },
+    {
+        title: "Abschnitt 6: Industrie- und Handelskammer & Sachkunde Bewachungsgewerbe (Fragen 53–60)",
+        questions: [
+            { id: 53, text: "Welche Sachkundeprüfung organisiert die Industrie- und Handelskammer für das Bewachungsgewerbe?", options: ["A) § 32a GewO", "B) § 33a GewO", "C) § 34a GewO", "D) § 35a GewO"], correct: 2, explanation: "Die Sachkundeprüfung Bewachungsgewerbe ist in § 34a GewO geregelt." },
+            { id: 54, text: "Welche Schutzobjektklasse erfordert die Sachkundeprüfung nach § 34a GewO?", options: ["A) Klasse 1", "B) Klasse 2 oder höher", "C) Nur Klasse 4", "D) Alle Klassen"], correct: 1, explanation: "Für Schutzobjekte der Klasse 2 oder höher (z. B. Diskothek, Krankenhaus, Asylunterkunft) ist die Sachkundeprüfung obligatorisch." },
+            { id: 55, text: "Welches Thema gehört NICHT zur Sachkundeprüfung § 34a GewO?", options: ["A) Recht der öffentlichen Sicherheit", "B) Notwehr und Notstand (BGB)", "C) Steuerrecht", "D) Umgang mit Verteidigungswaffen"], correct: 2, explanation: "Steuerrecht ist nicht Bestandteil der Sachkundeprüfung Bewachung. Die Prüfung umfasst u. a. öffentliche Sicherheit, Datenschutz, BGB-Notwehr, Strafrecht, Verteidigungswaffen, UVV und Deeskalation." },
+            { id: 56, text: "Wie lange dauert die schriftliche Sachkundeprüfung nach § 34a GewO?", options: ["A) 60 Minuten", "B) 90 Minuten", "C) 120 Minuten", "D) 180 Minuten"], correct: 2, explanation: "Die schriftliche Prüfung dauert 120 Minuten und besteht aus Multiple Choice und offenen Fragen." },
+            { id: 57, text: "Welche Vorteile bietet die IHK-Schlichtung gegenüber Arbeitsgericht?", options: ["A) Bindendes Urteil", "B) Schneller (3–6 Monate), günstiger, vertraulich", "C) Kostenlos", "D) Vor BAG zugelassen"], correct: 1, explanation: "IHK-Schlichtung ist schneller (3–6 Monate vs. 18–36 Monate Gericht), günstiger (Pauschalgebühren), vertraulich und durch branchenkundige Schlichter geführt." },
+            { id: 58, text: "Welche Gewichtung hat \"Disposition und Steuerung\" in der Abschlussprüfung Personaldienstleistungskaufmann/-frau?", options: ["A) 10 %", "B) 20 %", "C) 25 %", "D) 30 %"], correct: 3, explanation: "Der Prüfungsbereich Disposition und Steuerung hat mit 30 % das größte Gewicht in der gestreckten Abschlussprüfung Personaldienstleistungskaufmann/-frau." },
+            { id: 59, text: "Welche Eselsbrücke hilft, sich die 5 externen Akteure zu merken?", options: ["A) DASBP (Disposition, Anwalt, Steuer, BR, Politik)", "B) BGABI (Betriebsrat, Gesamtverband der Personaldienstleister, Anwalt, Bundesagentur für Arbeit, Industrie- und Handelskammer)", "C) FGABI (Finanzamt, Gesamtverband der Personaldienstleister, Anwalt, Bundesagentur für Arbeit, Industrie- und Handelskammer)", "D) BBABI"], correct: 1, explanation: "Eselsbrücke: B-G-A-B-I = Betriebsrat, Gesamtverband der Personaldienstleister, Anwalt, Bundesagentur für Arbeit, Industrie- und Handelskammer." },
+            { id: 60, text: "Welche Gewichtungsstufen gibt es bei der AÜG-Erlaubnis?", options: ["A) 1-1-1-unbefristet", "B) 1-1-2-unbefristet", "C) 2-2-2-unbefristet", "D) 3-3-3-unbefristet"], correct: 1, explanation: "AÜG-Erlaubnis-Stufen: erstmals 1 Jahr, erste Verlängerung 1 Jahr, zweite Verlängerung 2 Jahre; nach 3 Jahren beanstandungsfrei unbefristet." }
+        ]
+    }
+];
+
+let answered = {};
+let checked = {};
+let showAll = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() {
+    const flat = [];
+    sections.forEach(s => s.questions.forEach(q => flat.push(q)));
+    return flat;
+}
+const flatQ = allQuestions();
+
+function render() {
+    const container = document.getElementById('quizContainer');
+    let html = '';
+    let globalIdx = 0;
+    sections.forEach((sec, si) => {
+        html += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach((q, qi) => {
+            const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+            const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+            html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+            html += `<p class="question-text">${q.text}</p>`;
+            html += `<ul class="options-list">`;
+            q.options.forEach((opt, oi) => {
+                let cls = '';
+                if (checked[q.id]) {
+                    if (oi === q.correct) cls = 'correct-opt';
+                    else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+                } else if (answered[q.id] === oi) {
+                    cls = 'selected';
+                }
+                const dis = checked[q.id] ? 'disabled' : '';
+                const chk = answered[q.id] === oi ? 'checked' : '';
+                html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+            });
+            html += `</ul>`;
+            const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+            if (checked[q.id]) {
+                const isCorr = answered[q.id] === q.correct;
+                const fbClass = isCorr ? 'correct' : 'incorrect';
+                const fbText = isCorr
+                    ? `<strong>Richtig!</strong> ${q.explanation}`
+                    : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+                html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+            } else {
+                html += `<div class="feedback" id="fb-${q.id}"></div>`;
+            }
+            html += `</div>`;
+            globalIdx++;
+        });
+    });
+    if (!showAll) {
+        html += `<div class="nav-row">`;
+        html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+        html += `<span style="font-weight:600;color:#004a99;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+        html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+        html += `</div>`;
+    }
+    container.innerHTML = html;
+    updateProgress();
+}
+
+function selectOption(qid, idx) { if (checked[qid]) return; answered[qid] = idx; render(); }
+function checkAnswer(qid) { if (answered[qid] === undefined || checked[qid]) return; checked[qid] = true; render(); updateProgress(); }
+function navigate(dir) { currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir)); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function updateProgress() {
+    const done = Object.keys(checked).length;
+    const pct = Math.round((done / totalQ) * 100);
+    document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+    document.getElementById('progressPct').textContent = `${pct} %`;
+    document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+    const done = Object.keys(checked).length;
+    if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+    let correct = 0;
+    flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+    const pct = Math.round((correct / done) * 100);
+    document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+    let gradeText = '';
+    let gradeClass = 'pass';
+    if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+    else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+    else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+    else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+    else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+    else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+    const gEl = document.getElementById('gradeText');
+    gEl.textContent = gradeText;
+    gEl.className = 'grade ' + gradeClass;
+    let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+    sections.forEach(sec => {
+        let sCorr = 0, sTotal = 0;
+        sec.questions.forEach(q => { if (checked[q.id]) { sTotal++; if (answered[q.id] === q.correct) sCorr++; } });
+        const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+        tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+    });
+    tbl += '</table>';
+    document.getElementById('sectionBreakdown').innerHTML = tbl;
+    document.getElementById('resultsPanel').classList.add('show');
+    document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+    answered = {};
+    checked = {};
+    currentQ = 0;
+    document.getElementById('resultsPanel').classList.remove('show');
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () { showAll = this.checked; render(); });
+
+function shuffleQuizOptions() {
+    let seed = 42;
+    function seededRandom() { seed = (seed * 16807 + 0) % 2147483647; return (seed - 1) / 2147483646; }
+    sections.forEach(sec => {
+        sec.questions.forEach(q => {
+            const correctText = q.options[q.correct];
+            const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+            for (let i = cleaned.length - 1; i > 0; i--) {
+                const j = Math.floor(seededRandom() * (i + 1));
+                [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+            }
+            const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+            const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+            q.options = cleaned.map((c, i) => prefixes[i] + c);
+            q.correct = cleaned.indexOf(correctClean);
+        });
+    });
+}
+shuffleQuizOptions();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<style id="pdk-back-style">
+#pdk-back-banner { position: sticky; top: 0; z-index: 9999; background: #0f3151; color: #fff; padding: 0.85rem 1rem; display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; box-shadow: 0 4px 14px rgba(0,0,0,0.25); font-family: "Segoe UI", Tahoma, sans-serif; border-bottom: 3px solid #1780a1; }
+#pdk-back-banner a { color: #fff; text-decoration: none; font-weight: 700; padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4); font-size: 0.95rem; transition: background 0.15s, transform 0.1s; }
+#pdk-back-banner a:hover { background: rgba(255,255,255,0.32); transform: translateY(-1px); }
+#pdk-back-banner .pdk-label { font-size: 0.92rem; opacity: 0.95; margin-left: auto; }
+#pdk-floating-back { position: fixed; bottom: 22px; right: 22px; z-index: 9998; background: #0f3151; color: #fff !important; text-decoration: none; padding: 0.85rem 1.3rem; border-radius: 50px; box-shadow: 0 6px 18px rgba(0,0,0,0.30); font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 0.95rem; border: 2px solid rgba(255,255,255,0.4); transition: transform 0.12s, box-shadow 0.12s; }
+#pdk-floating-back:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
+#pdk-bottom-back { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; padding: 1.5rem 1rem 2rem; background: #eef4f8; border-top: 1px solid #d6e0e8; margin-top: 2rem; }
+#pdk-bottom-back a { display: inline-block; padding: 0.85rem 1.5rem; background: #0d5c8c; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 1rem; box-shadow: 0 4px 12px rgba(13,92,140,0.25); }
+#pdk-bottom-back a:hover { background: #0f3151; }
+@media print { #pdk-back-banner, #pdk-floating-back, #pdk-bottom-back { display: none !important; } }
+</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tag 03 – Qualit&auml;t, Prozessanalyse &amp; Kundenzufriedenheit (Personaldienstleistungskaufmann/-frau IHK 2026)</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+        .header { background: linear-gradient(135deg, #00325f 0%, #004b87 50%, #0082b4 100%); color: #fff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+        .header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+        .header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+        .toolbar button, .toolbar .toggle-label { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .toolbar button:hover { background: #00325f; }
+        .toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+        .toggle-label input { accent-color: #004b87; width: 18px; height: 18px; cursor: pointer; }
+        .progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+        .progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0082b4, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+        .container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+        .section-title { background: #00325f; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+        .section-title:first-child { margin-top: 0; }
+        .question-card { background: #fff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+        .question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .question-card.correct-card { border-left: 5px solid #28a745; }
+        .question-card.incorrect-card { border-left: 5px solid #dc3545; }
+        .question-number { display: inline-block; background: #e8f0fe; color: #004b87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+        .question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+        .options-list { list-style: none; }
+        .options-list li { margin-bottom: 0.5rem; }
+        .options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+        .options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+        .options-list input[type="radio"] { accent-color: #004b87; margin-top: 3px; flex-shrink: 0; }
+        .options-list label.selected { background: #e8f0fe; border-color: #004b87; }
+        .options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+        .options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+        .check-btn { margin-top: 0.8rem; background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .check-btn:hover { background: #00325f; }
+        .check-btn:disabled { background: #8faec8; cursor: default; }
+        .feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .nav-btn { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+        .nav-btn:hover { background: #00325f; }
+        .nav-btn:disabled { background: #8faec8; cursor: default; }
+        .results-panel { background: #fff; border: 2px solid #004b87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .results-panel.show { display: block; }
+        .results-panel h2 { color: #00325f; margin-bottom: 0.8rem; }
+        .score-big { font-size: 3rem; font-weight: 700; color: #004b87; }
+        .grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+        .grade.pass { color: #28a745; }
+        .grade.fail { color: #dc3545; }
+        .section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+        .section-breakdown table { width: 100%; border-collapse: collapse; }
+        .section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+        .section-breakdown th { background: #e8f0fe; color: #00325f; text-align: left; }
+        .references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+        .references h3 { color: #00325f; margin-bottom: 0.8rem; font-size: 1.1rem; }
+        .references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+        .footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+        @media print {
+            body { background: #fff; }
+            .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; }
+            .header { background: #00325f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+            .section-title { break-after: avoid; }
+            .feedback.show { display: block !important; }
+        }
+        @media (max-width: 600px) {
+            .header { padding: 1.4rem 0.8rem; }
+            .question-card { padding: 1rem; }
+            .toolbar { flex-direction: column; align-items: stretch; text-align: center; }
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+<div id="pdk-back-banner">
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+  <span class="pdk-label">PDK Personal-Kurs Mai-Juni 2026</span>
+</div>
+<a id="pdk-floating-back" href="../../../index.html" title="Zurueck zur Tagesuebersicht">&larr; Uebersicht</a>
+
+<header class="header">
+    <h1>Quiz Tag 03 &ndash; Qualit&auml;t, Prozessanalyse &amp; Kundenzufriedenheit</h1>
+    <div class="subtitle">Lehrgang Personaldienstleistungskaufmann/-frau IHK &middot; Lerninhalte A4 + A5 + A6 + A7</div>
+    <div class="meta">
+        <span>&copy; Can Siebert</span>
+        <span>Stand 05/2026</span>
+        <span>60 Fragen &bull; Multiple Choice</span>
+    </div>
+</header>
+
+<div class="toolbar">
+    <label class="toggle-label">
+        <input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen
+    </label>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <button onclick="showResults()">Ergebnis anzeigen</button>
+        <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-info">
+        <span id="progressText">0 von 60 beantwortet</span>
+        <span id="progressPct">0 %</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+    <div class="results-panel" id="resultsPanel">
+        <h2>Dein Ergebnis</h2>
+        <div class="score-big" id="scoreBig"></div>
+        <div class="grade" id="gradeText"></div>
+        <div class="section-breakdown" id="sectionBreakdown"></div>
+        <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="references">
+    <h3>Literaturverzeichnis (APA 7)</h3>
+    <p>Deming, W. E. (1986). <em>Out of the Crisis</em>. MIT Press.</p>
+    <p>Deutsches Institut f&uuml;r Normung. (2015). <em>DIN EN ISO 9001:2015 &ndash; Qualit&auml;tsmanagementsysteme</em>. Beuth.</p>
+    <p>Imai, M. (1986). <em>Kaizen: The Key to Japan's Competitive Success</em>. McGraw-Hill.</p>
+    <p>Ishikawa, K. (1985). <em>What Is Total Quality Control? The Japanese Way</em>. Prentice Hall.</p>
+    <p>Kano, N., Seraku, N., Takahashi, F., &amp; Tsuji, S. (1984). Attractive quality and must-be quality. <em>Journal of the Japanese Society for Quality Control, 14</em>(2), 39&ndash;48.</p>
+    <p>Parasuraman, A., Zeithaml, V. A., &amp; Berry, L. L. (1988). SERVQUAL: A multiple-item scale for measuring consumer perceptions of service quality. <em>Journal of Retailing, 64</em>(1), 12&ndash;40.</p>
+    <p>Pyzdek, T., &amp; Keller, P. A. (2014). <em>The Six Sigma Handbook</em>. McGraw-Hill.</p>
+    <p>Reichheld, F. F. (2003). The one number you need to grow. <em>Harvard Business Review, 81</em>(12), 46&ndash;54.</p>
+    <p>Stauss, B., &amp; Seidel, W. (2007). <em>Beschwerdemanagement</em>. Hanser.</p>
+</div>
+
+<footer class="footer">
+    &copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Lehrgang Personaldienstleistungskaufmann/-frau Mai&ndash;Juni 2026 | Stand 05/2026
+</footer>
+
+<script>
+const sections = [
+    {
+        title: "Abschnitt 1: Qualit&auml;tsbegriff & ISO 9000 (Fragen 1–10)",
+        questions: [
+            { id: 1, text: "Wie definiert DIN EN ISO 9000:2015 den Begriff Qualität?", options: ["A) Zahl der Mitarbeitenden im QMS", "B) Grad der Erfüllung von Anforderungen an inhärente Merkmale eines Objekts", "C) Größe des Verleihers", "D) Stundensatz pro ZAN"], correct: 1, explanation: "ISO 9000:2015 definiert Qualität als Grad der Erfüllung von Anforderungen an die inhärenten Merkmale eines Objekts. 'Inhärent' meint innewohnend, nicht nachträglich anhängbar." },
+            { id: 2, text: "Was bedeutet 'inhärent' im ISO-Qualitätsbegriff?", options: ["A) Zertifiziert", "B) Innewohnend, nicht nachträglich anhängbar", "C) Optional", "D) Reparierbar"], correct: 1, explanation: "Inhärente Merkmale sind im Objekt selbst angelegt – z.B. die fachliche Eignung einer ZAN, nicht etwa der Stundensatz (der ist zugeordnet, nicht inhärent)." },
+            { id: 3, text: "Welche Norm ist die internationale Grundlage für Qualitätsmanagementsysteme?", options: ["A) DIN 69901", "B) DIN EN ISO 9001:2015", "C) AÜG", "D) BBiG"], correct: 1, explanation: "ISO 9001:2015 ist die international etablierte QMS-Norm. Zertifizierungsfähig, Vergabebedingung bei Großkunden." },
+            { id: 4, text: "Welches Prinzip ist KEIN Grundsatz von ISO 9001:2015?", options: ["A) Kundenorientierung", "B) Prozessansatz", "C) Maximalprofit", "D) Faktenbasierte Entscheidung"], correct: 2, explanation: "ISO 9001:2015 nennt 7 Prinzipien (Kundenorientierung, Führung, Engagement, Prozess, Verbesserung, Faktenbasis, Beziehungsmanagement). Maximalprofit ist KEIN Prinzip." },
+            { id: 5, text: "Welche drei Perspektiven auf Qualität gibt es im PDL?", options: ["A) Verleiher, Entleiher, ZAN", "B) GVP, IHK, BAföG", "C) Politik, Wirtschaft, Gewerkschaft", "D) Kunde, Lieferant, Behörde"], correct: 0, explanation: "Im Drei-Personen-Verhältnis hat jede Partei eigene Qualitätserwartungen: Verleiher (Marge, Stabilität), Entleiher (Eignung, Pünktlichkeit), ZAN (faires Arbeitsklima)." },
+            { id: 6, text: "Was bedeutet 'Anforderung' im Qualitätskontext?", options: ["A) Eine zertifizierte Eigenschaft", "B) Eine ausgesprochene oder implizit vorausgesetzte Erwartung", "C) Eine gesetzliche Vorgabe", "D) Eine optionale Zusatzleistung"], correct: 1, explanation: "Anforderungen können explizit (Vertrag, Spezifikation) oder implizit (allgemeine Marktstandards) sein – beide müssen erfüllt werden." },
+            { id: 7, text: "Welche Aussage zur Qualitätszertifizierung ISO 9001 ist korrekt?", options: ["A) Sie ist gesetzlich Pflicht", "B) Sie wird bei Großkunden oft als Vergabebedingung verlangt", "C) Sie kostet nichts", "D) Sie gilt lebenslang"], correct: 1, explanation: "ISO 9001 ist nicht gesetzlich Pflicht, aber oft Vergabebedingung bei Großkunden, öffentlicher Hand und Konzernen. Zertifikat wird typisch für 3 Jahre erteilt + Audits." },
+            { id: 8, text: "Wofür steht das 'P' in 'PDCA'?", options: ["A) Process", "B) Plan", "C) Production", "D) Personal"], correct: 1, explanation: "PDCA = Plan, Do, Check, Act. Plan ist die erste Phase: Ziel definieren, Vorgehen planen, Ressourcen prüfen." },
+            { id: 9, text: "Welche Phase im PDCA enthält den Soll-Ist-Vergleich?", options: ["A) Plan", "B) Do", "C) Check", "D) Act"], correct: 2, explanation: "Check = Soll-Ist-Vergleich, Auswertung, Erfolgsmessung. Erst danach wird in Act standardisiert oder korrigiert." },
+            { id: 10, text: "Was bedeutet 'Kundenorientierung' als ISO-9001-Grundsatz?", options: ["A) Möglichst niedrige Preise", "B) Kundenanforderungen erfüllen und übertreffen, Erwartungen aktiv erheben", "C) Kunden über alles stellen, auch über Mitarbeitende", "D) Nur Großkunden bedienen"], correct: 1, explanation: "Kundenorientierung = die Kundenanforderungen kennen, erfüllen, übertreffen und nachhaltige Kundenbeziehungen aufbauen – ein Kernprinzip des QMS." }
+        ]
+    },
+    {
+        title: "Abschnitt 2: Ishikawa, 5-Why & Pareto-Analyse (Fragen 11–20)",
+        questions: [
+            { id: 11, text: "Wie wird das Ishikawa-Diagramm auch genannt?", options: ["A) Pareto-Diagramm", "B) Fischgräten- bzw. Ursache-Wirkungs-Diagramm", "C) Tortendiagramm", "D) Gantt-Diagramm"], correct: 1, explanation: "Ishikawa-Diagramm = Fischgrätendiagramm = Ursache-Wirkungs-Diagramm. Visuelle Methode zur strukturierten Ursachenanalyse." },
+            { id: 12, text: "Welche 6 Kategorien (6M) nennt das klassische Ishikawa-Diagramm?", options: ["A) Mensch, Maschine, Methode, Material, Mitwelt, Messung", "B) Markt, Marke, Marketing, Mensch, Methode, Material", "C) Mensch, Mitarbeiter, Manager, Maschine, Markt, Material", "D) Mensch, Methode, Marketing, Marke, Markt, Maschine"], correct: 0, explanation: "6M-Kategorien: Mensch (Skills, Stress), Maschine (Tools), Methode (Prozesse), Material (Ressourcen), Mitwelt/Milieu (Umfeld), Messung (KPIs)." },
+            { id: 13, text: "Was ist das Ziel der 5-Why-Methode?", options: ["A) Fünf Lösungen vorschlagen", "B) Bei einem Problem fünfmal 'Warum?' fragen, um die Wurzelursache zu finden", "C) Fünf Mitarbeitende fragen", "D) Fünf Schritte planen"], correct: 1, explanation: "5-Why (Toyota): Bei jedem Problem fünfmal Warum fragen, um von Symptom zur Wurzelursache zu gelangen." },
+            { id: 14, text: "Warum 5-Why und nicht 3-Why?", options: ["A) Weil 5 eine Glückszahl ist", "B) Weil oberflächliche 'erste Antworten' meist nur Symptome sind, die Wurzelursache liegt typischerweise tiefer", "C) Weil die ISO 9001 das vorschreibt", "D) Weil Toyota fünf Werke hat"], correct: 1, explanation: "Erfahrungsregel: Die ersten 1–3 Antworten sind oft Symptome. Erst auf 4. oder 5. Stufe stößt man auf die echte Ursache." },
+            { id: 15, text: "Wofür steht das Pareto-Prinzip?", options: ["A) 50/50", "B) 100/100", "C) 80/20: ca. 80% der Wirkungen entstehen durch 20% der Ursachen", "D) 99/1"], correct: 2, explanation: "Pareto: 80% des Outputs entstehen durch 20% des Inputs. Heuristik, kein Naturgesetz." },
+            { id: 16, text: "Wie wird die Pareto-Analyse grafisch dargestellt?", options: ["A) Als Tortendiagramm", "B) Als Säulendiagramm absteigend + kumulierte Linie", "C) Als Liniendiagramm aufsteigend", "D) Als Pyramide"], correct: 1, explanation: "Pareto-Diagramm: Säulen absteigend nach Häufigkeit + kumulierte Prozent-Linie. Zeigt sofort die 'vital few'." },
+            { id: 17, text: "Welcher Schritt gehört NICHT zur Ursachenanalyse mit Ishikawa?", options: ["A) Problem klar formulieren (Wirkung)", "B) Ursachen sammeln und in 6M sortieren", "C) Stundensatz neu verhandeln", "D) Wahrscheinlichste Ursache identifizieren"], correct: 2, explanation: "Stundensatz-Verhandlung ist eine kommerzielle Aktivität – nicht Teil der Ursachenanalyse. Schritte: Problem, Ursachen-Brainstorming, Klassifizierung, Priorisierung." },
+            { id: 18, text: "Welche der folgenden Aktivitäten gehört NICHT zur 5-Why-Methode?", options: ["A) Mehrere Warum-Fragen aneinanderreihen", "B) Bei jeder Antwort prüfen, ob es noch eine tiefere Ursache gibt", "C) Schuldzuweisung an einzelne Mitarbeitende", "D) Wurzelursache identifizieren"], correct: 2, explanation: "5-Why ist ein analytisches, nicht ein Bestrafungs-Tool. Schuldzuweisung verhindert ehrliches Reflektieren – Kaizen-Kultur ohne Blame." },
+            { id: 19, text: "Welcher Top-Problemtyp im Recruiting kann mit Pareto behoben werden?", options: ["A) Falsche Anforderungsprofile + mangelhafte Briefings = ca. 60% der Reklamationen", "B) Wetter und Verkehr", "C) Politische Großwetterlage", "D) Internationale Konjunktur"], correct: 0, explanation: "Top-2 Recruiting-Probleme: unklares Anforderungsprofil + schlechtes ZAN-Briefing. Fokus darauf hebt Qualitätsniveau am stärksten." },
+            { id: 20, text: "Welche Reihenfolge ist im Ursachenanalyse-Workflow korrekt?", options: ["A) Lösung → Problem → Ursache", "B) Problem definieren → Ursachen sammeln → Wurzelursache identifizieren → Maßnahmen ableiten", "C) Maßnahmen → Problem → Ursachen", "D) Ursachen → Problem → Maßnahmen"], correct: 1, explanation: "Standard-Workflow: 1. Problem klar definieren, 2. Ursachen sammeln (Ishikawa), 3. Wurzelursache prüfen (5-Why), 4. Maßnahmen ableiten (Act im PDCA)." }
+        ]
+    },
+    {
+        title: "Abschnitt 3: ServQual & 5-L&uuml;cken-Modell (Fragen 21–30)",
+        questions: [
+            { id: 21, text: "Wer entwickelte das ServQual-Modell?", options: ["A) Ishikawa", "B) Parasuraman, Zeithaml, Berry (1988)", "C) Kano", "D) Deming"], correct: 1, explanation: "ServQual wurde 1988 von Parasuraman, Zeithaml und Berry im Journal of Retailing veröffentlicht. Standardmodell zur Servicequalitäts-Messung." },
+            { id: 22, text: "Wofür steht RATER im ServQual-Modell?", options: ["A) Reliability, Assurance, Tangibles, Empathy, Responsiveness", "B) Recruiting, Attitude, Technology, Energy, Relations", "C) Reliability, Accuracy, Time, Empathy, Risk", "D) Rate, Accept, Trust, Engage, Respond"], correct: 0, explanation: "RATER = die fünf ServQual-Dimensionen: Reliability (Zuverlässigkeit), Assurance (Vertrauen), Tangibles (sichtbare Aspekte), Empathy (Einfühlung), Responsiveness (Reaktionsbereitschaft)." },
+            { id: 23, text: "Wie viele Lücken (Gaps) unterscheidet das ServQual-Modell?", options: ["A) 3", "B) 4", "C) 5", "D) 7"], correct: 2, explanation: "Fünf Gaps: 1) Wahrnehmung der Erwartung, 2) Spezifikation, 3) Tatsächliche Leistung, 4) Kommunikation an Kunde, 5) Total Gap (Erwartung vs. wahrgenommene Leistung)." },
+            { id: 24, text: "Was bedeutet die ServQual-Dimension 'Reliability'?", options: ["A) Schnelle Reaktion", "B) Zuverlässige + akkurate Leistungserbringung wie versprochen", "C) Sichtbare Räumlichkeiten", "D) Höfliches Personal"], correct: 1, explanation: "Reliability (Zuverlässigkeit): Versprochene Leistung wird verlässlich + akkurat erbracht – z.B. ZAN ist tatsächlich am vereinbarten Tag im Einsatz." },
+            { id: 25, text: "Was ist die ServQual-Dimension 'Tangibles'?", options: ["A) Sichtbare Aspekte: Räume, Mitarbeiter-Erscheinung, Materialien", "B) Vertrauensbildung", "C) Zeitliche Reaktion", "D) Einfühlung in den Kunden"], correct: 0, explanation: "Tangibles = sichtbare/greifbare Aspekte: Büroräume, Erscheinungsbild der Mitarbeitenden, Qualität der Unterlagen, Tools." },
+            { id: 26, text: "Welche Dimension misst 'Empathy' bei ServQual?", options: ["A) Pünktlichkeit", "B) Individuelle Aufmerksamkeit, Kundenfokus, Verständnis für Kundenanliegen", "C) Geschwindigkeit", "D) Anzahl Mitarbeitender"], correct: 1, explanation: "Empathy = einfühlsame, individuelle Betreuung der Kund:innen. Im PDL: Disponent:in versteht Kundenanforderung wirklich, nicht nur formal." },
+            { id: 27, text: "Was ist die häufigste Ursache von Gap 1 im ServQual?", options: ["A) Manager kennen die tatsächlichen Kunden-Erwartungen nicht", "B) Mitarbeitende sind faul", "C) Die IT ist alt", "D) Wettbewerb ist stark"], correct: 0, explanation: "Gap 1 = Diskrepanz zwischen tatsächlicher Erwartung und Manager-Wahrnehmung. Folge: Falsche Annahmen leiten Service-Design fehl. Gegenmittel: Marktforschung, Kundenbefragung." },
+            { id: 28, text: "Welche Methode adressiert direkt Gap 4 (Kommunikation an den Kunden)?", options: ["A) Realistische Versprechen + transparente Kommunikation", "B) Mehr Werbung", "C) Höhere Preise", "D) Mehr Filialen"], correct: 0, explanation: "Gap 4 entsteht, wenn die kommunizierte Leistung von der tatsächlichen abweicht. Gegenmittel: realistische Versprechen, klare Kommunikation, Erwartungsmanagement." },
+            { id: 29, text: "Welche ServQual-Dimension ist im Recruiting besonders wichtig?", options: ["A) Reliability + Responsiveness (Zuverlässigkeit + Reaktion)", "B) Tangibles (Räume)", "C) Werbung", "D) Preis"], correct: 0, explanation: "Im Recruiting zählt zuverlässige Lieferung + schnelle Reaktion am stärksten. Tangibles spielen eine geringere Rolle als bei reinem Konsum-Service." },
+            { id: 30, text: "Wie lässt sich Gap 5 (Total Gap) reduzieren?", options: ["A) Durch parallele Reduktion der Gaps 1–4", "B) Durch Marketing", "C) Durch höhere Margen", "D) Durch ISO-Zertifikat allein"], correct: 0, explanation: "Gap 5 (zwischen Erwartung und wahrgenommener Leistung) ist die Summe der Gaps 1–4. Nur durch konsequentes Schließen aller Gaps verringert er sich." }
+        ]
+    },
+    {
+        title: "Abschnitt 4: Kano-Modell, NPS & CSI (Fragen 31–40)",
+        questions: [
+            { id: 31, text: "Welche Anforderungsklassen unterscheidet das Kano-Modell?", options: ["A) Basis-, Leistungs-, Begeisterungsmerkmale", "B) Hard, Soft, Skills", "C) Lang-, Mittel-, Kurzfristig", "D) Klein, Mittel, Groß"], correct: 0, explanation: "Kano (1984): Basismerkmale (Must-be), Leistungsmerkmale (One-dimensional), Begeisterungsmerkmale (Attractive)." },
+            { id: 32, text: "Was sind 'Basismerkmale' nach Kano?", options: ["A) Werden vorausgesetzt – Erfüllung wird erwartet, Fehlen führt zu starker Unzufriedenheit", "B) Begeistern den Kunden", "C) Erscheinen in Werbeprospekten", "D) Kosten den meisten Aufwand"], correct: 0, explanation: "Basismerkmale (Must-be) sind selbstverständlich. Erfüllung erzeugt KEINE Begeisterung, aber Fehlen erzeugt starke Unzufriedenheit – z.B. dass ZAN überhaupt erscheint." },
+            { id: 33, text: "Welcher Anforderungstyp erzeugt einen WOW-Effekt?", options: ["A) Basismerkmal", "B) Leistungsmerkmal", "C) Begeisterungsmerkmal", "D) Pflichtmerkmal"], correct: 2, explanation: "Begeisterungsmerkmale (Attractive) sind nicht erwartet, aber wenn sie da sind, sorgen sie für Begeisterung – im PDL z.B. Eigeninitiative der ZAN beim Kunden." },
+            { id: 34, text: "Was passiert mit Begeisterungsmerkmalen über Zeit?", options: ["A) Sie bleiben für immer Begeisterungsmerkmale", "B) Sie verschieben sich oft zu Leistungs- oder Basismerkmalen (Kunden gewöhnen sich)", "C) Sie verschwinden", "D) Sie werden teurer"], correct: 1, explanation: "Bekannte Dynamik: Was heute begeistert, wird morgen erwartet (z.B. WLAN im Hotel). Innovationszwang im Kano-Modell." },
+            { id: 35, text: "Wofür steht NPS?", options: ["A) Net Promoter Score", "B) Neue Personal Strategie", "C) National Pension Society", "D) Numeric Pricing System"], correct: 0, explanation: "NPS = Net Promoter Score (Reichheld 2003). Eine Frage: 'Wie wahrscheinlich würden Sie uns weiterempfehlen?' (0–10)." },
+            { id: 36, text: "Wie wird der NPS berechnet?", options: ["A) Durchschnitt aller Bewertungen", "B) % Promotoren minus % Detraktoren", "C) Anzahl Bewertungen", "D) % Promotoren / % Detraktoren"], correct: 1, explanation: "NPS = % Promotoren (9–10) MINUS % Detraktoren (0–6). Indifferente (7–8) zählen nicht. Skala: -100 bis +100." },
+            { id: 37, text: "Welche NPS-Bewertungen zählen als Promotoren?", options: ["A) 5–6", "B) 7–8", "C) 9–10", "D) 6–10"], correct: 2, explanation: "Promotoren = aktive Befürworter, Bewertung 9–10. Indifferente: 7–8. Detraktoren: 0–6 (kritische Sicht)." },
+            { id: 38, text: "Wofür steht CSI?", options: ["A) Customer Satisfaction Index", "B) Customer Service Indicator", "C) Cost Savings Index", "D) Critical Success Indicator"], correct: 0, explanation: "CSI = Customer Satisfaction Index. Mittelwert aus mehreren Skalen-Fragen, ergibt Gesamt-Zufriedenheits-Wert." },
+            { id: 39, text: "Wann sollte man Kundenbefragungen idealerweise durchführen?", options: ["A) Nur einmal", "B) Regelmäßig (z.B. quartalsweise) + Touchpoint-basiert nach jedem Einsatz", "C) Nur bei Reklamation", "D) Nie"], correct: 1, explanation: "Beste Praxis: Mix aus regelmäßigen großen Befragungen (z.B. quartalsweise) + transaktionalen Mini-Befragungen direkt nach Einsatz/Vorstellung." },
+            { id: 40, text: "Welche Aussage zur Beschwerde ist korrekt?", options: ["A) Beschwerden sind grundsätzlich schlecht", "B) Eine schnell + gut gelöste Beschwerde bindet stärker als wenn nichts passiert wäre", "C) Beschwerden ignorieren ist besser", "D) Beschwerdeführer sollten gemieden werden"], correct: 1, explanation: "Service-Recovery-Paradoxon (Stauss/Seidel): Eine professionell gelöste Beschwerde kann die Kundenbindung sogar erhöhen – mehr als wenn das Problem nie aufgetreten wäre." }
+        ]
+    },
+    {
+        title: "Abschnitt 5: KVP, Kaizen, PDCA & Six Sigma im Recruiting (Fragen 41–50)",
+        questions: [
+            { id: 41, text: "Wofür steht KVP?", options: ["A) Kontinuierlicher Verbesserungsprozess", "B) Kunde Verleiher Personal", "C) Kommerzieller Vertriebsplan", "D) Kontroll-Verfahren-Protokoll"], correct: 0, explanation: "KVP = Kontinuierlicher Verbesserungsprozess. Deutsche Übersetzung von Kaizen. Kleine, ständige Verbesserungen statt sporadischer Großreformen." },
+            { id: 42, text: "Wer hat Kaizen weltweit bekannt gemacht?", options: ["A) Edward Deming", "B) Masaaki Imai (1986)", "C) Ishikawa", "D) Steve Jobs"], correct: 1, explanation: "Masaaki Imai veröffentlichte 1986 'Kaizen: The Key to Japan's Competitive Success' und brachte das Konzept in die westliche Management-Welt." },
+            { id: 43, text: "Welche Eigenschaft kennzeichnet Kaizen?", options: ["A) Große Reformen alle 5 Jahre", "B) Kleine, ständige Verbesserungen unter Beteiligung aller Mitarbeitenden", "C) Beratungsfirma engagieren", "D) IT-System wechseln"], correct: 1, explanation: "Kaizen = kleine Schritte, hohe Beteiligung, niedrige Eintrittshürde, sichtbare Quick Wins, Fehlerkultur ohne Schuldzuweisung." },
+            { id: 44, text: "Wofür steht das Akronym DMAIC bei Six Sigma?", options: ["A) Define, Measure, Analyze, Improve, Control", "B) Develop, Manage, Audit, Implement, Communicate", "C) Design, Make, Assess, Iterate, Close", "D) Decide, Monitor, Act, Inform, Check"], correct: 0, explanation: "DMAIC = Define, Measure, Analyze, Improve, Control. Die fünf Phasen eines Six-Sigma-Projekts." },
+            { id: 45, text: "Was bedeutet DPMO?", options: ["A) Days Per Month Off", "B) Defects Per Million Opportunities", "C) Direct Promoter Marketing Output", "D) Daily Personnel Management Operations"], correct: 1, explanation: "DPMO = Defects Per Million Opportunities. Misst Fehler je 1 Million möglicher Fehlerstellen. Six-Sigma-Niveau = 3,4 DPMO (99,99966% fehlerfrei)." },
+            { id: 46, text: "Welches Sigma-Niveau ist im PDL realistisch?", options: ["A) 6 Sigma (3,4 DPMO)", "B) 4 Sigma (~6.210 DPMO)", "C) 1 Sigma", "D) 0 Sigma"], correct: 1, explanation: "Im Recruiting/Disposition ist 4-Sigma realistisch (~6.210 Defects pro 1 Mio. Möglichkeiten). 6 Sigma bleibt eher Industrie-Produktion vorbehalten." },
+            { id: 47, text: "Welche Phase im PDCA bedeutet 'Standardisieren + Lernen weitergeben'?", options: ["A) Plan", "B) Do", "C) Check", "D) Act"], correct: 3, explanation: "Act = erfolgreiche Verbesserungen standardisieren + nächste PDCA-Iteration starten. Lernzyklus schließt sich + öffnet sich erneut." },
+            { id: 48, text: "Welche der folgenden ist KEINE der 7 Verschwendungsarten (Muda) im Lean?", options: ["A) Wartezeit", "B) Transport", "C) Bestände", "D) Innovation"], correct: 3, explanation: "Die 7 Muda: Überproduktion, Wartezeit, Transport, Überbearbeitung, Bestände, Bewegung, Fehler. Innovation gehört NICHT dazu (im Gegenteil: erwünscht)." },
+            { id: 49, text: "Welche Voraussetzung braucht erfolgreiches KVP/Kaizen?", options: ["A) Hohes Budget", "B) Fehlerkultur ohne Schuldzuweisung", "C) Externe Beratung", "D) Internationale Niederlassungen"], correct: 1, explanation: "Kernvoraussetzung: Mitarbeitende dürfen Fehler benennen ohne Bestrafung – nur so kommen Verbesserungsvorschläge ans Licht (psychologische Sicherheit)." },
+            { id: 50, text: "Welche Phase im DMAIC misst die aktuelle Performance?", options: ["A) Define", "B) Measure", "C) Analyze", "D) Improve"], correct: 1, explanation: "Measure: aktuelle Performance erfassen (DPMO, Time-to-Fill, Reklamationsquote etc.) – Datenbasis für Analyze + Improve." }
+        ]
+    },
+    {
+        title: "Abschnitt 6: Beschwerde- und Reklamationsmanagement (Fragen 51–60)",
+        questions: [
+            { id: 51, text: "Wer prägte das Beschwerdemanagement-Modell mit 4 Aufgaben?", options: ["A) Stauss & Seidel (2007)", "B) Ishikawa", "C) Imai", "D) Reichheld"], correct: 0, explanation: "Stauss & Seidel haben 2007 das Standardwerk zum Beschwerdemanagement geschrieben – 4 Aufgaben: Stimulieren, Annehmen, Bearbeiten, Auswerten." },
+            { id: 52, text: "Welches sind die 4 Aufgaben des Beschwerdemanagements?", options: ["A) Stimulieren, Annehmen, Bearbeiten, Auswerten", "B) Sammeln, Analysieren, Berechnen, Aussagen", "C) Speichern, Antworten, Beantworten, Archivieren", "D) Sortieren, Aufschreiben, Beziffern, Auslagern"], correct: 0, explanation: "Stauss/Seidel-Vier-Aufgaben-Modell: 1) Stimulieren (Beschwerden willkommen), 2) Annehmen (strukturiert erfassen), 3) Bearbeiten (lösungsorientiert), 4) Auswerten (Muster erkennen)." },
+            { id: 53, text: "Was bedeutet 'Stimulierung' im Beschwerdemanagement?", options: ["A) Beschwerdeführer beleidigen", "B) Beschwerdekanäle schaffen, sichtbar machen, niedrigschwellig anbieten", "C) Beschwerden vermeiden", "D) Mitarbeitende motivieren"], correct: 1, explanation: "Stimulierung = aktiv Kanäle anbieten, ermutigen zu sprechen, Hürden abbauen. Latente Beschwerden (still verärgerte Kunden) sind gefährlicher als offene." },
+            { id: 54, text: "Welche Reaktionszeit gilt als gut für Beschwerden?", options: ["A) Innerhalb von 4 Wochen", "B) Möglichst innerhalb von 24h Erstreaktion + transparenter Status", "C) Wenn man Lust hat", "D) Nur einmal pro Quartal"], correct: 1, explanation: "Best Practice: Erstreaktion innerhalb 24h (oft schon stundenweise), klare Statuskommunikation, Lösung in vereinbartem SLA-Zeitraum." },
+            { id: 55, text: "Was ist der Vorteil systematischer Beschwerdeauswertung?", options: ["A) Erkennen wiederkehrender Muster + gezielte Prozessverbesserung", "B) Beschwerden zählen ist Selbstzweck", "C) Reine Statistik", "D) Beschwerdeführer ablegen"], correct: 0, explanation: "Auswertung zeigt Muster (z.B. 'gleicher Kunde, gleiches Problem' oder '70 % der Beschwerden betreffen das ZAN-Briefing') → Prozessverbesserung." },
+            { id: 56, text: "Welche Aussage zum Service-Recovery-Paradoxon ist korrekt?", options: ["A) Eine sehr gut gelöste Beschwerde kann zu höherer Loyalität führen als wenn das Problem nie auftrat", "B) Beschwerden zerstören immer die Beziehung", "C) Service-Recovery ist nutzlos", "D) Es ist Zufall, ob Lösungen wirken"], correct: 0, explanation: "Service-Recovery-Paradoxon: Wenn ein Unternehmen aus einer Beschwerde sehr gut herauskommt, kann die Kundenbindung sogar steigen (positives Erlebnis: 'Die kümmern sich')." },
+            { id: 57, text: "Welche Daten gehören zur Beschwerdeerfassung?", options: ["A) Datum, Kunde, Beschwerdegrund, Kategorie, Bearbeitung, Ergebnis, Maßnahme", "B) Nur Datum", "C) Nur Lösung", "D) Nur Kundennummer"], correct: 0, explanation: "Vollständige Erfassung: Datum, Kanal, Kunde, Beschwerdegrund, Kategorie/Klassifizierung, zuständige Person, Bearbeitungsschritte, Lösung, abgeleitete Maßnahme." },
+            { id: 58, text: "Wann sollte ein Reklamationsfall an die nächste Eskalationsstufe weitergegeben werden?", options: ["A) Sofort bei jeder Beschwerde", "B) Bei Nichtklärung im SLA-Zeitraum oder Kundenverlustrisiko", "C) Nie", "D) Nur freitags"], correct: 1, explanation: "Eskalation: bei drohender Verletzung des SLA, drohendem Kundenverlust, rechtlichem Konflikt oder hoher Schadenshöhe – an NL/Vertrieb (Stufe 2) oder GF (Stufe 3)." },
+            { id: 59, text: "Welche Rolle spielt das Beschwerdemanagement im PDL gegenüber Großkunden?", options: ["A) Es ist überflüssig", "B) Es ist oft Vergabebedingung + im SLA verankert", "C) Es schadet dem Geschäft", "D) Es ist nur intern"], correct: 1, explanation: "Großkunden verlangen oft dokumentiertes Beschwerdemanagement (Reaktionszeit, Eskalationsstufen, regelmäßige Reports) als Teil des SLA / Lieferantenaudits." },
+            { id: 60, text: "Welche Kennzahl misst die Beschwerdezufriedenheit am besten?", options: ["A) Anzahl Beschwerden", "B) Lösungsquote + Zufriedenheit nach Beschwerdebearbeitung (Recovery-NPS)", "C) Krankheitsquote", "D) Anzahl Mitarbeitende"], correct: 1, explanation: "Quantitative + qualitative Sicht: Lösungsquote (% gelöst im SLA) + Zufriedenheit der Beschwerdeführer NACH der Bearbeitung (Recovery-Befragung mit kleinem NPS oder Skala)." }
+        ]
+    }
+];
+
+let answered = {};
+let checked  = {};
+let showAll  = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() {
+    const flat = [];
+    sections.forEach(s => s.questions.forEach(q => flat.push(q)));
+    return flat;
+}
+const flatQ = allQuestions();
+
+function render() {
+    const container = document.getElementById('quizContainer');
+    let html = '';
+    let globalIdx = 0;
+
+    sections.forEach((sec, si) => {
+        html += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach((q, qi) => {
+            const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+            const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+            html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+            html += `<p class="question-text">${q.text}</p>`;
+            html += `<ul class="options-list">`;
+            q.options.forEach((opt, oi) => {
+                let cls = '';
+                if (checked[q.id]) {
+                    if (oi === q.correct) cls = 'correct-opt';
+                    else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+                } else if (answered[q.id] === oi) {
+                    cls = 'selected';
+                }
+                const dis = checked[q.id] ? 'disabled' : '';
+                const chk = answered[q.id] === oi ? 'checked' : '';
+                html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+            });
+            html += `</ul>`;
+            const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+
+            if (checked[q.id]) {
+                const isCorr = answered[q.id] === q.correct;
+                const fbClass = isCorr ? 'correct' : 'incorrect';
+                const fbText = isCorr
+                    ? `<strong>Richtig!</strong> ${q.explanation}`
+                    : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+                html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+            } else {
+                html += `<div class="feedback" id="fb-${q.id}"></div>`;
+            }
+
+            html += `</div>`;
+            globalIdx++;
+        });
+    });
+
+    if (!showAll) {
+        html += `<div class="nav-row">`;
+        html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+        html += `<span style="font-weight:600;color:#004b87;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+        html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+        html += `</div>`;
+    }
+
+    container.innerHTML = html;
+    updateProgress();
+}
+
+function selectOption(qid, idx) {
+    if (checked[qid]) return;
+    answered[qid] = idx;
+    render();
+}
+
+function checkAnswer(qid) {
+    if (answered[qid] === undefined || checked[qid]) return;
+    checked[qid] = true;
+    render();
+    updateProgress();
+}
+
+function navigate(dir) {
+    currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir));
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+    const done = Object.keys(checked).length;
+    const pct = Math.round((done / totalQ) * 100);
+    document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+    document.getElementById('progressPct').textContent = `${pct} %`;
+    document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+    const done = Object.keys(checked).length;
+    if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+
+    let correct = 0;
+    flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+    const pct = Math.round((correct / done) * 100);
+
+    document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+
+    let gradeText = '';
+    let gradeClass = 'pass';
+    if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+    else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+    else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+    else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+    else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+    else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+
+    const gEl = document.getElementById('gradeText');
+    gEl.textContent = gradeText;
+    gEl.className = 'grade ' + gradeClass;
+
+    let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+    sections.forEach(sec => {
+        let sCorr = 0, sTotal = 0;
+        sec.questions.forEach(q => {
+            if (checked[q.id]) {
+                sTotal++;
+                if (answered[q.id] === q.correct) sCorr++;
+            }
+        });
+        const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+        tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+    });
+    tbl += '</table>';
+    document.getElementById('sectionBreakdown').innerHTML = tbl;
+
+    document.getElementById('resultsPanel').classList.add('show');
+    document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+    answered = {};
+    checked = {};
+    currentQ = 0;
+    document.getElementById('resultsPanel').classList.remove('show');
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () {
+    showAll = this.checked;
+    render();
+});
+
+function shuffleQuizOptions() {
+    let seed = 20260506;
+    function seededRandom() {
+        seed = (seed * 16807 + 0) % 2147483647;
+        return (seed - 1) / 2147483646;
+    }
+    sections.forEach(sec => {
+        sec.questions.forEach(q => {
+            const correctText = q.options[q.correct];
+            const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+            for (let i = cleaned.length - 1; i > 0; i--) {
+                const j = Math.floor(seededRandom() * (i + 1));
+                [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+            }
+            const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+            const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+            q.options = cleaned.map((c, i) => prefixes[i] + c);
+            q.correct = cleaned.indexOf(correctClean);
+        });
+    });
+}
+shuffleQuizOptions();
+
+render();
+</script>
+<div id="pdk-bottom-back">
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+</div>
+</body>
+</html>

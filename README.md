@@ -18,8 +18,10 @@ Nach Aktivierung von GitHub Pages: https://cansi798.github.io/04.05_23.06_Person
 
 - **Tag 04** (2026-05-07) -- Do Projektbegriff Onsite Grosskundenprojekte
 - **Tag 05** (2026-05-08) -- Fr Lastenheft Pflichtenheft Auftragsklaerung Anforderungsprofil
+- **Tag 06** (2026-05-11) -- Mo Beteiligte SMARTziele Inhalte
 - **Tag 07** (2026-05-12) -- Di Rollen Team Projektorganisation
 - **Tag 08** (2026-05-13) -- Mi Projektstrukturplan PSP
+- **Tag 09** (2026-05-15) -- Fr Ablaufplan Gantt Ressourcenplanung
 - **Tag 10** (2026-05-18) -- Mo Soll-Ist-KPI Recruiting Fluktuation
 - **Tag 11** (2026-05-19) -- Di Projektdokumentation Abschluss LessonsLearned
 

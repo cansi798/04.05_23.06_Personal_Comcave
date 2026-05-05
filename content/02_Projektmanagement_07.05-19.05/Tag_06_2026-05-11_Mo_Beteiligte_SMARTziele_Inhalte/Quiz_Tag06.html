@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+<style id="pdk-back-style">
+#pdk-back-banner { position: sticky; top: 0; z-index: 9999; background: #0f3151; color: #fff; padding: 0.85rem 1rem; display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; box-shadow: 0 4px 14px rgba(0,0,0,0.25); font-family: "Segoe UI", Tahoma, sans-serif; border-bottom: 3px solid #1780a1; }
+#pdk-back-banner a { color: #fff; text-decoration: none; font-weight: 700; padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4); font-size: 0.95rem; transition: background 0.15s, transform 0.1s; }
+#pdk-back-banner a:hover { background: rgba(255,255,255,0.32); transform: translateY(-1px); }
+#pdk-back-banner .pdk-label { font-size: 0.92rem; opacity: 0.95; margin-left: auto; }
+#pdk-floating-back { position: fixed; bottom: 22px; right: 22px; z-index: 9998; background: #0f3151; color: #fff !important; text-decoration: none; padding: 0.85rem 1.3rem; border-radius: 50px; box-shadow: 0 6px 18px rgba(0,0,0,0.30); font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 0.95rem; border: 2px solid rgba(255,255,255,0.4); transition: transform 0.12s, box-shadow 0.12s; }
+#pdk-floating-back:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
+#pdk-bottom-back { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; padding: 1.5rem 1rem 2rem; background: #eef4f8; border-top: 1px solid #d6e0e8; margin-top: 2rem; }
+#pdk-bottom-back a { display: inline-block; padding: 0.85rem 1.5rem; background: #0d5c8c; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 1rem; box-shadow: 0 4px 12px rgba(13,92,140,0.25); }
+#pdk-bottom-back a:hover { background: #0f3151; }
+@media print { #pdk-back-banner, #pdk-floating-back, #pdk-bottom-back { display: none !important; } }
+</style><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Tag 06 – Stakeholder, SMART-Ziele &amp; Inhalte</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #00325f 0%, #004b87 50%, #0082b4 100%); color: #fff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; }
+.header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+.header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+.toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+.toolbar button, .toolbar .toggle-label { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+.toolbar button:hover { background: #00325f; }
+.toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; }
+.toggle-label input { accent-color: #004b87; width: 18px; height: 18px; cursor: pointer; }
+.progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+.progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+.progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0082b4, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+.container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+.section-title { background: #00325f; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+.section-title:first-child { margin-top: 0; }
+.question-card { background: #fff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+.question-card.correct-card { border-left: 5px solid #28a745; }
+.question-card.incorrect-card { border-left: 5px solid #dc3545; }
+.question-number { display: inline-block; background: #e8f0fe; color: #004b87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+.question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+.options-list { list-style: none; }
+.options-list li { margin-bottom: 0.5rem; }
+.options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; font-size: 0.95rem; }
+.options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+.options-list input[type="radio"] { accent-color: #004b87; margin-top: 3px; flex-shrink: 0; }
+.options-list label.selected { background: #e8f0fe; border-color: #004b87; }
+.options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+.options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+.check-btn { margin-top: 0.8rem; background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+.check-btn:hover { background: #00325f; }
+.check-btn:disabled { background: #8faec8; cursor: default; }
+.feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+.feedback.show { display: block; }
+.feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.nav-btn { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+.nav-btn:hover { background: #00325f; }
+.nav-btn:disabled { background: #8faec8; cursor: default; }
+.results-panel { background: #fff; border: 2px solid #004b87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; }
+.results-panel.show { display: block; }
+.results-panel h2 { color: #00325f; margin-bottom: 0.8rem; }
+.score-big { font-size: 3rem; font-weight: 700; color: #004b87; }
+.grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+.grade.pass { color: #28a745; }
+.grade.fail { color: #dc3545; }
+.section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+.section-breakdown table { width: 100%; border-collapse: collapse; }
+.section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+.section-breakdown th { background: #e8f0fe; color: #00325f; text-align: left; }
+.references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+.references h3 { color: #00325f; margin-bottom: 0.8rem; font-size: 1.1rem; }
+.references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+.footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+@media print { body { background: #fff; } .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; } }
+@media (max-width: 600px) { .header { padding: 1.4rem 0.8rem; } .question-card { padding: 1rem; } .toolbar { flex-direction: column; align-items: stretch; text-align: center; } }
+.hidden { display: none !important; }
+</style></head><body>
+<div id="pdk-back-banner">
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+  <span class="pdk-label">PDK Personal-Kurs Mai-Juni 2026</span>
+</div>
+<a id="pdk-floating-back" href="../../../index.html" title="Zurueck zur Tagesuebersicht">&larr; Uebersicht</a>
+
+<header class="header">
+    <h1>Quiz Tag 06 &ndash; Stakeholder, SMART-Ziele &amp; Inhalte</h1>
+    <div class="subtitle">Lehrgang Personaldienstleistungskaufmann/-frau IHK &middot; Lerninhalte P5 + P6 + P7</div>
+    <div class="meta"><span>&copy; Can Siebert</span><span>Stand 05/2026</span><span>60 Fragen &bull; Multiple Choice</span></div>
+</header>
+
+<div class="toolbar">
+    <label class="toggle-label"><input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen</label>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;"><button onclick="showResults()">Ergebnis anzeigen</button><button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button></div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-info"><span id="progressText">0 von 60 beantwortet</span><span id="progressPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+    <div class="results-panel" id="resultsPanel">
+        <h2>Dein Ergebnis</h2><div class="score-big" id="scoreBig"></div><div class="grade" id="gradeText"></div><div class="section-breakdown" id="sectionBreakdown"></div>
+        <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="references">
+    <h3>Literaturverzeichnis (APA 7)</h3>
+    <p>Doran, G. T. (1981). There's a S.M.A.R.T. way to write management's goals and objectives. <em>Management Review, 70</em>(11), 35&ndash;36.</p>
+    <p>Freeman, R. E. (2010). <em>Strategic Management: A Stakeholder Approach</em>. Cambridge UP.</p>
+    <p>Kerzner, H. (2017). <em>Project Management: A Systems Approach</em>. Wiley.</p>
+    <p>Project Management Institute. (2021). <em>PMBOK Guide (7th ed.)</em>. PMI.</p>
+    <p>Bundesministerium der Justiz. (2024). <em>Betriebsverfassungsgesetz (BetrVG)</em>. https://www.gesetze-im-internet.de/betrvg/</p>
+</div>
+
+<footer class="footer">&copy; 2026 Can Siebert. | Lehrgang PDK Mai&ndash;Juni 2026 | Stand 05/2026</footer>
+
+<script>
+const sections = [
+{ title: "Abschnitt 1: Stakeholder-Grundlagen (Fragen 1–10)", questions: [
+{ id: 1, text: "Was ist ein Stakeholder?", options: ["A) Aktionär", "B) Person/Gruppe, die ein Projekt beeinflusst oder davon betroffen ist", "C) Lieferant", "D) Geldgeber"], correct: 1, explanation: "Stakeholder = jede Anspruchsgruppe (intern/extern), die das Projekt beeinflusst oder beeinflusst wird – nach Freeman (1984)." },
+{ id: 2, text: "Welcher ist KEIN typischer Stakeholder im PDL-Großprojekt?", options: ["A) Auftraggeber-Einkauf", "B) Fachabteilung des Kunden", "C) Mond", "D) Betriebsrat"], correct: 2, explanation: "Mond ist kein Stakeholder. Andere: Kunde, Fachabteilung, Betriebsrat, NL, Vertrieb, Recruiting, Disposition, Backoffice, ZAN, GF, Lieferanten." },
+{ id: 3, text: "Wer ist im PDL der typische Auftraggeber?", options: ["A) Kunde / Entleiher", "B) ZAN", "C) Berufsschule", "D) Gewerbeaufsicht"], correct: 0, explanation: "Auftraggeber = der Kundenbetrieb (Entleiher), der den Personalbedarf hat und das PDL-Projekt vergibt." },
+{ id: 4, text: "Wozu dient eine Stakeholder-Analyse?", options: ["A) Lohnabrechnung", "B) Identifikation, Bewertung und Priorisierung der Anspruchsgruppen", "C) Steuerprüfung", "D) Werbung"], correct: 1, explanation: "Stakeholder-Analyse: Wer ist beteiligt? Welche Macht/Interesse? Wie kommunizieren? Wichtig für Risikomanagement." },
+{ id: 5, text: "Welche Felder hat die Macht-Interesse-Matrix?", options: ["A) Manage closely / Keep informed / Keep satisfied / Monitor", "B) Heiß / Kalt / Lau / Warm", "C) Klein / Mittel / Groß / Riesig", "D) A / B / C / D"], correct: 0, explanation: "Mendelow-Matrix: hohe Macht+hohes Interesse=Manage closely, hohe Macht+niedriges Interesse=Keep satisfied, niedrige Macht+hohes Interesse=Keep informed, niedrige beide=Monitor." },
+{ id: 6, text: "In welches Feld gehört der Einkaufsleiter des Kunden?", options: ["A) Manage closely (hohe Macht + hohes Interesse)", "B) Monitor", "C) Keep satisfied", "D) Keep informed"], correct: 0, explanation: "Einkaufsleiter Kunde = hohe Macht (Vertragsabschluss, Zahlung) + hohes Interesse (operative Bedeutung) = Manage closely." },
+{ id: 7, text: "Welcher Betriebsrat hat Mitbestimmung bei Einsatz von Leiharbeit?", options: ["A) Der des Verleihers (Personaldienstleister)", "B) Der des Entleihers (Kunde)", "C) Beide", "D) Keiner"], correct: 1, explanation: "§ 14 AÜG / § 99 BetrVG: Betriebsrat des Entleihers (Kunde) muss vor Einstellung von Leiharbeitnehmern informiert werden + kann Zustimmung verweigern." },
+{ id: 8, text: "Was steht in § 99 BetrVG?", options: ["A) Lohnsteuer", "B) Mitbestimmung des Betriebsrats bei Einstellung – auch Leiharbeit", "C) Kündigungsschutz", "D) Datenschutz"], correct: 1, explanation: "§ 99 BetrVG: Vor jeder Einstellung (auch Leiharbeit) muss Arbeitgeber Betriebsrat informieren; Betriebsrat kann Zustimmung verweigern." },
+{ id: 9, text: "Was ist ein 'interner' Stakeholder im PDL?", options: ["A) Kunde", "B) NL, Vertrieb, Recruiting, Disposition, Backoffice, ZAN, GF", "C) Lieferant", "D) Konkurrent"], correct: 1, explanation: "Interne Stakeholder = innerhalb des Personaldienstleisters: NL, Vertrieb, Recruiting, Disposition, Backoffice, ZAN, Geschäftsleitung." },
+{ id: 10, text: "Welcher Stakeholder hat das größte Risiko, wenn er ignoriert wird?", options: ["A) Lieferant", "B) Hochmächtiger Stakeholder mit hohem Interesse (z.B. Einkaufsleitung Kunde)", "C) Pförtner", "D) Hausmeister"], correct: 1, explanation: "Hohe Macht + hohes Interesse = Top-Risiko bei schlechtem Management. Ignorieren führt zu Vertragsabbruch oder Eskalation." }
+]},
+{ title: "Abschnitt 2: Stakeholder-Management (Fragen 11–20)", questions: [
+{ id: 11, text: "Welcher Schritt im Stakeholder-Management kommt zuerst?", options: ["A) Identifizieren", "B) Kommunizieren", "C) Überwachen", "D) Bewerten"], correct: 0, explanation: "Reihenfolge: Identifizieren → Analysieren → Priorisieren → Engagement planen → Kommunizieren → Überwachen." },
+{ id: 12, text: "Welche Rolle hat der Lenkungsausschuss?", options: ["A) Operative Disposition", "B) Steuerungsgremium des Projekts (Auftraggeber + Schlüsselstakeholder, entscheidet über Eskalationen)", "C) Lohnabrechnung", "D) Kundenakquise"], correct: 1, explanation: "Lenkungsausschuss / Steering Committee = oberstes Steuerungsgremium des Projekts, entscheidet über Eskalationen, Change Requests, Ressourcen." },
+{ id: 13, text: "Welcher Stakeholder bekommt typisch 'Keep informed'?", options: ["A) Hochmächtige mit hohem Interesse", "B) Niedrigmächtige mit hohem Interesse (z.B. Fachabteilung des Kunden)", "C) Niedrigmächtige mit niedrigem Interesse", "D) Hochmächtige mit niedrigem Interesse"], correct: 1, explanation: "Niedrige Macht + hohes Interesse = Keep informed (transparent + regelmäßig informieren, ohne stark einzubinden)." },
+{ id: 14, text: "Welche Information sollte ein Stakeholder-Plan enthalten?", options: ["A) Stakeholder, Macht/Interesse, Erwartungen, Engagement-Plan, Kommunikationskanal, Frequenz", "B) Nur Namen", "C) Nur Telefonnummern", "D) Nur Adressen"], correct: 0, explanation: "Vollständiger Stakeholder-Plan: Person/Gruppe, Macht/Interesse, Erwartungen, Engagement-Strategie, Kommunikationskanal, Frequenz, Verantwortlich." },
+{ id: 15, text: "Wann sollte Stakeholder-Analyse aktualisiert werden?", options: ["A) Nie", "B) Regelmäßig (Stakeholder ändern sich, neue kommen, alte gehen)", "C) Nur am Anfang", "D) Nur am Ende"], correct: 1, explanation: "Stakeholder-Landschaft ist dynamisch (Personalwechsel beim Kunden, neue Abteilungen, Eskalation auf höhere Ebene). Regelmäßige Aktualisierung essentiell." },
+{ id: 16, text: "Was ist 'Stakeholder-Mapping'?", options: ["A) Visualisierung der Stakeholder mit ihren Beziehungen + Einflüssen", "B) Reine Adressliste", "C) Geo-Lokalisierung", "D) Wikipedia-Eintrag"], correct: 0, explanation: "Stakeholder-Mapping: visuelles Tool, das Stakeholder + ihre Beziehungen, Einflüsse, Allianzen sichtbar macht." },
+{ id: 17, text: "Welcher Stakeholder ist im PDL häufig 'Sponsor' des Projekts?", options: ["A) Pförtner", "B) Hochrangige Person beim Kunden (z.B. Einkaufsleitung, Personalleitung), die Budget freigibt", "C) ZAN", "D) Lieferant"], correct: 1, explanation: "Sponsor (Auftraggeber) = hochrangige Person mit Budget-/Entscheidungsmacht, die das Projekt politisch trägt. Im PDL: Personalchef, Einkaufsleitung." },
+{ id: 18, text: "Welche Maßnahme passt zu 'Keep satisfied'?", options: ["A) Tägliche Berichte", "B) Quartalsweise High-Level-Briefings, keine operative Belastung", "C) Tägliche Eskalation", "D) Ignorieren"], correct: 1, explanation: "Keep satisfied (hohe Macht, niedriges Interesse): Sie wollen nur informiert sein, nicht detailliert involviert. Quartalsweise Highlights, keine Tagesgeschäft-Mails." },
+{ id: 19, text: "Wer entscheidet über Change Requests?", options: ["A) Disponent allein", "B) Lenkungsausschuss + Auftraggeber gemeinsam", "C) Nur GF", "D) Niemand"], correct: 1, explanation: "Change Requests werden im Lenkungsausschuss bewertet + entschieden, mit Auftraggeber-Freigabe (vertragliche Auswirkung)." },
+{ id: 20, text: "Was ist eine RACI-Matrix?", options: ["A) Software", "B) Rollen-Matrix: Responsible, Accountable, Consulted, Informed", "C) Tarifvertrag", "D) Zeiterfassung"], correct: 1, explanation: "RACI: Responsible (führt aus), Accountable (verantwortlich, eine Person!), Consulted (zu konsultieren), Informed (zu informieren)." }
+]},
+{ title: "Abschnitt 3: SMART-Ziele (Fragen 21–30)", questions: [
+{ id: 21, text: "Wer hat SMART-Ziele beschrieben?", options: ["A) Doran (1981)", "B) Deming", "C) Ishikawa", "D) Drucker"], correct: 0, explanation: "George T. Doran veröffentlichte 1981 'There's a SMART way to write management's goals' im Management Review." },
+{ id: 22, text: "Wofür steht das 'S' in SMART?", options: ["A) Stark", "B) Spezifisch", "C) Schnell", "D) Schön"], correct: 1, explanation: "S = Specific / Spezifisch: Ziel klar, eindeutig formuliert (kein 'mehr Personal' sondern '25 Lagerkräfte mit Staplerschein')." },
+{ id: 23, text: "Wofür steht das 'M' in SMART?", options: ["A) Modern", "B) Messbar (in Zahlen erfassbar)", "C) Manuell", "D) Maximal"], correct: 1, explanation: "M = Measurable / Messbar: Konkrete Zahlen, Daten, Schwellen – sonst nicht prüfbar, ob erreicht." },
+{ id: 24, text: "Wofür steht das 'A' in SMART?", options: ["A) Aktiv", "B) Akzeptiert (oder Achievable: machbar/akzeptiert)", "C) Anders", "D) Außen"], correct: 1, explanation: "A = Akzeptiert / Achievable: Ziel von den Stakeholdern akzeptiert + erreichbar mit verfügbaren Mitteln." },
+{ id: 25, text: "Wofür steht das 'R' in SMART?", options: ["A) Realistisch / Relevant", "B) Riesig", "C) Riskant", "D) Rauchend"], correct: 0, explanation: "R = Realistisch (Realistic) bzw. Relevant: Ziel ist mit verfügbaren Mitteln machbar und passt zur Strategie." },
+{ id: 26, text: "Wofür steht das 'T' in SMART?", options: ["A) Total", "B) Terminiert (mit Enddatum)", "C) Technisch", "D) Teamfähig"], correct: 1, explanation: "T = Terminiert / Time-bound: Klares Enddatum (oder Meilenstein) – ohne Termin verpufft das Ziel." },
+{ id: 27, text: "Welche Formulierung ist SMART?", options: ["A) 'Mehr Mitarbeitende einsetzen'", "B) '25 Lagerkräfte mit Staplerschein bei Kunde X bis 30.06.2026 im Budget 90.000 EUR'", "C) 'Bestmögliche Leistung'", "D) 'Möglichst viele Bewerbungen'"], correct: 1, explanation: "B) erfüllt alle 5 SMART-Kriterien: spezifisch (Lagerkräfte), messbar (25, 90.000), akzeptiert/realistisch (mit Pipeline), terminiert (30.06.)." },
+{ id: 28, text: "Welche Zielebene ist 'operativ'?", options: ["A) Marktanteil ausbauen (langfristig)", "B) Kurzfristig: 25 Lagerkräfte diesen Monat einsetzen", "C) Mittelfristig 3 Großkunden", "D) Vision 2030"], correct: 1, explanation: "Zielhierarchie: strategisch (Vision/Marktanteil), taktisch (Großkunden, Pipeline), operativ (kurzfristige Aufgaben/Stellen)." },
+{ id: 29, text: "Welche zwei Ecken neben 'Qualität' bilden das Magische Dreieck?", options: ["A) Personal + Material", "B) Zeit + Kosten", "C) Lohn + Pause", "D) Teamgröße + Office-Größe"], correct: 1, explanation: "Magisches Dreieck: Zeit, Kosten, Qualität – konkurrieren ('schneller=teurer=weniger Qualität')." },
+{ id: 30, text: "Was passiert ohne SMART-Ziele?", options: ["A) Keine Auswirkung", "B) Ziele werden vage, nicht prüfbar, häufig verfehlt – Konflikte am Ende", "C) Höhere Margen", "D) Bessere Stimmung"], correct: 1, explanation: "Vage Ziele → keine Erfolgskontrolle möglich → Diskussionen am Ende ('das war doch klar!') → Reklamationen und unzufriedene Kunden." }
+]},
+{ title: "Abschnitt 4: Magisches Dreieck &amp; Zielkonflikte (Fragen 31–40)", questions: [
+{ id: 31, text: "Was ist das 'Magische Dreieck' im Projektmanagement?", options: ["A) Zeit – Kosten – Qualität", "B) Bermuda-Dreieck", "C) Hard – Soft – Skills", "D) Lohn – Pause – Urlaub"], correct: 0, explanation: "Magisches Dreieck (auch Project Triangle): Zeit, Kosten, Qualität (manchmal: Scope/Umfang) – die Eckpunkte stehen in Konkurrenz." },
+{ id: 32, text: "Was bedeutet 'Schneller fertig werden'?", options: ["A) Kostenneutral und qualitätsneutral", "B) Meist teurer (mehr Ressourcen) und/oder schlechtere Qualität", "C) Höhere Qualität", "D) Niedrigere Kosten"], correct: 1, explanation: "Wer beschleunigen will, zahlt entweder mit Kosten (Mehrarbeit, mehr Ressourcen) oder Qualität (weniger gründliches Arbeiten)." },
+{ id: 33, text: "Was bedeutet 'Billiger werden' typischerweise?", options: ["A) Schneller", "B) Längere Laufzeit oder schlechtere Qualität", "C) Bessere Qualität automatisch", "D) Mehr Personal"], correct: 1, explanation: "Kostensenkung führt fast immer zu längerer Laufzeit (weniger Ressourcen) oder Qualitätsverlust (Sparen am Material/Skills)." },
+{ id: 34, text: "Welcher Konflikt ist typisch im PDL-Recruiting?", options: ["A) Schnelle Besetzung vs. perfekt passende Profile", "B) Eis vs. Kaffee", "C) Sommer vs. Winter", "D) Auto vs. Fahrrad"], correct: 0, explanation: "Klassischer Trade-off: Time-to-Fill kurz halten heißt Kompromisse beim Profil; perfekte Profile finden braucht Zeit." },
+{ id: 35, text: "Wie wird mit Zielkonflikten umgegangen?", options: ["A) Ignorieren", "B) Bewusst priorisieren mit Auftraggeber: was ist wichtiger – Zeit, Kosten oder Qualität?", "C) Beides verlangen", "D) Würfeln"], correct: 1, explanation: "Mit Auftraggeber priorisieren: Was ist 'must-have'? Was ist 'should/could'? Trade-offs explizit vereinbaren." },
+{ id: 36, text: "Was ist ein 'Trade-off'?", options: ["A) Steueroptimierung", "B) Bewusster Kompromiss zwischen konkurrierenden Anforderungen", "C) Tarifvertrag", "D) Lohnauszahlung"], correct: 1, explanation: "Trade-off = bewusster, transparenter Kompromiss. Z.B. 'Wir nehmen Profile mit 80% statt 100% Match, dafür eine Woche schneller'." },
+{ id: 37, text: "Welche Rolle hat die Qualität im Magischen Dreieck im PDL?", options: ["A) Egal", "B) Eignung der ZAN, geringe Reklamationsquote, Klebequote", "C) Nur Pünktlichkeit", "D) Lohn"], correct: 1, explanation: "Qualität im PDL = Eignung der vorgestellten/eingesetzten ZAN, geringe Reklamationsquote, hohe Übernahmequote (Klebeeffekt)." },
+{ id: 38, text: "Welche zusätzliche Dimension wird beim 'Magischen Viereck' ergänzt?", options: ["A) Scope (Umfang)", "B) Personal", "C) Wetter", "D) Politik"], correct: 0, explanation: "Magisches Viereck (PMI 7th ed.) ergänzt Scope (Umfang) zum klassischen Dreieck Zeit/Kosten/Qualität – manchmal auch Risiko." },
+{ id: 39, text: "Was passiert bei nicht akzeptiertem SMART-Ziel?", options: ["A) Keine Auswirkung", "B) Stakeholder boykottieren das Projekt oder verweigern Mitarbeit", "C) Höhere Marge", "D) Schnellerer Abschluss"], correct: 1, explanation: "'Akzeptiert' ist kritisch: Wenn Stakeholder Ziel nicht mittragen, ziehen sie nicht mit, blockieren oder erfüllen es nicht – Projekt scheitert." },
+{ id: 40, text: "Welche Aussage zur Zieldefinition ist korrekt?", options: ["A) Ziele werden später beschlossen", "B) Klare Ziele definieren ist der wichtigste Schritt am Projektanfang", "C) Ziele sind unwichtig", "D) Ziele kann der Projektleiter alleine festlegen"], correct: 1, explanation: "Zieldefinition am Anfang ist kritisch: ohne klare Ziele kein Plan, keine Erfolgsmessung, kein Abschlusserfolg. Stakeholder-Konsens essentiell." }
+]},
+{ title: "Abschnitt 5: Scope &amp; Inhalte (Fragen 41–50)", questions: [
+{ id: 41, text: "Was beschreibt 'Scope' im Projektkontext?", options: ["A) Den Projektumfang: was im Projekt enthalten ist und was nicht", "B) Eine Brille", "C) Lohn", "D) Stundenzettel"], correct: 0, explanation: "Scope = Projektumfang. Definiert klar, was Teil des Projekts ist (In Scope) und was bewusst nicht (Out of Scope)." },
+{ id: 42, text: "Was sind 'Out-of-Scope'-Inhalte?", options: ["A) Geheim", "B) Bewusst NICHT enthaltene Leistungen, klar dokumentiert", "C) Vergessene Leistungen", "D) Teure Leistungen"], correct: 1, explanation: "Out of Scope = explizit ausgeschlossene Leistungen. Wichtig zu dokumentieren, sonst späterer Streit ('Das musste doch dabei sein!')." },
+{ id: 43, text: "Was sind 'Annahmen' im Scope-Statement?", options: ["A) Vermutungen", "B) Prämissen, von denen das Projekt ausgeht (z.B. Kunde stellt PSA)", "C) Strafen", "D) Boni"], correct: 1, explanation: "Annahmen (Assumptions): Ohne diese gilt der Plan nicht. Beispiele: Kunde stellt PSA, Tarif gilt unverändert, Bewerber-Pool verfügbar." },
+{ id: 44, text: "Was sind 'Constraints'?", options: ["A) Beschränkungen (Budget, Termin, gesetzliche Vorgaben)", "B) Erleichterungen", "C) Optionen", "D) Geheimnisse"], correct: 0, explanation: "Constraints = Beschränkungen: Budget-Decke, fester Termin, AÜG-Vorgaben, Tarifvertrag, IT-Vorgaben des Kunden." },
+{ id: 45, text: "Was ist ein 'Deliverable'?", options: ["A) Ein konkretes Lieferobjekt mit definiertem Akzeptanzkriterium", "B) Eine Pause", "C) Ein Lohnzettel", "D) Eine Werbeanzeige"], correct: 0, explanation: "Deliverable = konkretes, abgrenzbares Lieferobjekt mit definiertem Akzeptanzkriterium (z.B. 'besetzte Stelle mit Probearbeitstag bestanden')." },
+{ id: 46, text: "Welcher Deliverable im PDL-Recruiting ist typisch?", options: ["A) Anforderungsprofil, Bewerber-Pool, besetzte Stellen, Wochen-Reports, Abnahmebericht", "B) Wetterbericht", "C) Steuererklärung", "D) Werbeflyer"], correct: 0, explanation: "Typische PDL-Deliverables: Anforderungsprofil (vom Kunden freigegeben), Pipeline, vorgestellte Kandidat:innen, Stellenbesetzungen, KPI-Reports, Abnahmebericht." },
+{ id: 47, text: "Was ist 'Scope Creep'?", options: ["A) Schleichende Erweiterung des Projektumfangs ohne formale Genehmigung", "B) Pause", "C) Lohnsteigerung", "D) Kürzung"], correct: 0, explanation: "Scope Creep: Anforderungen wachsen 'mal eben' im Verlauf, ohne Change Request. Führt zu Termin- und Budget-Überschreitung." },
+{ id: 48, text: "Wie verhindert man Scope Creep?", options: ["A) Strukturierter Change-Request-Prozess: jede Änderung formal beantragen + bewerten + genehmigen", "B) Alles ablehnen", "C) Alles annehmen", "D) Ignorieren"], correct: 0, explanation: "Change-Request-Prozess: Antrag → Impact-Analyse (Zeit, Kosten, Qualität, Risiken) → Entscheidung Auftraggeber → Vertragsnachtrag." },
+{ id: 49, text: "Welche Inhalte gehören in einen Change Request?", options: ["A) Nur Datum", "B) Beschreibung der Änderung, Begründung, Auswirkungen (Zeit, Kosten, Qualität, Risiken)", "C) Nur Unterschrift", "D) Nur Lohn"], correct: 1, explanation: "Change Request enthält: Was ändert sich? Warum? Wie wirkt es auf Zeit, Kosten, Qualität, Risiken? Wer entscheidet? Wer setzt um?" },
+{ id: 50, text: "Was ist ein Akzeptanzkriterium?", options: ["A) Lohnsteigerung", "B) Messbare Bedingung, ab wann ein Deliverable als erfüllt gilt", "C) Geheimkriterium", "D) Steuersatz"], correct: 1, explanation: "Akzeptanzkriterium: messbare/prüfbare Bedingung für Erfüllung. Z.B. 'Stelle besetzt = ZAN absolviert ersten Arbeitstag erfolgreich'." }
+]},
+{ title: "Abschnitt 6: Praxis im PDL-Großprojekt (Fragen 51–60)", questions: [
+{ id: 51, text: "Welche Pflicht hat der Personaldienstleister gegenüber dem Betriebsrat des Kunden?", options: ["A) Nur Lohn zahlen", "B) Information vor Einstellung gemäß § 99 BetrVG (durch den Kunden)", "C) Direkter Kontakt vermeiden", "D) Keine"], correct: 1, explanation: "Personaldienstleister informiert den Kunden, der Kunde informiert den Betriebsrat (§ 99 BetrVG). Bei Verweigerung kann der Einsatz blockiert werden." },
+{ id: 52, text: "Was ist ein 'Lenkungsausschuss' im PDL-Großprojekt?", options: ["A) Ein Verein", "B) Steuerungsgremium aus Auftraggeber + Schlüsselstakeholder + PL des Verleihers", "C) Eine Werbeagentur", "D) Eine Lohnabrechnungsstelle"], correct: 1, explanation: "Lenkungsausschuss = oberstes Steuerungsgremium des Projekts. Trifft sich regelmäßig, entscheidet über Eskalationen, Change Requests, Strategie." },
+{ id: 53, text: "Welche typische Rolle hat der Recruiter im PDL-Projekt?", options: ["A) Bewerber-Sourcing, Profile schreiben, Pipeline aufbauen", "B) Lohnabrechnung", "C) Vertrag mit GF schließen", "D) Mahnungen schreiben"], correct: 0, explanation: "Recruiter im Projekt: Active Sourcing, Bewerber-Bewertung, Profile aufbereiten, Pipeline-Verwaltung, Übergabe an Disposition." },
+{ id: 54, text: "Was ist die Rolle des Disponent:in im Projekt?", options: ["A) Einsatzplanung der ZAN beim Kunden, operative Schnittstelle", "B) Vertragsverhandlung", "C) Lohnabrechnung", "D) Gewerbeaufsicht"], correct: 0, explanation: "Disponent:in: plant ZAN-Einsätze beim Kunden, hält operativen Kontakt, kümmert sich um Reklamationen, Verlängerungen, Vertretung." },
+{ id: 55, text: "Welche Akzeptanz fehlt häufig in PDL-Projekten?", options: ["A) Lohnakzeptanz", "B) Akzeptanz seitens der Fachabteilung des Kunden (operative Anwender) – nur Einkauf vereinbart", "C) Akzeptanz der Werbung", "D) Akzeptanz der Pause"], correct: 1, explanation: "Häufige Falle: Einkauf vereinbart, Fachabteilung nicht eingebunden → operative Stakeholder lehnen ZAN ab, hohe Reklamationsquote." },
+{ id: 56, text: "Welche frühe Maßnahme verhindert späteren Konflikt mit dem Betriebsrat?", options: ["A) Frühzeitige Information + Einbindung", "B) Verstecken", "C) Späte Information", "D) Umgehen"], correct: 0, explanation: "Frühe Information + Einbindung des Betriebsrats schafft Vertrauen + verhindert späte Blockaden bei Einstellung." },
+{ id: 57, text: "Welche Regel gilt für Akzeptanzkriterien?", options: ["A) Möglichst vage", "B) SMART formuliert (spezifisch, messbar, akzeptiert, realistisch, terminiert)", "C) Geheim halten", "D) Mündlich"], correct: 1, explanation: "Akzeptanzkriterien sollten SMART sein – sonst kein verlässlicher Maßstab für Erfolg/Abnahme." },
+{ id: 58, text: "Was ist eine 'Risiko-Annahme' im Scope-Statement?", options: ["A) Versicherung", "B) Eine Annahme, deren Nicht-Eintreten ein Projektrisiko wäre (z.B. Kunde stellt PSA)", "C) Lohnannahme", "D) Steuerannahme"], correct: 1, explanation: "Risiko-Annahmen sind Bedingungen, deren Nicht-Eintreten den Plan kippen würde. Müssen aktiv überwacht und ggf. eskaliert werden." },
+{ id: 59, text: "Was sollte am Ende von Tag 06 (vor Tag 07) als Output stehen?", options: ["A) Stakeholderliste, SMART-Ziele, Scope-Statement (In/Out, Annahmen, Constraints, Deliverables)", "B) Nur Termine", "C) Nur Lohn", "D) Nur Bewerberprofile"], correct: 0, explanation: "Output Tag 06: Komplettes Set – Stakeholderliste, SMART-Ziele, Scope-Statement (In/Out, Annahmen, Constraints, Deliverables). Basis für Tag 07 (Rollen)." },
+{ id: 60, text: "Welche Rolle hat die Geschäftsleitung des Personaldienstleisters?", options: ["A) Operative Disposition", "B) Strategische Verantwortung, Eskalationsstufe 3, Vertragsverhandlung Großkunden", "C) Lohnauszahlung", "D) Stundenzettel prüfen"], correct: 1, explanation: "GF des Personaldienstleisters: strategische Verantwortung, oberste Eskalationsstufe (3), Vertragsverhandlung bei Großkunden, finale Entscheidungen." }
+]}
+];
+
+let answered = {}, checked = {}, showAll = false, currentQ = 0; const totalQ = 60;
+function allQuestions() { const f = []; sections.forEach(s => s.questions.forEach(q => f.push(q))); return f; }
+const flatQ = allQuestions();
+function render() {
+    const c = document.getElementById('quizContainer'); let h = ''; let i = 0;
+    sections.forEach(sec => { h += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach(q => {
+            const v = showAll || i === currentQ ? '' : ' hidden';
+            const cc = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            h += `<div class="question-card ${cc}${v}" id="qcard-${q.id}"><span class="question-number">Frage ${q.id} von ${totalQ}</span><p class="question-text">${q.text}</p><ul class="options-list">`;
+            q.options.forEach((o, oi) => { let cl = ''; if (checked[q.id]) { if (oi === q.correct) cl = 'correct-opt'; else if (oi === answered[q.id] && oi !== q.correct) cl = 'incorrect-opt'; } else if (answered[q.id] === oi) cl = 'selected';
+                const d = checked[q.id] ? 'disabled' : ''; const ch = answered[q.id] === oi ? 'checked' : '';
+                h += `<li><label class="${cl}"><input type="radio" name="q${q.id}" value="${oi}" ${ch} ${d} onchange="selectOption(${q.id},${oi})"> ${o}</label></li>`;
+            });
+            h += `</ul>`; const bd = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            h += `<button class="check-btn" onclick="checkAnswer(${q.id})" ${bd}>Antwort pr&uuml;fen</button>`;
+            if (checked[q.id]) { const ic = answered[q.id] === q.correct; const fc = ic ? 'correct' : 'incorrect';
+                h += `<div class="feedback show ${fc}">${ic ? '<strong>Richtig!</strong> ' : '<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>' + q.options[q.correct] + '</strong>. '}${q.explanation}</div>`;
+            } else h += `<div class="feedback"></div>`;
+            h += `</div>`; i++;
+        });
+    });
+    if (!showAll) h += `<div class="nav-row"><button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button><span style="font-weight:600;color:#004b87;">Frage ${currentQ + 1} / ${totalQ}</span><button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button></div>`;
+    c.innerHTML = h; updateProgress();
+}
+function selectOption(q, i) { if (checked[q]) return; answered[q] = i; render(); }
+function checkAnswer(q) { if (answered[q] === undefined || checked[q]) return; checked[q] = true; render(); updateProgress(); }
+function navigate(d) { currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + d)); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function updateProgress() { const d = Object.keys(checked).length; const p = Math.round((d / totalQ) * 100); document.getElementById('progressText').textContent = `${d} von ${totalQ} beantwortet`; document.getElementById('progressPct').textContent = `${p} %`; document.getElementById('progressFill').style.width = `${p}%`; }
+function showResults() { const d = Object.keys(checked).length; if (d === 0) { alert('Bitte mind. 1 Frage prüfen.'); return; }
+    let c = 0; flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) c++; }); const p = Math.round((c / d) * 100);
+    document.getElementById('scoreBig').textContent = `${c} / ${d} (${p} %)`;
+    let g = '', cls = 'pass';
+    if (p >= 92) g = 'Note: 1 – Sehr gut'; else if (p >= 81) g = 'Note: 2 – Gut'; else if (p >= 67) g = 'Note: 3 – Befriedigend'; else if (p >= 50) g = 'Note: 4 – Ausreichend (bestanden)';
+    else if (p >= 30) { g = 'Note: 5 – Mangelhaft (nicht bestanden)'; cls = 'fail'; } else { g = 'Note: 6 – Ungenügend (nicht bestanden)'; cls = 'fail'; }
+    const e = document.getElementById('gradeText'); e.textContent = g; e.className = 'grade ' + cls;
+    let t = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>%</th></tr>';
+    sections.forEach(s => { let sc = 0, st = 0; s.questions.forEach(q => { if (checked[q.id]) { st++; if (answered[q.id] === q.correct) sc++; } }); const sp = st > 0 ? Math.round((sc / st) * 100) : 0; t += `<tr><td>${s.title.split('(')[0].trim()}</td><td>${sc} / ${st}</td><td>${sp} %</td></tr>`; });
+    t += '</table>'; document.getElementById('sectionBreakdown').innerHTML = t;
+    document.getElementById('resultsPanel').classList.add('show'); document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+function resetQuiz() { if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen?')) return; answered = {}; checked = {}; currentQ = 0; document.getElementById('resultsPanel').classList.remove('show'); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+document.getElementById('toggleView').addEventListener('change', function () { showAll = this.checked; render(); });
+function shuffleQuizOptions() { let s = 20260511; function r() { s = (s * 16807 + 0) % 2147483647; return (s - 1) / 2147483646; }
+    sections.forEach(sec => { sec.questions.forEach(q => { const ct = q.options[q.correct]; const cl = q.options.map(o => o.replace(/^[A-D]\)\s*/, '')); for (let i = cl.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [cl[i], cl[j]] = [cl[j], cl[i]]; } const p = ['A) ', 'B) ', 'C) ', 'D) ']; const cc = ct.replace(/^[A-D]\)\s*/, ''); q.options = cl.map((c, i) => p[i] + c); q.correct = cl.indexOf(cc); }); });
+}
+shuffleQuizOptions(); render();
+</script><div id="pdk-bottom-back">
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+</div>
+</body></html>

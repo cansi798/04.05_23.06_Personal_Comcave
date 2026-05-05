@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+<style id="pdk-back-style">
+#pdk-back-banner { position: sticky; top: 0; z-index: 9999; background: #0f3151; color: #fff; padding: 0.85rem 1rem; display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; box-shadow: 0 4px 14px rgba(0,0,0,0.25); font-family: "Segoe UI", Tahoma, sans-serif; border-bottom: 3px solid #1780a1; }
+#pdk-back-banner a { color: #fff; text-decoration: none; font-weight: 700; padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4); font-size: 0.95rem; transition: background 0.15s, transform 0.1s; }
+#pdk-back-banner a:hover { background: rgba(255,255,255,0.32); transform: translateY(-1px); }
+#pdk-back-banner .pdk-label { font-size: 0.92rem; opacity: 0.95; margin-left: auto; }
+#pdk-floating-back { position: fixed; bottom: 22px; right: 22px; z-index: 9998; background: #0f3151; color: #fff !important; text-decoration: none; padding: 0.85rem 1.3rem; border-radius: 50px; box-shadow: 0 6px 18px rgba(0,0,0,0.30); font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 0.95rem; border: 2px solid rgba(255,255,255,0.4); transition: transform 0.12s, box-shadow 0.12s; }
+#pdk-floating-back:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
+#pdk-bottom-back { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; padding: 1.5rem 1rem 2rem; background: #eef4f8; border-top: 1px solid #d6e0e8; margin-top: 2rem; }
+#pdk-bottom-back a { display: inline-block; padding: 0.85rem 1.5rem; background: #0d5c8c; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 1rem; box-shadow: 0 4px 12px rgba(13,92,140,0.25); }
+#pdk-bottom-back a:hover { background: #0f3151; }
+@media print { #pdk-back-banner, #pdk-floating-back, #pdk-bottom-back { display: none !important; } }
+</style><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Tag 09 – Ablaufplan, Gantt &amp; Ressourcen</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #00325f 0%, #004b87 50%, #0082b4 100%); color: #fff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; }
+.header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+.header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+.toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+.toolbar button, .toolbar .toggle-label { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+.toolbar button:hover { background: #00325f; }
+.toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; }
+.toggle-label input { accent-color: #004b87; width: 18px; height: 18px; cursor: pointer; }
+.progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+.progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+.progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0082b4, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+.container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+.section-title { background: #00325f; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+.section-title:first-child { margin-top: 0; }
+.question-card { background: #fff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+.question-card.correct-card { border-left: 5px solid #28a745; }
+.question-card.incorrect-card { border-left: 5px solid #dc3545; }
+.question-number { display: inline-block; background: #e8f0fe; color: #004b87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+.question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+.options-list { list-style: none; }
+.options-list li { margin-bottom: 0.5rem; }
+.options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; font-size: 0.95rem; }
+.options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+.options-list input[type="radio"] { accent-color: #004b87; margin-top: 3px; flex-shrink: 0; }
+.options-list label.selected { background: #e8f0fe; border-color: #004b87; }
+.options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+.options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+.check-btn { margin-top: 0.8rem; background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+.check-btn:hover { background: #00325f; }
+.check-btn:disabled { background: #8faec8; cursor: default; }
+.feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+.feedback.show { display: block; }
+.feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.nav-btn { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+.nav-btn:hover { background: #00325f; }
+.nav-btn:disabled { background: #8faec8; cursor: default; }
+.results-panel { background: #fff; border: 2px solid #004b87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; }
+.results-panel.show { display: block; }
+.results-panel h2 { color: #00325f; margin-bottom: 0.8rem; }
+.score-big { font-size: 3rem; font-weight: 700; color: #004b87; }
+.grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+.grade.pass { color: #28a745; }
+.grade.fail { color: #dc3545; }
+.section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+.section-breakdown table { width: 100%; border-collapse: collapse; }
+.section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+.section-breakdown th { background: #e8f0fe; color: #00325f; text-align: left; }
+.references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+.references h3 { color: #00325f; margin-bottom: 0.8rem; font-size: 1.1rem; }
+.references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+.footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+@media print { body { background: #fff; } .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; } }
+@media (max-width: 600px) { .header { padding: 1.4rem 0.8rem; } .question-card { padding: 1rem; } .toolbar { flex-direction: column; align-items: stretch; text-align: center; } }
+.hidden { display: none !important; }
+</style></head><body>
+<div id="pdk-back-banner">
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+  <span class="pdk-label">PDK Personal-Kurs Mai-Juni 2026</span>
+</div>
+<a id="pdk-floating-back" href="../../../index.html" title="Zurueck zur Tagesuebersicht">&larr; Uebersicht</a>
+
+<header class="header"><h1>Quiz Tag 09 &ndash; Ablaufplan, Gantt &amp; Ressourcen</h1>
+<div class="subtitle">Lehrgang Personaldienstleistungskaufmann/-frau IHK &middot; Lerninhalte P11 + P12</div>
+<div class="meta"><span>&copy; Can Siebert</span><span>Stand 05/2026</span><span>60 Fragen &bull; Multiple Choice</span></div></header>
+
+<div class="toolbar"><label class="toggle-label"><input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen</label>
+<div style="display:flex;gap:0.75rem;flex-wrap:wrap;"><button onclick="showResults()">Ergebnis anzeigen</button><button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button></div></div>
+
+<div class="progress-container"><div class="progress-info"><span id="progressText">0 von 60 beantwortet</span><span id="progressPct">0 %</span></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div></div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container"><div class="results-panel" id="resultsPanel">
+<h2>Dein Ergebnis</h2><div class="score-big" id="scoreBig"></div><div class="grade" id="gradeText"></div><div class="section-breakdown" id="sectionBreakdown"></div>
+<button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button></div></div>
+
+<div class="references"><h3>Literaturverzeichnis (APA 7)</h3>
+<p>Gantt, H. L. (1910). <em>Work, Wages, and Profits</em>. Engineering Magazine Co.</p>
+<p>Kelley, J. E., &amp; Walker, M. R. (1959). Critical-path planning and scheduling. <em>Eastern Joint Computer Conference</em>, 160&ndash;173.</p>
+<p>Kerzner, H. (2017). <em>Project Management: A Systems Approach</em>. Wiley.</p>
+<p>Project Management Institute. (2021). <em>PMBOK Guide (7th ed.)</em>. PMI.</p>
+<p>Bundesministerium der Justiz. (2024). <em>Arbeitszeitgesetz (ArbZG)</em>. https://www.gesetze-im-internet.de/arbzg/</p>
+</div>
+
+<footer class="footer">&copy; 2026 Can Siebert. | Lehrgang PDK Mai&ndash;Juni 2026 | Stand 05/2026</footer>
+
+<script>
+const sections = [
+{ title: "Abschnitt 1: Ablaufplanung Grundlagen (Fragen 1–10)", questions: [
+{ id: 1, text: "Was ist der Unterschied zwischen PSP und Ablaufplan?", options: ["A) Sind dasselbe", "B) PSP = was wird gemacht (Arbeitspakete); Ablaufplan = wann + Reihenfolge", "C) PSP = nach Ablaufplan", "D) Beide sind Lohnabrechnungen"], correct: 1, explanation: "Projektstrukturplan liefert Arbeitspakete (was), Ablaufplan bringt sie zeitlich in Reihenfolge mit Abhängigkeiten (wann)." },
+{ id: 2, text: "Wer hat das Gantt-Diagramm entwickelt?", options: ["A) Henry Gantt (1910)", "B) Deming", "C) Toyota", "D) Ishikawa"], correct: 0, explanation: "Henry Laurence Gantt veröffentlichte 1910 das nach ihm benannte Balkendiagramm zur visuellen Darstellung von Arbeitspaketen über Zeit." },
+{ id: 3, text: "Was zeigt ein Gantt-Diagramm?", options: ["A) Lohnabrechnung", "B) Arbeitspakete als Balken auf einer Zeitachse", "C) Mitarbeiterfotos", "D) Steuerprüfung"], correct: 1, explanation: "Gantt-Diagramm: jedes Arbeitspaket wird als horizontaler Balken über die Zeitachse dargestellt. Auf einen Blick sichtbar, was wann läuft." },
+{ id: 4, text: "Wie viele Vorgangsbeziehungen gibt es im klassischen Modell?", options: ["A) 2", "B) 3", "C) 4", "D) 5"], correct: 2, explanation: "4 Vorgangsbeziehungen: Ende-Anfang (EA/FS), Anfang-Anfang (AA/SS), Ende-Ende (EE/FF), Anfang-Ende (AE/SF, selten)." },
+{ id: 5, text: "Welche Vorgangsbeziehung ist die Standard?", options: ["A) AA", "B) EE", "C) EA / FS (Ende-Anfang / Finish-Start)", "D) AE"], correct: 2, explanation: "Ende-Anfang (EA/FS) ist die mit Abstand häufigste Beziehung: Vorgänger fertig → Nachfolger startet." },
+{ id: 6, text: "Was bedeutet 'AA' (Anfang-Anfang)?", options: ["A) Beide Vorgänge starten gleichzeitig", "B) Beide enden gleichzeitig", "C) Vorgänger fertig → Nachfolger startet", "D) Vorgänger startet → Nachfolger endet"], correct: 0, explanation: "Anfang-Anfang (AA/SS): Beide Vorgänge starten zur gleichen Zeit – z.B. Sourcing + Active Sourcing parallel." },
+{ id: 7, text: "Was bedeutet 'EE' (Ende-Ende)?", options: ["A) Beide starten gleichzeitig", "B) Beide enden gleichzeitig", "C) Vorgänger startet → Nachfolger startet", "D) Vorgänger endet → Nachfolger startet"], correct: 1, explanation: "Ende-Ende (EE/FF): Beide Vorgänge müssen zur gleichen Zeit enden – z.B. Disposition + finales Reporting enden mit Einsatzbeginn." },
+{ id: 8, text: "Was ist ein Meilenstein?", options: ["A) Ein langes Arbeitspaket", "B) Ereignis mit Dauer 0, das einen erreichten Stand markiert", "C) Ein Lohnzettel", "D) Eine Werbeanzeige"], correct: 1, explanation: "Meilenstein = Ereignis ohne Dauer (Dauer 0), markiert das Erreichen eines Zwischenziels (z.B. 'Anforderungsprofil freigegeben')." },
+{ id: 9, text: "Welche Meilensteine sind im PDL-Recruiting typisch?", options: ["A) Anforderungsprofil freigegeben, Erste Vorstellung, 50% besetzt, Einsatzbeginn", "B) Frühstück, Mittag, Abend", "C) Mo, Di, Mi, Do, Fr", "D) Januar bis Dezember"], correct: 0, explanation: "Typische Recruiting-Meilensteine: Profil freigegeben, Erste Vorstellung, 50% besetzt, 100% besetzt, Einsatzbeginn, Projektabnahme." },
+{ id: 10, text: "Welche DIN-Norm regelt Begriffe und Methoden des Projektmanagements?", options: ["A) DIN 9001", "B) DIN 69901", "C) DIN 5008", "D) DIN 14001"], correct: 1, explanation: "DIN 69901 ist die deutsche Standard-Norm für Begriffe und Prozesse des Projektmanagements." }
+]},
+{ title: "Abschnitt 2: Kritischer Pfad &amp; Netzplan (Fragen 11–20)", questions: [
+{ id: 11, text: "Was ist der kritische Pfad (CPM)?", options: ["A) Vorgänge mit großem Puffer", "B) Folge von Vorgängen ohne Puffer – Verzögerung verschiebt Endtermin", "C) Optionale Vorgänge", "D) Parallele Vorgänge"], correct: 1, explanation: "Kritischer Pfad = die längste Folge abhängiger Vorgänge ohne Puffer. Jede Verzögerung wirkt 1:1 auf den Endtermin." },
+{ id: 12, text: "Wer hat CPM (Critical Path Method) entwickelt?", options: ["A) Kelley & Walker (1959) bei DuPont/Remington Rand", "B) Henry Gantt", "C) Deming", "D) Imai"], correct: 0, explanation: "CPM wurde 1959 von James E. Kelley und Morgan R. Walker entwickelt – ursprünglich für Wartungsplanung in Chemiefabriken." },
+{ id: 13, text: "Wofür steht 'FAZ' im Netzplan?", options: ["A) Frühester Anfangszeitpunkt", "B) Festgelegter Anfangszeitpunkt", "C) Finaler Anfangszeitpunkt", "D) Frei Anfangszeitpunkt"], correct: 0, explanation: "FAZ = Frühester Anfangszeitpunkt: der frühestmögliche Zeitpunkt, zu dem ein Vorgang starten kann." },
+{ id: 14, text: "Wofür steht 'SEZ'?", options: ["A) Spätester Endzeitpunkt", "B) Schlüssel-Endzeitpunkt", "C) Standardisierter Endzeitpunkt", "D) Sollendzeitpunkt"], correct: 0, explanation: "SEZ = Spätester Endzeitpunkt: der späteste Zeitpunkt, zu dem ein Vorgang enden darf, ohne den Endtermin zu gefährden." },
+{ id: 15, text: "Wie berechnet man den Gesamtpuffer (GP)?", options: ["A) GP = SAZ - FAZ = SEZ - FEZ", "B) GP = FEZ - SAZ", "C) GP = Lohn", "D) GP = Pause"], correct: 0, explanation: "Gesamtpuffer = SAZ - FAZ = SEZ - FEZ. Die Differenz zwischen frühestem und spätestem Termin." },
+{ id: 16, text: "Was bedeutet 'GP = 0'?", options: ["A) Vorgang ist optional", "B) Vorgang ist kritisch (auf dem kritischen Pfad)", "C) Vorgang dauert 0 Tage", "D) Vorgang kann gestrichen werden"], correct: 1, explanation: "Gesamtpuffer = 0 bedeutet: Vorgang ist auf dem kritischen Pfad – Verzögerung verschiebt sofort den Endtermin." },
+{ id: 17, text: "Was ist 'Freier Puffer' (FP)?", options: ["A) Pause", "B) Zeit, um die ein Vorgang verschoben werden kann, ohne den Nachfolger zu beeinflussen", "C) Lohn", "D) Urlaub"], correct: 1, explanation: "Freier Puffer: Verschiebung möglich ohne FAZ-Verschiebung des direkten Nachfolgers. FP ≤ GP immer." },
+{ id: 18, text: "Welche Aktion eignet sich, um Verzögerungen aufzuholen?", options: ["A) Crashing (mehr Ressourcen) oder Fast Tracking (Parallelisierung)", "B) Mehr Pause", "C) Mehr Werbung", "D) Mehr Lohn"], correct: 0, explanation: "Crashing = mehr Ressourcen für Beschleunigung (kostet mehr); Fast Tracking = Vorgänge parallelisieren (riskanter, da Reihenfolge gebrochen wird)." },
+{ id: 19, text: "Welche Aussage zu Crashing ist korrekt?", options: ["A) Macht alles billiger", "B) Erhöht Kosten durch zusätzliche Ressourcen, beschleunigt aber das Ergebnis", "C) Verschiebt nichts", "D) Ist gratis"], correct: 1, explanation: "Crashing = Beschleunigung durch Ressourcen-Aufstockung. Kostet mehr Geld (mehr Personal, Überstunden), bringt aber Zeit." },
+{ id: 20, text: "Was ist Fast Tracking?", options: ["A) Vorgänge schneller arbeiten", "B) Vorgänge parallelisieren, die normalerweise sequenziell wären (Risiko: Nacharbeit)", "C) Mehr Personal einsetzen", "D) Pause kürzen"], correct: 1, explanation: "Fast Tracking: Vorgänge, die normalerweise nacheinander laufen, werden parallelisiert. Risiko: Nacharbeit, wenn frühe Annahmen sich ändern." }
+]},
+{ title: "Abschnitt 3: Gantt &amp; Visualisierung (Fragen 21–30)", questions: [
+{ id: 21, text: "Welcher Vorteil hat das Gantt-Diagramm?", options: ["A) Zeigt grafisch über die Zeit auf einen Blick, wer was wann macht", "B) Zeigt nur Lohn", "C) Ist kompliziert", "D) Hat keine Zeit"], correct: 0, explanation: "Hauptvorteil Gantt: visuelle Darstellung über Zeit – Stakeholder verstehen Status auf einen Blick." },
+{ id: 22, text: "Welcher Nachteil hat das klassische Gantt-Diagramm?", options: ["A) Zu modern", "B) Zeigt keine Vorgangsbeziehungen direkt; Abhängigkeiten erst durch Pfeile", "C) Zu farbig", "D) Zu klein"], correct: 1, explanation: "Klassisches Gantt zeigt Balken, aber Abhängigkeiten erst durch zusätzliche Pfeile. Moderne Tools (MS Project, Asana) zeigen sie an." },
+{ id: 23, text: "Welche Tools sind für Gantt-Diagramme üblich?", options: ["A) MS Project, Asana, Jira, Smartsheet, Excel", "B) Nur Bleistift", "C) Tabellenkalkulation reicht nie", "D) Nur Word"], correct: 0, explanation: "Verbreitete Tools: MS Project, Asana, Jira, Smartsheet, Trello mit Plugin, Excel mit Vorlage. Im PDL meist Excel + spezielles ATS-Modul." },
+{ id: 24, text: "Was ist ein Vorgangsknoten-Netzplan?", options: ["A) Knoten = Vorgänge, Pfeile = Beziehungen", "B) Knoten = Pause", "C) Knoten = Stakeholder", "D) Knoten = Lohn"], correct: 0, explanation: "Vorgangsknotennetz (PDM, Precedence Diagramming Method): Vorgänge in Knoten, Beziehungen als Pfeile. Standard im modernen PM." },
+{ id: 25, text: "Welche Information wird im Vorgangsknoten typisch dargestellt?", options: ["A) Nummer, Bezeichnung, Dauer, FAZ, FEZ, SAZ, SEZ, GP, FP", "B) Nur Name", "C) Nur Dauer", "D) Nur FAZ"], correct: 0, explanation: "Standard-Knoten: ID, Bezeichnung, Dauer, FAZ, FEZ, SAZ, SEZ, GP, FP – alle Werte für Pufferanalyse + kritischen Pfad." },
+{ id: 26, text: "Welche Aussage zu Meilensteinen ist korrekt?", options: ["A) Sie haben Dauer = 0", "B) Sie sind besonders lang", "C) Sie ersetzen Arbeitspakete", "D) Sie sind unwichtig"], correct: 0, explanation: "Meilenstein = Punkt, kein Zeitraum. Dauer = 0. Markiert erreichte Ergebnisse / Zwischenziele." },
+{ id: 27, text: "Wozu dient die Meilensteinplanung?", options: ["A) Lohnabrechnung", "B) Steuerung + Reporting an Stakeholder, Eskalations-Trigger", "C) Reklamationen", "D) Werbung"], correct: 1, explanation: "Meilensteine sind Steuerungs- und Reporting-Punkte: 'Sind wir noch im Plan?'. Auch Trigger für Zahlungen (zahlungsrelevante Meilensteine)." },
+{ id: 28, text: "Wie heißt der Diagrammtyp, der Pufferzeiten und Verzögerungen visualisiert?", options: ["A) Gantt-Diagramm mit Pufferdarstellung", "B) Ishikawa", "C) Pareto", "D) Kano"], correct: 0, explanation: "Modernes Gantt mit farblicher Markierung der Puffer (grün=Puffer, rot=kritisch) zeigt sofort gefährdete Vorgänge." },
+{ id: 29, text: "Was ist eine 'Zeitfresser-Analyse' im PDL-Projekt?", options: ["A) Identifikation der zeitintensivsten Vorgänge zur gezielten Beschleunigung", "B) Kantinenoptimierung", "C) Pausensystem", "D) Werbung"], correct: 0, explanation: "Zeitfresser-Analyse: welche Vorgänge fressen am meisten Zeit? Ansatzpunkt für Crashing/Optimierung. Im Recruiting oft Sourcing oder Vorstellungsgespräche." },
+{ id: 30, text: "Welche Methode zeigt Abhängigkeiten + kritischen Pfad gleichzeitig?", options: ["A) Netzplan / Precedence Diagram", "B) Tortendiagramm", "C) Mitarbeiterfoto", "D) Lohnliste"], correct: 0, explanation: "Netzplan / Precedence Diagram zeigt Vorgänge + Abhängigkeiten + erlaubt Berechnung von Pufferzeiten + kritischem Pfad – nicht das klassische Gantt allein." }
+]},
+{ title: "Abschnitt 4: Ressourcenplanung (Fragen 31–40)", questions: [
+{ id: 31, text: "Welche vier Ressourcenarten gibt es typischerweise?", options: ["A) Personal, Sachmittel, Finanzen, Externe", "B) Nur Personal", "C) Nur Geld", "D) Nur IT"], correct: 0, explanation: "Vier Ressourcen-Hauptkategorien: Personal (intern), Sachmittel (Tools/IT/Büro), Finanzen (Budget), Externe (Lieferanten, Job-Portale, Headhunter)." },
+{ id: 32, text: "Was zeigt ein Ressourcen-Histogramm?", options: ["A) Lohnabrechnung", "B) Bedarf einer Ressource (z.B. Recruiter-Stunden) über Zeit", "C) Mitarbeiterfoto", "D) Steuern"], correct: 1, explanation: "Ressourcen-Histogramm: Säulen pro Zeiteinheit (Tag/Woche), die Bedarf darstellen. Zeigt Engpässe und Überlast." },
+{ id: 33, text: "Was ist Resource Leveling?", options: ["A) Verschieben von Vorgängen innerhalb des Puffers, um Spitzen zu glätten", "B) Mitarbeitende beleidigen", "C) Lohn senken", "D) Pause kürzen"], correct: 0, explanation: "Resource Leveling: Vorgänge im verfügbaren Puffer verschieben, sodass Ressourcen-Spitzen geglättet werden. Endtermin bleibt erhalten." },
+{ id: 34, text: "Was ist Resource Smoothing?", options: ["A) Spitzen kappen ohne Endtermin-Verschiebung", "B) Mitarbeitende loben", "C) Lohnerhöhung", "D) Mehr Werbung"], correct: 0, explanation: "Resource Smoothing: Spitzen werden im Rahmen des verfügbaren Puffers reduziert, ohne den Endtermin zu verschieben." },
+{ id: 35, text: "Welche Faustregel gilt für Kapazitätsplanung?", options: ["A) Zu 100% verplanen", "B) Zu 75–85% verplanen, 15–25% Puffer für Krankheit/Urlaub/Eskalation", "C) Zu 50% verplanen", "D) Zu 200% verplanen"], correct: 1, explanation: "Faustregel: 75–85% verplanen, 15–25% Puffer. Verhindert dass Krankmeldungen, spontane Kunden-Anrufe oder Reklamationen alles aus dem Lot bringen." },
+{ id: 36, text: "Welche Ressource ist im PDL-Großprojekt typisch der Engpass?", options: ["A) Disposition", "B) Pförtner", "C) Hausmeister", "D) Drucker"], correct: 0, explanation: "Disposition ist meist der Engpass: zu viele parallele Aufträge, Reklamationen, Vertretungen. Tools (ATS), klare Rollen (RACI), KPI-Monitoring helfen." },
+{ id: 37, text: "Welche externe Ressource ist im PDL-Recruiting wichtig?", options: ["A) Job-Portale (Indeed, StepStone), Active Sourcing auf LinkedIn/XING, ggf. Headhunter", "B) Eis-Café", "C) Friseur", "D) Tankstelle"], correct: 0, explanation: "Externe Ressourcen Recruiting: Job-Portale, Social-Media-Plattformen für Active Sourcing, externe Recruiter/Headhunter, Karrieremessen." },
+{ id: 38, text: "Was bedeutet 'Crashing' bei Ressourcenplanung?", options: ["A) Mehr Ressourcen einsetzen, um schneller zu werden (höhere Kosten)", "B) Pause", "C) Stillstand", "D) Aufgeben"], correct: 0, explanation: "Crashing = Beschleunigung durch zusätzliche Ressourcen (mehr Personal, Überstunden, externe Aushilfen). Erhöht Kosten, verkürzt Zeit." },
+{ id: 39, text: "Wann ist Fast Tracking riskant?", options: ["A) Nie", "B) Wenn parallelisierte Vorgänge starke Abhängigkeiten haben → Nacharbeit nötig", "C) Wenn keine Pause", "D) Wenn Wetter schlecht ist"], correct: 1, explanation: "Fast Tracking riskant bei starken Abhängigkeiten: wenn der zweite Vorgang Inputs des ersten braucht, sind Korrekturen häufig. Erhöht Nacharbeit." },
+{ id: 40, text: "Was passiert ohne Ressourcenplanung?", options: ["A) Alles läuft besser", "B) Engpässe spät erkannt, Mitarbeitende überlastet, Termine reißen", "C) Mehr Marge", "D) Bessere Stimmung"], correct: 1, explanation: "Ohne Planung: Engpässe werden spät sichtbar (zu spät zum Eingreifen), Überlast führt zu Burnout/Krankheit, Termine reißen, Qualität sinkt." }
+]},
+{ title: "Abschnitt 5: Rechtsrahmen ZAN-Einsatz (Fragen 41–50)", questions: [
+{ id: 41, text: "Welche maximale Tagesarbeitszeit gibt das ArbZG vor?", options: ["A) 6h", "B) 8h (10h zumutbar mit Ausgleich)", "C) 12h", "D) 16h"], correct: 1, explanation: "ArbZG § 3: max. 8h/Tag. Bis 10h zumutbar bei Ausgleich innerhalb 6 Monaten/24 Wochen." },
+{ id: 42, text: "Welche Mindestruhezeit zwischen zwei Schichten verlangt das ArbZG?", options: ["A) 8h", "B) 11h", "C) 14h", "D) 6h"], correct: 1, explanation: "ArbZG § 5: 11h ununterbrochene Ruhezeit zwischen zwei Arbeitstagen. Im Gesundheitswesen + bestimmten Branchen 10h zulässig." },
+{ id: 43, text: "Welche Wochenruhezeit verlangt das ArbZG?", options: ["A) 24h", "B) 35h", "C) 48h", "D) 12h"], correct: 1, explanation: "ArbZG § 5 + § 9: 35h Wochenruhe (entspricht 24h Sonntagsruhe + 11h Tagesruhe)." },
+{ id: 44, text: "Welche Höchstüberlassungsdauer regelt das AÜG?", options: ["A) 9 Monate", "B) 12 Monate", "C) 18 Monate", "D) 36 Monate"], correct: 2, explanation: "§ 1b AÜG: 18 Monate Höchstüberlassung pro Kunde. Tariflich (z.B. TV-GVP/IG Metall) bis 48 Monate verlängerbar." },
+{ id: 45, text: "Wann gilt spätestens Equal Pay?", options: ["A) Sofort", "B) Nach 9 Monaten Einsatz beim selben Kunden", "C) Nach 36 Monaten", "D) Nie"], correct: 1, explanation: "§ 8 AÜG: spätestens nach 9 Monaten Equal Pay. Mit Branchenzuschlägen kann es früher gestaffelt greifen." },
+{ id: 46, text: "Was ist die Konkretisierungspflicht im AÜG?", options: ["A) Konkrete Person muss vor Einsatz benannt sein – kein Auswechselrecht", "B) Konkrete Adresse", "C) Konkreter Lohn", "D) Konkrete Pause"], correct: 0, explanation: "§ 1 Abs. 1 S. 6 AÜG: Verleiher muss vor Einsatz die konkrete Person benennen. Spätere 'Auswechselung' ist nicht mehr zulässig." },
+{ id: 47, text: "Welche Rolle hat der TV-GVP?", options: ["A) Allgemeines Steuerrecht", "B) Branchen-Tarifvertrag der Zeitarbeit (Mindestlöhne, Branchenzuschläge, Urlaub, Arbeitszeitkonten)", "C) Mietrecht", "D) Hochzeitsrecht"], correct: 1, explanation: "TV-GVP: Tarifvertrag der Zeitarbeitsbranche (vormals iGZ-/BAP-Tarif). Regelt Mindestlöhne, Branchenzuschläge, Urlaub, Arbeitszeitkonten." },
+{ id: 48, text: "Welche Personen-Pflicht hat der Verleiher beim Einsatz?", options: ["A) Sicherheitsunterweisung + PSA + ggf. arbeitsmedizinische Vorsorge", "B) Nichts", "C) Nur Lohn zahlen", "D) Werbung"], correct: 0, explanation: "Verleiher muss vor Einsatzbeginn: Sicherheitsunterweisung sicherstellen, PSA stellen oder dafür sorgen, ggf. arbeitsmedizinische Vorsorge organisieren." },
+{ id: 49, text: "Wer trägt die Berufsgenossenschaftsbeiträge der ZAN?", options: ["A) Verleiher (Personaldienstleister)", "B) Entleiher (Kunde)", "C) Krankenkasse", "D) Niemand"], correct: 0, explanation: "BG-Pflicht beim Verleiher (Personaldienstleister), da dort der Arbeitsvertrag besteht. Auch bei Unfällen am Einsatzort beim Kunden zuständig." },
+{ id: 50, text: "Welche Pflicht hat der Betriebsrat des Kunden?", options: ["A) Mitbestimmung bei Einstellung von Leiharbeitnehmer:innen (§ 99 BetrVG)", "B) Lohnzahlung", "C) Steuern", "D) Reklamationen"], correct: 0, explanation: "§ 99 BetrVG: Vor jeder Einstellung – auch Leiharbeitnehmer:innen – muss der Betriebsrat des Kunden informiert werden + kann Zustimmung verweigern." }
+]},
+{ title: "Abschnitt 6: Steuerung &amp; Praxis (Fragen 51–60)", questions: [
+{ id: 51, text: "Was gehört in einen Wochen-Statusbericht?", options: ["A) Fortschritt %, Soll-Ist Termine + Kosten, Ressourcen, Risiken, offene Punkte", "B) Nur Lohnabrechnung", "C) Werbeflyer", "D) Pausenplan"], correct: 0, explanation: "Statusbericht: Fortschritt je Arbeitspaket, Soll-Ist Vergleich Zeit + Kosten, Ressourcen-Auslastung, Risiken + Maßnahmen, offene Punkte mit Verantwortlichen." },
+{ id: 52, text: "Welche Reaktion passt zu Termin-Verzögerung?", options: ["A) Ignorieren", "B) Crashing oder Fast Tracking, ggf. Scope reduzieren oder Eskalation", "C) Pause machen", "D) Werbung schalten"], correct: 1, explanation: "Termin-Verzug: Crashing (Ressourcen-Aufstockung), Fast Tracking (Parallelisierung), Scope reduzieren (Auftraggeber freigeben lassen) oder Eskalation an Lenkungsausschuss." },
+{ id: 53, text: "Welche Reaktion passt zu Kosten-Überschreitung?", options: ["A) Ressourcen anpassen, Lieferanten verhandeln, Change Request", "B) Nichts tun", "C) Mehr Lohn zahlen", "D) Werbung erhöhen"], correct: 0, explanation: "Kosten-Überschreitung: Ressourcen prüfen, ggf. Lieferanten neu verhandeln, Change Request für Budget-Erhöhung beim Auftraggeber stellen." },
+{ id: 54, text: "Welcher Schritt bei Qualitätsproblemen?", options: ["A) Ursachenanalyse (Ishikawa, 5-Why), Schulung, KVP", "B) Ignorieren", "C) Kunde wechseln", "D) Mitarbeitende entlassen"], correct: 0, explanation: "Qualitätsprobleme: Wurzelursache identifizieren (Ishikawa, 5-Why), Maßnahmen ableiten (Schulung, Prozess-Anpassung), KVP-Loop." },
+{ id: 55, text: "Wann sollte der Lenkungsausschuss tagen?", options: ["A) Nie", "B) Regelmäßig (z.B. monatlich) + bei Eskalationen / Change Requests", "C) Nur am Anfang", "D) Nur am Ende"], correct: 1, explanation: "Lenkungsausschuss: regelmäßige Meetings (monatlich/zweiwöchentlich, je nach Projektgröße) + Sondersitzungen bei Eskalationen oder größeren Change Requests." },
+{ id: 56, text: "Welche KPI ist im PDL-Recruiting-Projekt zentral?", options: ["A) Time-to-Fill, Klebequote, Reklamationsquote", "B) Wetter", "C) Bürofläche", "D) Kantinenangebot"], correct: 0, explanation: "Zentrale Recruiting-KPIs: Time-to-Fill (Tage von Auftrag bis Besetzung), Klebequote (Übernahme in Festanstellung), Reklamationsquote (Probleme nach Einsatzbeginn)." },
+{ id: 57, text: "Was ist eine Earned-Value-Analyse?", options: ["A) Soll-Ist-Vergleich auf Basis von Plan-Wert, Fertigstellungswert und Ist-Kosten", "B) Lohnabrechnung", "C) Tarif", "D) Pause"], correct: 0, explanation: "Earned Value: PV (Planned Value), EV (Earned Value = Fertigstellungswert), AC (Actual Cost). Indikatoren: SPI = EV/PV (Termin), CPI = EV/AC (Kosten)." },
+{ id: 58, text: "Was bedeutet CPI > 1?", options: ["A) Über Budget", "B) Unter Budget", "C) Pünktlich", "D) Verspätet"], correct: 1, explanation: "CPI = EV/AC. CPI > 1 bedeutet: weniger ausgegeben als geplanter Wert geschaffen wurde → unter Budget (effizient)." },
+{ id: 59, text: "Was bedeutet SPI < 1?", options: ["A) Pünktlich", "B) Verspätet (langsamer als geplant)", "C) Schneller", "D) Über Budget"], correct: 1, explanation: "SPI = EV/PV. SPI < 1 bedeutet: weniger Fortschritt als geplant → langsamer als Plan / verspätet." },
+{ id: 60, text: "Welcher Output sollte am Ende von Tag 09 stehen?", options: ["A) Vollständiger Ablaufplan + Gantt + kritischer Pfad + Ressourcenplan + Engpass-Strategie", "B) Nur Lohnzettel", "C) Werbeflyer", "D) Vertrag"], correct: 0, explanation: "Output Tag 09: Ablaufplan (Reihenfolge + Abhängigkeiten), Gantt-Visualisierung, kritischer Pfad identifiziert, Ressourcenplan mit Histogramm, Engpass-Strategie. Basis für Tag 10 (KPIs)." }
+]}
+];
+
+let answered = {}, checked = {}, showAll = false, currentQ = 0; const totalQ = 60;
+function allQuestions() { const f = []; sections.forEach(s => s.questions.forEach(q => f.push(q))); return f; }
+const flatQ = allQuestions();
+function render() {
+    const c = document.getElementById('quizContainer'); let h = ''; let i = 0;
+    sections.forEach(sec => { h += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach(q => {
+            const v = showAll || i === currentQ ? '' : ' hidden';
+            const cc = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            h += `<div class="question-card ${cc}${v}" id="qcard-${q.id}"><span class="question-number">Frage ${q.id} von ${totalQ}</span><p class="question-text">${q.text}</p><ul class="options-list">`;
+            q.options.forEach((o, oi) => { let cl = ''; if (checked[q.id]) { if (oi === q.correct) cl = 'correct-opt'; else if (oi === answered[q.id] && oi !== q.correct) cl = 'incorrect-opt'; } else if (answered[q.id] === oi) cl = 'selected';
+                const d = checked[q.id] ? 'disabled' : ''; const ch = answered[q.id] === oi ? 'checked' : '';
+                h += `<li><label class="${cl}"><input type="radio" name="q${q.id}" value="${oi}" ${ch} ${d} onchange="selectOption(${q.id},${oi})"> ${o}</label></li>`;
+            });
+            h += `</ul>`; const bd = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            h += `<button class="check-btn" onclick="checkAnswer(${q.id})" ${bd}>Antwort pr&uuml;fen</button>`;
+            if (checked[q.id]) { const ic = answered[q.id] === q.correct; const fc = ic ? 'correct' : 'incorrect';
+                h += `<div class="feedback show ${fc}">${ic ? '<strong>Richtig!</strong> ' : '<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>' + q.options[q.correct] + '</strong>. '}${q.explanation}</div>`;
+            } else h += `<div class="feedback"></div>`;
+            h += `</div>`; i++;
+        });
+    });
+    if (!showAll) h += `<div class="nav-row"><button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button><span style="font-weight:600;color:#004b87;">Frage ${currentQ + 1} / ${totalQ}</span><button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button></div>`;
+    c.innerHTML = h; updateProgress();
+}
+function selectOption(q, i) { if (checked[q]) return; answered[q] = i; render(); }
+function checkAnswer(q) { if (answered[q] === undefined || checked[q]) return; checked[q] = true; render(); updateProgress(); }
+function navigate(d) { currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + d)); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function updateProgress() { const d = Object.keys(checked).length; const p = Math.round((d / totalQ) * 100); document.getElementById('progressText').textContent = `${d} von ${totalQ} beantwortet`; document.getElementById('progressPct').textContent = `${p} %`; document.getElementById('progressFill').style.width = `${p}%`; }
+function showResults() { const d = Object.keys(checked).length; if (d === 0) { alert('Bitte mind. 1 Frage prüfen.'); return; }
+    let c = 0; flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) c++; }); const p = Math.round((c / d) * 100);
+    document.getElementById('scoreBig').textContent = `${c} / ${d} (${p} %)`;
+    let g = '', cls = 'pass';
+    if (p >= 92) g = 'Note: 1 – Sehr gut'; else if (p >= 81) g = 'Note: 2 – Gut'; else if (p >= 67) g = 'Note: 3 – Befriedigend'; else if (p >= 50) g = 'Note: 4 – Ausreichend (bestanden)';
+    else if (p >= 30) { g = 'Note: 5 – Mangelhaft (nicht bestanden)'; cls = 'fail'; } else { g = 'Note: 6 – Ungenügend (nicht bestanden)'; cls = 'fail'; }
+    const e = document.getElementById('gradeText'); e.textContent = g; e.className = 'grade ' + cls;
+    let t = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>%</th></tr>';
+    sections.forEach(s => { let sc = 0, st = 0; s.questions.forEach(q => { if (checked[q.id]) { st++; if (answered[q.id] === q.correct) sc++; } }); const sp = st > 0 ? Math.round((sc / st) * 100) : 0; t += `<tr><td>${s.title.split('(')[0].trim()}</td><td>${sc} / ${st}</td><td>${sp} %</td></tr>`; });
+    t += '</table>'; document.getElementById('sectionBreakdown').innerHTML = t;
+    document.getElementById('resultsPanel').classList.add('show'); document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+function resetQuiz() { if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen?')) return; answered = {}; checked = {}; currentQ = 0; document.getElementById('resultsPanel').classList.remove('show'); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+document.getElementById('toggleView').addEventListener('change', function () { showAll = this.checked; render(); });
+function shuffleQuizOptions() { let s = 20260515; function r() { s = (s * 16807 + 0) % 2147483647; return (s - 1) / 2147483646; }
+    sections.forEach(sec => { sec.questions.forEach(q => { const ct = q.options[q.correct]; const cl = q.options.map(o => o.replace(/^[A-D]\)\s*/, '')); for (let i = cl.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [cl[i], cl[j]] = [cl[j], cl[i]]; } const p = ['A) ', 'B) ', 'C) ', 'D) ']; const cc = ct.replace(/^[A-D]\)\s*/, ''); q.options = cl.map((c, i) => p[i] + c); q.correct = cl.indexOf(cc); }); });
+}
+shuffleQuizOptions(); render();
+</script><div id="pdk-bottom-back">
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+</div>
+</body></html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<style id="pdk-back-style">
+#pdk-back-banner { position: sticky; top: 0; z-index: 9999; background: #0f3151; color: #fff; padding: 0.85rem 1rem; display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; box-shadow: 0 4px 14px rgba(0,0,0,0.25); font-family: "Segoe UI", Tahoma, sans-serif; border-bottom: 3px solid #1780a1; }
+#pdk-back-banner a { color: #fff; text-decoration: none; font-weight: 700; padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4); font-size: 0.95rem; transition: background 0.15s, transform 0.1s; }
+#pdk-back-banner a:hover { background: rgba(255,255,255,0.32); transform: translateY(-1px); }
+#pdk-back-banner .pdk-label { font-size: 0.92rem; opacity: 0.95; margin-left: auto; }
+#pdk-floating-back { position: fixed; bottom: 22px; right: 22px; z-index: 9998; background: #0f3151; color: #fff !important; text-decoration: none; padding: 0.85rem 1.3rem; border-radius: 50px; box-shadow: 0 6px 18px rgba(0,0,0,0.30); font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 0.95rem; border: 2px solid rgba(255,255,255,0.4); transition: transform 0.12s, box-shadow 0.12s; }
+#pdk-floating-back:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
+#pdk-bottom-back { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; padding: 1.5rem 1rem 2rem; background: #eef4f8; border-top: 1px solid #d6e0e8; margin-top: 2rem; }
+#pdk-bottom-back a { display: inline-block; padding: 0.85rem 1.5rem; background: #0d5c8c; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 700; font-family: "Segoe UI", Tahoma, sans-serif; font-size: 1rem; box-shadow: 0 4px 12px rgba(13,92,140,0.25); }
+#pdk-bottom-back a:hover { background: #0f3151; }
+@media print { #pdk-back-banner, #pdk-floating-back, #pdk-bottom-back { display: none !important; } }
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Tag 11 – Projektdokumentation, Abschluss &amp; Lessons Learned</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #00325f 0%, #004b87 50%, #0082b4 100%); color: #fff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; }
+.header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+.header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+.toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+.toolbar button, .toolbar .toggle-label { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+.toolbar button:hover { background: #00325f; }
+.toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; }
+.toggle-label input { accent-color: #004b87; width: 18px; height: 18px; cursor: pointer; }
+.progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+.progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+.progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0082b4, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+.container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+.section-title { background: #00325f; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+.section-title:first-child { margin-top: 0; }
+.question-card { background: #fff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+.question-card.correct-card { border-left: 5px solid #28a745; }
+.question-card.incorrect-card { border-left: 5px solid #dc3545; }
+.question-number { display: inline-block; background: #e8f0fe; color: #004b87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+.question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+.options-list { list-style: none; }
+.options-list li { margin-bottom: 0.5rem; }
+.options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; font-size: 0.95rem; }
+.options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+.options-list input[type="radio"] { accent-color: #004b87; margin-top: 3px; flex-shrink: 0; }
+.options-list label.selected { background: #e8f0fe; border-color: #004b87; }
+.options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+.options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+.check-btn { margin-top: 0.8rem; background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+.check-btn:hover { background: #00325f; }
+.check-btn:disabled { background: #8faec8; cursor: default; }
+.feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+.feedback.show { display: block; }
+.feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.nav-btn { background: #004b87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+.nav-btn:hover { background: #00325f; }
+.nav-btn:disabled { background: #8faec8; cursor: default; }
+.results-panel { background: #fff; border: 2px solid #004b87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; }
+.results-panel.show { display: block; }
+.results-panel h2 { color: #00325f; margin-bottom: 0.8rem; }
+.score-big { font-size: 3rem; font-weight: 700; color: #004b87; }
+.grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+.grade.pass { color: #28a745; }
+.grade.fail { color: #dc3545; }
+.section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+.section-breakdown table { width: 100%; border-collapse: collapse; }
+.section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+.section-breakdown th { background: #e8f0fe; color: #00325f; text-align: left; }
+.references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+.references h3 { color: #00325f; margin-bottom: 0.8rem; font-size: 1.1rem; }
+.references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+.footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+@media print { body { background: #fff; } .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; } }
+@media (max-width: 600px) { .header { padding: 1.4rem 0.8rem; } .question-card { padding: 1rem; } .toolbar { flex-direction: column; align-items: stretch; text-align: center; } }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div id="pdk-back-banner">
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+  <span class="pdk-label">PDK Personal-Kurs Mai-Juni 2026</span>
+</div>
+<a id="pdk-floating-back" href="../../../index.html" title="Zurueck zur Tagesuebersicht">&larr; Uebersicht</a>
+
+<header class="header">
+    <h1>Quiz Tag 11 &ndash; Projektdokumentation, Abschluss &amp; Lessons Learned</h1>
+    <div class="subtitle">Lehrgang Personaldienstleistungskaufmann/-frau IHK &middot; Lerninhalt P15</div>
+    <div class="meta">
+        <span>&copy; Can Siebert</span>
+        <span>Stand 05/2026</span>
+        <span>60 Fragen &bull; Multiple Choice</span>
+    </div>
+</header>
+
+<div class="toolbar">
+    <label class="toggle-label"><input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen</label>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <button onclick="showResults()">Ergebnis anzeigen</button>
+        <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-info"><span id="progressText">0 von 60 beantwortet</span><span id="progressPct">0 %</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+    <div class="results-panel" id="resultsPanel">
+        <h2>Dein Ergebnis</h2>
+        <div class="score-big" id="scoreBig"></div>
+        <div class="grade" id="gradeText"></div>
+        <div class="section-breakdown" id="sectionBreakdown"></div>
+        <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+    </div>
+</div>
+
+<div class="references">
+    <h3>Literaturverzeichnis (APA 7)</h3>
+    <p>Project Management Institute. (2021). <em>PMBOK Guide (7th ed.)</em>. PMI.</p>
+    <p>Deutsches Institut f&uuml;r Normung. (2009). <em>DIN 69901 Projektmanagement &ndash; Projektmanagementsysteme</em>. Beuth.</p>
+    <p>Kerzner, H. (2017). <em>Project Management: A Systems Approach</em>. Wiley.</p>
+    <p>Schreiber, B. (2019). <em>Projektabschluss und Lessons Learned</em>. Hanser.</p>
+</div>
+
+<footer class="footer">&copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Lehrgang PDK Mai&ndash;Juni 2026 | Stand 05/2026</footer>
+
+<script>
+const sections = [
+{
+    title: "Abschnitt 1: Projektabschluss-Grundlagen (Fragen 1–10)",
+    questions: [
+        { id: 1, text: "Was ist das Hauptziel des Projektabschlusses?", options: ["A) Geld sparen", "B) Geordnete Beendigung des Projekts mit Abnahme, Übergabe, Auswertung", "C) Mitarbeitende entlassen", "D) Neues Projekt starten"], correct: 1, explanation: "Projektabschluss = formale Beendigung: Abnahme durch Auftraggeber, Übergabe der Ergebnisse, Lessons Learned, Entlastung der Beteiligten, Archivierung." },
+        { id: 2, text: "Welche DIN-Norm regelt PM-Begriffe in Deutschland?", options: ["A) DIN 9001", "B) DIN 69901", "C) DIN 14001", "D) DIN 5008"], correct: 1, explanation: "DIN 69901 ist die deutsche Standard-Norm für Projektmanagement-Begriffe und -Prozesse." },
+        { id: 3, text: "Welcher Schritt gehört NICHT zum Projektabschluss?", options: ["A) Abnahme durch Auftraggeber", "B) Übergabe der Ergebnisse an Linie/Betrieb", "C) Lessons Learned dokumentieren", "D) Aufträge akquirieren"], correct: 3, explanation: "Auftragsakquise gehört zum Vertrieb, nicht zum Projektabschluss. Abschluss = Abnahme, Übergabe, Lessons Learned, Entlastung, Archivierung." },
+        { id: 4, text: "Was ist eine 'formale Abnahme'?", options: ["A) Eine Pause", "B) Schriftliche Bestätigung des Auftraggebers, dass das Projekt vereinbarte Anforderungen erfüllt", "C) Ein Vertrag", "D) Eine Lohnabrechnung"], correct: 1, explanation: "Formale Abnahme: Schriftliche Bestätigung des Auftraggebers (oft mit Mängelliste), dass das Projektergebnis abgenommen wird – wichtig für Zahlung + Gewährleistung." },
+        { id: 5, text: "Was ist eine Restpunkteliste / Pendenzenliste?", options: ["A) Geschwindigkeitsmessung", "B) Liste der Punkte, die bei Abnahme noch offen sind und nachgearbeitet werden müssen", "C) Tarifvertrag", "D) Mitarbeiterliste"], correct: 1, explanation: "Restpunkte/Pendenzen: bei Abnahme noch offene Aufgaben mit Termin und Verantwortlichen – werden nachverfolgt bis zur Endabnahme." },
+        { id: 6, text: "Wer entscheidet typischerweise über die Abnahme?", options: ["A) Der Projektleiter", "B) Der Auftraggeber bzw. die durch ihn benannte Abnahmegruppe", "C) Die Werkstudent:innen", "D) Die ZAN"], correct: 1, explanation: "Abnahme erfolgt durch den Auftraggeber – im PDL also durch den Kundenbetrieb / Einkauf, der die Anforderungen als erfüllt erklärt." },
+        { id: 7, text: "Welche zwei Sichten gibt es im Projektabschluss?", options: ["A) Inhaltlich (Ergebnisse) + organisatorisch (Team, Ressourcen)", "B) Nord + Süd", "C) Heute + Morgen", "D) Hard + Soft"], correct: 0, explanation: "Inhaltliche Sicht: Ergebnisse erbracht, Anforderungen erfüllt. Organisatorische Sicht: Team entlasten, Ressourcen freigeben, Tools schließen." },
+        { id: 8, text: "Was ist 'Entlastung' im Projektabschluss?", options: ["A) Schwere Sachen tragen", "B) Formelle Befreiung der Projektleitung von Verantwortung nach erfolgreichem Abschluss", "C) Pause", "D) Lohnzuschlag"], correct: 1, explanation: "Entlastung = formelle Bestätigung der Auftraggeber/Lenkungsausschuss, dass der Projektleitung kein Vorwurf zu machen ist – analog zur GmbH-Geschäftsführer-Entlastung." },
+        { id: 9, text: "Welcher Abschluss-Bericht ist Standard?", options: ["A) Projektabschlussbericht (Soll-Ist, Erkenntnisse, Risiken, Lessons Learned)", "B) Tarifbericht", "C) Wetterbericht", "D) Geschäftsbericht"], correct: 0, explanation: "Projektabschlussbericht: Zusammenfassung Ziele/Ergebnisse, Soll-Ist-Vergleich (Zeit, Kosten, Qualität), Risiko-Recap, Lessons Learned, offene Punkte." },
+        { id: 10, text: "Welche Phase im PMBOK 7 entspricht dem Abschluss?", options: ["A) Initiating", "B) Planning", "C) Executing", "D) Closing (Closing the Project or Phase)"], correct: 3, explanation: "PMBOK Process Groups: Initiating, Planning, Executing, Monitoring & Controlling, Closing. Closing = Projektabschluss." }
+        ]
+    },
+{
+    title: "Abschnitt 2: Projektdokumentation (Fragen 11–20)",
+    questions: [
+        { id: 11, text: "Was gehört in eine vollständige Projektdokumentation?", options: ["A) Nur die E-Mails", "B) Auftrag, Anforderungen, Pläne, Protokolle, Berichte, Ergebnisse, Abnahme, Lessons Learned", "C) Nur der Endbericht", "D) Nur Excel-Listen"], correct: 1, explanation: "Vollständige Doku: Initialisierungsphase (Auftrag, Anforderungen), Planungsphase (Pläne), Durchführung (Protokolle, Berichte), Abschluss (Abnahme, Bericht, Lessons Learned)." },
+        { id: 12, text: "Wozu dient ein Statusbericht im Projekt?", options: ["A) Lohnabrechnung", "B) Regelmäßige Information an Stakeholder über Fortschritt, Risiken, offene Punkte", "C) Steuererklärung", "D) Werbeprospekt"], correct: 1, explanation: "Statusbericht: regelmäßige (z.B. wöchentlich) Information an Auftraggeber/Lenkungsausschuss – Fortschritt, Risiken, Maßnahmen." },
+        { id: 13, text: "Was ist die Aufgabe von Sitzungsprotokollen?", options: ["A) Schmuck", "B) Nachvollziehbare Dokumentation von Beschlüssen, Aufgaben, Verantwortlichen, Terminen", "C) Lohnberechnung", "D) Materialbestellung"], correct: 1, explanation: "Sitzungsprotokoll: TOP, Anwesende, Beschlüsse, To-Dos mit Verantwortlichen + Frist. Hilft bei späteren Konflikten + Nachverfolgung." },
+        { id: 14, text: "Was bedeutet Versionsverwaltung in der Projektdokumentation?", options: ["A) Alte Versionen löschen", "B) Eindeutige Kennung (Versionsnummer + Datum + Bearbeiter:in) jeder Dokumentenfassung", "C) Mehrfach speichern", "D) Nichts"], correct: 1, explanation: "Versionsverwaltung: jede Dokumentenfassung erhält eindeutige Kennung (V1.0, V1.1, V2.0) + Datum + Bearbeiter:in – sonst Chaos und 'welche Version gilt?'." },
+        { id: 15, text: "Welcher Aufbewahrungszeitraum gilt für Projektakten in PDL-Großprojekten typischerweise?", options: ["A) 1 Tag", "B) Mindestens bis zum Ende der Gewährleistungsfrist + handelsrechtliche Aufbewahrungsfristen (oft 6-10 Jahre)", "C) 100 Jahre", "D) Gar nicht"], correct: 1, explanation: "Pflicht: bis Ende Gewährleistung + handelsrechtliche Fristen (HGB § 257: 6-10 Jahre für Geschäftsunterlagen). DSGVO + IT-Compliance beachten." },
+        { id: 16, text: "Welche Information gehört NICHT in den Projektabschlussbericht?", options: ["A) Soll-Ist-Vergleich von Zeit/Kosten/Qualität", "B) Lessons Learned", "C) Persönliche Bewertungen einzelner Teammitglieder", "D) Offene Punkte / Restpunkte"], correct: 2, explanation: "Persönliche Bewertungen einzelner Personen gehören NICHT in den Abschlussbericht (datenschutz- und arbeitsrechtlich problematisch). Bewertungen sind getrennt + diskret." },
+        { id: 17, text: "Was sind 'Artefakte' im Projektkontext?", options: ["A) Antike Gegenstände", "B) Greifbare Arbeitsergebnisse: Pläne, Berichte, Code, Verträge", "C) Mitarbeitende", "D) Räume"], correct: 1, explanation: "Artefakte = entstandene Arbeitsergebnisse, die dokumentiert + archiviert werden: Lastenheft, Pflichtenheft, Verträge, Berichte, Auswertungen." },
+        { id: 18, text: "Wie hilft Versionskontrolle bei Pflichtenheft-Änderungen?", options: ["A) Sie verhindert alle Änderungen", "B) Sie macht Änderungen nachvollziehbar (wer, wann, was) und erlaubt Rollbacks", "C) Sie löscht alte Daten", "D) Sie sperrt die Datei"], correct: 1, explanation: "Versionskontrolle: jede Änderung wird mit Datum, Person, Begründung dokumentiert – wichtig für Audits und Konfliktklärung ('Wer hat das geändert?')." },
+        { id: 19, text: "Was bedeutet 'Single Source of Truth' in der Projektdoku?", options: ["A) Eine einzige zentrale Datenquelle pro Sachverhalt – verhindert parallele/widersprüchliche Versionen", "B) Nur ein Mitarbeiter weiß alles", "C) Nur ein Lieferant", "D) Nur ein Kunde"], correct: 0, explanation: "Single Source of Truth: zentrale, autoritative Datenquelle (z.B. Projekt-SharePoint, JIRA, CRM-Auftrag) – verhindert Excel-Wildwuchs und widersprüchliche Versionen." },
+        { id: 20, text: "Welches Tool eignet sich für strukturierte Projektdokumentation?", options: ["A) Confluence/SharePoint/JIRA mit klarer Ordnerstruktur und Berechtigungen", "B) Lose E-Mails ohne Struktur", "C) Bierdeckel", "D) Telefon-Notizen"], correct: 0, explanation: "Strukturierte Tools: Confluence, SharePoint, JIRA, Asana – mit klarer Ordnerstruktur (Vorlage, Verträge, Pläne, Protokolle, Berichte) + Rechtemanagement." }
+        ]
+    },
+{
+    title: "Abschnitt 3: Lessons Learned (Fragen 21–30)",
+    questions: [
+        { id: 21, text: "Was sind Lessons Learned?", options: ["A) Schulungsmaterialien", "B) Strukturierte Aufzeichnung von Erkenntnissen aus dem Projekt (Was lief gut/schlecht? Was machen wir beim nächsten Mal anders?)", "C) Rechnungen", "D) Verträge"], correct: 1, explanation: "Lessons Learned = strukturierte Reflexion: Was hat funktioniert? Was nicht? Was war überraschend? Was übernehmen wir? Verbessert zukünftige Projekte." },
+        { id: 22, text: "Wann sollten Lessons Learned erfasst werden?", options: ["A) Nur am Ende", "B) Sowohl im Projektverlauf (an Meilensteinen) als auch am Ende", "C) Nie", "D) Vor Projektbeginn"], correct: 1, explanation: "Best Practice: Lessons Learned an Meilensteinen UND am Ende – im Verlauf verlieren sich Details, am Ende fehlt Frische der Erinnerung." },
+        { id: 23, text: "Welche Format-Variante ist für Lessons Learned üblich?", options: ["A) Was lief gut, was lief nicht gut, was machen wir nächstes Mal anders?", "B) Loben + Schimpfen", "C) Geheim halten", "D) Vergessen"], correct: 0, explanation: "Klassisches Format (Sailboat/Start-Stop-Continue/Plus-Delta): What went well, what didn't, what to change. Konstruktiv, nicht persönlich." },
+        { id: 24, text: "Wer sollte an Lessons Learned beteiligt sein?", options: ["A) Nur der Projektleiter", "B) Alle Kernteam-Mitglieder + ggf. Stakeholder, die wesentlich beigetragen haben", "C) Nur die Geschäftsleitung", "D) Niemand"], correct: 1, explanation: "Beteiligte: Kernteam (alle Rollen!), wichtige Stakeholder (Kunde, Lieferanten). Vielfalt der Perspektiven liefert die wertvollsten Erkenntnisse." },
+        { id: 25, text: "Wie wird die psychologische Sicherheit für Lessons Learned hergestellt?", options: ["A) Schuldzuweisung", "B) Klare Regeln: keine Schuldzuweisung, Fokus auf System/Prozess statt Personen, vertraulicher Umgang", "C) Mit Strafen drohen", "D) Anonyme Kritik per Briefkasten"], correct: 1, explanation: "Psychologische Sicherheit: 'Keine Schuld, sondern System verbessern' – nur dann sprechen Beteiligte ehrlich über Probleme. Kaizen-Kultur." },
+        { id: 26, text: "Wo werden Lessons Learned gespeichert?", options: ["A) Nirgends", "B) In einer zentralen Wissensdatenbank, durchsuchbar, kategorisiert, mit Tags", "C) Im Müll", "D) In Geheimdatei"], correct: 1, explanation: "Wissensdatenbank (z.B. Confluence, Wiki): zentral, durchsuchbar, getaggt nach Themen (z.B. 'Recruiting-Großprojekt', 'IT-Projekt'). Sonst gehen Erkenntnisse verloren." },
+        { id: 27, text: "Wer profitiert von Lessons Learned?", options: ["A) Niemand", "B) Aktuelles Team + zukünftige Projektleitungen + die ganze Organisation", "C) Nur die GF", "D) Nur die ZAN"], correct: 1, explanation: "Lessons Learned sind Organisationswissen: aktuelles Team lernt direkt, zukünftige Projekte profitieren via Wissensdatenbank, gesamte Organisation wird besser." },
+        { id: 28, text: "Welche Gefahr besteht ohne strukturierte Lessons Learned?", options: ["A) Wiederholung gleicher Fehler in Folgeprojekten", "B) Höhere Margen", "C) Mehr Kunden", "D) Bessere Stimmung"], correct: 0, explanation: "Ohne Lessons Learned wiederholen sich typische Fehler immer wieder – die Organisation lernt nicht. Hauptgrund für 'gleichen Fehler bei jedem Großprojekt'." },
+        { id: 29, text: "Was ist Retrospektive im agilen Kontext?", options: ["A) Eine Lessons-Learned-Variante im agilen Setup, regelmäßig (z.B. nach jedem Sprint)", "B) Eine Tarifverhandlung", "C) Ein Vertragsmuster", "D) Eine Werbeaktion"], correct: 0, explanation: "Retrospektive (Scrum) = Mini-Lessons-Learned nach jedem Sprint (z.B. 2 Wochen). Hochfrequent, kurz, fokussiert auf konkrete Verbesserungen für nächsten Sprint." },
+        { id: 30, text: "Welche Frage gehört NICHT in eine konstruktive Retrospektive?", options: ["A) Was hat gut funktioniert?", "B) Was sollten wir ändern?", "C) Was haben wir gelernt?", "D) Wer ist schuld?"], correct: 3, explanation: "'Wer ist schuld?' ist destruktiv – verhindert ehrliches Reflektieren. Konstruktiv: 'Welche Prozesse/Strukturen haben das Problem ermöglicht?' (System-Sicht)." }
+        ]
+    },
+{
+    title: "Abschnitt 4: Soll-Ist-Vergleich beim Abschluss (Fragen 31–40)",
+    questions: [
+        { id: 31, text: "Welche drei Dimensionen vergleicht der Abschluss-Soll-Ist-Vergleich?", options: ["A) Zeit, Kosten, Qualität (Magisches Dreieck)", "B) Lohn, Pause, Urlaub", "C) Brot, Milch, Käse", "D) Nord, Süd, Ost"], correct: 0, explanation: "Magisches Dreieck PM: Zeit (Termine eingehalten?), Kosten (Budget eingehalten?), Qualität/Leistung (Anforderungen erfüllt?). Klassischer Soll-Ist." },
+        { id: 32, text: "Was bedeutet 'On Time, On Budget, On Quality'?", options: ["A) Alle drei Ziele eingehalten", "B) Nur Zeit eingehalten", "C) Nur Budget", "D) Nur Qualität"], correct: 0, explanation: "OTOBOQ-Erfolgsformel: Projekt liefert pünktlich, im Budget und mit vereinbarter Qualität – das angestrebte 'Triple Win'." },
+        { id: 33, text: "Wozu dient die Earned-Value-Analyse?", options: ["A) Lohnberechnung", "B) Kombinierter Soll-Ist-Vergleich von Plan-, Ist- und Fertigstellungswert über die Zeit", "C) Steuerberatung", "D) Kundenzufriedenheit"], correct: 1, explanation: "Earned-Value-Analyse: Plan-Wert (PV), Ist-Wert (AC), Fertigstellungswert (EV) – misst, ob Projekt im Plan liegt UND wie effizient gearbeitet wurde." },
+        { id: 34, text: "Was ist der CPI (Cost Performance Index)?", options: ["A) Eine Kunden-Bewertung", "B) EV / AC – misst Kosteneffizienz: 1 = Plan, >1 = günstiger, <1 = teurer", "C) Eine Steuer", "D) Eine Lohnabrechnung"], correct: 1, explanation: "CPI = Earned Value / Actual Cost. CPI = 1 bedeutet exakt im Budget; CPI > 1 unter Budget; CPI < 1 über Budget." },
+        { id: 35, text: "Was ist der SPI (Schedule Performance Index)?", options: ["A) EV / PV – misst Termintreue: 1 = Plan, >1 = schneller, <1 = später", "B) Eine Pause", "C) Tarifvertrag", "D) Eine Schule"], correct: 0, explanation: "SPI = Earned Value / Planned Value. SPI = 1 bedeutet im Zeitplan; SPI > 1 schneller als geplant; SPI < 1 langsamer." },
+        { id: 36, text: "Welche Aussage zu Abweichungsanalysen ist korrekt?", options: ["A) Sie sind unwichtig", "B) Sie zeigen, wo + warum es zu Abweichungen kam – Basis für Lessons Learned", "C) Sie sind nur für Buchhaltung", "D) Sie sollen Mitarbeitende bestrafen"], correct: 1, explanation: "Abweichungsanalysen sind Basis für Lessons Learned: was lief im Plan, was nicht, warum. Ziel: System-Verbesserung, nicht Schuldzuweisung." },
+        { id: 37, text: "Welche Kategorien von Projektabweichungen gibt es?", options: ["A) Plan, Ist, Restplan + qualitative/inhaltliche Abweichungen", "B) Nur Termine", "C) Nur Kosten", "D) Nur Mitarbeitende"], correct: 0, explanation: "Abweichungen umfassen: zeitlich (Termine), monetär (Budget), inhaltlich (Scope/Anforderungen) und qualitativ (Defects/Reklamationen)." },
+        { id: 38, text: "Was bedeutet 'Scope Creep'?", options: ["A) Ein Versicherungsbegriff", "B) Schleichende Erweiterung des Projektumfangs ohne formale Genehmigung", "C) Eine ZAN-Pause", "D) Ein Lager-Begriff"], correct: 1, explanation: "Scope Creep: Anforderungen werden im Verlauf 'mal eben' ergänzt, ohne formale Change-Request-Genehmigung – führt fast immer zu Zeit-/Budget-Überschreitung." },
+        { id: 39, text: "Wie beugt man Scope Creep vor?", options: ["A) Strukturierter Change-Request-Prozess: jede Änderung formal beantragen + bewerten + genehmigen", "B) Alles ablehnen", "C) Alles annehmen", "D) Ignorieren"], correct: 0, explanation: "Change-Request-Prozess: Antrag → Impact-Analyse (Zeit, Kosten, Qualität) → Entscheidung Auftraggeber → Dokumentation. So bleiben Änderungen kontrolliert." },
+        { id: 40, text: "Welche KPI sollte beim Abschluss in PDL-Recruiting-Projekten geprüft werden?", options: ["A) Time-to-Fill, Klebequote, Reklamationsquote, Bewerber-NPS", "B) Wetterbericht", "C) Bürofläche", "D) Kantinenangebot"], correct: 0, explanation: "Recruiting-Projekt-KPIs: Time-to-Fill (geplant vs. ist), Klebequote (Übernahme in Festanstellung), Reklamationsquote, Bewerber-NPS (Candidate Experience)." }
+        ]
+    },
+{
+    title: "Abschnitt 5: Wissensmanagement &amp; Folgeprojekte (Fragen 41–50)",
+    questions: [
+        { id: 41, text: "Was ist der Unterschied zwischen Daten, Information und Wissen?", options: ["A) Daten = Rohzahlen, Information = Daten im Kontext, Wissen = vernetzte Information mit Erfahrung", "B) Daten = Buch, Wissen = Lehrer", "C) Sie sind dasselbe", "D) Daten sind digital, Wissen analog"], correct: 0, explanation: "Datenpyramide DIKW: Daten (Rohwerte) → Information (mit Bedeutung) → Wissen (mit Kontext + Erfahrung) → Weisheit (Anwendungskompetenz)." },
+        { id: 42, text: "Was ist explizites Wissen?", options: ["A) Dokumentiertes, formal kommunizierbares Wissen (Texte, Datenbanken)", "B) Geheimes Wissen", "C) Implizites Bauchgefühl", "D) Mündliches Wissen"], correct: 0, explanation: "Explizites Wissen: kann formal aufgeschrieben/dokumentiert werden – Lessons-Learned-Reports, Vorlagen, Prozessbeschreibungen." },
+        { id: 43, text: "Was ist implizites (tacit) Wissen?", options: ["A) Erfahrungs-/Bauchwissen, schwer dokumentierbar (z.B. 'Bauchgefühl beim Bewerbergespräch')", "B) IT-Daten", "C) Verträge", "D) Lohnzettel"], correct: 0, explanation: "Implizites/tacit Wissen: Erfahrung, Intuition, Routinen, kontextgebundene Tipps – schwer in Worten zu fassen, wird durch Mentoring + Schatten-Tage übertragen." },
+        { id: 44, text: "Wie geht implizites Wissen in einer Niederlassung verloren?", options: ["A) Wenn erfahrene Mitarbeitende ohne Übergabe gehen", "B) Wenn neue Mitarbeitende kommen", "C) Wenn die IT ausfällt", "D) Wenn Pause ist"], correct: 0, explanation: "Hauptursache Wissensverlust: Personalfluktuation ohne strukturierte Wissensübergabe (Mentor:innen-Programme, Übergabeprotokolle, Schatten-Tage)." },
+        { id: 45, text: "Welche Methode überträgt implizites Wissen?", options: ["A) Mentoring, Job Shadowing, gemeinsame Bearbeitung von Aufgaben", "B) Reine Dokumente", "C) E-Mail", "D) Webseite"], correct: 0, explanation: "Implizites Wissen wird durch direkten Kontakt übertragen: Mentoring, Job Shadowing (Schatten-Tage), gemeinsam Aufträge bearbeiten – nicht durch Lesen." },
+        { id: 46, text: "Was ist 'Knowledge Management'?", options: ["A) Personalverwaltung", "B) Systematischer Umgang mit Wissen: Erfassen, Speichern, Zugänglich machen, Weiterentwickeln", "C) Lohnabrechnung", "D) Marketing"], correct: 1, explanation: "KM: Systematischer Umgang mit Wissen einer Organisation – von Erfassung über Speicherung bis zu Zugänglichkeit + kontinuierlicher Weiterentwicklung." },
+        { id: 47, text: "Wozu dient eine zentrale Lessons-Learned-Datenbank?", options: ["A) Zukünftige Projektleitungen finden + nutzen Erkenntnisse", "B) Nichts", "C) Verkauf an Konkurrenz", "D) Werbung"], correct: 0, explanation: "Lessons-Learned-Datenbank: zukünftige Projektleitungen suchen vor Projektstart nach ähnlichen Projekten + lernen aus deren Erfahrungen – beschleunigt Lernen massiv." },
+        { id: 48, text: "Welche Voraussetzung braucht erfolgreiches Knowledge Management?", options: ["A) Vertrauenskultur, Anreize, einfache Tools, Routine", "B) Strenge Hierarchie", "C) Kontrolle", "D) Geld"], correct: 0, explanation: "KM-Erfolgsfaktoren: Vertrauenskultur (Wissen teilen wird belohnt, nicht zurückgehalten), Anreize, einfach nutzbare Tools, in Routinen verankert." },
+        { id: 49, text: "Welche Gefahr besteht bei der 'Wissensinsel'?", options: ["A) Die Insel sinkt", "B) Wissen liegt nur bei einer Person – Verlust durch Krankheit/Wechsel/Urlaub", "C) Steuerprobleme", "D) Hitze"], correct: 1, explanation: "Wissensinsel = Wissen konzentriert auf einzelne Person → bei Ausfall dieser Person stehen Prozesse still. Gegenmittel: Doku, Vertretung, Patenmodell." },
+        { id: 50, text: "Wie wird Wissen aus Lessons Learned konkret in Folgeprojekten genutzt?", options: ["A) Vor Projektstart in Lessons-Learned-Datenbank suchen + relevante Erkenntnisse einarbeiten", "B) Ignorieren", "C) Als Werbeflyer", "D) Vergraben"], correct: 0, explanation: "Beste Praxis: Vor jedem neuen Projekt Lessons-Learned-DB durchsuchen, ähnliche Projekte lesen, Erkenntnisse in eigene Planung einarbeiten – spart Zeit + Fehler." }
+        ]
+    },
+{
+    title: "Abschnitt 6: PDL-Praxis: Großprojekt-Abschluss (Fragen 51–60)",
+    questions: [
+        { id: 51, text: "Welche Stakeholder müssen beim Abschluss eines PDL-Großprojekts informiert werden?", options: ["A) Kunde (Einkauf + Fachabteilung), Niederlassung, GF, ggf. Betriebsrat des Kunden, ZAN", "B) Nur der Kunde", "C) Nur die GF", "D) Nur die ZAN"], correct: 0, explanation: "Stakeholder beim PDL-Abschluss: Kunde (Einkauf + Fachabteilung als operativer Ansprechpartner), eigene NL, GF, ggf. Betriebsrat des Kunden, betroffene ZAN." },
+        { id: 52, text: "Was passiert mit ZAN nach Projektabschluss?", options: ["A) Sie werden 'übernommen' (Klebeeffekt) oder in andere Einsätze umdisponiert oder gehen in Pool", "B) Sie verschwinden", "C) Sie bleiben dort ohne Vertrag", "D) Sie werden gefeuert"], correct: 0, explanation: "Drei Optionen: a) Übernahme durch Kunden (Klebeeffekt), b) Folgeauftrag bei anderem Kunden (Disposition), c) Bewerber-Pool für künftige Auftragsspitzen." },
+        { id: 53, text: "Welche Pflichten hat der Personaldienstleister bei Auflösung des Einsatzes?", options: ["A) Saubere Abrechnung der letzten Stunden, Rückgabe von PSA, Austritts-Doku", "B) Keine", "C) Nur Lohnzahlung", "D) Werbeaktion"], correct: 0, explanation: "Bei Einsatzende: Stundenzettel-Endabrechnung, PSA-Rückgabe, Mitnahme persönlicher Sachen, Austritts-Dokumentation, Arbeitszeugnis." },
+        { id: 54, text: "Welcher Bericht geht beim Abschluss an den Kunden?", options: ["A) Projekt-Abschlussbericht mit KPIs (Time-to-Fill, Klebequote, Reklamationsquote, Erkenntnisse)", "B) Wetterbericht", "C) Geheimbericht", "D) Werbeprospekt"], correct: 0, explanation: "Kunden-Abschlussbericht: Quantitative KPIs + qualitative Erkenntnisse + Empfehlungen für Folgeprojekte. Verkaufsargument für Folgeauftrag!" },
+        { id: 55, text: "Welche Folge-Maßnahme ist nach erfolgreichem Großprojekt klassisch?", options: ["A) Folgeauftrag-Akquise + Referenzanfrage beim Kunden", "B) Aufgeben", "C) Konkurrenz aufgeben", "D) Insolvenz"], correct: 0, explanation: "Erfolgreicher Abschluss = beste Voraussetzung für Folgeauftrag und Referenz. Cross-Selling, Up-Selling, Empfehlungs-Marketing." },
+        { id: 56, text: "Was ist eine 'Referenz' im PDL-Vertrieb?", options: ["A) Eine Werbeanzeige", "B) Eine schriftliche/mündliche Empfehlung des Kunden für eigene Akquise bei anderen Kunden", "C) Eine Bewerbung", "D) Ein Tarifvertrag"], correct: 1, explanation: "Referenzkunde: zustimmender Kunde, der als Empfehlung dient (Logo + Erfolgsstory + Kontaktperson). Kraftvollstes Vertriebsargument im B2B." },
+        { id: 57, text: "Wie wird Klebeeffekt beim Projektabschluss honoriert?", options: ["A) Vermittlungsgebühr/Provision an den Personaldienstleister durch den Kunden", "B) Strafzahlung", "C) Gar nicht", "D) Lohnerhöhung für ZAN"], correct: 0, explanation: "Klebeeffekt = Übernahme durch Kunde wird typisch durch Vermittlungsprovision an den Personaldienstleister vergütet (vertraglich geregelt im AÜV)." },
+        { id: 58, text: "Welche AÜG-Pflicht gilt nach Einsatzende der ZAN?", options: ["A) Übergabe Arbeitszeugnis, ggf. Equal-Pay-Nachzahlung prüfen, Aufbewahrung Personalakte", "B) Keine", "C) Sofortige Kündigung", "D) Meldung an Polizei"], correct: 0, explanation: "Nach Einsatzende: Arbeitszeugnis (Pflicht), Equal-Pay-Prüfung (ab Monat 9), Personalakte gemäß Aufbewahrungsfristen (DSGVO + HGB)." },
+        { id: 59, text: "Was ist der typische Zeitpunkt für die Lessons-Learned-Sitzung?", options: ["A) Vor Projektabschluss (Anfang)", "B) 1-2 Wochen nach Abnahme – frische Erinnerung, aber Distanz für Reflexion", "C) Niemals", "D) Nach 6 Monaten"], correct: 1, explanation: "Beste Zeitpunkt: 1-2 Wochen nach Abnahme. Erinnerungen frisch, aber kurze Distanz für sachliche Reflexion. Nach 6 Monaten gehen Details verloren." },
+        { id: 60, text: "Was ist eine 'Projektakte' im PDL-Großprojekt?", options: ["A) Vollständige geordnete Sammlung aller Projektdokumente, archiviert nach Aufbewahrungsfristen", "B) Nur eine Akte", "C) Lohnzettel", "D) Werbung"], correct: 0, explanation: "Projektakte: vollständige, geordnete Sammlung aller Dokumente (Auftrag, Pläne, Protokolle, Berichte, Verträge, Korrespondenz, Abnahme) – archiviert gemäß Aufbewahrungsfristen." }
+        ]
+    }
+];
+
+let answered = {};
+let checked  = {};
+let showAll  = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() { const flat = []; sections.forEach(s => s.questions.forEach(q => flat.push(q))); return flat; }
+const flatQ = allQuestions();
+
+function render() {
+    const container = document.getElementById('quizContainer');
+    let html = ''; let globalIdx = 0;
+    sections.forEach((sec, si) => {
+        html += `<div class="section-title">${sec.title}</div>`;
+        sec.questions.forEach((q, qi) => {
+            const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+            const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+            html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+            html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+            html += `<p class="question-text">${q.text}</p>`;
+            html += `<ul class="options-list">`;
+            q.options.forEach((opt, oi) => {
+                let cls = '';
+                if (checked[q.id]) { if (oi === q.correct) cls = 'correct-opt'; else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt'; }
+                else if (answered[q.id] === oi) { cls = 'selected'; }
+                const dis = checked[q.id] ? 'disabled' : '';
+                const chk = answered[q.id] === oi ? 'checked' : '';
+                html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+            });
+            html += `</ul>`;
+            const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+            html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+            if (checked[q.id]) {
+                const isCorr = answered[q.id] === q.correct;
+                const fbClass = isCorr ? 'correct' : 'incorrect';
+                const fbText = isCorr ? `<strong>Richtig!</strong> ${q.explanation}` : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+                html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+            } else { html += `<div class="feedback" id="fb-${q.id}"></div>`; }
+            html += `</div>`; globalIdx++;
+        });
+    });
+    if (!showAll) {
+        html += `<div class="nav-row">`;
+        html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+        html += `<span style="font-weight:600;color:#004b87;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+        html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+        html += `</div>`;
+    }
+    container.innerHTML = html; updateProgress();
+}
+
+function selectOption(qid, idx) { if (checked[qid]) return; answered[qid] = idx; render(); }
+function checkAnswer(qid) { if (answered[qid] === undefined || checked[qid]) return; checked[qid] = true; render(); updateProgress(); }
+function navigate(dir) { currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir)); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function updateProgress() { const done = Object.keys(checked).length; const pct = Math.round((done / totalQ) * 100); document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`; document.getElementById('progressPct').textContent = `${pct} %`; document.getElementById('progressFill').style.width = `${pct}%`; }
+
+function showResults() {
+    const done = Object.keys(checked).length;
+    if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+    let correct = 0; flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+    const pct = Math.round((correct / done) * 100);
+    document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+    let gradeText = ''; let gradeClass = 'pass';
+    if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+    else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+    else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+    else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+    else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+    else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+    const gEl = document.getElementById('gradeText'); gEl.textContent = gradeText; gEl.className = 'grade ' + gradeClass;
+    let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+    sections.forEach(sec => {
+        let sCorr = 0, sTotal = 0;
+        sec.questions.forEach(q => { if (checked[q.id]) { sTotal++; if (answered[q.id] === q.correct) sCorr++; } });
+        const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+        tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+    });
+    tbl += '</table>';
+    document.getElementById('sectionBreakdown').innerHTML = tbl;
+    document.getElementById('resultsPanel').classList.add('show');
+    document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+    answered = {}; checked = {}; currentQ = 0;
+    document.getElementById('resultsPanel').classList.remove('show');
+    render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () { showAll = this.checked; render(); });
+
+function shuffleQuizOptions() {
+    let seed = 20260519;
+    function seededRandom() { seed = (seed * 16807 + 0) % 2147483647; return (seed - 1) / 2147483646; }
+    sections.forEach(sec => {
+        sec.questions.forEach(q => {
+            const correctText = q.options[q.correct];
+            const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+            for (let i = cleaned.length - 1; i > 0; i--) { const j = Math.floor(seededRandom() * (i + 1)); [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]]; }
+            const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+            const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+            q.options = cleaned.map((c, i) => prefixes[i] + c);
+            q.correct = cleaned.indexOf(correctClean);
+        });
+    });
+}
+shuffleQuizOptions();
+render();
+</script>
+<div id="pdk-bottom-back">
+  <a href="../../../index.html">&larr; Zurueck zur Tagesuebersicht</a>
+  <a href="tag.html">Tag-Detailseite</a>
+</div>
+</body>
+</html>

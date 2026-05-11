@@ -166,6 +166,42 @@
     .open-day:hover { text-decoration: underline; }
     .card-link { color: inherit; text-decoration: none; }
     .card-link:hover { color: var(--accent); }
+    /* Prüfungssimulation – Hervorhebung */
+    .module.exam-simulation .module-title {
+      border-bottom-color: #c25e0d;
+      color: #8a3f00;
+      font-size: 1.25rem;
+    }
+    .card.exam-card {
+      border-left: 6px solid #c25e0d;
+      background: linear-gradient(180deg, #fff8f1 0%, #fff 100%);
+      box-shadow: 0 8px 22px rgba(194, 94, 13, 0.12);
+    }
+    .card.exam-card .card-head h3 { color: #8a3f00; font-size: 1.1rem; }
+    .card.exam-card .topic { font-weight: 600; color: #c25e0d; font-size: 0.98rem; }
+    .card.exam-card .res a {
+      background: #fff5e0;
+      color: #8a3f00;
+      border-left-color: #c25e0d;
+    }
+    .card.exam-card .res a:hover { background: #ffe8c4; }
+    .card.exam-card .open-day {
+      color: #c25e0d;
+      background: #fff5e0;
+      padding: 0.5rem 0.9rem;
+      border-radius: 8px;
+      border: 1px solid #f3d27f;
+      margin-top: 0.6rem;
+    }
+    .card.exam-card .open-day:hover {
+      background: #c25e0d;
+      color: #fff;
+      text-decoration: none;
+    }
+    .stat.exam-stat {
+      background: rgba(255,180,80,0.25);
+      border-color: rgba(255,210,150,0.5);
+    }
     footer {
       padding: 1.5rem 1.25rem 2rem;
       color: var(--ink-2);
@@ -243,6 +279,7 @@
     <h1>PDK Personal-Kurs Mai-Juni 2026 -- Quiz, Video & Podcast</h1>
     <p>Lernmaterialien zum Kurs „WISO Comcave - Integrative Unternehmensprozesse Personal" (Personaldienstleistungskaufmann/-frau IHK). Pro Tag: interaktives Quiz im Browser sowie - sobald verfuegbar - Erklaervideo und Podcast.</p>
     <div class="stats">
+      <span class="stat exam-stat"><strong>🎯 1</strong> Klausursimulation</span>
       <span class="stat"><strong>26</strong> Tage</span>
       <span class="stat"><strong>20</strong> Quizze</span>
       <span class="stat"><strong>3</strong> Videos</span>
@@ -253,11 +290,31 @@
     <label for="daySelect">Schnellsprung:</label>
     <select id="daySelect">
       <option value="">-- Tag waehlen --</option>
+      <option value="Pruefungssimulation_Tag01-05">🎯 Pruefungssimulation Tag 1-5 (Klausur 125 Fragen)</option>
       <option value="01_Arbeitsgestaltung_04.05-06.05/Tag_01_2026-05-04_Mo_Einfuehrung_PDL_Lernstrategien">Tag 01 (2026-05-04) -- Mo Einfuehrung PDL Lernstrategien</option><option value="01_Arbeitsgestaltung_04.05-06.05/Tag_02_2026-05-05_Di_Arbeitsplanung_Disposition_Recruitingalltag">Tag 02 (2026-05-05) -- Di Arbeitsplanung Disposition Recruitingalltag</option><option value="01_Arbeitsgestaltung_04.05-06.05/Tag_03_2026-05-06_Mi_Qualitaet_Prozessanalyse_Kundenzufriedenheit">Tag 03 (2026-05-06) -- Mi Qualitaet Prozessanalyse Kundenzufriedenheit</option><option value="02_Projektmanagement_07.05-19.05/Tag_04_2026-05-07_Do_Projektbegriff_Onsite_Grosskundenprojekte">Tag 04 (2026-05-07) -- Do Projektbegriff Onsite Grosskundenprojekte</option><option value="02_Projektmanagement_07.05-19.05/Tag_05_2026-05-08_Fr_Lastenheft_Pflichtenheft_Auftragsklaerung_Anforderungsprofil">Tag 05 (2026-05-08) -- Fr Lastenheft Pflichtenheft Auftragsklaerung Anforderungsprofil</option><option value="02_Projektmanagement_07.05-19.05/Tag_06_2026-05-11_Mo_Beteiligte_SMARTziele_Inhalte">Tag 06 (2026-05-11) -- Mo Beteiligte SMARTziele Inhalte</option><option value="02_Projektmanagement_07.05-19.05/Tag_07_2026-05-12_Di_Rollen_Team_Projektorganisation">Tag 07 (2026-05-12) -- Di Rollen Team Projektorganisation</option><option value="02_Projektmanagement_07.05-19.05/Tag_08_2026-05-13_Mi_Projektstrukturplan_PSP">Tag 08 (2026-05-13) -- Mi Projektstrukturplan PSP</option><option value="02_Projektmanagement_07.05-19.05/Tag_09_2026-05-15_Fr_Ablaufplan_Gantt_Ressourcenplanung">Tag 09 (2026-05-15) -- Fr Ablaufplan Gantt Ressourcenplanung</option><option value="02_Projektmanagement_07.05-19.05/Tag_10_2026-05-18_Mo_Soll-Ist-KPI_Recruiting_Fluktuation">Tag 10 (2026-05-18) -- Mo Soll-Ist-KPI Recruiting Fluktuation</option><option value="02_Projektmanagement_07.05-19.05/Tag_11_2026-05-19_Di_Projektdokumentation_Abschluss_LessonsLearned">Tag 11 (2026-05-19) -- Di Projektdokumentation Abschluss LessonsLearned</option><option value="03_Berufsfelderschliessung_20.05-03.06/Tag_13_2026-05-21_Do_Kompetenzprofile_gewerblich_kfm_IT_Medizin">Tag 13 (2026-05-21) -- Do Kompetenzprofile gewerblich kfm IT Medizin</option><option value="03_Berufsfelderschliessung_20.05-03.06/Tag_14_2026-05-22_Fr_Einsatzfelder_Branchenspezifika">Tag 14 (2026-05-22) -- Fr Einsatzfelder Branchenspezifika</option><option value="03_Berufsfelderschliessung_20.05-03.06/Tag_16_2026-05-27_Mi_Anforderungsprofile_erstellen">Tag 16 (2026-05-27) -- Mi Anforderungsprofile erstellen</option><option value="03_Berufsfelderschliessung_20.05-03.06/Tag_17_2026-05-28_Do_Stellenausschreibung_Praxis">Tag 17 (2026-05-28) -- Do Stellenausschreibung Praxis</option><option value="03_Berufsfelderschliessung_20.05-03.06/Tag_19_2026-06-01_Mo_Demografie_Digitalisierung_NewWork">Tag 19 (2026-06-01) -- Mo Demografie Digitalisierung NewWork</option><option value="03_Berufsfelderschliessung_20.05-03.06/Tag_20_2026-06-02_Di_Mangelberufe_Zielbranchen_Akquise">Tag 20 (2026-06-02) -- Di Mangelberufe Zielbranchen Akquise</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_22_2026-06-05_Fr_Kommunikationsmodelle_Schulz_v_Thun_PDL">Tag 22 (2026-06-05) -- Fr Kommunikationsmodelle Schulz v Thun PDL</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_23_2026-06-08_Mo_Kunde_Bewerber_ZAN_zielgruppengerecht">Tag 23 (2026-06-08) -- Mo Kunde Bewerber ZAN zielgruppengerecht</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_25_2026-06-10_Mi_Vorstellungsgespraech_aktives_Zuhoeren">Tag 25 (2026-06-10) -- Mi Vorstellungsgespraech aktives Zuhoeren</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_26_2026-06-11_Do_Mitarbeitergespraech_Feedback_im_Einsatz">Tag 26 (2026-06-11) -- Do Mitarbeitergespraech Feedback im Einsatz</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_28_2026-06-15_Mo_Konfliktarten_Kunde_ZAN_intern">Tag 28 (2026-06-15) -- Mo Konfliktarten Kunde ZAN intern</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_29_2026-06-16_Di_Eskalation_Mediation_Beschwerdemanagement">Tag 29 (2026-06-16) -- Di Eskalation Mediation Beschwerdemanagement</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_31_2026-06-18_Do_Betriebsrat_GVP_Anwalt">Tag 31 (2026-06-18) -- Do Betriebsrat GVP Anwalt</option><option value="04_Kommunikation_Kooperation_05.06-22.06/Tag_33_2026-06-22_Mo_Klausurvorbereitung_PDK_Pruefungssimulation">Tag 33 (2026-06-22) -- Mo Klausurvorbereitung PDK Pruefungssimulation</option><option value="05_Klausur_23.06/Tag_34_2026-06-23_Di_Klausur_PDK_IHK">Tag 34 (2026-06-23) -- Di Klausur PDK IHK</option>
     </select>
     <input type="search" id="searchBox" placeholder="Suchen (Thema, Datum, Tag-Nummer)...">
   </div>
   <main id="modules">
+
+    <section class="module exam-simulation" data-module="pruefungssimulation">
+      <h2 class="module-title">🎯 Pruefungssimulation Tag 1-5 (IHK-Klausur-Stil)</h2>
+      <div class="cards-grid">
+        <article class="card exam-card" data-day="Pruefungssimulation_Tag01-05">
+          <header class="card-head">
+            <h3><a class="card-link" href="content/Pruefungssimulation_Tag01-05/index.html">Pruefungssimulation starten</a></h3>
+            <p class="topic">125 Fragen &middot; 150 Minuten &middot; IHK-Klausur-Modus</p>
+          </header>
+          <ul class="resources">
+            <li class="res"><a href="content/Pruefungssimulation_Tag01-05/index.html">📚 Quelle: Handouts + Praesentationen Tag 01-05</a></li>
+            <li class="res"><a href="content/Pruefungssimulation_Tag01-05/index.html">⏱ Zeitlimit: 150 Minuten (Auto-Submit bei Ablauf)</a></li>
+            <li class="res"><a href="content/Pruefungssimulation_Tag01-05/index.html">🎲 Zufaellige Reihenfolge bei jedem Start</a></li>
+            <li class="res"><a href="content/Pruefungssimulation_Tag01-05/index.html">📊 Detailauswertung nach Themenblock + IHK-Note</a></li>
+          </ul>
+          <a class="open-day" href="content/Pruefungssimulation_Tag01-05/index.html">&rarr; Klausur starten</a>
+        </article>
+      </div>
+    </section>
 
     <section class="module" data-module="01_Arbeitsgestaltung_04.05-06.05">
       <h2 class="module-title">Modul 1 -- Arbeitsgestaltung (04.05-06.05)</h2>

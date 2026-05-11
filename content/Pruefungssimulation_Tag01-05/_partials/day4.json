@@ -1,0 +1,252 @@
+[
+  {
+    "id": 76,
+    "day": 4,
+    "topic": "Projektbegriff & Abgrenzung",
+    "text": "Ein Personaldienstleister plant für einen Logistikkunden einen Sondereinsatz: erstmals werden 200 Zeitarbeitnehmer:innen über 24 Monate aus einem eigens errichteten Bürocontainer vor Ort betreut. Welches Merkmal nach DIN 69901 ist hier am eindeutigsten erfüllt?",
+    "options": ["A) Reine Linienorganisation, da die Disposition zuständig bleibt", "B) Einmaligkeit der Gesamtbedingungen aus Kunde, Volumen, Vertragsdauer und Infrastruktur", "C) Unbefristete Daueraufgabe ohne Endtermin", "D) Standardisierte Wiederholaufgabe mit Erfahrungswerten"],
+    "correct": 1,
+    "explanation": "Die Konstellation aus neuem Kunden, hohem Volumen, eigenem Container und langer Laufzeit ist in dieser Gesamtheit neuartig – damit ist das Merkmal der Einmaligkeit nach DIN 69901 erfüllt.",
+    "source": "Handout Tag 4, Abschnitt 2.2.1"
+  },
+  {
+    "id": 77,
+    "day": 4,
+    "topic": "Projektbegriff & Abgrenzung",
+    "text": "Welche Eselsbrücke fasst die fünf konstitutiven Projektmerkmale nach DIN 69901 korrekt zusammen?",
+    "options": ["A) SMART", "B) PESTEL", "C) EZ-BAP (Einmaligkeit, Zielvorgabe, Begrenzungen, Abgrenzung, Projektorganisation)", "D) SWOT"],
+    "correct": 2,
+    "explanation": "EZ-BAP steht für die fünf Projektmerkmale: Einmaligkeit, Zielvorgabe, Begrenzungen, Abgrenzung, Projektspezifische Organisation. SMART ist eine Zielformulierungs-Methode.",
+    "source": "Präsentation Tag 4, Folie ,Fünf konstitutive Projektmerkmale"
+  },
+  {
+    "id": 78,
+    "day": 4,
+    "topic": "Projektbegriff & Abgrenzung",
+    "text": "Im Magischen Dreieck stehen Zeit, Kosten und Leistung in Wechselwirkung. Welche Konsequenz beschreibt diese Wechselwirkung am besten?",
+    "options": ["A) Alle drei Größen lassen sich beliebig gleichzeitig maximieren", "B) Werden zwei Größen fixiert, ergibt sich die dritte zwangsläufig (Trade-off)", "C) Nur die Kosten beeinflussen den Projekterfolg", "D) Das Magische Dreieck spielt im PDL-Bereich keine Rolle"],
+    "correct": 1,
+    "explanation": "Das Magische Dreieck beschreibt die Zielkonkurrenz: Wenn Termine verkürzt und der Leistungsumfang beibehalten werden soll, steigen typischerweise die Kosten – eine gleichzeitige Optimierung aller drei Größen ist nicht möglich.",
+    "source": "Handout Tag 4, Abschnitt 2.2.3 (Begrenzungen)"
+  },
+  {
+    "id": 79,
+    "day": 4,
+    "topic": "Projektbegriff & Abgrenzung",
+    "text": "Wann lohnt sich nach Patzak & Rattay (2014) der Einsatz von Projektmanagement-Methoden?",
+    "options": ["A) Wenn das Budget unter 5.000 Euro liegt", "B) Wenn mindestens zwei der drei Kriterien Komplexität, Risiko und Innovationsgrad stark ausgeprägt sind", "C) Wenn der Vorgang gesetzlich vorgeschrieben ist", "D) Bei jeder Routineaufgabe in der Disposition"],
+    "correct": 1,
+    "explanation": "Die Faustregel lautet: Sind mindestens zwei der drei Kriterien (Komplexität, Risiko, Innovationsgrad) stark ausgeprägt, lohnt sich projektorientiertes Vorgehen.",
+    "source": "Handout Tag 4, Abschnitt 2.4"
+  },
+  {
+    "id": 80,
+    "day": 4,
+    "topic": "Projektbegriff & Abgrenzung",
+    "text": "Eine Disponentin betreut täglich 80 Zeitarbeitnehmer:innen bei vier Stammkunden – stets nach demselben Standardprozess. Welche Einordnung ist korrekt?",
+    "options": ["A) Klassisches IT-Projekt", "B) Routineaufgabe in der Linienorganisation, da wiederkehrend und eingespielt", "C) Großprojekt nach DIN 69901", "D) Onsite-Management mit Lenkungsausschuss"],
+    "correct": 1,
+    "explanation": "Wiederkehrende Standardabläufe in der Disposition werden aus dem Linienbudget abgewickelt und sind keine Projekte, sondern Routineaufgaben.",
+    "source": "Handout Tag 4, Abschnitt 2.3 (Tabelle Projekt vs. Routineaufgabe)"
+  },
+  {
+    "id": 81,
+    "day": 4,
+    "topic": "Onsite-Management bei Großkunden",
+    "text": "Worin liegt der Kerngedanke des Onsite-Managements in der Personaldienstleistung?",
+    "options": ["A) Lohnabrechnung wird komplett an ein externes Steuerbüro ausgelagert", "B) PDL-Personal sitzt direkt beim Kundenbetrieb und steuert dort die ZAN-bezogenen Themen", "C) Bewerber:innen werden ausschließlich virtuell ohne Kundenkontakt rekrutiert", "D) Der Kunde übernimmt die komplette Disposition selbst"],
+    "correct": 1,
+    "explanation": "Onsite bedeutet Vor-Ort-Präsenz: Recruiter:in oder Onsite-Manager:in arbeitet im Gebäude des Kunden und steuert alle Personalfragen rund um die Zeitarbeitnehmer:innen.",
+    "source": "Handout Tag 4, Abschnitt 4.1"
+  },
+  {
+    "id": 82,
+    "day": 4,
+    "topic": "Onsite-Management bei Großkunden",
+    "text": "Welche Phase tritt im typischen Onsite-Aufbau zwischen Pilotbetrieb und Vertragsende auf?",
+    "options": ["A) Akquise", "B) Konzeption", "C) Regelbetrieb mit Reporting und Soll-Ist-Vergleich", "D) Lasten- und Pflichtenhefterstellung"],
+    "correct": 2,
+    "explanation": "Auf den Pilotbetrieb folgt der Regelbetrieb mit kontinuierlichem Reporting und Soll-Ist-Vergleich; erst danach kommt es zu Rückbau oder Verlängerung am Vertragsende.",
+    "source": "Handout Tag 4, Abschnitt 4.1.1 (Typische Projektphasen)"
+  },
+  {
+    "id": 83,
+    "day": 4,
+    "topic": "Onsite-Management bei Großkunden",
+    "text": "Welches Risiko ist für ein Onsite-Management-Projekt besonders typisch?",
+    "options": ["A) Wegfall der Umsatzsteuer durch den Vor-Ort-Einsatz", "B) Abwerbung der Onsite-Recruiterin durch den Kundenbetrieb", "C) Pflicht zur Mehrfachausschreibung der Stelle", "D) Verbot eines schriftlichen Rahmenvertrags"],
+    "correct": 1,
+    "explanation": "Onsite-Recruiter:innen sind dauerhaft beim Kunden präsent und werden häufig direkt vom Kundenbetrieb abgeworben – ein klassisches Bindungsrisiko für das PDU.",
+    "source": "Handout Tag 4, Abschnitt 4.1.2 (Spezifische Risiken)"
+  },
+  {
+    "id": 84,
+    "day": 4,
+    "topic": "Onsite-Management bei Großkunden",
+    "text": "Welche der folgenden Aussagen beschreibt einen typischen Vorteil eines Onsite-Modells für den Kundenbetrieb am besten?",
+    "options": ["A) Verlagerung der Erlaubnispflicht nach AÜG auf den Kunden", "B) Kurze Reaktionszeiten bei Personalbedarfen und direkte Ansprechperson vor Ort", "C) Wegfall jeglicher Kennzeichnungspflicht im Vertrag", "D) Aufhebung der 18-Monats-Grenze nach AÜG"],
+    "correct": 1,
+    "explanation": "Der Vor-Ort-Recruiter senkt Reaktionszeiten und schafft eine feste Schnittstelle zum Kunden. Rechtliche Pflichten (Erlaubnis, Kennzeichnung, Höchstüberlassung) bleiben unverändert.",
+    "source": "Handout Tag 4, Abschnitt 4.1"
+  },
+  {
+    "id": 85,
+    "day": 4,
+    "topic": "Onsite-Management bei Großkunden",
+    "text": "Welche rechtliche Vorgabe muss beim Onsite-Management besonders konsequent überwacht werden, weil mehrere Zeitarbeitnehmer:innen lange bei demselben Kunden verbleiben?",
+    "options": ["A) Mindestumsatzregel nach HGB", "B) 18-Monats-Höchstüberlassungsgrenze pro Zeitarbeitnehmer:in beim selben Kundenbetrieb nach AÜG", "C) Schriftformerfordernis nach BGB §126b für Werbe-E-Mails", "D) Verbot von Schichtarbeit"],
+    "correct": 1,
+    "explanation": "Im Onsite ist die Einsatzdauer einzelner ZAN besonders kritisch: Nach 18 Monaten beim selben Kunden ist eine Unterbrechung oder Übernahme nötig (§1 Abs. 1b AÜG).",
+    "source": "Handout Tag 4, Abschnitt 4.1.2 und Abschnitt 7.1"
+  },
+  {
+    "id": 86,
+    "day": 4,
+    "topic": "Master-Vendor & Service-Provider-Modelle",
+    "text": "Was beschreibt das Master-Vendor-Modell (MVV) in der Personaldienstleistung?",
+    "options": ["A) Der Kunde verleiht selbst ZAN an andere Unternehmen", "B) Ein Hauptverleiher koordiniert beim Kunden mehrere Sub-Verleiher (Multi-Vendor-Steuerung)", "C) Der Kunde übernimmt selbst die Recruiting-Funktion ohne externen Partner", "D) Eine Behörde steuert alle Personaldienstleister"],
+    "correct": 1,
+    "explanation": "Beim Master-Vendor-Modell agiert ein PDL als zentraler Koordinator (Master Vendor) und bindet bei Bedarf weitere Sub-Verleiher ein, um die Bedarfe des Kunden vollständig zu decken.",
+    "source": "Handout Tag 4, Glossar (MVV)"
+  },
+  {
+    "id": 87,
+    "day": 4,
+    "topic": "Master-Vendor & Service-Provider-Modelle",
+    "text": "Welche Aussage zum Unterschied Single-Vendor vs. Multi-Vendor ist korrekt?",
+    "options": ["A) Single-Vendor heißt: Der Kunde arbeitet exklusiv mit einem PDL zusammen", "B) Multi-Vendor bedeutet: Der Kunde darf keinen Rahmenvertrag schließen", "C) Beide Modelle sind nach AÜG verboten", "D) Single-Vendor erfordert immer ein Werkvertragsmodell"],
+    "correct": 0,
+    "explanation": "Beim Single-Vendor-Modell bezieht der Kunde alle Zeitarbeitsbedarfe über genau einen Anbieter, während beim Multi-Vendor mehrere Verleiher parallel beauftragt werden (häufig über einen Master-Vendor gesteuert).",
+    "source": "Handout Tag 4, Glossar (MVV) und Abschnitt 4.1"
+  },
+  {
+    "id": 88,
+    "day": 4,
+    "topic": "Master-Vendor & Service-Provider-Modelle",
+    "text": "Ein Großkunde möchte seine Zeitarbeitsbedarfe über genau einen Hauptansprechpartner steuern, der seinerseits weitere Verleiher als Sub-Vendoren einbindet. Welches Modell passt am besten?",
+    "options": ["A) Reines Single-Vendor-Modell ohne Sub-Verleiher", "B) Master-Vendor-Modell mit Sub-Vendor-Steuerung", "C) Direkter Einzelverleih ohne Rahmenvertrag", "D) Tarifgemeinschaft nach TVöD"],
+    "correct": 1,
+    "explanation": "Genau diese Konstellation – ein Master-Vendor koordiniert mehrere Sub-Vendoren für einen Kunden – ist die Kernidee des Master-Vendor-Modells (MVV).",
+    "source": "Handout Tag 4, Glossar (MVV)"
+  },
+  {
+    "id": 89,
+    "day": 4,
+    "topic": "Master-Vendor & Service-Provider-Modelle",
+    "text": "Welche Funktion übernimmt der Master-Vendor typischerweise gegenüber den Sub-Vendoren?",
+    "options": ["A) Er übernimmt nur die Lohnsteueranmeldung für die Sub-Vendoren", "B) Er bündelt die Bedarfe, steuert die Sub-Vendoren über SLAs und liefert ein konsolidiertes Reporting an den Kunden", "C) Er übernimmt die arbeitsrechtliche Haftung für alle Sub-Vendoren", "D) Er ist gesetzlich vorgeschriebene Aufsichtsbehörde"],
+    "correct": 1,
+    "explanation": "Master-Vendor bedeutet Steuerung über SLAs, Bündelung der Bedarfe und konsolidiertes Reporting – nicht aber automatische Haftungsübernahme für die rechtlichen Pflichten der Sub-Vendoren.",
+    "source": "Handout Tag 4, Glossar (MVV) und Abschnitt 4.1"
+  },
+  {
+    "id": 90,
+    "day": 4,
+    "topic": "Master-Vendor & Service-Provider-Modelle",
+    "text": "Welche Aussage zum Service Level Agreement (SLA) im Master-Vendor- oder Onsite-Vertrag ist korrekt?",
+    "options": ["A) SLAs sind nicht messbar und nur als Absichtserklärung gedacht", "B) SLAs enthalten messbare Leistungszusagen wie Antwortzeiten, Besetzungsquoten und Qualitätsstandards", "C) SLAs ersetzen den Rahmenvertrag vollständig", "D) SLAs sind im AÜG ausdrücklich verboten"],
+    "correct": 1,
+    "explanation": "Service Level Agreements legen messbare Kennzahlen (KPIs) wie Reaktionszeit, Besetzungsquote und Qualitätsanforderungen vertraglich fest und sind das zentrale Steuerungsinstrument im Onsite-/MVV-Vertrag.",
+    "source": "Handout Tag 4, Glossar (SLA) und Abschnitt 4.1.1"
+  },
+  {
+    "id": 91,
+    "day": 4,
+    "topic": "Großkundenprojekte: Besonderheiten",
+    "text": "Welche der folgenden Ausschreibungen ist am ehesten ein Großkundenprojekt im PDL-Sinne?",
+    "options": ["A) Vermittlung einer Hilfskraft für drei Tage", "B) Recruiting von 60 examinierten Pflegekräften binnen vier Monaten für eine Klinik-Eröffnung mit Budget 280.000 Euro", "C) Erstellung einer Stellenanzeige für einen Stammkunden", "D) Überweisung der Monatslöhne"],
+    "correct": 1,
+    "explanation": "Hohes Volumen, klare Frist, dediziertes Projektteam und ein Schlüsselkunde sind kennzeichnend für Großkundenprojekte; das Klinikum-Beispiel erfüllt all diese Kriterien.",
+    "source": "Handout Tag 4, Abschnitt 4.2.1"
+  },
+  {
+    "id": 92,
+    "day": 4,
+    "topic": "Großkundenprojekte: Besonderheiten",
+    "text": "Welche Vertragsform bildet typischerweise das rechtliche Rückgrat eines langfristigen Großkundenengagements?",
+    "options": ["A) Einzelvertrag ohne Volumenvereinbarung", "B) Rahmenvertrag mit Volumenzusagen und SLAs", "C) Mündliche Absprache ohne Schriftform", "D) Schenkungsvertrag"],
+    "correct": 1,
+    "explanation": "Rahmenverträge regeln Konditionen, Volumina und SLAs für eine Vielzahl künftiger Einzeleinsätze und sind im Onsite- und Großkundenkontext Standard.",
+    "source": "Handout Tag 4, Abschnitt 4.1.1 (Vertrag)"
+  },
+  {
+    "id": 93,
+    "day": 4,
+    "topic": "Großkundenprojekte: Besonderheiten",
+    "text": "Welche Recruiting-Methodik ist für ein Pflegekräfte-Großkundenprojekt typisch?",
+    "options": ["A) Ausschließlich klassische Zeitungsanzeigen", "B) Active Sourcing über XING und LinkedIn, Headhunting in Polen und Spanien, Präsenz auf Pflegemessen", "C) Komplett-Verzicht auf jegliche Stellenausschreibung", "D) Nur interne Versetzung von Stammkräften"],
+    "correct": 1,
+    "explanation": "Pflegekräfte sind ein enger Bewerbermarkt – Active Sourcing, EU-Headhunting und Messepräsenz sind in der Praxis die wirksamen Recruiting-Hebel.",
+    "source": "Handout Tag 4, Abschnitt 4.2.1 (Beispiel: Klinikum-Eröffnung)"
+  },
+  {
+    "id": 94,
+    "day": 4,
+    "topic": "Großkundenprojekte: Besonderheiten",
+    "text": "Welcher Aufwandsbereich entspricht nach der Klassifikation im Handout einem Großprojekt?",
+    "options": ["A) Weniger als 50 Personentage und unter 25.000 Euro Budget", "B) 50 bis 500 Personentage und 25.000 bis 250.000 Euro Budget", "C) Mehr als 500 Personentage und mehr als 250.000 Euro Budget", "D) Genau 100 Personentage unabhängig vom Budget"],
+    "correct": 2,
+    "explanation": "Großprojekte sind im Handout definiert als Vorhaben mit mehr als 500 Personentagen Aufwand und mehr als 250.000 Euro Budget.",
+    "source": "Handout Tag 4, Abschnitt 3.4 (Klassifikation nach Größe)"
+  },
+  {
+    "id": 95,
+    "day": 4,
+    "topic": "Großkundenprojekte: Besonderheiten",
+    "text": "Was ist ein typisches Reporting-Element in einem Großkunden-Rahmenvertrag mit SLA?",
+    "options": ["A) Eine jährliche freiwillige Stellungnahme ohne Kennzahlen", "B) Regelmäßige KPI-Berichte zu Besetzungsquote, Time-to-Hire, Fluktuation und Equal-Pay-Status", "C) Monatliche persönliche Briefe an den Vorstand", "D) Eine reine Mund-zu-Mund-Rückmeldung"],
+    "correct": 1,
+    "explanation": "Im Großkundenkontext erwarten Kunden quantifizierte Reportings (KPI-Dashboards) zu Besetzung, Geschwindigkeit, Fluktuation und – wegen AÜG – zum Equal-Pay-Status.",
+    "source": "Handout Tag 4, Abschnitt 5.1.2 (Steuerungsinstrumente, KPI-Dashboards)"
+  },
+  {
+    "id": 96,
+    "day": 4,
+    "topic": "Rollen Onsite-Manager & Key-Account",
+    "text": "Welche Aufgabe gehört primär zur Rolle der/des Onsite-Manager:in?",
+    "options": ["A) Strategische Tarifverhandlung mit dem Gesamtverband der Personaldienstleister", "B) Operative Steuerung der ZAN-Einsätze beim Kunden, Bewerberauswahl vor Ort und tägliche Schnittstelle zur Fachabteilung", "C) Erteilung der Verleiherlaubnis durch die Bundesagentur für Arbeit", "D) Erstellung des Jahresabschlusses des PDU"],
+    "correct": 1,
+    "explanation": "Onsite-Manager:innen arbeiten operativ beim Kunden, steuern den täglichen Personalbedarf und sind die direkte Schnittstelle zur Fachabteilung und HR des Kunden.",
+    "source": "Handout Tag 4, Abschnitt 4.1 und 4.1.1"
+  },
+  {
+    "id": 97,
+    "day": 4,
+    "topic": "Rollen Onsite-Manager & Key-Account",
+    "text": "Worin unterscheidet sich der Key-Account-Manager (strategisch) typischerweise vom Onsite-Manager (operativ)?",
+    "options": ["A) Der Key-Account-Manager arbeitet ausschließlich in der Lohnbuchhaltung", "B) Der Key-Account-Manager verantwortet die strategische Kundenbeziehung, Vertragsverhandlung und Eskalation; der Onsite-Manager das Tagesgeschäft beim Kunden", "C) Beide Rollen sind nach AÜG identisch definiert", "D) Der Key-Account-Manager rekrutiert persönlich jeden einzelnen ZAN vor Ort"],
+    "correct": 1,
+    "explanation": "Der Key-Account-Manager verantwortet die strategische Ebene (Vertragsausgestaltung, Vertriebsbeziehung, Eskalation) und übergibt die operative Steuerung an den Onsite-Manager.",
+    "source": "Handout Tag 4, Abschnitt 4.1 und 6.2"
+  },
+  {
+    "id": 98,
+    "day": 4,
+    "topic": "Rollen Onsite-Manager & Key-Account",
+    "text": "Welchen Eskalationsweg sieht ein professionelles Onsite-/Großkundenmodell typischerweise vor, wenn ein operativer Konflikt nicht beim Onsite-Manager gelöst werden kann?",
+    "options": ["A) Direktes Anrufen der Bundesagentur für Arbeit", "B) Eskalation an die Niederlassungsleitung bzw. den Key-Account-Manager und – bei Großprojekten – an den Lenkungsausschuss", "C) Stillschweigen, bis der Vertrag ausläuft", "D) Sofortige Kündigung sämtlicher ZAN-Verträge"],
+    "correct": 1,
+    "explanation": "Eine geordnete Eskalation läuft vom Onsite-Manager über die Niederlassungsleitung bzw. den Key-Account zum Lenkungsausschuss – die strategische Steuerungsebene des Großprojekts.",
+    "source": "Handout Tag 4, Abschnitt 4.1.1 und 5.1.3 (Lenkungsausschuss)"
+  },
+  {
+    "id": 99,
+    "day": 4,
+    "topic": "Rollen Onsite-Manager & Key-Account",
+    "text": "Welcher der genannten Stakeholder gehört zu einem typischen externen PDL-Projekt mit Onsite-Komponente?",
+    "options": ["A) Bundeszentrale für politische Bildung", "B) Kundenbetrieb (Einkauf, HR, Fachabteilung), Bewerber:innen, Niederlassungsleitung, Betriebsrat des Kunden, Bundesagentur für Arbeit", "C) Ausschließlich der Vorstand des Verleihers", "D) Nur die externen Steuerberater des Kunden"],
+    "correct": 1,
+    "explanation": "Typische Stakeholder eines PDL-Projekts sind der Kundenbetrieb (mit Einkauf, HR, Fachabteilung), die ZAN, die Niederlassungsleitung, der Betriebsrat des Kundenbetriebs (§99 BetrVG) und die Bundesagentur für Arbeit als Erlaubnisbehörde.",
+    "source": "Handout Tag 4, Abschnitt 6.2 (Typische Stakeholder)"
+  },
+  {
+    "id": 100,
+    "day": 4,
+    "topic": "Rollen Onsite-Manager & Key-Account",
+    "text": "Welche Reporting-Verantwortung trägt der Onsite-Manager gegenüber Niederlassung und Key-Account?",
+    "options": ["A) Keine, das Reporting läuft ausschließlich über den Kunden", "B) Regelmäßige Status-Reports zu Besetzungsquote, Soll-Ist-Vergleich, Risiken und KPI-Entwicklung als Basis für die strategische Steuerung", "C) Reine Quartalspressemitteilung an die Tageszeitung", "D) Übermittlung der Daten an den Betriebsrat des Verleihers per Aushang"],
+    "correct": 1,
+    "explanation": "Onsite-Manager:innen liefern regelmäßige Status-Reports (Besetzung, Soll-Ist, KPI, Risiken) an Niederlassungsleitung und Key-Account – sie sind die Datenquelle für die strategische Steuerung des Projekts.",
+    "source": "Handout Tag 4, Abschnitt 4.1.1 (Regelbetrieb) und 5.1.3 (Status-Reports)"
+  }
+]

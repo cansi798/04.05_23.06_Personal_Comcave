@@ -1,0 +1,377 @@
+[
+  {
+    "id": 101,
+    "day": 5,
+    "topic": "Lastenheft vs. Pflichtenheft",
+    "text": "Ein Kundenbetrieb übersendet der PDL-Niederlassung ein Dokument mit den Forderungen an die zu vermittelnden Mitarbeitenden. In welche Kategorie fällt dieses Dokument nach DIN 69905?",
+    "options": [
+      "A) Pflichtenheft, weil es vom Kunden als Auftraggeber stammt",
+      "B) Lastenheft, weil es die Gesamtheit der Forderungen des Auftraggebers beschreibt",
+      "C) Service Level Agreement, weil Leistungen gegenüber dem Auftragnehmer fixiert werden",
+      "D) Rahmenvertrag, weil daraus die spätere Auftragsannahme abgeleitet wird"
+    ],
+    "correct": 1,
+    "explanation": "Nach DIN 69905 ist das Lastenheft die vom Auftraggeber festgelegte Gesamtheit der Forderungen an Lieferungen und Leistungen. Es beantwortet die Fragen ‚Was?‘ und ‚Wofür?‘.",
+    "source": "Handout Tag 5, Abschnitt 2.1 (DIN 69905 Definition Lastenheft)"
+  },
+  {
+    "id": 102,
+    "day": 5,
+    "topic": "Lastenheft vs. Pflichtenheft",
+    "text": "Welche Aussage zur Verbindlichkeit von Lasten- und Pflichtenheft trifft in der PDL-Praxis am ehesten zu?",
+    "options": [
+      "A) Beide Dokumente sind reine Arbeitspapiere ohne rechtliche Bedeutung",
+      "B) Das Lastenheft wird Vertragsbestandteil, das Pflichtenheft nicht",
+      "C) Das Pflichtenheft wird in der Regel Anlage zum Vertrag oder Rahmenvertrag",
+      "D) Nur das Pflichtenheft hat Beweiskraft, das Lastenheft niemals"
+    ],
+    "correct": 2,
+    "explanation": "Das Pflichtenheft wird üblicherweise als Anlage zum AÜV oder Rahmenvertrag aufgenommen und damit Vertragsbestandteil. Beide sollten schriftlich vorliegen, doch erst das Pflichtenheft konkretisiert die geschuldete Leistung verbindlich.",
+    "source": "Handout Tag 5, Abschnitt 6.1 (Form und Beweiskraft)"
+  },
+  {
+    "id": 103,
+    "day": 5,
+    "topic": "Lastenheft vs. Pflichtenheft",
+    "text": "Welche Norm bzw. Richtlinie konkretisiert ergänzend zur DIN 69905 die Erstellung von Lasten- und Pflichtenheften?",
+    "options": [
+      "A) ISO 9001:2015",
+      "B) VDI 2519",
+      "C) BGB §§ 631 ff.",
+      "D) ArbStättV"
+    ],
+    "correct": 1,
+    "explanation": "Die VDI-Richtlinie 2519 konkretisiert das Vorgehen bei der Erstellung von Lasten- und Pflichtenheften. DIN 69905 (bzw. DIN 69901) liefert die normative Begriffsdefinition.",
+    "source": "Handout Tag 5, Abschnitt 1 (Einführung)"
+  },
+  {
+    "id": 104,
+    "day": 5,
+    "topic": "Lastenheft vs. Pflichtenheft",
+    "text": "Welcher Bestandteil gehört typischerweise NICHT in ein Lastenheft, sondern in das Pflichtenheft?",
+    "options": [
+      "A) Ist-Situation und Soll-Konzept",
+      "B) Abnahmekriterien aus Sicht des Kunden",
+      "C) Lösungskonzept mit Methoden und Werkzeugen",
+      "D) Rahmenbedingungen und Termine"
+    ],
+    "correct": 2,
+    "explanation": "Das Lösungskonzept mit Methoden, Werkzeugen und Phasen ist eine Realisierungsvorgabe des Auftragnehmers und gehört daher ins Pflichtenheft. Das Lastenheft bleibt lösungsoffen und beschreibt nur die Anforderungen.",
+    "source": "Handout Tag 5, Abschnitte 2.2 und 3.2 (Aufbau Lasten-/Pflichtenheft)"
+  },
+  {
+    "id": 105,
+    "day": 5,
+    "topic": "Lastenheft vs. Pflichtenheft",
+    "text": "Die Helios-Klinik fordert von der Pflegezeit AG ein Konzept inklusive Active Sourcing, Headhunting in PL und ES sowie eine Probezeit-Garantie. In welches Dokument gehört dieses Konzept?",
+    "options": [
+      "A) In das Lastenheft, da die Klinik die Vorgaben macht",
+      "B) In das Pflichtenheft der Pflegezeit AG als Antwort auf das Lastenheft",
+      "C) In den TV-GVP als tarifliche Anlage",
+      "D) In das Personalfragebogen-Set des Bewerberportals"
+    ],
+    "correct": 1,
+    "explanation": "Das Pflichtenheft (PDL-Angebot bzw. SLA) der Pflegezeit AG enthält das Lösungskonzept (z.B. Active Sourcing, Headhunting, Garantien) als Antwort auf das Lastenheft des Kunden. Es beschreibt das ‚Wie?‘ und ‚Womit?‘.",
+    "source": "Handout Tag 5, Abschnitt 3.3 (Praxisbeispiel Pflegezeit AG)"
+  },
+  {
+    "id": 106,
+    "day": 5,
+    "topic": "Auftragsklärung Kundenbedarf",
+    "text": "Die Auftragsklärung verfolgt nach Handout drei Hauptziele. Welche Trias trifft zu?",
+    "options": [
+      "A) Akquirieren, Verkaufen, Abschließen",
+      "B) Verstehen, Konkretisieren, Vereinbaren",
+      "C) Werben, Beraten, Vermitteln",
+      "D) Anhören, Notieren, Ablegen"
+    ],
+    "correct": 1,
+    "explanation": "Die Auftragsklärung soll (1) verstehen, was der Kunde wirklich will, (2) unklare Lasten konkretisieren und (3) verbindlich vereinbaren, was machbar ist und was nicht. Sie ist die Brücke zwischen Lastenheft und Pflichtenheft.",
+    "source": "Handout Tag 5, Abschnitt 5.1 (Bedeutung der Auftragsklärung)"
+  },
+  {
+    "id": 107,
+    "day": 5,
+    "topic": "Auftragsklärung Kundenbedarf",
+    "text": "Welche W-Frage gehört NICHT zu den sechs W-Fragen der strukturierten Auftragsklärung im Handout?",
+    "options": [
+      "A) Wo?",
+      "B) Wie viel?",
+      "C) Welche Konkurrenten?",
+      "D) Warum?"
+    ],
+    "correct": 2,
+    "explanation": "Die sechs W-Fragen lauten: Was, Wer, Wann, Wo, Warum, Wie viel. ‚Welche Konkurrenten?‘ ist eine Marktfrage, gehört aber nicht zum Set der Auftragsklärung.",
+    "source": "Handout Tag 5, Abschnitt 5.2 (Strukturierte Fragetechnik)"
+  },
+  {
+    "id": 108,
+    "day": 5,
+    "topic": "Auftragsklärung Kundenbedarf",
+    "text": "Was ist das ‚Rückspiegel-Protokoll‘ in der Auftragsklärung?",
+    "options": [
+      "A) Eine schriftliche E-Mail nach dem Gespräch, in der das Verstandene zusammengefasst und vom Kunden bestätigt wird",
+      "B) Ein Sitzungsprotokoll, das ausschließlich an den Betriebsrat geht",
+      "C) Ein internes Briefing der Disposition über den letzten Kundenkontakt",
+      "D) Ein vom Bewerber erstellter Erfahrungsbericht nach dem Einsatz"
+    ],
+    "correct": 0,
+    "explanation": "Das Rückspiegel-Protokoll ist eine kurze schriftliche Bestätigung des Verstandenen per E-Mail an den Kunden mit Bitte um Bestätigung. Es dient der Beweissicherung und vermeidet spätere Diskussionen.",
+    "source": "Handout Tag 5, Abschnitt 5.3 (PDK-Praxistipp)"
+  },
+  {
+    "id": 109,
+    "day": 5,
+    "topic": "Auftragsklärung Kundenbedarf",
+    "text": "Welche der folgenden Verhaltensweisen wird im Handout als typische ‚Falle‘ in der Auftragsklärung benannt?",
+    "options": [
+      "A) Strukturierte Vorbereitung mit Branchen-Recherche",
+      "B) Zu frühe Lösung statt verstehen",
+      "C) Klare Trennung von Erstgespräch und Bedarfsanalyse",
+      "D) Schriftliche Bestätigung nach jeder Vereinbarung"
+    ],
+    "correct": 1,
+    "explanation": "Eine typische Falle ist es, sofort eine Lösung anzubieten, bevor der Bedarf vollständig verstanden ist. Weitere Fallen: Annahme statt Frage, fehlende Schriftform, nur HR (nicht Fachabteilung) sprechen.",
+    "source": "Handout Tag 5, Abschnitt 5.3 (Typische Fallen)"
+  },
+  {
+    "id": 110,
+    "day": 5,
+    "topic": "Auftragsklärung Kundenbedarf",
+    "text": "Welche Reihenfolge der Auftragsklärungs-Schritte ist im Handout vorgesehen?",
+    "options": [
+      "A) Erstgespräch — Auftragsannahme — Bedarfsanalyse — Pflichtenheft",
+      "B) Vorbereitung — Erstgespräch — Bedarfsanalyse — Rückspiegel — Angebotserstellung — Vertragsverhandlung — Auftragsannahme",
+      "C) Vertragsverhandlung — Bedarfsanalyse — Rückspiegel — Kick-off",
+      "D) Angebot — Vertrag — Rückspiegel — Bedarfsanalyse — Auftragsannahme"
+    ],
+    "correct": 1,
+    "explanation": "Der vollständige Prozess lautet: (1) Vorbereitung, (2) Erstgespräch, (3) Bedarfsanalyse, (4) Rückspiegel, (5) Angebotserstellung (Pflichtenheft), (6) Vertragsverhandlung, (7) Auftragsannahme/Kick-off.",
+    "source": "Handout Tag 5, Abschnitt 5.4 (Auftragsklärung als Prozess)"
+  },
+  {
+    "id": 111,
+    "day": 5,
+    "topic": "Anforderungsprofil erstellen",
+    "text": "Eine Niederlassungsleiterin will für eine Lagerstelle 12 Muss-Kriterien definieren. Welcher Hinweis ist aus Sicht des Handouts korrekt?",
+    "options": [
+      "A) Je mehr Muss-Kriterien, desto besser ist das Profil definiert",
+      "B) Maximal 5 Muss-Kriterien; sonst wird der Bewerber-Pool zu klein",
+      "C) Muss-Kriterien sind nur dann sinnvoll, wenn sie tariflich verankert sind",
+      "D) Muss-Kriterien dürfen nach AGG niemals mehr als 3 sein"
+    ],
+    "correct": 1,
+    "explanation": "Das Handout empfiehlt maximal 5 Muss-Kriterien. Faustregel: Jede zusätzliche Muss-Anforderung halbiert den Bewerber-Pool. Bei 10+ Muss-Kriterien findet man niemanden.",
+    "source": "Handout Tag 5, Abschnitt 6.2 sowie Merkkasten 5-Muss-Regel"
+  },
+  {
+    "id": 112,
+    "day": 5,
+    "topic": "Anforderungsprofil erstellen",
+    "text": "Welche der folgenden Anforderungen ist nach AGG in einer Stellenausschreibung problematisch und sollte vermieden werden?",
+    "options": [
+      "A) ‚Examinierte Pflegeausbildung erforderlich‘",
+      "B) ‚Wir suchen junge, dynamische Pflegekraft unter 30 Jahren‘",
+      "C) ‚B2-Sprachkenntnisse Deutsch in Wort und Schrift‘",
+      "D) ‚Gültiger Staplerschein zwingend‘"
+    ],
+    "correct": 1,
+    "explanation": "Die Formulierung diskriminiert wegen Alter und ist nach AGG (§ 1) unzulässig. Sachlich gerechtfertigte fachliche Anforderungen sind dagegen erlaubt. Stellenanzeigen müssen zudem den Zusatz ‚m/w/d‘ enthalten.",
+    "source": "Handout Tag 5, Abschnitt 6.2 (AGG) und Merkkasten Stellenausschreibung gendergerecht"
+  },
+  {
+    "id": 113,
+    "day": 5,
+    "topic": "Anforderungsprofil erstellen",
+    "text": "Was bedeutet die englische MoSCoW-Variante des Muss/Soll/Kann-Schemas in deutscher Entsprechung?",
+    "options": [
+      "A) Must = Soll, Should = Kann, Could = Muss, Won't = Wunsch",
+      "B) Must = Muss, Should = Soll, Could = Kann, Won't = bewusster Scope-Ausschluss",
+      "C) Must = Muss, Should = Muss, Could = Soll, Won't = Kann",
+      "D) Must = Kann, Should = Soll, Could = Muss, Won't = Notwendig"
+    ],
+    "correct": 1,
+    "explanation": "MoSCoW: Must = unverzichtbar (Muss), Should = wichtig aber verzichtbar (Soll), Could = wünschenswert (Kann), Won't have (this time) = bewusst aus dem Scope ausgeschlossen.",
+    "source": "Handout Tag 5, Abschnitt 8.1 (MoSCoW-Priorisierung)"
+  },
+  {
+    "id": 114,
+    "day": 5,
+    "topic": "Anforderungsprofil erstellen",
+    "text": "Welche Kompetenz ordnen Sie dem Bereich ‚Hard Skills‘ zu?",
+    "options": [
+      "A) Teamfähigkeit",
+      "B) Belastbarkeit",
+      "C) SAP-Anwenderkenntnisse mit Zertifikat",
+      "D) Konfliktfähigkeit"
+    ],
+    "correct": 2,
+    "explanation": "Hard Skills sind fachliche, messbare Qualifikationen wie Software-Kenntnisse mit Zertifikat, Sprachstufen (CEFR) oder Maschinenführerscheine. Teamfähigkeit, Belastbarkeit und Konfliktfähigkeit gehören zu den Soft Skills.",
+    "source": "Handout Tag 5, Abschnitt 6.3 (Vier Dimensionen) sowie Glossar"
+  },
+  {
+    "id": 115,
+    "day": 5,
+    "topic": "Anforderungsprofil erstellen",
+    "text": "Aus einem guten Anforderungsprofil lässt sich direkt eine Stellenanzeige ableiten. Welcher Bestandteil sollte dabei laut Handout enthalten sein?",
+    "options": [
+      "A) Tabelle mit allen Konkurrenzangeboten der Branche",
+      "B) Konkrete Tätigkeitsbeschreibung sowie transparente Konditionen (z.B. TV-GVP)",
+      "C) Vollständige Lebensläufe vergleichbarer Stammkräfte",
+      "D) Geheimer Hinweis auf Equal-Pay-Stichtag"
+    ],
+    "correct": 1,
+    "explanation": "Eine ansprechende Stellenanzeige stellt Unternehmen und Kundenbetrieb vor, beschreibt die Tätigkeit konkret, formuliert Muss-Anforderungen ehrlich, kommuniziert Konditionen (TV-GVP, Branchenzuschlag) transparent und nennt klare Bewerbungswege.",
+    "source": "Handout Tag 5, Abschnitt 6.4 (Vom Anforderungsprofil zum Stellenangebot)"
+  },
+  {
+    "id": 116,
+    "day": 5,
+    "topic": "Soll- vs. Ist-Kompetenzen",
+    "text": "Welche vier Dimensionen umfasst ein vollständiges Anforderungsprofil laut Handout?",
+    "options": [
+      "A) Persönlich, Politisch, Praktisch, Pragmatisch",
+      "B) Fachlich, Sozial/Persönlich, Methodisch, Aktivitäts- und umsetzungsorientiert",
+      "C) Kognitiv, Affektiv, Psychomotorisch, Volitional",
+      "D) Operativ, Taktisch, Strategisch, Normativ"
+    ],
+    "correct": 1,
+    "explanation": "Die vier Kompetenzdimensionen sind: (1) fachlich (Ausbildung, Zertifikate, Sprachen), (2) sozial/persönlich (Team, Kommunikation), (3) methodisch (Präsentation, Software), (4) aktivitäts- und umsetzungsorientiert (Schicht-, Reisebereitschaft, Führerschein).",
+    "source": "Handout Tag 5, Abschnitt 6.3 (Vier Dimensionen eines Anforderungsprofils)"
+  },
+  {
+    "id": 117,
+    "day": 5,
+    "topic": "Soll- vs. Ist-Kompetenzen",
+    "text": "Eine Nutzwertanalyse vergleicht zwei Bewerber:innen anhand gewichteter Kriterien. Was ergibt die Summe aller Gewichtungen typischerweise?",
+    "options": [
+      "A) 50 Prozent",
+      "B) 100 Prozent",
+      "C) 200 Prozent",
+      "D) Variabel je nach Anzahl Kandidat:innen"
+    ],
+    "correct": 1,
+    "explanation": "Konvention der Nutzwertanalyse: Alle Gewichtungen summieren sich zu 100 Prozent. Pro Kriterium wird Punktzahl mal Gewicht berechnet, die Summe ergibt den Nutzwert pro Kandidat:in.",
+    "source": "Handout Tag 5, Abschnitt 8.2 (Nutzwertanalyse)"
+  },
+  {
+    "id": 118,
+    "day": 5,
+    "topic": "Soll- vs. Ist-Kompetenzen",
+    "text": "Bewerberin A erreicht bei einer Nutzwertanalyse einen Nutzwert von 7,00, Bewerber B von 6,55. Was folgt daraus methodisch?",
+    "options": [
+      "A) B muss zwingend abgelehnt werden, da niedriger Nutzwert",
+      "B) A wird im Vergleich bevorzugt, weil ihr gewichteter Gesamtwert höher liegt",
+      "C) Die Werte sind irrelevant, weil sie nicht über AGG-Schranken hinwegtragen",
+      "D) Beide werden zwingend gleichgesetzt, da Werte unter 10 stehen"
+    ],
+    "correct": 1,
+    "explanation": "Bei der Nutzwertanalyse entscheidet der höhere Nutzwert — A wird methodisch bevorzugt. Sie ersetzt aber kein persönliches Auswahlgespräch und keine AGG-Prüfung; die Methode dient der Objektivierung, nicht der automatischen Entscheidung.",
+    "source": "Handout Tag 5, Abschnitt 8.2 (Beispieltabelle Nutzwertanalyse)"
+  },
+  {
+    "id": 119,
+    "day": 5,
+    "topic": "Soll- vs. Ist-Kompetenzen",
+    "text": "Eine Recruiterin bezeichnet eine fiktive, idealtypische Person ‚Marek, 28, Lagerist mit Staplerschein‘ als Grundlage für ihr Sourcing. Welche Methode wendet sie an?",
+    "options": [
+      "A) Persona-Methode",
+      "B) Equal-Pay-Analyse",
+      "C) SMART-Methode",
+      "D) MoSCoW-Priorisierung"
+    ],
+    "correct": 0,
+    "explanation": "Eine Persona ist eine idealtypische, personifizierte Repräsentation der gesuchten Person. Sie macht das Anforderungsprofil greifbar und hilft, Stellenanzeigen und Sourcing zielgruppengerecht zu formulieren.",
+    "source": "Handout Tag 5, Abschnitt 8.3 (Persona im Recruiting)"
+  },
+  {
+    "id": 120,
+    "day": 5,
+    "topic": "Soll- vs. Ist-Kompetenzen",
+    "text": "Methodische Kompetenzen umfassen im Sinne des Handouts vor allem:",
+    "options": [
+      "A) Belastbarkeit, Sorgfalt und Eigenverantwortung",
+      "B) Präsentations- und Moderationstechniken, Werkzeug- und Software-Kenntnisse",
+      "C) Schichtbereitschaft, Reisebereitschaft, Führerschein",
+      "D) Berufsausbildung, Studium, Berufserfahrung"
+    ],
+    "correct": 1,
+    "explanation": "Methodische Kompetenzen sind Präsentations- und Moderationstechniken, Werkzeugkenntnisse (Handwerk, Pflege) und Softwarekenntnisse (SAP, Office, Branchenlösungen). Belastbarkeit zählt zu sozialen, Schichtbereitschaft zu aktivitätsorientierten Kompetenzen.",
+    "source": "Handout Tag 5, Abschnitt 6.3 (Methodische Kompetenzen)"
+  },
+  {
+    "id": 121,
+    "day": 5,
+    "topic": "Vertragsanbahnung und AÜV",
+    "text": "Welcher Inhalt MUSS nach AÜG zwingend in den Arbeitnehmerüberlassungsvertrag (AÜV) zwischen Verleiher und Entleiher aufgenommen werden?",
+    "options": [
+      "A) Lebenslauf der überlassenen Person",
+      "B) Erklärung über die AÜ-Erlaubnis und ausdrückliche Bezeichnung als AÜV",
+      "C) Vollständige Lohnabrechnung der letzten drei Monate",
+      "D) Zustimmung des Betriebsrats des Verleihers"
+    ],
+    "correct": 1,
+    "explanation": "Nach § 12 AÜG sind zwingend Bestandteile: Erklärung über die Überlassungserlaubnis, ausdrückliche Bezeichnung als AÜV, konkrete Person, Tätigkeit und Beginn/Dauer des Einsatzes.",
+    "source": "Handout Tag 5, Abschnitt 6.3 (AÜG-Konformität) und ergänzend Glossar AÜG"
+  },
+  {
+    "id": 122,
+    "day": 5,
+    "topic": "Vertragsanbahnung und AÜV",
+    "text": "Welche zentrale Pflicht ergibt sich aus § 1 Abs. 1 S. 6 AÜG vor Beginn der Überlassung?",
+    "options": [
+      "A) Equal-Pay-Pflicht ab dem 1. Einsatztag",
+      "B) Konkretisierungspflicht — die zu überlassende Person muss vor Einsatz namentlich benannt werden",
+      "C) Pflicht zur arbeitsmedizinischen Untersuchung beim Entleiher",
+      "D) Pflicht zur Vorlage des Tarifvertrages beim Bewerber"
+    ],
+    "correct": 1,
+    "explanation": "Die Konkretisierungspflicht verlangt, dass die zu überlassende Person vor Einsatzbeginn konkret benannt wird. Ein nachträgliches ‚Auswechselrecht‘ ist unzulässig. Zusätzlich gilt die Kennzeichnungspflicht.",
+    "source": "Präsentation Tag 5, Folie ‚AÜG-Konformität im Pflichtenheft‘ sowie Quiz-Vorlage"
+  },
+  {
+    "id": 123,
+    "day": 5,
+    "topic": "Vertragsanbahnung und AÜV",
+    "text": "Spätestens ab welchem Einsatzmonat beim selben Kundenbetrieb ist nach § 8 AÜG zwingend Equal Pay zu gewähren?",
+    "options": [
+      "A) Ab dem 1. Monat",
+      "B) Ab dem 6. Monat",
+      "C) Ab dem 9. Monat",
+      "D) Ab dem 18. Monat"
+    ],
+    "correct": 2,
+    "explanation": "Nach § 8 AÜG greift Equal Pay spätestens nach 9 Monaten Einsatz beim selben Kunden. Branchenzuschläge (z.B. nach TV-BZ) können bereits früher gestaffelt zu Lohnsteigerungen führen.",
+    "source": "Handout Tag 5, Abschnitt 6.3 (AÜG-Konformität)"
+  },
+  {
+    "id": 124,
+    "day": 5,
+    "topic": "Vertragsanbahnung und AÜV",
+    "text": "Welche Höchstüberlassungsdauer sieht § 1b AÜG pro Zeitarbeitnehmer:in beim selben Kunden grundsätzlich vor (ohne tarifliche Abweichung)?",
+    "options": [
+      "A) 6 Monate",
+      "B) 12 Monate",
+      "C) 18 Monate",
+      "D) 36 Monate"
+    ],
+    "correct": 2,
+    "explanation": "§ 1b AÜG begrenzt die Höchstüberlassungsdauer grundsätzlich auf 18 Monate beim selben Entleiher. Per Tarifvertrag (z.B. TV-GVP/IG Metall) sind längere Zeiträume möglich.",
+    "source": "Handout Tag 5, Abschnitt 6.3 (AÜG-Konformität)"
+  },
+  {
+    "id": 125,
+    "day": 5,
+    "topic": "Vertragsanbahnung und AÜV",
+    "text": "Im Drei-Personen-Verhältnis der Arbeitnehmerüberlassung schließt der Personaldienstleister jeweils welchen Vertrag mit wem?",
+    "options": [
+      "A) Arbeitsvertrag mit dem Kundenbetrieb; AÜV mit der Zeitarbeitnehmerin",
+      "B) Arbeitsvertrag mit der Zeitarbeitnehmerin; AÜV mit dem Kundenbetrieb",
+      "C) Werkvertrag mit der Zeitarbeitnehmerin; Werkvertrag mit dem Kundenbetrieb",
+      "D) Dienstvertrag mit dem Kundenbetrieb; Werkvertrag mit der Zeitarbeitnehmerin"
+    ],
+    "correct": 1,
+    "explanation": "Im klassischen Drei-Personen-Verhältnis schließt der Verleiher mit der Zeitarbeitnehmerin den Arbeitsvertrag und mit dem Kundenbetrieb den AÜV. Zwischen Kunde und Zeitarbeitnehmerin besteht nur ein faktisches Weisungsverhältnis, kein Arbeitsvertrag.",
+    "source": "Präsentation Tag 5, Folien zu AÜV und PDL-Praxis; Quiz-Vorlage Frage 57"
+  }
+]

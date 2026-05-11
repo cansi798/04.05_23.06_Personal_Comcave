@@ -1,0 +1,252 @@
+[
+  {
+    "id": 51,
+    "day": 3,
+    "topic": "Qualitätsbegriff & Qualitätsmanagement",
+    "text": "Eine Personaldienstleisterin möchte ihre Qualität im Sinne der DIN EN ISO 9000:2015 verbessern. Welche Kennzahl beschreibt am ehesten ein „inhärentes Merkmal“ der Dienstleistung?",
+    "options": ["A) Der vereinbarte Stundenverrechnungssatz", "B) Die Bleibequote von Zeitarbeitnehmenden nach 90 Tagen", "C) Die Anzahl der Filialen im Bundesgebiet", "D) Der Marktanteil im Bundesland"],
+    "correct": 1,
+    "explanation": "Inhärente Merkmale wohnen dem Objekt der Dienstleistung selbst inne. Die Bleibequote nach 90 Tagen beschreibt die Eignung und Passung des vermittelten Personals und ist damit ein inhärentes Qualitätsmerkmal. Preis und Marktanteil sind zugeordnete bzw. externe Kenngrößen.",
+    "source": "Handout Tag 3, Abschnitt 1.1"
+  },
+  {
+    "id": 52,
+    "day": 3,
+    "topic": "Qualitätsbegriff & Qualitätsmanagement",
+    "text": "Welcher Grundsatz des Qualitätsmanagements nach DIN EN ISO 9001:2015 entspricht am ehesten der Aussage „Daten und Analyse statt Bauchgefühl“?",
+    "options": ["A) Engagement von Personen", "B) Faktengestützte Entscheidungsfindung", "C) Beziehungsmanagement", "D) Führung"],
+    "correct": 1,
+    "explanation": "Die faktengestützte Entscheidungsfindung ist einer der sieben Grundsätze nach ISO 9001:2015 und fordert datenbasiertes Entscheiden statt Intuition. Die anderen Grundsätze (Führung, Engagement, Beziehungsmanagement) haben andere Schwerpunkte.",
+    "source": "Handout Tag 3, Abschnitt 1.2"
+  },
+  {
+    "id": 53,
+    "day": 3,
+    "topic": "Qualitätsbegriff & Qualitätsmanagement",
+    "text": "Nach der „Rule of Ten“ der Qualitätskosten – welches Verhältnis besteht zwischen Präventions-, Prüfungs- und Fehlerkosten?",
+    "options": ["A) 1 EUR Prävention spart 5 EUR Prüfung und 50 EUR Fehler", "B) 1 EUR Prävention spart 10 EUR Prüfung und 100 EUR Fehler", "C) 1 EUR Prävention spart 100 EUR Prüfung und 1.000 EUR Fehler", "D) 1 EUR Prüfung spart 10 EUR Prävention und 100 EUR Fehler"],
+    "correct": 1,
+    "explanation": "Die Rule of Ten besagt: 1 EUR Prävention spart 10 EUR Prüfung und 100 EUR Fehlerkosten. Vorbeugende Maßnahmen wie Schulung und Audit sind also deutlich günstiger als die Korrektur eingetretener Fehler.",
+    "source": "Handout Tag 3, Merkebox Qualitätskosten"
+  },
+  {
+    "id": 54,
+    "day": 3,
+    "topic": "Qualitätsbegriff & Qualitätsmanagement",
+    "text": "Eine Niederlassungsleitung führt eine PDCA-Iteration zur Senkung der Reklamationsquote durch. Welche Phase entspricht der Frage „Hat unsere Maßnahme die gewünschte Wirkung gezeigt?“?",
+    "options": ["A) Plan", "B) Do", "C) Check", "D) Act"],
+    "correct": 2,
+    "explanation": "In der Check-Phase wird die Wirkung der Maßnahme gemessen und mit dem Ziel verglichen. Erst danach folgt in Act die Standardisierung erfolgreicher Maßnahmen oder ein neuer Zyklus.",
+    "source": "Handout Tag 3, Abschnitt 3.3"
+  },
+  {
+    "id": 55,
+    "day": 3,
+    "topic": "Qualitätsbegriff & Qualitätsmanagement",
+    "text": "Welche der folgenden Maßnahmen zählt zu den klassischen Präventionskosten der Qualitätssicherung?",
+    "options": ["A) Vertragsauflösung mit Zeitarbeitnehmenden wegen Schlechtleistung", "B) Nachbesetzung nach Probezeit-Abbruch", "C) Strukturierte Recruiter-Schulung und interne Audits", "D) Gutschrift für reklamierte Einsatzstunden"],
+    "correct": 2,
+    "explanation": "Präventionskosten entstehen vor dem Fehler durch Schulungen, Audits und Standardisierung. Vertragsauflösung, Nachbesetzung und Gutschriften sind hingegen Fehlerkosten, die nach einem Mangel anfallen.",
+    "source": "Handout Tag 3, Abschnitt 1.4"
+  },
+  {
+    "id": 56,
+    "day": 3,
+    "topic": "Prozessanalyse & Prozessbeschreibung",
+    "text": "Sie modellieren den Recruitingprozess einer Niederlassung mit SIPOC. Welcher Buchstabe steht für die Eingangs-Lieferanten, also etwa Jobportale oder Bewerbende?",
+    "options": ["A) S – Suppliers", "B) I – Inputs", "C) P – Process", "D) C – Customers"],
+    "correct": 0,
+    "explanation": "SIPOC steht für Suppliers (Lieferanten), Inputs (Eingaben), Process (Prozessschritte), Outputs (Ergebnisse) und Customers (Empfänger). Jobportale, Kundenbetriebe und Bewerbende sind klassische Suppliers.",
+    "source": "Handout Tag 3, Abschnitt 2.5"
+  },
+  {
+    "id": 57,
+    "day": 3,
+    "topic": "Prozessanalyse & Prozessbeschreibung",
+    "text": "Welche Aussage trifft auf BPMN (Business Process Model and Notation) zu?",
+    "options": ["A) Es ist ein deutsches Tarifwerk für die Personaldienstleistungsbranche", "B) Es ist ein internationaler Standard zur grafischen Prozessmodellierung", "C) Es ist ein Kennzahlensystem speziell für Recruiting", "D) Es ist ein Verschwendungstyp aus dem Lean Management"],
+    "correct": 1,
+    "explanation": "BPMN ist ein international anerkannter Standard zur grafischen Notation von Geschäftsprozessen. Er ergänzt einfache Flussdiagramme um symbolische Notationen für Ereignisse, Aktivitäten und Entscheidungen.",
+    "source": "Präsentation Tag 3, Folie 9"
+  },
+  {
+    "id": 58,
+    "day": 3,
+    "topic": "Prozessanalyse & Prozessbeschreibung",
+    "text": "Eine Pareto-Auswertung der Beschwerden Ihres Quartals zeigt, dass drei Beschwerdetypen kumuliert 75 Prozent ausmachen. Welche Handlungsempfehlung leiten Sie korrekt ab?",
+    "options": ["A) Die Pareto-Verteilung ist Zufall – keine Maßnahme nötig", "B) Alle Beschwerdetypen gleich gewichten und gleichmäßig bearbeiten", "C) Präventionsmaßnahmen gezielt auf diese drei Top-Ursachen konzentrieren", "D) Sofortige Eskalation an die Geschäftsführung in jedem Einzelfall"],
+    "correct": 2,
+    "explanation": "Das Pareto-Prinzip empfiehlt, Ressourcen auf die wenigen Hauptursachen mit der größten Wirkung zu konzentrieren. Bei 75 Prozent durch drei Typen ist hier der größte Verbesserungshebel.",
+    "source": "Handout Tag 3, Abschnitt 2.4"
+  },
+  {
+    "id": 59,
+    "day": 3,
+    "topic": "Prozessanalyse & Prozessbeschreibung",
+    "text": "Welche der folgenden Aktivitäten zählt nicht zu den sieben Verschwendungsarten (Muda) im Lean Management?",
+    "options": ["A) Mehrfaches Umformatieren von Bewerberprofilen zwischen Systemen", "B) Wartezeiten bis zur Vertragserstellung", "C) Strukturierte Onboarding-Schulung neuer Zeitarbeitnehmender", "D) Bewerberüberhang ohne passende Aufträge"],
+    "correct": 2,
+    "explanation": "Strukturierte Schulung ist eine wertschöpfende Tätigkeit und keine Muda. Die sieben Muda-Arten umfassen Überproduktion, Wartezeit, Transport, Überbearbeitung, Bestände, unnötige Bewegung und Fehler.",
+    "source": "Präsentation Tag 3, Folie 11"
+  },
+  {
+    "id": 60,
+    "day": 3,
+    "topic": "Prozessanalyse & Prozessbeschreibung",
+    "text": "Sie führen einen Soll-Ist-Vergleich der Time-to-Fill durch: Soll 14 Tage, Ist 21 Tage. Welche Aussage beschreibt den korrekten nächsten Schritt einer systematischen Prozessanalyse?",
+    "options": ["A) Sofort die Soll-Vorgabe auf 21 Tage anheben", "B) Den Engpass im Prozess identifizieren und mit Ishikawa und 5-Why analysieren", "C) Den Personaleinsatz pauschal verdoppeln", "D) Das Problem ignorieren, weil es nicht im SLA steht"],
+    "correct": 1,
+    "explanation": "Bei festgestellter Soll-Ist-Abweichung folgt eine strukturierte Ursachenanalyse mit Ishikawa (WAS) und 5-Why (WARUM), um gezielt Engpassmaßnahmen abzuleiten. Soll-Vorgaben aufzuweichen wäre keine Verbesserung.",
+    "source": "Präsentation Tag 3, Folie 10"
+  },
+  {
+    "id": 61,
+    "day": 3,
+    "topic": "Kennzahlen / KPIs Recruiting",
+    "text": "Wie ist die Klebequote in der Personaldienstleistung definiert?",
+    "options": ["A) Anteil der Zeitarbeitnehmenden, die vom Kundenbetrieb fest übernommen werden", "B) Anteil der Bewerbenden, die nach dem ersten Interview eingestellt werden", "C) Anzahl der eingegangenen Bewerbungen je Stellenanzeige", "D) Verhältnis Akquise-Kosten zu Vermittlungsumsatz"],
+    "correct": 0,
+    "explanation": "Die Klebequote (auch Übernahmequote) misst, wie viele Zeitarbeitnehmende vom Entleiher in eine Festanstellung übernommen werden. Sie ist eine zentrale Erfolgskennzahl für die Qualität der Personalauswahl.",
+    "source": "Handout Tag 3, Abschnitt 1.1"
+  },
+  {
+    "id": 62,
+    "day": 3,
+    "topic": "Kennzahlen / KPIs Recruiting",
+    "text": "In einer NPS-Befragung antworten 55 Prozent mit 9-10, 25 Prozent mit 7-8 und 20 Prozent mit 0-6. Wie hoch ist der Net Promoter Score?",
+    "options": ["A) +20", "B) +35", "C) +55", "D) +80"],
+    "correct": 1,
+    "explanation": "NPS = Prozent Promotoren minus Prozent Detraktoren = 55 minus 20 = +35. Passive Bewertungen (7-8) werden nicht eingerechnet. Ein Wert von +35 liegt im guten Branchenbereich der Personaldienstleistung.",
+    "source": "Handout Tag 3, Abschnitt 4.3"
+  },
+  {
+    "id": 63,
+    "day": 3,
+    "topic": "Kennzahlen / KPIs Recruiting",
+    "text": "Welche Kennzahl misst die durchschnittlichen Gesamtkosten einer einzelnen Vermittlung?",
+    "options": ["A) Time-to-Fill", "B) Cost-per-Hire", "C) Bleibequote 90 Tage", "D) NPS"],
+    "correct": 1,
+    "explanation": "Cost-per-Hire summiert alle Kosten der Personalbeschaffung (Anzeigen, Tools, interne Aufwände, Provisionen) und teilt sie durch die Zahl erfolgreicher Einstellungen. Time-to-Fill misst hingegen die Dauer, nicht die Kosten.",
+    "source": "Handout Tag 3, Abschnitt 1.1"
+  },
+  {
+    "id": 64,
+    "day": 3,
+    "topic": "Kennzahlen / KPIs Recruiting",
+    "text": "Welche Aussage zur Bewerber-Conversion entlang des Recruiting-Funnels ist korrekt?",
+    "options": ["A) Sie misst nur die Anzahl der Stellenanzeigen pro Jahr", "B) Sie beschreibt den Anteil der Bewerbenden, die von einer Stufe in die nächste übergehen", "C) Sie ist identisch mit der Klebequote", "D) Sie ist nur in der Festeinstellung relevant"],
+    "correct": 1,
+    "explanation": "Bewerber-Conversion bezeichnet die Übergangsquote zwischen Funnel-Stufen, etwa von Bewerbung zu Interview oder von Interview zu Einstellung. Sie zeigt, wo Bewerbende im Prozess verloren gehen.",
+    "source": "Handout Tag 3, Abschnitt 1.1"
+  },
+  {
+    "id": 65,
+    "day": 3,
+    "topic": "Kennzahlen / KPIs Recruiting",
+    "text": "Eine Niederlassung hat im Customer Satisfaction Index Eignung der Kandidaten mit 30 Prozent gewichtet. Was beschreibt diese Gewichtung am besten?",
+    "options": ["A) Die Eignung darf maximal 30 Prozent der Bewerbungen ausmachen", "B) Sie zählt mit dreißig Prozent in den Gesamtindex CSI ein", "C) 30 Prozent der Kunden dürfen Bewertungen abgeben", "D) Die Eignung wird nur in 30 Prozent der Fälle gemessen"],
+    "correct": 1,
+    "explanation": "Der CSI aggregiert mehrere Einzelfragen mit unterschiedlichen Gewichten zu einem Gesamtwert. Ein Gewicht von 30 Prozent für die Eignung der Kandidaten bedeutet, dass dieses Item mit dreißig Prozent in den Index einfließt.",
+    "source": "Handout Tag 3, Abschnitt 4.3"
+  },
+  {
+    "id": 66,
+    "day": 3,
+    "topic": "Kundenzufriedenheit & Beschwerdemanagement",
+    "text": "Im Reklamationsprozess der Disponentin ist der zweite Schritt nach der Erfassung im Bewerbermanagementsystem die ...",
+    "options": ["A) ... sofortige Vertragsauflösung mit den Zeitarbeitnehmenden", "B) ... Bewertung der Dringlichkeit und ggf. Eskalation", "C) ... Veröffentlichung der Reklamation im Team-Chat", "D) ... Anfertigung eines Pareto-Diagramms"],
+    "correct": 1,
+    "explanation": "Nach der Erfassung folgt die Dringlichkeitsbewertung mit ggf. sofortiger Eskalation an die Niederlassungsleitung. Erst danach werden Sachverhalt, Lösung und Rückmeldung bearbeitet.",
+    "source": "Handout Tag 3, Abschnitt 4.5"
+  },
+  {
+    "id": 67,
+    "day": 3,
+    "topic": "Kundenzufriedenheit & Beschwerdemanagement",
+    "text": "Welches Merkmal im Kano-Modell beschreibt eine pünktliche Lohnzahlung an Zeitarbeitnehmende am besten?",
+    "options": ["A) Begeisterungsmerkmal", "B) Leistungsmerkmal", "C) Basismerkmal", "D) Differenzierungsmerkmal"],
+    "correct": 2,
+    "explanation": "Pünktliche Lohnzahlung wird vorausgesetzt und sorgt für keine besondere Zufriedenheit, ihr Fehlen erzeugt jedoch starke Unzufriedenheit. Damit ist sie ein klassisches Basismerkmal nach Kano.",
+    "source": "Handout Tag 3, Abschnitt 4.2"
+  },
+  {
+    "id": 68,
+    "day": 3,
+    "topic": "Kundenzufriedenheit & Beschwerdemanagement",
+    "text": "Welche der vier Aufgaben des Beschwerdemanagements nach Stauss und Seidel zielt darauf ab, stille Kunden zu erreichen?",
+    "options": ["A) Beschwerde-Stimulierung", "B) Beschwerde-Annahme", "C) Beschwerde-Bearbeitung", "D) Beschwerde-Reaktion"],
+    "correct": 0,
+    "explanation": "Die Stimulierung schafft niedrigschwellige Kanäle (Hotline, App, Formular) und ermuntert Kunden ausdrücklich zur Rückmeldung. Stille Kunden, die unzufrieden sind, aber nicht reklamieren, sind das größte Risiko für die Kundenbindung.",
+    "source": "Handout Tag 3, Abschnitt 4.4"
+  },
+  {
+    "id": 69,
+    "day": 3,
+    "topic": "Kundenzufriedenheit & Beschwerdemanagement",
+    "text": "Welche Aussage beschreibt die zeitliche Dynamik der Kano-Merkmalsarten korrekt?",
+    "options": ["A) Basismerkmale werden im Lauf der Zeit zu Begeisterungsmerkmalen", "B) Begeisterungsmerkmale werden mit der Zeit zu Leistungs- und schließlich zu Basismerkmalen", "C) Leistungsmerkmale verschwinden vollständig nach drei Jahren", "D) Die Merkmalsarten sind statisch und ändern sich nicht"],
+    "correct": 1,
+    "explanation": "Was heute begeistert (etwa eine App für Stundenzettel), wird morgen erwartet (Leistungsmerkmal) und übermorgen vorausgesetzt (Basismerkmal). Dieser Innovationsdruck ist ein Kernaspekt des Kano-Modells.",
+    "source": "Handout Tag 3, Hinweisbox Kano-Praxis"
+  },
+  {
+    "id": 70,
+    "day": 3,
+    "topic": "Kundenzufriedenheit & Beschwerdemanagement",
+    "text": "Ein Großkunde reklamiert wiederholt mangelhafte Briefings der Zeitarbeitnehmenden. Welche Eskalationsstufe ist im typischen Reklamationsprozess der Personaldienstleistungsbranche am ehesten angemessen?",
+    "options": ["A) Nur Dokumentation, keine Eskalation", "B) Eskalation an die Niederlassungsleitung oder den Vertrieb", "C) Sofortige Strafanzeige bei der Polizei", "D) Eskalation direkt an die IHK"],
+    "correct": 1,
+    "explanation": "Bei wiederkehrenden Beschwerden eines Großkunden mit Kundenverlustrisiko erfolgt die Eskalation an die Niederlassungsleitung beziehungsweise den Vertrieb (Stufe 2). Strafanzeige oder IHK sind branchenfremd und nicht passend.",
+    "source": "Handout Tag 3, Abschnitt 4.5"
+  },
+  {
+    "id": 71,
+    "day": 3,
+    "topic": "DIN EN ISO 9001 in der PDL-Branche",
+    "text": "Wie viele Grundsätze des Qualitätsmanagements nennt die DIN EN ISO 9001:2015?",
+    "options": ["A) 5", "B) 6", "C) 7", "D) 8"],
+    "correct": 2,
+    "explanation": "ISO 9001:2015 nennt sieben Grundsätze: Kundenorientierung, Führung, Engagement von Personen, prozessorientierter Ansatz, Verbesserung, faktengestützte Entscheidungsfindung und Beziehungsmanagement.",
+    "source": "Handout Tag 3, Abschnitt 1.2"
+  },
+  {
+    "id": 72,
+    "day": 3,
+    "topic": "DIN EN ISO 9001 in der PDL-Branche",
+    "text": "Welcher Begriff bezeichnet den Ansatz, statt einzelner Funktionen die zusammenhängenden Aktivitäten von Input zu Output zu betrachten?",
+    "options": ["A) Beziehungsmanagement", "B) Prozessorientierter Ansatz", "C) Faktengestützte Entscheidungsfindung", "D) Engagement von Personen"],
+    "correct": 1,
+    "explanation": "Der prozessorientierte Ansatz ist einer der sieben ISO-9001-Grundsätze. Ergebnisse werden über zusammenhängende und gesteuerte Prozesse erzielt, nicht über isolierte Funktionsbereiche.",
+    "source": "Handout Tag 3, Abschnitt 1.2"
+  },
+  {
+    "id": 73,
+    "day": 3,
+    "topic": "DIN EN ISO 9001 in der PDL-Branche",
+    "text": "Welche Aussage zum risikobasierten Denken in ISO 9001:2015 trifft am ehesten zu?",
+    "options": ["A) Risiken dürfen vom QM-Beauftragten nicht dokumentiert werden", "B) Risiken und Chancen sind systematisch zu identifizieren und zu behandeln", "C) Risikobasiertes Denken ersetzt jede interne Auditpflicht", "D) Es betrifft ausschließlich finanzielle Risiken der Geschäftsführung"],
+    "correct": 1,
+    "explanation": "ISO 9001:2015 verlangt risikobasiertes Denken: Risiken und Chancen für die Zielerreichung müssen erkannt, bewertet und mit geeigneten Maßnahmen behandelt werden. Es ersetzt keine Audits, sondern ergänzt das gesamte QMS.",
+    "source": "Präsentation Tag 3, Folie 14"
+  },
+  {
+    "id": 74,
+    "day": 3,
+    "topic": "DIN EN ISO 9001 in der PDL-Branche",
+    "text": "Welche Funktion hat ein internes Audit in einem nach ISO 9001 zertifizierten Personaldienstleistungsunternehmen?",
+    "options": ["A) Es ersetzt die Zertifizierung durch die externe Zertifizierungsstelle", "B) Es prüft systematisch und unabhängig, ob die Anforderungen des QMS erfüllt werden", "C) Es dient ausschließlich der Lohnabrechnungsprüfung", "D) Es ist ein freiwilliges Werkzeug ohne dokumentierte Spuren"],
+    "correct": 1,
+    "explanation": "Ein internes Audit prüft systematisch und unabhängig die Einhaltung der QMS-Anforderungen und dient als Vorbereitung auf das externe Zertifizierungsaudit. Es ersetzt dieses jedoch nicht.",
+    "source": "Handout Tag 3, Abschnitt 1.4"
+  },
+  {
+    "id": 75,
+    "day": 3,
+    "topic": "DIN EN ISO 9001 in der PDL-Branche",
+    "text": "Welche Aussage zur Dokumentenlenkung im ISO-9001-konformen Personaldienstleistungsunternehmen ist korrekt?",
+    "options": ["A) Vertragsvorlagen und Interviewleitfäden müssen weder versioniert noch freigegeben werden", "B) Dokumente der Qualitätssicherung müssen aktuell gehalten, freigegeben und nachverfolgbar sein", "C) Dokumentenlenkung ist nur für Lohnabrechnungen relevant", "D) Veraltete Dokumente bleiben unverändert weiter im Einsatz"],
+    "correct": 1,
+    "explanation": "Dokumentenlenkung verlangt, dass Vorlagen, Checklisten und Verfahrensbeschreibungen aktuell, freigegeben, eindeutig versioniert und nachverfolgbar sind. Veraltete Dokumente sind gezielt zurückzuziehen oder zu kennzeichnen.",
+    "source": "Präsentation Tag 3, Folie 14"
+  }
+]

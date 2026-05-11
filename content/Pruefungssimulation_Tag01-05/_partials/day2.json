@@ -1,0 +1,377 @@
+[
+  {
+    "id": 26,
+    "day": 2,
+    "topic": "Arbeitsplanung & Tagesablauf Disponent",
+    "text": "Eine Disponentin beginnt um 08:00 Uhr und hat folgende offene Aufgaben: (1) Drei Krankmeldungen für die Frühschicht ab 06:00 Uhr in der Logistik – noch ohne Ersatz, (2) Folgewochen-Disposition vorbereiten, (3) Bewerber-Profil für Vorstellung am Donnerstag schreiben. Welche Reihenfolge entspricht einer sauberen Eisenhower-Priorisierung?",
+    "options": [
+      "A) Profil schreiben, dann Folgewoche, dann Krankmeldungen",
+      "B) Folgewoche planen, dann Profil, dann Krankmeldungen",
+      "C) Krankmeldungen/Vertretungspool aktivieren, dann Profil (Termin Do), dann Folgewochenplanung",
+      "D) Alle Aufgaben parallel in 25-Minuten-Pomodoros bearbeiten"
+    ],
+    "correct": 2,
+    "explanation": "Krankmeldungen am laufenden Tag sind wichtig und dringend (Quadrant A) – Kundenausfall droht JETZT. Das Profil ist wichtig mit Termin Donnerstag (B, planen). Die Folgewochenplanung ist ebenfalls B, hat aber den größten zeitlichen Abstand zur Frist.",
+    "source": "Handout Tag 2, Abschnitt 3.1 (Eisenhower-Matrix) und Abschnitt 1.2 (Tagesablauf)"
+  },
+  {
+    "id": 27,
+    "day": 2,
+    "topic": "Arbeitsplanung & Tagesablauf Disponent",
+    "text": "Im ALPEN-Plan einer Recruiterin sind für 8 Stunden Arbeitszeit Aufgaben mit zusammen 6 Stunden Dauer eingetragen. Welche Aussage zur 60/40-Regel ist korrekt?",
+    "options": [
+      "A) Die Planung ist zu lasch – mindestens 7,5 Stunden müssten verplant sein",
+      "B) Die Planung entspricht ungefähr der 60/40-Regel; rund 25 Prozent Puffer wären idealerweise sogar etwas mehr (3,2 h)",
+      "C) Die Planung ist überfüllt; die 60/40-Regel erlaubt maximal 4,8 Stunden verplante Zeit",
+      "D) Die 60/40-Regel bezieht sich auf den Bewerber-Pool, nicht auf die Zeitplanung"
+    ],
+    "correct": 2,
+    "explanation": "Die 60/40-Regel nach Seiwert besagt: nur 60 Prozent der Arbeitszeit verplanen, 40 Prozent als Puffer. Bei 8 Stunden wären also nur 4,8 Stunden für feste Aufgaben einzuplanen. 6 Stunden sind bereits eine Überfüllung.",
+    "source": "Handout Tag 2, Abschnitt 3.2 (ALPEN-Methode)"
+  },
+  {
+    "id": 28,
+    "day": 2,
+    "topic": "Arbeitsplanung & Tagesablauf Disponent",
+    "text": "Welche Aufgabe gehört nach dem typischen Tagesablauf einer Disponentin (laut Handout) in das Zeitfenster 13:00–15:00 Uhr?",
+    "options": [
+      "A) Krankmeldungen sichten und Vertretungspool aktivieren",
+      "B) Stundenzettel prüfen und Abrechnungsvorbereitung mit Backoffice",
+      "C) Active Sourcing auf LinkedIn",
+      "D) Tagesabschluss und ALPEN-Plan für den Folgetag"
+    ],
+    "correct": 1,
+    "explanation": "Laut Handout-Tagesablauf nutzt die Disponentin 13:00–15:00 Uhr für Stundenzettel-Prüfung und die Abrechnungsvorbereitung mit dem Backoffice. Krankmeldungen liegen morgens, der Tagesabschluss am Nachmittag.",
+    "source": "Handout Tag 2, Abschnitt 1.2 (Typischer Tagesablauf einer Disponent:in)"
+  },
+  {
+    "id": 29,
+    "day": 2,
+    "topic": "Arbeitsplanung & Tagesablauf Disponent",
+    "text": "Welches Werkzeug eignet sich laut Präsentation und Handout am besten für einen konzentrierten Block beim Schreiben von drei Bewerber-Profilen, NICHT aber für die reaktive Telefonarbeit?",
+    "options": [
+      "A) Eisenhower-Matrix",
+      "B) Pomodoro-Technik (25/5 mit langer Pause nach 4 Zyklen)",
+      "C) RACI-Matrix",
+      "D) Daily Stand-up Meeting"
+    ],
+    "correct": 1,
+    "explanation": "Pomodoro ist auf Fokusarbeit ausgelegt: 25 Minuten ohne Unterbrechung. Für reaktive Tätigkeiten wie Telefon ist die Technik ungeeignet, weil ständige Unterbrechungen die Pomodoro-Logik brechen.",
+    "source": "Präsentation Tag 2, Folie 10 (Pomodoro-Technik)"
+  },
+  {
+    "id": 30,
+    "day": 2,
+    "topic": "Arbeitsplanung & Tagesablauf Disponent",
+    "text": "Eine Niederlassungsleiterin sagt: ‚20 Prozent unserer Kunden bringen 80 Prozent des Umsatzes – auf die müssen wir uns konzentrieren.‘ Welches Prinzip wendet sie an und welche Konsequenz ist passend?",
+    "options": [
+      "A) PDCA-Zyklus; Konsequenz: Wochen-Standup einführen",
+      "B) Pareto-Prinzip (80/20); Konsequenz: Key-Account-Management für die Top-20-Prozent-Kunden",
+      "C) Eisenhower-Matrix; Konsequenz: alle Kunden ins Quadrant A",
+      "D) ALPEN-Methode; Konsequenz: 40 Prozent Puffer für Top-Kunden"
+    ],
+    "correct": 1,
+    "explanation": "Die Aussage ist die klassische Pareto-Heuristik (80/20). Konsequenz für PDL: Key-Account-Management mit eigenen Ansprechpartnern, engerer Frequenz und höherer Servicepriorität für die Top-20-Prozent-Kunden.",
+    "source": "Handout Tag 2, Abschnitt 3.3 (Pareto-Prinzip)"
+  },
+  {
+    "id": 31,
+    "day": 2,
+    "topic": "Dispositionsprozess Zeitarbeitnehmer",
+    "text": "Um 06:15 Uhr ruft ein Kunde an: Drei von fünf Zeitarbeitnehmenden sind krank, der Einsatz startet um 06:00 Uhr in der Kommissionierung. Welche Maßnahme entspricht dem SLA-Standard aus dem Handout?",
+    "options": [
+      "A) Frühestens am nächsten Werktag Rückruf an den Kunden",
+      "B) Rückruf binnen 30 Minuten und Vertretungsstellung binnen 4 Stunden in gleicher Schicht",
+      "C) Sofort den Vertrag mit dem Kunden kündigen",
+      "D) Den Vertrieb der Niederlassung über die Geschäftsführung informieren"
+    ],
+    "correct": 1,
+    "explanation": "Das Beispiel-SLA im Handout fordert Rückruf bei Krankmeldung binnen 30 Minuten und Vertretungsstellung binnen 4 Stunden in der gleichen Schicht – das ist die typische Reaktionszusage gegenüber Kunden.",
+    "source": "Handout Tag 2, Abschnitt 6.1 (SLA-Tabelle)"
+  },
+  {
+    "id": 32,
+    "day": 2,
+    "topic": "Dispositionsprozess Zeitarbeitnehmer",
+    "text": "Welche Informationen gehören nach Handout zwingend in die Auftragsklärung Vertrieb → Recruiting/Disposition? Welche Antwort ist UNVOLLSTÄNDIG bzw. fehlerhaft?",
+    "options": [
+      "A) Kunde, Stelle, Zeitraum, Profil, Stundensatz, Schicht, Sicherheit (PSA), Sonstiges",
+      "B) Anzahl Personen, Berufsbild, Berechtigungen (z. B. Staplerschein), Branchenzuschläge",
+      "C) Nur Kunde und Stundensatz; alles Weitere klärt die Disposition mündlich beim Einsatzbeginn",
+      "D) Tag-/Nacht-/Wechselschicht, Wochenende, Einweiser, PSA-Anforderungen"
+    ],
+    "correct": 2,
+    "explanation": "Die Pflichtinhalte der Auftragsklärung sind ausführlich und schriftlich zu erfassen (Kunde, Stelle, Zeitraum, Profil, Stundensatz, Schicht, Sicherheit, Sonstiges). Eine reine Übergabe ‚Kunde + Stundensatz, Rest mündlich‘ verletzt die Schnittstellen-Goldene-Regel ‚klar – vollständig – bestätigt‘.",
+    "source": "Handout Tag 2, Abschnitt 5.2 (Pflichtinhalte der Auftragsklärung)"
+  },
+  {
+    "id": 33,
+    "day": 2,
+    "topic": "Dispositionsprozess Zeitarbeitnehmer",
+    "text": "Welche Pflicht ergibt sich aus § 1 AÜG bei der Auftragsweitergabe an den Kundenbetrieb (Entleiher) und welche praktische Auswirkung hat sie auf die Disposition?",
+    "options": [
+      "A) Mindestlohnpflicht; Auswirkung: Disposition muss Tarif erhöhen",
+      "B) Konkretisierungspflicht; Auswirkung: die einzusetzende Person muss vor Einsatzbeginn konkret benannt werden – ‚Person X für Auftrag Y‘",
+      "C) Mitbestimmungspflicht; Auswirkung: Betriebsrat des Kunden entscheidet über Einsatz",
+      "D) Schweigepflicht; Auswirkung: Profil darf nur mündlich übergeben werden"
+    ],
+    "correct": 1,
+    "explanation": "§ 1 AÜG verlangt die Konkretisierung – die konkrete Person muss vor Einsatzbeginn schriftlich benannt sein. In der Disposition heißt das: kein Austauschen ohne neue Konkretisierung, kein ‚blanker Pool-Tausch‘.",
+    "source": "Präsentation Tag 2, Folie 19 (AÜG- und Datenschutz-Bezug)"
+  },
+  {
+    "id": 34,
+    "day": 2,
+    "topic": "Dispositionsprozess Zeitarbeitnehmer",
+    "text": "Ein Lagerkunde verlängert spontan einen 4-Wochen-Einsatz um weitere 6 Wochen. Welche Schritte gehören aus Sicht der Disposition zwingend in den Dispositionsprozess?",
+    "options": [
+      "A) Verfügbarkeit der konkreten Person bis Endtermin prüfen, schriftliche Verlängerung des AÜV einholen, Backoffice für Vertragsverlängerung informieren",
+      "B) Sofort mündliche Zusage geben, kein neuer AÜV nötig",
+      "C) Eine andere Person ohne Information schicken, weil ‚Pool ist Pool‘",
+      "D) Die Verlängerung der ZAN überlassen, die das mit dem Kunden direkt regeln soll"
+    ],
+    "correct": 0,
+    "explanation": "Verlängerungen sind schriftlich zu fixieren (AÜV-Verlängerung), Verfügbarkeit der konkreten Person ist zu klären (Konkretisierung), und das Backoffice muss die Vertragsverlängerung verarbeiten – sonst entsteht Lücke in der Anmeldung.",
+    "source": "Handout Tag 2, Abschnitt 5.5 (Disposition <-> Kundenbetrieb) und 5.4 (Disposition -> Backoffice)"
+  },
+  {
+    "id": 35,
+    "day": 2,
+    "topic": "Dispositionsprozess Zeitarbeitnehmer",
+    "text": "Eine Zeitarbeitnehmerin hat täglich 90 Minuten Anfahrt zum Einsatzort. Welche Aspekte sind aus dispositorischer Sicht bei der Einsatzplanung typischerweise zu klären (Stichwort Stundenkontingent/Fahrtkosten/Übernachtung)?",
+    "options": [
+      "A) Nur der Stundenlohn – Fahrt ist Privatsache der ZAN",
+      "B) Fahrtkostenerstattung gemäß Tarifvertrag, ggf. Übernachtungspauschale, Schichtzeiten unter Berücksichtigung der gesetzlichen Ruhezeiten",
+      "C) Die ZAN soll umziehen, sonst keine Übernahme",
+      "D) Wegezeit zählt grundsätzlich als Arbeitszeit – sonst Disposition nicht möglich"
+    ],
+    "correct": 1,
+    "explanation": "Lange Anfahrten erfordern: tarifliche Fahrtkostenerstattung, evtl. Übernachtungspauschale, Beachtung von Ruhezeiten zwischen Schichten. Wegezeit ist tarif-/vertragsabhängig, nicht pauschal ‚Arbeitszeit‘.",
+    "source": "Handout Tag 2, Abschnitt 5.5 (Disposition <-> Kundenbetrieb)"
+  },
+  {
+    "id": 36,
+    "day": 2,
+    "topic": "Recruiting-Funnel & Kandidatensuche",
+    "text": "Im Recruiting-Funnel werden 200 Kontakte angesprochen, 40 bewerben sich, 12 kommen ins Interview, 6 erhalten ein Angebot, 4 starten den Einsatz. Welche Conversion-Rate ‚Angebot → Einsatz‘ liegt vor?",
+    "options": [
+      "A) Rund 2 Prozent (4 von 200)",
+      "B) Rund 33 Prozent (4 von 12)",
+      "C) Rund 67 Prozent (4 von 6)",
+      "D) Rund 50 Prozent (6 von 12)"
+    ],
+    "correct": 2,
+    "explanation": "Conversion ‚Angebot → Einsatz‘ ist 4 / 6 = ca. 67 Prozent. Solche Funnel-Kennzahlen werden im Recruiting-Controlling regelmäßig erhoben (Pipeline-KPI).",
+    "source": "Handout Tag 2, Abschnitt 4 (Leistungskennzahlen, Pipeline-Funnel)"
+  },
+  {
+    "id": 37,
+    "day": 2,
+    "topic": "Recruiting-Funnel & Kandidatensuche",
+    "text": "Welche Maßnahme entspricht ‚Active Sourcing‘ und nicht klassischer Stellenanzeige?",
+    "options": [
+      "A) Schaltung einer Indeed-Anzeige mit Bewerbungsformular",
+      "B) Veröffentlichung in der eigenen Karriere-Webseite",
+      "C) Direkte Erstansprache von LinkedIn-Profilen, die zur Anforderung passen",
+      "D) Aushang am Schwarzen Brett der Niederlassung"
+    ],
+    "correct": 2,
+    "explanation": "Active Sourcing bedeutet, geeignete Kandidatinnen und Kandidaten aktiv anzusprechen, statt auf Bewerbungen zu warten. Klassische Kanäle wie Indeed oder Karriereseite sind passive Inbound-Maßnahmen.",
+    "source": "Handout Tag 2, Abschnitt 2.2 (PDCA im Recruiting: Active Sourcing)"
+  },
+  {
+    "id": 38,
+    "day": 2,
+    "topic": "Recruiting-Funnel & Kandidatensuche",
+    "text": "Welches SMART-Recruiting-Ziel ist korrekt formuliert?",
+    "options": [
+      "A) Wir wollen mehr Bewerber im CNC-Bereich.",
+      "B) Bis 31.05.2026 sourcen wir 15 qualifizierte CNC-Fräser für Müller GmbH über LinkedIn-Direktansprache.",
+      "C) Recruiting soll schneller werden, das wäre nett.",
+      "D) Vielleicht eine TikTok-Kampagne testen, mal sehen."
+    ],
+    "correct": 1,
+    "explanation": "SMART = spezifisch (CNC-Fräser für Müller GmbH), messbar (15 Personen), attraktiv, realistisch, terminiert (31.05.2026). Antwort B erfüllt alle fünf Kriterien; A, C und D sind unbestimmt.",
+    "source": "Handout Tag 2, Abschnitt 3.5 (SMART-Ziele)"
+  },
+  {
+    "id": 39,
+    "day": 2,
+    "topic": "Recruiting-Funnel & Kandidatensuche",
+    "text": "Cost-per-Hire (CPH) ist eine zentrale Recruiting-Kennzahl. Welche Aussage zu Cost-per-Hire ist richtig?",
+    "options": [
+      "A) CPH misst die Anzahl Tage von Auftrag bis Einsatz",
+      "B) CPH summiert alle Sourcing-Kosten (Anzeigen, Active-Sourcing-Tools, Premium-Profile, evtl. Werbungsbonus) und teilt sie durch die Zahl der eingestellten Personen",
+      "C) CPH ist gesetzlich auf maximal 500 Euro pro Person gedeckelt",
+      "D) CPH wird vom Kundenbetrieb getragen, nicht vom Personaldienstleister"
+    ],
+    "correct": 1,
+    "explanation": "Cost-per-Hire = Summe aller Recruiting-Kosten dividiert durch die Anzahl der eingestellten Personen. Es gibt keine gesetzliche Obergrenze; CPH ist eine interne Steuerungskennzahl.",
+    "source": "Handout Tag 2, Abschnitt 4 (Leistungskennzahlen im Recruiting)"
+  },
+  {
+    "id": 40,
+    "day": 2,
+    "topic": "Recruiting-Funnel & Kandidatensuche",
+    "text": "Im PDCA-Beispiel des Handouts wird ein Time-to-Hire-Ziel von 7 Tagen gesetzt. Nach 7 Tagen sind 4 Bewerbungen eingegangen, 1 Einsatz vorbereitet – Ziel verfehlt. Welche Maßnahme entspricht der Act-Phase?",
+    "options": [
+      "A) Das Ziel auf 30 Tage erhöhen und nichts ändern",
+      "B) Sourcing-Mix erweitern (z. B. TikTok-Anzeige + Werbungsbonus) und im nächsten Zyklus messen",
+      "C) Den Auftrag an den Kunden zurückgeben",
+      "D) Die Check-Phase noch einmal durchführen, ohne Maßnahmen abzuleiten"
+    ],
+    "correct": 1,
+    "explanation": "Act = Anpassen + Standardisieren. Im Handout-Beispiel: Sourcing auf TikTok erweitern, Werbungsbonus, dann im nächsten PDCA-Zyklus die Wirkung messen. Eine reine Wiederholung der Check-Phase wäre keine Verbesserung.",
+    "source": "Handout Tag 2, Abschnitt 2.2 (PDCA-Zyklus im Recruiting-Alltag)"
+  },
+  {
+    "id": 41,
+    "day": 2,
+    "topic": "Stundenerfassung & Einsatzsteuerung",
+    "text": "Ein Kunde meldet, dass der wöchentliche Stundenzettel jeweils montags bis 10:00 Uhr eingehen soll. Welche Funktion erfüllt diese Vorgabe und wer ist Hauptverantwortlicher?",
+    "options": [
+      "A) Sie ist ein SLA-Element; Hauptverantwortlicher für die fristgerechte Stundenmeldung ist die Disposition",
+      "B) Sie ist eine Datenschutzpflicht; verantwortlich ist der Datenschutzbeauftragte",
+      "C) Sie ist eine Tarifregel; verantwortlich ist der Betriebsrat",
+      "D) Sie ist eine BG-Vorschrift; verantwortlich ist die Berufsgenossenschaft"
+    ],
+    "correct": 0,
+    "explanation": "Wöchentliche Stundenmeldung Mo 10:00 ist ein typisches SLA-Element. Im PDL-Workflow ist die Disposition für die fristgerechte Erfassung und Weitergabe zuständig (vor Abrechnung im Backoffice).",
+    "source": "Handout Tag 2, Abschnitt 6.1 (SLA-Tabelle) und 5.4 (Disposition -> Backoffice)"
+  },
+  {
+    "id": 42,
+    "day": 2,
+    "topic": "Stundenerfassung & Einsatzsteuerung",
+    "text": "Welche Aussage zum Soll-Ist-Vergleich aus dem Handout-Beispiel (5 geplante Bewerbungen pro Tag, 3 erreicht) ist KORREKT?",
+    "options": [
+      "A) Die Abweichung beträgt +2 Bewerbungen",
+      "B) Die Abweichung beträgt -2 Bewerbungen bzw. -40 Prozent",
+      "C) Es gibt keine Abweichung, weil der Wert positiv ist",
+      "D) Eine Abweichung von -40 Prozent ist immer unkritisch"
+    ],
+    "correct": 1,
+    "explanation": "Soll 5, Ist 3 = Abweichung -2 = -40 Prozent. Soll-Ist-Vergleich erfordert Ursachenanalyse und Maßnahme (z. B. Anzeige früher schalten, Kanal-Mix ändern).",
+    "source": "Handout Tag 2, Abschnitt 4.1 (Soll-Ist-Vergleich)"
+  },
+  {
+    "id": 43,
+    "day": 2,
+    "topic": "Stundenerfassung & Einsatzsteuerung",
+    "text": "Ein Zeitarbeitnehmer trägt im Stundenzettel 9 Stunden Wechselschicht ein, der Kunde unterschreibt 8 Stunden. Welche dispositorische Reaktion ist richtig?",
+    "options": [
+      "A) Sofort dem ZAN die fehlende Stunde abziehen – Kunde hat immer recht",
+      "B) Die 9 Stunden im Backoffice zur Lohnabrechnung freigeben, der Kunde zahlt dann doch",
+      "C) Klärung mit beiden Seiten (Kunde + ZAN), Beleg/Tätigkeitsnachweis prüfen, Korrektur dokumentieren und Korrekturlauf veranlassen",
+      "D) Den Stundenzettel komplett ignorieren"
+    ],
+    "correct": 2,
+    "explanation": "Bei Stundendifferenzen muss die Disposition beide Seiten anhören, Belege prüfen und die Korrektur sauber dokumentieren. Erst danach Freigabe an Backoffice für Abrechnung oder Korrekturlauf. ‚Kunde hat immer recht‘ ist arbeitsrechtlich gegenüber dem ZAN unhaltbar.",
+    "source": "Handout Tag 2, Abschnitt 5.5 (Stundenkontrolle, Reklamation) und Abschnitt 6.3 (Reklamationsmanagement)"
+  },
+  {
+    "id": 44,
+    "day": 2,
+    "topic": "Stundenerfassung & Einsatzsteuerung",
+    "text": "Welche Aussage zu Schichtmodellen in der Disposition ist FALSCH?",
+    "options": [
+      "A) Bei Wechselschicht muss die Disposition die gesetzliche Mindestruhezeit zwischen den Schichten beachten",
+      "B) Bei Nachtschicht greifen besondere tarifliche Zuschläge und arbeitszeitrechtliche Schutzvorschriften",
+      "C) Bei Wochenendarbeit gelten in der Regel höhere Zuschläge",
+      "D) Schichtmodelle dürfen ohne Information des Zeitarbeitnehmenden kurzfristig geändert werden"
+    ],
+    "correct": 3,
+    "explanation": "Schichtänderungen müssen mit dem ZAN abgestimmt sein (arbeitsrechtliche Mitwirkung, Tarifregeln, Ankündigungsfristen). Die anderen Aussagen sind korrekt.",
+    "source": "Handout Tag 2, Abschnitt 5.2 (Schicht in Auftragsklärung) und Präsentation Tag 2, Folie 4 (Tagesablauf, Schichtbezug)"
+  },
+  {
+    "id": 45,
+    "day": 2,
+    "topic": "Stundenerfassung & Einsatzsteuerung",
+    "text": "Wann wird im PDL-Workflow typischerweise ein ‚Korrekturlauf‘ in der Stundenerfassung notwendig?",
+    "options": [
+      "A) Wenn die Wochenmeldung zwar fristgerecht beim Backoffice angekommen ist, jedoch nachträglich z. B. Pausenzeiten oder Zuschläge falsch ausgewiesen wurden",
+      "B) Wenn eine ZAN überpünktlich erscheint",
+      "C) Wenn der Kunde Lob aussprechen möchte",
+      "D) Wenn das Wetter schlecht ist"
+    ],
+    "correct": 0,
+    "explanation": "Korrekturläufe sind notwendig, wenn nach Übergabe an Backoffice Abweichungen festgestellt werden (Pausenzeiten, Zuschläge, falsche Schichtzuordnung). Sie sind sauber zu dokumentieren und nachzubuchen.",
+    "source": "Handout Tag 2, Abschnitt 5.4 (Disposition -> Backoffice) und Abschnitt 5.5 (Stundenkontrolle)"
+  },
+  {
+    "id": 46,
+    "day": 2,
+    "topic": "Kunden- & Bewerberkommunikation",
+    "text": "Ein Kunde ruft aufgebracht an: ‚Wo bleibt mein Mitarbeiter?‘ Auf welcher Seite des Vier-Seiten-Modells liegt die geäußerte Erwartung ‚Kümmert euch endlich!‘?",
+    "options": [
+      "A) Sachseite",
+      "B) Selbstoffenbarung",
+      "C) Beziehungsseite",
+      "D) Appellseite"
+    ],
+    "correct": 3,
+    "explanation": "‚Kümmert euch endlich!‘ ist eine Handlungsaufforderung – die Appellseite. Die Sachseite wäre ‚ZAN nicht da‘, Selbstoffenbarung ‚Ich bin frustriert‘, Beziehung ‚Ihr seid unzuverlässig‘.",
+    "source": "Präsentation Tag 2, Folie 17 (Vier-Seiten-Modell)"
+  },
+  {
+    "id": 47,
+    "day": 2,
+    "topic": "Kunden- & Bewerberkommunikation",
+    "text": "Welche Betreffzeile entspricht den E-Mail-Standards aus dem Handout für die Kunden-Kommunikation am besten?",
+    "options": [
+      "A) Hallo",
+      "B) Wichtig!",
+      "C) AÜV-1234 – Verlängerung Hr. Müller bis 31.05.",
+      "D) Bitte um schnelle Antwort"
+    ],
+    "correct": 2,
+    "explanation": "E-Mail-Betreff: konkret + Auftragsnummer (z. B. AÜV-1234) + Anlass + Frist. So ist die Mail später eindeutig zuordenbar und im CRM/ATS auffindbar.",
+    "source": "Handout Tag 2, Abschnitt 5.7 (E-Mail-Standards im Personaldienstleistungsunternehmen)"
+  },
+  {
+    "id": 48,
+    "day": 2,
+    "topic": "Kunden- & Bewerberkommunikation",
+    "text": "Innerhalb welcher Frist sollte laut Handout der Eingang einer Kundenreklamation bestätigt werden?",
+    "options": [
+      "A) Innerhalb von 30 Minuten",
+      "B) Innerhalb von 24 Stunden",
+      "C) Innerhalb von 5 Werktagen",
+      "D) Innerhalb von 4 Wochen"
+    ],
+    "correct": 1,
+    "explanation": "Das Handout nennt die 24-Stunden-Regel: Innerhalb eines Werktages muss bestätigt werden, dass die Reklamation aufgenommen ist. Erst danach folgt die Sachverhaltsaufklärung.",
+    "source": "Handout Tag 2, Abschnitt 6.3 (Reklamationsmanagement)"
+  },
+  {
+    "id": 49,
+    "day": 2,
+    "topic": "Kunden- & Bewerberkommunikation",
+    "text": "Eine Recruiterin schreibt eine CRM-Notiz nach einem Bewerber-Telefonat. Welche Pflichtangaben sollten enthalten sein?",
+    "options": [
+      "A) Wer (Recruiterin) hat wann mit wem worüber gesprochen, was wurde vereinbart, nächster Schritt mit Termin",
+      "B) Nur die Telefonnummer und der Vorname",
+      "C) Eine persönliche Einschätzung zum Aussehen der Person",
+      "D) Bankverbindung und Kontostand"
+    ],
+    "correct": 0,
+    "explanation": "CRM-/ATS-Notizen müssen sauber strukturiert sein: Wer-Wann-Mit Wem-Worüber, Ergebnis, nächster Schritt mit Termin und Verantwortlichem. Persönliche und sensible Details sind unzulässig (DSGVO).",
+    "source": "Handout Tag 2, Abschnitt 5.8 (CRM-/ATS-Notizen sauber erfassen)"
+  },
+  {
+    "id": 50,
+    "day": 2,
+    "topic": "Kunden- & Bewerberkommunikation",
+    "text": "Bei einem Onboarding-Briefing einer neuen Zeitarbeitnehmerin vor dem Ersteinsatz – welche Inhalte gehören laut Handout zwingend in das Briefing?",
+    "options": [
+      "A) Nur das Lohnniveau",
+      "B) Erwartungen des Kunden, Verhalten am Einsatzort, Risiken/Sicherheitsunterweisung, Ansprechpartner",
+      "C) Eine ausführliche Firmengeschichte der Niederlassung",
+      "D) Private Wünsche der Geschäftsführung"
+    ],
+    "correct": 1,
+    "explanation": "Briefing vor dem Einsatz: Erwartungen klären, Verhalten am Einsatzort, Sicherheitsrisiken/PSA, Ansprechpartner beim Kunden. Nach dem Einsatz folgt das Debriefing mit Lessons Learned.",
+    "source": "Handout Tag 2, Abschnitt 5.10 (Briefing und Debriefing) und Abschnitt 5.2 (Sicherheit/PSA)"
+  }
+]

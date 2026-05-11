@@ -1,0 +1,377 @@
+[
+  {
+    "id": 1,
+    "day": 1,
+    "topic": "PDL-Branche & Rechtsformen",
+    "text": "Ein Familienunternehmen möchte als Personaldienstleister Haftung begrenzen und gleichzeitig steuerliche Vorteile einer Personengesellschaft nutzen. Welche Rechtsform passt am besten?",
+    "options": [
+      "A) GbR (Gesellschaft bürgerlichen Rechts)",
+      "B) GmbH & Co. KG",
+      "C) Einzelunternehmen (e.K.)",
+      "D) Eingetragener Verein (e.V.)"
+    ],
+    "correct": 1,
+    "explanation": "Die GmbH & Co. KG verbindet die Haftungsbeschränkung der GmbH (als Komplementärin) mit den steuerlichen Vorteilen einer Personengesellschaft (KG) und ist deshalb bei familiengeführten Personaldienstleistern besonders verbreitet.",
+    "source": "Handout Tag 1, Abschnitt 1.2 (Tabelle Rechtsformen); Präsentation Tag 1, Folie 5"
+  },
+  {
+    "id": 2,
+    "day": 1,
+    "topic": "PDL-Branche & Rechtsformen",
+    "text": "Ein Großkunde verlangt, dass der Personaldienstleister gleich die komplette Lagerlogistik übernimmt – inklusive Führung, Steuerung und Ergebnisverantwortung. Welches Geschäftsfeld liegt vor?",
+    "options": [
+      "A) Klassische Arbeitnehmerüberlassung",
+      "B) Personalvermittlung",
+      "C) Outsourcing bzw. Werkvertrag",
+      "D) Interim Management"
+    ],
+    "correct": 2,
+    "explanation": "Wenn der Personaldienstleister ein abgegrenztes Aufgabenpaket inklusive Steuerung und Ergebnisverantwortung übernimmt, handelt es sich um Outsourcing bzw. einen Werkvertrag – nicht um AÜ, da das Weisungsrecht beim Personaldienstleister bleibt.",
+    "source": "Handout Tag 1, Abschnitt 1.1 (Geschäftsfelder); Präsentation Tag 1, Folie 3"
+  },
+  {
+    "id": 3,
+    "day": 1,
+    "topic": "PDL-Branche & Rechtsformen",
+    "text": "Welche Rolle in einer PDL-Niederlassung trägt typischerweise die Profit-&-Loss-Verantwortung sowie die Akquise von Schlüsselkunden auf strategischer Ebene?",
+    "options": [
+      "A) Backoffice-Mitarbeiter:in",
+      "B) Niederlassungsleiter:in",
+      "C) Disponent:in",
+      "D) Zeitarbeitnehmer:in"
+    ],
+    "correct": 1,
+    "explanation": "Die Niederlassungsleitung (NL) trägt die Gesamtverantwortung der Niederlassung, inklusive P&L, Personalführung und der Akquise auf Top-Ebene. Vertrieb und Disposition arbeiten ihr zu.",
+    "source": "Handout Tag 1, Abschnitt 1.3 (Organisationsstruktur); Präsentation Tag 1, Folie 6"
+  },
+  {
+    "id": 4,
+    "day": 1,
+    "topic": "PDL-Branche & Rechtsformen",
+    "text": "Im Drei-Personen-Verhältnis der Arbeitnehmerüberlassung – welche Beziehung besteht zwischen Kundenbetrieb (Entleiher) und Zeitarbeitnehmer:in (ZAN)?",
+    "options": [
+      "A) Ein Arbeitsvertrag",
+      "B) Ein Dienstleistungsvertrag",
+      "C) Ein faktisches Weisungsverhältnis ohne Arbeitsvertrag",
+      "D) Ein Werkvertrag"
+    ],
+    "correct": 2,
+    "explanation": "Zwischen Entleiher und ZAN existiert ausdrücklich kein Arbeitsvertrag, sondern nur ein faktisches Weisungsverhältnis am Einsatzort. Den Arbeitsvertrag hält der Verleiher (Personaldienstleister).",
+    "source": "Handout Tag 1, Abschnitt 1.1 (PDL-Praxis: Drei Vertragsbeziehungen); Präsentation Tag 1, Folie 4"
+  },
+  {
+    "id": 5,
+    "day": 1,
+    "topic": "PDL-Branche & Rechtsformen",
+    "text": "Welche Aufgabe gehört primär zum Tätigkeitsfeld eines Disponenten bzw. einer Disponentin in der PDL-Niederlassung?",
+    "options": [
+      "A) Erstellung der Bilanz und Steuererklärung",
+      "B) Einsatzplanung der ZAN bei Kunden und Nachbetreuung",
+      "C) Verhandlung von Branchen-Tarifverträgen mit dem DGB",
+      "D) Beantragung der AÜ-Erlaubnis bei der Bundesagentur"
+    ],
+    "correct": 1,
+    "explanation": "Disponent:innen sind in der Einsatzplanung der Zeitarbeitnehmenden tätig: Sie verteilen ZAN auf passende Kundeneinsätze, betreuen sie während der Tätigkeit und sind erste Ansprechperson bei Konflikten.",
+    "source": "Handout Tag 1, Abschnitt 1.3 (Recruiting/Personaldisposition); Glossar 'Disponent:in'"
+  },
+  {
+    "id": 6,
+    "day": 1,
+    "topic": "Bedeutung der PDL-Branche",
+    "text": "Die Übernahmequote von Zeitarbeitnehmenden in eine Festanstellung beim Kundenbetrieb liegt laut Branchenzahlen 2024 bei etwa…",
+    "options": [
+      "A) 5–10 Prozent",
+      "B) 30–40 Prozent",
+      "C) 60–70 Prozent",
+      "D) über 90 Prozent"
+    ],
+    "correct": 1,
+    "explanation": "Der sogenannte Klebeeffekt beträgt rund 30–40 Prozent: Etwa jede:r dritte bis vierte Zeitarbeitnehmende wird im Verlauf eines Einsatzes vom Kundenbetrieb in die Stammbelegschaft übernommen.",
+    "source": "Handout Tag 1, Abschnitt 2.1 (Tabelle Eckdaten); Präsentation Tag 1, Folie 7"
+  },
+  {
+    "id": 7,
+    "day": 1,
+    "topic": "Bedeutung der PDL-Branche",
+    "text": "Welche Aussage zur GVP-Fusion vom 01.01.2022 ist korrekt?",
+    "options": [
+      "A) Der GVP entstand aus dem Zusammenschluss des DGB mit der BDA.",
+      "B) Der GVP entstand aus der Fusion der bisherigen Verbände iGZ und BAP.",
+      "C) Der GVP ist eine Bundesoberbehörde unter Aufsicht des BMAS.",
+      "D) Der GVP ist die zuständige IHK-Stelle für die PDK-Prüfung."
+    ],
+    "correct": 1,
+    "explanation": "Am 01.01.2022 fusionierten der iGZ (Interessenverband Deutscher Zeitarbeitsunternehmen) und der BAP (Bundesarbeitgeberverband der Personaldienstleister) zum Gesamtverband der Personaldienstleister (GVP e.V.) – einem privaten Branchenverband.",
+    "source": "Handout Tag 1, Abschnitt 2.3 (Merke-Box); Präsentation Tag 1, Folie 9"
+  },
+  {
+    "id": 8,
+    "day": 1,
+    "topic": "Bedeutung der PDL-Branche",
+    "text": "Welche Funktion der Zeitarbeit beschreibt das Phänomen, dass Personaldienstleister im Aufschwung als Erste wachsen und im Abschwung als Erste reduziert werden?",
+    "options": [
+      "A) Spezialisierungsfunktion",
+      "B) Integrationsfunktion",
+      "C) Konjunkturpufferfunktion",
+      "D) Brückenfunktion"
+    ],
+    "correct": 2,
+    "explanation": "Die Konjunkturpufferfunktion macht die Zeitarbeit zum sogenannten Atmungsmuskel: In Aufschwüngen wächst sie zuerst, in Rezessionen wird sie zuerst abgebaut – das schont die Stammbelegschaft der Kundenbetriebe.",
+    "source": "Handout Tag 1, Abschnitt 2.2 (Sechs Funktionen, Punkt 4); Präsentation Tag 1, Folie 8"
+  },
+  {
+    "id": 9,
+    "day": 1,
+    "topic": "Bedeutung der PDL-Branche",
+    "text": "Welcher Tarifvertrag regelt seit der GVP-Fusion 2022 vereinheitlicht die Mindestentgelte, Branchenzuschläge und Urlaubsregelungen in der deutschen Zeitarbeit?",
+    "options": [
+      "A) TVöD",
+      "B) IG-Metall-Flächentarif",
+      "C) TV-GVP",
+      "D) BAT (Bundes-Angestelltentarifvertrag)"
+    ],
+    "correct": 2,
+    "explanation": "Der TV-GVP wurde nach der Fusion zwischen dem Gesamtverband der Personaldienstleister und den DGB-Gewerkschaften ausgehandelt und regelt Mindeststundensätze, Branchenzuschläge, Urlaub und Arbeitszeitkonten in der Branche.",
+    "source": "Handout Tag 1, Abschnitt 2.4 (Rechtlicher Rahmen); Präsentation Tag 1, Folie 10"
+  },
+  {
+    "id": 10,
+    "day": 1,
+    "topic": "Bedeutung der PDL-Branche",
+    "text": "In welchen Wirtschaftsbereichen ist der Bedarf an Zeitarbeit traditionell besonders hoch?",
+    "options": [
+      "A) Anwaltskanzleien und Steuerberatungen",
+      "B) Logistik, Automotive/Metall, Pflege und Lebensmittelindustrie",
+      "C) Hochschulverwaltung und Bibliotheken",
+      "D) Forst- und Landwirtschaft"
+    ],
+    "correct": 1,
+    "explanation": "Die Hauptabnehmerbranchen der Zeitarbeit sind Logistik, Automotive/Metall, Pflege sowie die Lebensmittelindustrie – allesamt Felder mit hohem oder stark schwankendem Personalbedarf.",
+    "source": "Handout Tag 1, Abschnitt 3.1 (Mikroökonomische Einflussfaktoren); Präsentation Tag 1, Folie 11"
+  },
+  {
+    "id": 11,
+    "day": 1,
+    "topic": "PESTEL & Marktwirtschaftliche Einflüsse",
+    "text": "Eine neue EU-Verordnung schreibt Transparenzpflichten für KI-Systeme im Recruiting vor. In welche PESTEL-Dimensionen ist dieser Einflussfaktor am ehesten einzuordnen?",
+    "options": [
+      "A) Sozial-demografisch (S) und Ökologisch (E)",
+      "B) Politisch (P) und Legal (L)",
+      "C) Ökonomisch (E) und Technologisch (T)",
+      "D) Ausschließlich Sozial-demografisch (S)"
+    ],
+    "correct": 1,
+    "explanation": "Eine EU-Verordnung ist eine politisch initiierte Regulierung mit unmittelbarer rechtlicher Wirkung. Sie fällt damit klar in die Dimensionen Politisch (P) und Legal (L) des PESTEL-Modells.",
+    "source": "Handout Tag 1, Abschnitt 3.2 (Tabelle PESTEL); Präsentation Tag 1, Folie 12"
+  },
+  {
+    "id": 12,
+    "day": 1,
+    "topic": "PESTEL & Marktwirtschaftliche Einflüsse",
+    "text": "Welche der folgenden Dimensionen gehört NICHT zum PESTEL-Modell?",
+    "options": [
+      "A) Political (Politisch)",
+      "B) Ecological (Ökologisch)",
+      "C) Religious (Religiös)",
+      "D) Legal (Rechtlich)"
+    ],
+    "correct": 2,
+    "explanation": "PESTEL umfasst die Dimensionen Political, Economic, Social, Technological, Ecological und Legal. Eine religiöse Dimension ist im Standardmodell nicht enthalten.",
+    "source": "Handout Tag 1, Abschnitt 3.2 (PESTEL); Präsentation Tag 1, Folie 12 (Merke-Box)"
+  },
+  {
+    "id": 13,
+    "day": 1,
+    "topic": "PESTEL & Marktwirtschaftliche Einflüsse",
+    "text": "Welche Buchstaben stehen für die sogenannten 4 D-Trends der Personaldienstleistungsbranche?",
+    "options": [
+      "A) Demografie, Deflation, Devisen, Demokratie",
+      "B) Digitalisierung, Diversifizierung, Dekarbonisierung, Demografie",
+      "C) Diskontierung, Demografie, Datenhandel, Disruption",
+      "D) Devaluation, Demokratie, Dienstleistung, Deflation"
+    ],
+    "correct": 1,
+    "explanation": "Die 4 D-Trends der PDL-Branche sind Demografie, Digitalisierung, Diversifizierung und Dekarbonisierung. Sie wirken parallel und prägen die strategische Ausrichtung der Branche bis 2035.",
+    "source": "Handout Tag 1, Abschnitt 3.5 (Merke-Box 4 Großtrends); Präsentation Tag 1, Folie 15"
+  },
+  {
+    "id": 14,
+    "day": 1,
+    "topic": "PESTEL & Marktwirtschaftliche Einflüsse",
+    "text": "Eine Recruiterin spricht über LinkedIn direkt potenzielle Pflegekräfte aus dem Ausland an, statt auf Bewerbungen zu warten. Wie heißt diese Recruiting-Strategie?",
+    "options": [
+      "A) Inbound Recruiting",
+      "B) Active Sourcing",
+      "C) Outplacement",
+      "D) Crowdsourcing"
+    ],
+    "correct": 1,
+    "explanation": "Active Sourcing bezeichnet die proaktive Direktansprache potenzieller Kandidat:innen über Plattformen wie LinkedIn oder XING. Es ist eine zentrale Antwort auf den demografisch bedingten Bewerbermangel.",
+    "source": "Handout Tag 1, Abschnitt 3.4 (PDL-Praxis Active Sourcing); Präsentation Tag 1, Folie 14"
+  },
+  {
+    "id": 15,
+    "day": 1,
+    "topic": "PESTEL & Marktwirtschaftliche Einflüsse",
+    "text": "Im Recruiting-Funnel beschreibt jede Stufe…",
+    "options": [
+      "A) eine identische Zahl von Kandidat:innen",
+      "B) eine schrittweise Verringerung der Kandidatenzahl von der Ansprache bis zur Einstellung",
+      "C) eine zufällige Sortierung der Bewerbungen",
+      "D) ausschließlich die Kontaktphase mit Bestandskunden"
+    ],
+    "correct": 1,
+    "explanation": "Der Recruiting-Funnel modelliert den Bewerbungsprozess als Trichter: Auf jeder Stufe – Ansprache, Bewerbung, Vorauswahl, Interview, Angebot, Einstellung – verringert sich die Zahl der Kandidat:innen.",
+    "source": "Handout Tag 1, Abschnitt 3.5 (Digitalisierung im Recruiting); Glossar / Begriff Funnel"
+  },
+  {
+    "id": 16,
+    "day": 1,
+    "topic": "AÜG-Recht & Magic Numbers 18-9-3",
+    "text": "Welche Behörde ist bundesweit zentral für die Erteilung der Erlaubnis nach § 1 AÜG zuständig?",
+    "options": [
+      "A) IHK Düsseldorf",
+      "B) Bundesministerium für Arbeit und Soziales",
+      "C) Agentur für Arbeit Düsseldorf",
+      "D) Finanzamt am Sitz des Verleihers"
+    ],
+    "correct": 2,
+    "explanation": "Die AÜ-Erlaubnis nach § 1 AÜG erteilt zentral die Agentur für Arbeit Düsseldorf für das gesamte Bundesgebiet. Erst nach drei beanstandungsfreien Jahren kann die zunächst befristete Erlaubnis unbefristet ausgesprochen werden.",
+    "source": "Handout Tag 1, Abschnitt 1.2 (Erlaubnispflicht); Präsentation Tag 1, Folie 5 (Alertblock)"
+  },
+  {
+    "id": 17,
+    "day": 1,
+    "topic": "AÜG-Recht & Magic Numbers 18-9-3",
+    "text": "Was bedeutet die Konkretisierungspflicht nach § 1 AÜG für den Verleiher?",
+    "options": [
+      "A) Er muss den konkreten Stundenlohn vor Einsatzbeginn schriftlich beim Kunden bestätigen.",
+      "B) Er muss die zu überlassende Person vor Beginn des Einsatzes namentlich im AÜV konkret benennen.",
+      "C) Er muss den Einsatzort jährlich neu festlegen.",
+      "D) Er muss eine schriftliche Konkretisierung der Berufsgenossenschaft beim Kunden vorlegen."
+    ],
+    "correct": 1,
+    "explanation": "Die Konkretisierungspflicht verlangt, dass die zu überlassende Person vor Beginn der Überlassung namentlich im Arbeitnehmerüberlassungsvertrag konkret benannt wird – Tarnverträge oder generische Vereinbarungen sind unzulässig.",
+    "source": "Handout Tag 1, Abschnitt 2.4 (Rechtlicher Rahmen); Glossar / § 1 AÜG"
+  },
+  {
+    "id": 18,
+    "day": 1,
+    "topic": "AÜG-Recht & Magic Numbers 18-9-3",
+    "text": "Welche Berufsgenossenschaft ist für einen Arbeitsunfall einer Zeitarbeitnehmerin in einer Lagerhalle des Kundenbetriebs zuständig?",
+    "options": [
+      "A) Die Berufsgenossenschaft des Kundenbetriebs (Entleiher)",
+      "B) Die Berufsgenossenschaft des Personaldienstleisters (Verleiher)",
+      "C) Die private Unfallversicherung der ZAN",
+      "D) Die Krankenkasse der ZAN"
+    ],
+    "correct": 1,
+    "explanation": "Da der Arbeitsvertrag mit dem Verleiher besteht, ist auch die Berufsgenossenschaft des Verleihers zuständig – unabhängig vom Einsatzort. Diese Sonderregelung verhindert Zuständigkeitslücken im Drei-Personen-Verhältnis.",
+    "source": "Handout Tag 1, Abschnitt 1.1 (Drei-Personen-Verhältnis); Glossar 'AÜG'"
+  },
+  {
+    "id": 19,
+    "day": 1,
+    "topic": "AÜG-Recht & Magic Numbers 18-9-3",
+    "text": "Welche Rechtsfolge tritt nach § 10 AÜG ein, wenn ein Verleiher ohne Erlaubnis Arbeitnehmer überlässt?",
+    "options": [
+      "A) Die Überlassung gilt rückwirkend als Werkvertrag.",
+      "B) Der Arbeitsvertrag zwischen ZAN und Verleiher gilt als unwirksam, ein neuer Arbeitsvertrag wird zwischen ZAN und Entleiher fingiert.",
+      "C) Die Bundesagentur übernimmt die Vergütung der ZAN.",
+      "D) Es ergeht ausschließlich eine kostenfreie Verwarnung."
+    ],
+    "correct": 1,
+    "explanation": "Die Fiktionswirkung des § 10 AÜG schützt die ZAN: Bei unerlaubter Überlassung wird kraft Gesetzes ein Arbeitsverhältnis zwischen ZAN und Entleiher unterstellt. Zusätzlich drohen Bußgelder bis 30.000 Euro.",
+    "source": "Handout Tag 1, Abschnitt 2.4 (Gesetzbox § 1 AÜG); Glossar 'AÜG'"
+  },
+  {
+    "id": 20,
+    "day": 1,
+    "topic": "AÜG-Recht & Magic Numbers 18-9-3",
+    "text": "Welche der folgenden Zuordnungen zu den Magic Numbers 18-9-3 ist korrekt?",
+    "options": [
+      "A) 18 Tage Probezeit, 9 Wochen Urlaub, 3 Beziehungen",
+      "B) 18 Monate Höchstüberlassungsdauer, 9 Monate bis Equal Pay, 3 Vertragsbeziehungen im Drei-Personen-Verhältnis",
+      "C) 18 Stunden Tagesarbeitszeit, 9 Stunden Pause, 3 Lernorte",
+      "D) 18 Mio. ZAN, 9 Mrd. Umsatz, 3 Großkonzerne"
+    ],
+    "correct": 1,
+    "explanation": "Die Eselsbrücke 18-9-3 fasst die drei zentralen AÜG-Kennzahlen zusammen: 18 Monate maximale Überlassungsdauer pro Kunde, 9 Monate bis zum gesetzlichen Equal Pay, 3 Vertragsbeziehungen im Drei-Personen-Verhältnis.",
+    "source": "Handout Tag 1, Abschnitt 9 (Merke-Box AÜG-Kennzahlen); Präsentation Tag 1, Folie 10"
+  },
+  {
+    "id": 21,
+    "day": 1,
+    "topic": "Lernstrategien & Berufsbild PDK",
+    "text": "Eine Auszubildende erstellt zu jedem Kapitel eine Tabelle mit Vor- und Nachteilen der Lernformen. Welcher Untertyp der kognitiven Strategien nach Weinstein/Mayer kommt hier zum Einsatz?",
+    "options": [
+      "A) Wiederholungsstrategie",
+      "B) Elaborationsstrategie",
+      "C) Organisationsstrategie",
+      "D) Metakognitive Strategie"
+    ],
+    "correct": 2,
+    "explanation": "Organisationsstrategien strukturieren und ordnen Wissen, zum Beispiel durch Tabellen, Gliederungen oder Cluster. Wiederholungsstrategien wären Karteikarten, Elaboration wäre das Bilden eigener Beispiele.",
+    "source": "Handout Tag 1, Abschnitt 5.1 (Modell Weinstein/Mayer); Präsentation Tag 1, Folie 19b"
+  },
+  {
+    "id": 22,
+    "day": 1,
+    "topic": "Lernstrategien & Berufsbild PDK",
+    "text": "Welche Aussage zum VARK-Modell nach Fleming (2001) ist korrekt?",
+    "options": [
+      "A) Es weist jedem Menschen genau einen Lernstil zu.",
+      "B) Es unterscheidet visuelle, auditive, lese-/schreibbezogene und kinästhetische Präferenzen, die häufig multimodal kombiniert auftreten.",
+      "C) Es ersetzt die Lernstrategien nach Weinstein und Mayer.",
+      "D) Es gilt als wissenschaftlich unumstritten und ist in der Pädagogik allgemein anerkannt."
+    ],
+    "correct": 1,
+    "explanation": "VARK beschreibt vier sensorische Präferenzen (Visual, Auditory, Read/Write, Kinaesthetic), die bei den meisten Menschen kombiniert (multimodal) auftreten. Wissenschaftlich ist das Lernstilkonzept umstritten – es dient als praxisorientierter Anhaltspunkt.",
+    "source": "Handout Tag 1, Abschnitt 5.2 (VARK-Modell); Präsentation Tag 1, Folie 20"
+  },
+  {
+    "id": 23,
+    "day": 1,
+    "topic": "Lernstrategien & Berufsbild PDK",
+    "text": "Was zeigt die Ebbinghaus-Vergessenskurve und welche Konsequenz wird daraus für die Prüfungsvorbereitung abgeleitet?",
+    "options": [
+      "A) Wissen bleibt ohne Wiederholung dauerhaft erhalten – Wiederholungen sind überflüssig.",
+      "B) Ohne Wiederholung sind nach etwa einem Tag rund zwei Drittel des Gelernten vergessen – daher gezielte Spaced Repetition in wachsenden Abständen.",
+      "C) Wissen prägt sich nur bei nächtlichem Lernen ein – daher Lernen ausschließlich nach 22 Uhr.",
+      "D) Vergessen ist genetisch determiniert – Lernerfolg ist deshalb ausschließlich vom Talent abhängig."
+    ],
+    "correct": 1,
+    "explanation": "Ebbinghaus (1885) belegte experimentell den exponentiellen Verfall: rund 40 % nach 20 Minuten, etwa zwei Drittel nach einem Tag. Spaced Repetition (z. B. nach 1 Tag, 3 Tagen, 1 Woche, 1 Monat) wirkt diesem Vergessen gezielt entgegen.",
+    "source": "Handout Tag 1, Abschnitt 5.4 (Ebbinghaus-Vergessenskurve); Präsentation Tag 1, Folie 22"
+  },
+  {
+    "id": 24,
+    "day": 1,
+    "topic": "Lernstrategien & Berufsbild PDK",
+    "text": "Welche Rechtsgrundlage regelt seit 2008 die dreijährige duale Berufsausbildung zum/zur Personaldienstleistungskaufmann/-frau?",
+    "options": [
+      "A) Das Tarifvertragsgesetz (TVG)",
+      "B) Die PersDLKfAusbV in Verbindung mit dem Berufsbildungsgesetz (BBiG)",
+      "C) Das Arbeitnehmerüberlassungsgesetz (AÜG)",
+      "D) Eine private Selbstverpflichtung des GVP"
+    ],
+    "correct": 1,
+    "explanation": "Die Verordnung über die Berufsausbildung zum Personaldienstleistungskaufmann (PersDLKfAusbV, 2008) regelt zusammen mit dem Berufsbildungsgesetz die dreijährige duale Ausbildung. Das AÜG betrifft die Arbeitnehmerüberlassung, nicht die Ausbildung.",
+    "source": "Handout Tag 1, Abschnitt 4 (Einleitung Lernformen); Glossar 'PDK'"
+  },
+  {
+    "id": 25,
+    "day": 1,
+    "topic": "Lernstrategien & Berufsbild PDK",
+    "text": "Welche Lerninhalte deckt Tag 01 des PDK-Lehrgangs laut Lehrplan ab?",
+    "options": [
+      "A) Ausschließlich I0 (Stellung und Rechtsform)",
+      "B) Die Inhalte I0, I1, I2 und A1",
+      "C) Nur A1 (Lernstrategien)",
+      "D) Die Inhalte K1 bis K3 (Kommunikation)"
+    ],
+    "correct": 1,
+    "explanation": "Tag 01 vereint die Lerninhalte I0 (Stellung und Rechtsform), I1 (Bedeutung der Branche), I2 (Marktwirtschaftliche Einflüsse) sowie A1 (Lernformen und Lernstrategien). Kommunikationsinhalte folgen erst in Modul 4 des Lehrgangs.",
+    "source": "Handout Tag 1, Deckblatt und Inhaltsverzeichnis; Präsentation Tag 1, Folie 1 (Subtitle 'Lerninhalte I0 + I1 + I2 + A1')"
+  }
+]

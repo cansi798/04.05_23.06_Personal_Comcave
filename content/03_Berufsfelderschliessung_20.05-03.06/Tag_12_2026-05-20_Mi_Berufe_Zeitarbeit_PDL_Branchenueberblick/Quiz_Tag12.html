@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Tag 12 &ndash; PDL-Branchen&uuml;berblick, Berufe &amp; Zeitarbeit</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #003366 0%, #004B87 50%, #0082B4 100%); color: #fff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+.header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+.header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+.toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+.toolbar button, .toolbar .toggle-label { background: #004B87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.toolbar button:hover { background: #003366; }
+.toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+.toggle-label input { accent-color: #004B87; width: 18px; height: 18px; cursor: pointer; }
+.progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+.progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+.progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0082B4, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+.container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+.section-title { background: #003366; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+.section-title:first-child { margin-top: 0; }
+.question-card { background: #ffffff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+.question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.question-card.correct-card { border-left: 5px solid #28a745; }
+.question-card.incorrect-card { border-left: 5px solid #dc3545; }
+.question-number { display: inline-block; background: #e8f0fe; color: #004B87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+.question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+.options-list { list-style: none; }
+.options-list li { margin-bottom: 0.5rem; }
+.options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+.options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+.options-list input[type="radio"] { accent-color: #004B87; margin-top: 3px; flex-shrink: 0; }
+.options-list label.selected { background: #e8f0fe; border-color: #004B87; }
+.options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+.options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+.check-btn { margin-top: 0.8rem; background: #004B87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.check-btn:hover { background: #003366; }
+.check-btn:disabled { background: #8faec8; cursor: default; }
+.feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+.feedback.show { display: block; }
+.feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.nav-btn { background: #004B87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.nav-btn:hover { background: #003366; }
+.nav-btn:disabled { background: #8faec8; cursor: default; }
+.results-panel { background: #ffffff; border: 2px solid #004B87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.results-panel.show { display: block; }
+.results-panel h2 { color: #003366; margin-bottom: 0.8rem; }
+.score-big { font-size: 3rem; font-weight: 700; color: #004B87; }
+.grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+.grade.pass { color: #28a745; }
+.grade.fail { color: #dc3545; }
+.section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+.section-breakdown table { width: 100%; border-collapse: collapse; }
+.section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+.section-breakdown th { background: #e8f0fe; color: #003366; text-align: left; }
+.references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+.references h3 { color: #003366; margin-bottom: 0.8rem; font-size: 1.1rem; }
+.references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+.footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+@media print { body { background: #fff; } .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; } .header { background: #003366 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; display: block !important; } .question-card.hidden { display: block !important; } .section-title { break-after: avoid; } .feedback.show { display: block !important; } .options-list label.correct-opt { background: #d4edda !important; border-color: #28a745 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+@media (max-width: 600px) { .header { padding: 1.4rem 0.8rem; } .question-card { padding: 1rem; } .toolbar { flex-direction: column; align-items: stretch; text-align: center; } }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<header class="header">
+  <h1>Quiz Tag 12 &ndash; PDL-Branchen&uuml;berblick, Berufe &amp; Zeitarbeit</h1>
+  <div class="subtitle">Personaldienstleistungskaufmann/-frau Industrie- und Handelskammer 2026 &ndash; Personaldienstleistungskaufmann/-frau</div>
+  <div class="meta"><span>&copy; Can Siebert</span><span>Stand 05/2026</span><span>60 Fragen &bull; Multiple Choice</span></div>
+</header>
+
+<div class="toolbar">
+  <label class="toggle-label"><input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen</label>
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+    <button onclick="showResults()">Ergebnis anzeigen</button>
+    <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+  </div>
+</div>
+
+<div class="progress-container">
+  <div class="progress-info"><span id="progressText">0 von 60 beantwortet</span><span id="progressPct">0 %</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+  <div class="results-panel" id="resultsPanel">
+    <h2>Dein Ergebnis</h2>
+    <div class="score-big" id="scoreBig"></div>
+    <div class="grade" id="gradeText"></div>
+    <div class="section-breakdown" id="sectionBreakdown"></div>
+    <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+  </div>
+</div>
+
+<div class="references">
+  <h3>Literaturverzeichnis (APA 7)</h3>
+  <p>Bossler, M., Lochner, B., &amp; Wagner, C. (2024). <em>Strukturmerkmale der Leiharbeit in Deutschland</em>. IAB-Forschungsbericht 4/2024.</p>
+  <p>Bundesagentur f&uuml;r Arbeit. (2024). <em>Leiharbeitnehmer und Verleihbetriebe &ndash; Statistische Nachweise nach A&Uuml;G</em>. https://statistik.arbeitsagentur.de/</p>
+  <p>Bundesarbeitgeberverband der Personaldienstleister. (2024). <em>Tarifvertrag BAP-DGB / iGZ-DGB f&uuml;r die Zeitarbeitsbranche</em>. https://www.bap.de/tarife</p>
+  <p>Bundesministerium der Justiz. (2017). <em>Arbeitnehmer&uuml;berlassungsgesetz (A&Uuml;G)</em>. https://www.gesetze-im-internet.de/a_g/</p>
+  <p>Bundesministerium f&uuml;r Arbeit und Soziales. (2024). <em>Mindestlohngesetz (MiLoG)</em>. https://www.gesetze-im-internet.de/milog/</p>
+  <p>Deutscher Industrie- und Handelskammertag. (2020). <em>Verordnung &uuml;ber die Berufsausbildung zur Personaldienstleistungskauffrau/zum Personaldienstleistungskaufmann</em>.</p>
+  <p>Gesamtverband der Personaldienstleister. (2024). <em>Branchenkennzahlen und Daten zur Zeitarbeit 2024</em>. https://www.personaldienstleister.de/</p>
+  <p>Henssler, M., &amp; Willemsen, H. J. (2023). <em>Arbeitsrecht Kommentar</em> (10. Aufl.). Otto Schmidt.</p>
+  <p>Schaub, G. (2023). <em>Arbeitsrechts-Handbuch</em> (20. Aufl.). C. H. Beck.</p>
+  <p>Schuler, H., &amp; Sonntag, K. (2022). <em>Personalmanagement in der Zeitarbeit</em>. Hogrefe.</p>
+  <p>Statistisches Bundesamt. (2024). <em>Erwerbst&auml;tigkeit nach Wirtschaftsbereichen</em>. https://www.destatis.de/</p>
+</div>
+
+<footer class="footer">&copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Stand 05/2026</footer>
+
+<script>
+const sections = [
+{title:"Abschnitt A: Begriff und Abgrenzung PDL (Fragen 1–8)",questions:[
+{id:1,text:"Was bedeutet die Abkürzung PDL im Branchenkontext?",options:["A) Persönlicher Dienst-Lieferant","B) Personaldienstleistung","C) Personalbedarfs-Disposition","D) Personaldatenlogistik"],correct:1,explanation:"PDL steht für Personaldienstleistung – der Sammelbegriff für Zeitarbeit, Personalvermittlung und Outsourcing."},
+{id:2,text:"Welcher der folgenden Begriffe ist KEIN Synonym für Zeitarbeit?",options:["A) Leiharbeit","B) Arbeitnehmerüberlassung","C) Selbstständige Tätigkeit","D) Personalüberlassung"],correct:2,explanation:"Selbstständige Tätigkeit ist ein anderer Sachverhalt (Werkvertrag, Freelancing, Soloselbstständigkeit). Leiharbeit, Arbeitnehmerüberlassung und Personalüberlassung sind synonyme Bezeichnungen für Zeitarbeit."},
+{id:3,text:"Welcher Branchenverband verwendet primär den Begriff ‚Personaldienstleistung‘?",options:["A) DGB","B) BAP (heute GVP)","C) IG Metall","D) ver.di"],correct:1,explanation:"Der Bundesarbeitgeberverband der Personaldienstleister (BAP), heute Teil des Gesamtverbands der Personaldienstleister (GVP), verwendet bevorzugt den Begriff ‚Personaldienstleistung‘."},
+{id:4,text:"Welcher Gesetzestext verwendet den Begriff ‚Arbeitnehmerüberlassung‘?",options:["A) Mindestlohngesetz","B) Bürgerliches Gesetzbuch","C) Arbeitnehmerüberlassungsgesetz (AÜG)","D) Tarifvertragsgesetz"],correct:2,explanation:"Das AÜG (Arbeitnehmerüberlassungsgesetz) ist das zentrale Gesetz, das die Zeitarbeit regelt. Es spricht juristisch von ‚Arbeitnehmerüberlassung‘ statt ‚Zeitarbeit‘."},
+{id:5,text:"Welche drei Beschäftigungsformen umfasst die moderne PDL-Branche?",options:["A) Zeitarbeit, Vermittlung, Outsourcing","B) Werkvertrag, Festanstellung, Honorar","C) Freelancing, Praktikum, Ausbildung","D) Minijob, Teilzeit, Vollzeit"],correct:0,explanation:"Die drei klassischen Beschäftigungsformen in der PDL-Branche sind Zeitarbeit (AÜG), Personalvermittlung (Provision) und Outsourcing/Onsite-Management (Werkvertrag)."},
+{id:6,text:"Wie hoch ist der Branchenumsatz der deutschen Zeitarbeitsbranche pro Jahr (Größenordnung 2024)?",options:["A) ca. 5 Mrd. Euro","B) ca. 15 Mrd. Euro","C) ca. 30 Mrd. Euro","D) ca. 100 Mrd. Euro"],correct:2,explanation:"Die deutsche Zeitarbeitsbranche erwirtschaftet einen Jahresumsatz von rund 30 Milliarden Euro – ein bedeutender Wirtschaftszweig."},
+{id:7,text:"Wie viele Zeitarbeitnehmer:innen sind in Deutschland aktiv (Größenordnung 2024)?",options:["A) ca. 100.000","B) ca. 800.000","C) ca. 2 Millionen","D) ca. 10 Millionen"],correct:1,explanation:"Laut Bundesagentur für Arbeit sind über 800.000 Zeitarbeitnehmer:innen in Deutschland tätig."},
+{id:8,text:"Warum gilt die Zeitarbeit als ‚Frühindikator‘ des Arbeitsmarkts?",options:["A) Weil sie früher als andere Branchen gegründet wurde","B) Weil sie hochsensibel auf Konjunkturveränderungen reagiert","C) Weil sie früher als andere Branchen Tarife einführte","D) Weil sie morgens früh aufmacht"],correct:1,explanation:"Zeitarbeit reagiert hochsensibel auf Konjunkturveränderungen: In Boomphasen wächst sie überproportional, in Rezessionen schrumpft sie zuerst – damit ist sie ein Frühindikator des Arbeitsmarkts."}
+]},
+{title:"Abschnitt B: Beschäftigungsformen – Zeitarbeit, Vermittlung, Outsourcing (Fragen 9–22)",questions:[
+{id:9,text:"Welche drei Parteien sind am Vertragsdreieck der Zeitarbeit beteiligt?",options:["A) Verleiher, Kunde, Berufsschule","B) Verleiher, Entleiher, Zeitarbeitnehmer:in","C) Verleiher, Personalvermittler, Sozialamt","D) Verleiher, IHK, Zeitarbeitnehmer:in"],correct:1,explanation:"Das klassische Vertragsdreieck der Zeitarbeit besteht aus Verleiher (PDL-Unternehmen), Entleiher (Kundenbetrieb) und Zeitarbeitnehmer:in."},
+{id:10,text:"Zwischen welchen zwei Parteien besteht der Arbeitsvertrag bei der Zeitarbeit?",options:["A) Entleiher und Zeitarbeitnehmer:in","B) Verleiher und Zeitarbeitnehmer:in","C) Verleiher und Entleiher","D) Zeitarbeitnehmer:in und Sozialamt"],correct:1,explanation:"Der Arbeitsvertrag besteht zwischen Verleiher (PDL-Unternehmen) und Zeitarbeitnehmer:in. Mit dem Entleiher gibt es keinen direkten Arbeitsvertrag."},
+{id:11,text:"Wer hat während der Überlassung das Weisungsrecht gegenüber dem/der Zeitarbeitnehmer:in?",options:["A) Der Verleiher","B) Der Entleiher (Kundenbetrieb)","C) Die Bundesagentur für Arbeit","D) Niemand"],correct:1,explanation:"Während der Überlassung übt der Entleiher (Kundenbetrieb) das fachliche Weisungsrecht aus – er bestimmt, was zu tun ist. Der Verleiher bleibt arbeitsrechtlich Arbeitgeber."},
+{id:12,text:"Wie heißt der Vertrag zwischen Verleiher und Entleiher?",options:["A) Arbeitsvertrag","B) Personalvermittlungsvertrag","C) Arbeitnehmerüberlassungsvertrag / Überlassungsvertrag","D) Werkvertrag"],correct:2,explanation:"Der Vertrag zwischen Verleiher und Entleiher heißt Arbeitnehmerüberlassungsvertrag (Überlassungsvertrag). Er regelt Dauer, Tätigkeit, Stundenverrechnungssatz und weitere Konditionen."},
+{id:13,text:"Was bezeichnet der ‚Stundenverrechnungssatz‘?",options:["A) Der Lohn, den die Zeitarbeitnehmer:in erhält","B) Der Preis, den der Verleiher dem Entleiher pro Stunde berechnet","C) Die Anzahl der pro Tag geleisteten Stunden","D) Der gesetzliche Mindestlohn"],correct:1,explanation:"Der Stundenverrechnungssatz ist der Preis, den der Verleiher (PDL-Unternehmen) dem Entleiher (Kundenbetrieb) pro Stunde der Überlassung in Rechnung stellt – darin enthalten sind Lohn, Lohnnebenkosten und Marge."},
+{id:14,text:"Wie hoch ist die gesetzliche Höchstüberlassungsdauer beim selben Entleiher (§ 1 Abs. 1b AÜG)?",options:["A) 6 Monate","B) 12 Monate","C) 18 Monate","D) Unbegrenzt"],correct:2,explanation:"Die Höchstüberlassungsdauer beim selben Entleiher beträgt 18 Monate (§ 1 Abs. 1b AÜG). Tarifverträge können davon abweichen."},
+{id:15,text:"Nach welcher Überlassungsdauer greift der Equal-Pay-Anspruch (§ 8 AÜG)?",options:["A) Sofort ab dem ersten Tag","B) Nach 3 Monaten","C) Nach 9 Monaten","D) Nach 18 Monaten"],correct:2,explanation:"Spätestens nach 9 Monaten Überlassung gilt der Equal-Pay-Grundsatz (§ 8 AÜG): Zeitarbeitnehmer:innen erhalten den gleichen Lohn wie vergleichbare Stammbeschäftigte. Branchenzuschlagstarife können dies gestaffelt einlösen."},
+{id:16,text:"Welche Voraussetzung muss ein Personaldienstleister erfüllen, um Zeitarbeit anbieten zu dürfen?",options:["A) Eintrag im Handelsregister","B) AÜG-Erlaubnis durch die Bundesagentur für Arbeit (§ 1 AÜG)","C) Mitgliedschaft im DGB","D) Zertifizierung durch die IHK"],correct:1,explanation:"Wer Arbeitnehmer:innen überlässt, benötigt nach § 1 AÜG eine Erlaubnis. Diese wird von der Bundesagentur für Arbeit erteilt."},
+{id:17,text:"Welcher Beschäftigungsform ist die Personalvermittlung am ähnlichsten?",options:["A) Eigentum","B) Maklertätigkeit","C) Pacht","D) Schenkung"],correct:1,explanation:"Personalvermittlung ist im Kern eine Maklertätigkeit – der Personaldienstleister bringt zwei Parteien zusammen und erhält bei Erfolg eine Provision. Rechtlich gilt § 296 BGB (Maklerrecht)."},
+{id:18,text:"Wie hoch ist die typische Vermittlungsprovision bei der Personalvermittlung?",options:["A) 5–10% des Jahresgehalts","B) 20–30% des Brutto-Jahresgehalts","C) 50% des Jahresgehalts","D) Pauschal 1.000 Euro"],correct:1,explanation:"Die Vermittlungsprovision beträgt typischerweise 20–30% des Brutto-Jahresgehalts der vermittelten Person. Spezielle Profile (Führungskräfte) können darüber liegen."},
+{id:19,text:"Was bedeutet ‚Try & Hire‘?",options:["A) Probearbeit für einen Tag","B) Erst Zeitarbeit, dann Übernahme durch den Kundenbetrieb","C) Bewerbergespräch nach erfolgreichem Probetag","D) Eine Provisionsstaffel"],correct:1,explanation:"Try & Hire kombiniert beide Geschäftsmodelle: Die Person beginnt als Zeitarbeitnehmer:in im Kundenbetrieb und wird nach Bewährung durch den Kunden direkt übernommen. Bei Übernahme fällt typisch eine reduzierte Vermittlungsgebühr an."},
+{id:20,text:"Was unterscheidet einen Werkvertrag von der Arbeitnehmerüberlassung?",options:["A) Beim Werkvertrag verbleibt das Weisungsrecht beim PDL-Unternehmen","B) Beim Werkvertrag geht das Weisungsrecht auf den Kunden über","C) Beim Werkvertrag entsteht kein Arbeitsverhältnis","D) Es gibt keinen Unterschied"],correct:0,explanation:"Beim Werkvertrag verbleibt das Weisungsrecht beim PDL-Unternehmen – der Kunde schuldet ein fertiges Werk, nicht das Bestimmen der Arbeitsabläufe. Bei AÜ geht das Weisungsrecht auf den Entleiher über."},
+{id:21,text:"Welche Folgen hat ein Scheinwerkvertrag (verdeckte AÜ)?",options:["A) Keine Folgen","B) Geldstrafe bis 500.000 Euro plus Risiko, dass Mitarbeitende als beim Kunden angestellt fingiert werden","C) Nur Verwarnung","D) Vertrag wird automatisch in einen Arbeitsvertrag umgewandelt"],correct:1,explanation:"Scheinwerkverträge werden von Behörden und Gerichten als verdeckte Arbeitnehmerüberlassung gewertet. Folgen: Bußgeld bis 500.000 Euro plus Fingierung eines Arbeitsverhältnisses zwischen den eingesetzten Personen und dem Kunden."},
+{id:22,text:"Welches Geschäftsmodell macht den größten Anteil am Branchenumsatz aus?",options:["A) Zeitarbeit (ca. 80%)","B) Personalvermittlung (ca. 50%)","C) Outsourcing (ca. 70%)","D) Headhunting (ca. 40%)"],correct:0,explanation:"Die Zeitarbeit (Arbeitnehmerüberlassung) macht etwa 80% des Branchenumsatzes aus. Vermittlung und Outsourcing sind kleinere, aber wachsende Segmente."}
+]},
+{title:"Abschnitt C: Berufe und Rollen im PDL-Unternehmen (Fragen 23–32)",questions:[
+{id:23,text:"Welche Hauptaufgabe hat die Disposition in einem PDL-Unternehmen?",options:["A) Kundengewinnung","B) Operative Einsatz- und Schichtsteuerung der Zeitarbeitnehmer:innen","C) Lohnabrechnung","D) IT-Pflege"],correct:1,explanation:"Die Disposition steuert operativ die Einsätze und Schichten der Zeitarbeitnehmer:innen, bearbeitet Auftragsmeldungen und reagiert auf kurzfristige Ausfälle (z.B. Krankmeldungen)."},
+{id:24,text:"Welche Rolle ist die typische Schnittstelle zwischen Recruiting und Vertrieb in der PDL-Niederlassung?",options:["A) Backoffice","B) Disposition","C) Geschäftsleitung","D) IT"],correct:1,explanation:"Die Disposition ist die Schnittstelle zwischen Recruiting (woher kommt der Nachschub?) und Vertrieb (welche Kundenanfragen liegen vor?) – sie balanciert Angebot und Nachfrage operativ."},
+{id:25,text:"Welche Rolle verantwortet die Personalgewinnung im PDL-Unternehmen?",options:["A) Disposition","B) Recruiting","C) Vertrieb","D) Backoffice"],correct:1,explanation:"Das Recruiting verantwortet die Personalgewinnung – Stellenanzeigen schalten, Active Sourcing über LinkedIn/XING, Bewerbergespräche, Eignungsfeststellung und AÜG-Aufklärung."},
+{id:26,text:"Wer kümmert sich primär um die Kundenakquise und -betreuung?",options:["A) Disposition","B) Recruiting","C) Vertrieb","D) Niederlassungsleitung"],correct:2,explanation:"Der Vertrieb gewinnt Neukunden (Akquise) und pflegt bestehende Kundenbeziehungen (Bedarfsanalyse, Verhandlung, Cross-/Upselling)."},
+{id:27,text:"Was ist die Aufgabe einer Onsite-Manager:in?",options:["A) Online-Marketing","B) Vor-Ort-Verantwortung beim Großkunden (Schichtbegleitung, Konfliktlösung, Mini-Disposition)","C) IT-Support","D) Geschäftsführung"],correct:1,explanation:"Onsite-Manager:innen arbeiten direkt im Kundenbetrieb und sind erste Ansprechpartner:innen für die dort eingesetzten Zeitarbeitnehmer:innen – inklusive Schichtbegleitung, Konfliktlösung und Tages-Feinsteuerung."},
+{id:28,text:"Welche Tätigkeit gehört zum Backoffice eines PDL-Unternehmens?",options:["A) Kundenakquise","B) Lohnabrechnung, Vertragsmanagement, Zeiterfassung","C) Bewerbergespräche","D) Schichtbegleitung beim Kunden"],correct:1,explanation:"Das Backoffice kümmert sich um administrative Prozesse: Lohnabrechnung, Vertragsmanagement, Zeiterfassungspflege, Kunden-Rechnungsstellung und IT-Pflege des Bewerbermanagementsystems."},
+{id:29,text:"Was umfasst die Verantwortung einer Niederlassungsleitung typischerweise?",options:["A) Nur Recruiting","B) Personal-, Budget- und Umsatzverantwortung für die Niederlassung","C) Nur IT-Themen","D) Nur Lohnabrechnung"],correct:1,explanation:"Die Niederlassungsleitung trägt Personal-, Budget- und Umsatzverantwortung – sie führt typischerweise 5–25 interne Mitarbeitende und verantwortet 50–500 Zeitarbeitnehmer:innen im Einsatz."},
+{id:30,text:"Welcher typische Karriereweg führt zur Niederlassungsleitung?",options:["A) Direkter Einstieg ohne Berufserfahrung","B) Vom Disponenten / Recruiter / Vertriebler über Senior-Position","C) Nur über externes Headhunting","D) Nur über Universitätsabschluss"],correct:1,explanation:"Typisch ist der Aufstieg über die operativen Rollen: Vom Disponenten / Recruiter / Vertriebler zur Senior-Position und dann zur Niederlassungsleitung (häufig nach 5–7 Jahren)."},
+{id:31,text:"Wer ist verantwortlich, Bewerber:innen über AÜG-Regelungen aufzuklären?",options:["A) Die Bundesagentur für Arbeit","B) Das Recruiting (mit Unterstützung der Disposition)","C) Die IHK","D) Die Sozialversicherung"],correct:1,explanation:"Es ist Aufgabe des Recruitings, Bewerber:innen über die Rahmenbedingungen der Zeitarbeit (AÜG-Schwellen, Tarifvertrag, Einsatzbedingungen) aufzuklären – als Teil der seriösen Information vor Vertragsabschluss."},
+{id:32,text:"Was ist KEINE typische Aufgabe der Disposition?",options:["A) Schichtplanung","B) Krankheits-/Ausfallmanagement","C) Lohnabrechnung","D) Mitarbeitergespräche zur Einsatzplanung"],correct:2,explanation:"Die Lohnabrechnung ist Backoffice-Aufgabe. Die Disposition plant Schichten, managt Ausfälle und führt Einsatzgespräche, aber sie rechnet keine Löhne ab."}
+]},
+{title:"Abschnitt D: Branchenüberblick und Marktteilnehmer (Fragen 33–42)",questions:[
+{id:33,text:"Welcher PDL-Konzern ist weltgrößter Anbieter?",options:["A) Hays","B) Randstad","C) Adecco Group","D) Manpower Group"],correct:2,explanation:"Die Adecco Group (Schweizer Konzern) ist weltgrößter Personaldienstleister mit Hauptsitz in Zürich."},
+{id:34,text:"Aus welchem Land kommt der PDL-Konzern Randstad?",options:["A) Deutschland","B) USA","C) Niederlande","D) Schweiz"],correct:2,explanation:"Randstad ist ein niederländischer Personaldienstleistungskonzern (Hauptsitz Diemen) und gehört in Deutschland zu den Top-3-Anbietern."},
+{id:35,text:"Welcher Personaldienstleister spezialisiert sich primär auf Fach- und Führungskräfte?",options:["A) Adecco","B) Manpower","C) Hays","D) Persona Service"],correct:2,explanation:"Hays ist auf Fach- und Führungskräfte spezialisiert (Spezialisten-Segment). In Deutschland ist Hays im Spezialisten-Segment Marktführer."},
+{id:36,text:"Wie viele zugelassene Verleihbetriebe gibt es in Deutschland (Größenordnung 2024)?",options:["A) ca. 500","B) ca. 11.000","C) ca. 100.000","D) ca. 1 Million"],correct:1,explanation:"Es gibt rund 11.000 zugelassene Verleihbetriebe in Deutschland, die eine AÜG-Erlaubnis nach § 1 besitzen."},
+{id:37,text:"Welches Branchen-Charakteristikum macht die Zeitarbeit konjunkturzyklisch?",options:["A) Sie reagiert verzögert auf den Markt","B) Sie reagiert schnell, weil flexible Einsätze schnell aufgebaut oder beendet werden","C) Sie ist konjunkturunabhängig","D) Sie reagiert nur auf staatliche Förderprogramme"],correct:1,explanation:"Zeitarbeit reagiert schneller als Festanstellung – Einsätze können kurzfristig aufgebaut und beendet werden. In Aufschwüngen wächst sie zuerst, in Rezessionen schrumpft sie zuerst."},
+{id:38,text:"Welcher Markttrend prägt die PDL-Branche 2024/2025 besonders?",options:["A) Rückkehr zur reinen Helfertätigkeit","B) Verschiebung zu Fach- und Spezialqualifikationen wegen Fachkräftemangel","C) Schließung aller PDL-Unternehmen","D) Verstaatlichung der Branche"],correct:1,explanation:"Wegen des Fachkräftemangels verschiebt sich die Branche zunehmend weg von Helfertätigkeiten hin zu Fach- und Spezialqualifikationen (Pflege, IT, Engineering)."},
+{id:39,text:"Welches deutsche Mittelstandsunternehmen gehört zu den Top-10-PDL-Anbietern?",options:["A) Mercedes-Benz","B) Persona Service","C) SAP","D) Deutsche Bank"],correct:1,explanation:"Persona Service ist ein deutsches Mittelstandsunternehmen unter den Top 10 der deutschen PDL-Anbieter. Weitere DE-Mittelständler: Orizon, piening, ZAG, AlphaConsult."},
+{id:40,text:"Was ist der ‚Gesamtverband der Personaldienstleister‘ (GVP)?",options:["A) Eine Gewerkschaft","B) Der Branchenarbeitgeberverband, entstanden 2023 aus der Fusion von BAP und iGZ","C) Ein staatliches Aufsichtsorgan","D) Eine Versicherung"],correct:1,explanation:"Der GVP ist der Branchenarbeitgeberverband der Personaldienstleister. Er entstand 2023 aus der Fusion von BAP (Bundesarbeitgeberverband) und iGZ (Interessenverband Deutscher Zeitarbeitsunternehmen)."},
+{id:41,text:"Welche Digitalisierungstrends gibt es in der PDL-Branche aktuell?",options:["A) Verzicht auf jegliche IT","B) KI-gestütztes Matching, BMS-Integration, automatisierte Lohnabrechnung","C) Rückkehr zur Karteikarte","D) Nur Telefon und Fax"],correct:1,explanation:"In der PDL-Branche sind aktuell relevante Digitalisierungstrends: KI-gestütztes Matching von Bewerbern und Stellen, BMS-Integration mit Kunden-HRIS und weitgehend automatisierte Lohnabrechnung."},
+{id:42,text:"Wie schwankt der Branchenumsatz konjunkturabhängig (Größenordnung)?",options:["A) Konstant ohne Schwankungen","B) ca. ±10–15% jährlich","C) ca. ±50% jährlich","D) Nur in der Sommerzeit"],correct:1,explanation:"Die Schwankungsbreite der Zeitarbeit beträgt etwa ±10–15% pro Jahr, abhängig von der Konjunktur. In tiefen Rezessionen kann es auch stärker einbrechen."}
+]},
+{title:"Abschnitt E: Rechtsrahmen – AÜG, MiLoG, Tarife (Fragen 43–56)",questions:[
+{id:43,text:"Welches Gesetz regelt die Zeitarbeit in Deutschland?",options:["A) Bürgerliches Gesetzbuch (BGB)","B) Arbeitnehmerüberlassungsgesetz (AÜG)","C) Aktiengesetz (AktG)","D) Versicherungsvertragsgesetz (VVG)"],correct:1,explanation:"Das Arbeitnehmerüberlassungsgesetz (AÜG) ist das zentrale Regelwerk der Zeitarbeit. Es regelt Erlaubnispflicht, Höchstüberlassungsdauer, Equal Pay und Schutzrechte der Zeitarbeitnehmer:innen."},
+{id:44,text:"Welche Behörde erteilt die AÜG-Erlaubnis?",options:["A) Die Bundesagentur für Arbeit","B) Die Industrie- und Handelskammer","C) Das Finanzamt","D) Das Sozialgericht"],correct:0,explanation:"Die AÜG-Erlaubnis wird von der Bundesagentur für Arbeit erteilt (§ 1 AÜG). Sie ist Voraussetzung für die Tätigkeit als Verleiher."},
+{id:45,text:"Was sieht § 13b AÜG vor?",options:["A) Mindestlohn von 12 Euro","B) Streikbruchverbot – keine Überlassung in bestreikte Betriebe","C) Tariftreue-Pflicht","D) Sozialversicherungspflicht"],correct:1,explanation:"§ 13b AÜG verbietet die Überlassung von Zeitarbeitnehmer:innen in einen vom Streik betroffenen Entleiherbetrieb. Damit soll verhindert werden, dass Zeitarbeit als Streikbrecher genutzt wird."},
+{id:46,text:"Was passiert, wenn ein Verleiher gegen § 1 AÜG verstößt (z.B. keine Erlaubnis hat)?",options:["A) Nichts – es ist ein Kavaliersdelikt","B) Der Vertrag mit dem/der Zeitarbeitnehmer:in wird unwirksam, ein Arbeitsverhältnis mit dem Entleiher wird fingiert (§ 9 AÜG)","C) Strafe von 100 Euro","D) Verwarnung"],correct:1,explanation:"§ 9 AÜG sieht harte Folgen vor: Der Vertrag zwischen Verleiher und Zeitarbeitnehmer:in wird unwirksam, und ein Arbeitsverhältnis mit dem Entleiher wird fingiert (gesetzlich angenommen). Plus Bußgeld."},
+{id:47,text:"Welche Schriftform-Pflicht regelt § 11 AÜG?",options:["A) Der Werkvertrag muss schriftlich sein","B) Der Arbeitsvertrag zwischen Verleiher und Zeitarbeitnehmer:in muss schriftlich abgeschlossen werden","C) Die Stellenanzeige","D) Die Provision"],correct:1,explanation:"§ 11 AÜG verlangt Schriftform für den Arbeitsvertrag zwischen Verleiher und Zeitarbeitnehmer:in. Ein mündlicher Vertrag ist unwirksam."},
+{id:48,text:"Was bedeutet ‚Equal Pay‘ im Zeitarbeitskontext?",options:["A) Gleicher Lohn für Männer und Frauen","B) Gleiche Bezahlung von Zeitarbeitnehmer:innen wie vergleichbare Stammbeschäftigte","C) Mindestlohn","D) Provision bei Vermittlung"],correct:1,explanation:"Equal Pay bedeutet, dass Zeitarbeitnehmer:innen denselben Lohn wie vergleichbare Stammbeschäftigte im Kundenbetrieb erhalten – nach § 8 AÜG spätestens nach 9 Monaten Überlassung. (Gleiche Bezahlung von Mann und Frau ist ‚Gender Pay Gap‘, ein anderes Thema.)"},
+{id:49,text:"Wie hoch ist der gesetzliche Mindestlohn (MiLoG) 2025?",options:["A) 9,50 Euro","B) 10,45 Euro","C) 12,82 Euro","D) 15,00 Euro"],correct:2,explanation:"Der gesetzliche Mindestlohn nach MiLoG beträgt 2025 12,82 Euro pro Stunde (2024 lag er bei 12,41 Euro)."},
+{id:50,text:"Was ist der Unterschied zwischen MiLoG und Branchenmindestlohn Zeitarbeit?",options:["A) Es gibt keinen Unterschied","B) Der Branchenmindestlohn Zeitarbeit liegt höher; der höhere Wert gilt jeweils","C) Der MiLoG gilt nur für die Zeitarbeit","D) Der Branchenmindestlohn ist freiwillig"],correct:1,explanation:"Der allgemeine Mindestlohn (MiLoG) gilt branchenübergreifend. Für die Zeitarbeit gilt zusätzlich ein höherer Branchenmindestlohn (tariflich vereinbart). Es gilt immer der höhere Wert."},
+{id:51,text:"Welche Tarifverträge prägen die Zeitarbeit in Deutschland?",options:["A) IG-Metall-Tarifvertrag","B) BAP-DGB und iGZ-DGB (heute GVP-Tarife)","C) Eisenbahner-Tarif","D) Es gibt keine Tarifverträge in der Zeitarbeit"],correct:1,explanation:"In der Zeitarbeit gelten primär die Tarifverträge zwischen BAP-DGB und iGZ-DGB (DGB-Tarifgemeinschaft Zeitarbeit). Seit der GVP-Fusion 2023 werden diese Tarifwerke vereinheitlicht."},
+{id:52,text:"Wie viele Entgeltgruppen sieht der Zeitarbeitstarif typisch vor?",options:["A) 3 Entgeltgruppen","B) 9 Entgeltgruppen (E1–E9)","C) 30 Entgeltgruppen","D) Keine festen Entgeltgruppen"],correct:1,explanation:"Der Zeitarbeitstarif sieht typischerweise 9 Entgeltgruppen E1–E9 vor, gestaffelt nach Qualifikation – von einfacher Tätigkeit (E1) bis zur akademischen Fachkraft (E9)."},
+{id:53,text:"Was sind Branchenzuschlagstarifverträge (BZ-Tarife)?",options:["A) Zuschläge für Branchenwechsel","B) Stufenweise Zulagen zur Annäherung an Equal Pay in bestimmten Kundenbranchen","C) Provisionen für Vertriebler","D) Zuschüsse vom Staat"],correct:1,explanation:"Branchenzuschlagstarifverträge gleichen die Vergütung der Zeitarbeitnehmer:innen schrittweise an das Niveau der Stammbeschäftigten der Kundenbranche an. Sie existieren für Metall, Chemie, Bau u.a."},
+{id:54,text:"Nach wie vielen Monaten erreicht ein Zeitarbeitnehmer im Branchenzuschlagstarif Metall typischerweise Equal Pay?",options:["A) Sofort","B) Nach 3 Monaten","C) Nach 9 Monaten","D) Nie"],correct:2,explanation:"Im Branchenzuschlagstarif Metall werden die Zuschläge stufenweise erhöht (6 Wochen +15%, 3 Monate +20%, 5 Monate +30%, 7 Monate +45%, 9 Monate +50% = Equal Pay)."},
+{id:55,text:"Welches Bundesgesetz regelt die duale Ausbildung zur/zum Personaldienstleistungskauffrau/-mann?",options:["A) AÜG","B) MiLoG","C) Verordnung über die Berufsausbildung zum/zur Personaldienstleistungskaufmann/-frau","D) Sozialgesetzbuch"],correct:2,explanation:"Die Berufsausbildung zur/zum Personaldienstleistungskauffrau/-mann ist durch eine Bundesverordnung geregelt (Verordnung über die Berufsausbildung zur/zum Personaldienstleistungskauffrau/-mann)."},
+{id:56,text:"Was darf KEIN Inhalt eines Werkvertrags sein, ohne dass er zur verdeckten AÜ wird?",options:["A) Vereinbarter Werkpreis","B) Vereinbartes Werk (z.B. fertige Lagerlogistik)","C) Faktisches Weisungsrecht des Kunden über die eingesetzten Mitarbeitenden","D) Vereinbarte Lieferfrist"],correct:2,explanation:"Beim Werkvertrag darf das Weisungsrecht NICHT beim Kunden liegen – sonst wird er als verdeckte Arbeitnehmerüberlassung gewertet. Das Weisungsrecht muss beim Werkunternehmer (PDL-Unternehmen) verbleiben."}
+]},
+{title:"Abschnitt F: Praxis-Fälle und Kombination (Fragen 57–60)",questions:[
+{id:57,text:"Ein Kunde bestellt 12 Lageristen für eine Saisonphase von 4 Monaten. Welche Beschäftigungsform ist hier am sinnvollsten?",options:["A) Personalvermittlung (Fest-Anstellung beim Kunden)","B) Zeitarbeit (Arbeitnehmerüberlassung)","C) Outsourcing (Werkvertrag)","D) Praktikum"],correct:1,explanation:"Bei einer Saisonphase von 4 Monaten ist die Zeitarbeit (AÜG) das geeignete Modell – flexibel auf-/abbaubar und gut innerhalb der 18-Monats-Frist. Personalvermittlung wäre nur sinnvoll, wenn der Kunde die Person dauerhaft anstellen will."},
+{id:58,text:"Ein:e Bewerber:in fragt: ‚Wer ist mein Arbeitgeber, wenn ich über Sie als Zeitarbeiter:in bei einem Kunden eingesetzt werde?‘ Wie ist die korrekte Antwort?",options:["A) Der Kundenbetrieb","B) Das PDL-Unternehmen (Verleiher)","C) Die Bundesagentur für Arbeit","D) Niemand"],correct:1,explanation:"Bei der Zeitarbeit ist das PDL-Unternehmen (Verleiher) der Arbeitgeber. Der Kundenbetrieb (Entleiher) ist zwar Weisungsberechtigter, aber nicht Arbeitgeber im arbeitsrechtlichen Sinn."},
+{id:59,text:"Ein Kunde möchte eine IT-Fachkraft dauerhaft anstellen, hat aber keine Zeit für eigene Bewerbersuche. Was bietet das PDL-Unternehmen sinnvollerweise an?",options:["A) Zeitarbeit auf 18 Monate","B) Personalvermittlung mit ca. 25% Brutto-Jahresgehalt Provision","C) Outsourcing der gesamten IT","D) Try & Hire mit anschließender Festanstellung beim Kunden"],correct:3,explanation:"Bei dauerhafter Anstellungsabsicht ist Personalvermittlung passend (B). Try & Hire (D) ist hier sogar noch geeigneter, weil der Kunde die Person erst praktisch kennenlernen kann, bevor er dauerhaft anstellt – kombiniertes Risikomanagement für beide Seiten."},
+{id:60,text:"Welche Aussage zur PDL-Branche ist FALSCH?",options:["A) Zeitarbeit ist ein Frühindikator des Arbeitsmarkts","B) Die PDL-Branche hat in Deutschland einen Jahresumsatz von ca. 30 Mrd. Euro","C) Zeitarbeit darf grundsätzlich ohne Erlaubnis betrieben werden","D) Equal Pay greift spätestens nach 9 Monaten Überlassung"],correct:2,explanation:"FALSCH ist Aussage C: Zeitarbeit darf NICHT ohne Erlaubnis betrieben werden. Nach § 1 AÜG ist eine Erlaubnis durch die Bundesagentur für Arbeit zwingend erforderlich."}
+]}
+];
+
+let answered = {};
+let checked = {};
+let showAll = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() { const flat = []; sections.forEach(s => s.questions.forEach(q => flat.push(q))); return flat; }
+const flatQ = allQuestions();
+
+function render() {
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  let globalIdx = 0;
+  sections.forEach((sec) => {
+    html += `<div class="section-title">${sec.title}</div>`;
+    sec.questions.forEach((q) => {
+      const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+      const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+      html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+      html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+      html += `<p class="question-text">${q.text}</p>`;
+      html += `<ul class="options-list">`;
+      q.options.forEach((opt, oi) => {
+        let cls = '';
+        if (checked[q.id]) {
+          if (oi === q.correct) cls = 'correct-opt';
+          else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+        } else if (answered[q.id] === oi) {
+          cls = 'selected';
+        }
+        const dis = checked[q.id] ? 'disabled' : '';
+        const chk = answered[q.id] === oi ? 'checked' : '';
+        html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+      });
+      html += `</ul>`;
+      const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+      html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+      if (checked[q.id]) {
+        const isCorr = answered[q.id] === q.correct;
+        const fbClass = isCorr ? 'correct' : 'incorrect';
+        const fbText = isCorr ? `<strong>Richtig!</strong> ${q.explanation}` : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+        html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+      } else {
+        html += `<div class="feedback" id="fb-${q.id}"></div>`;
+      }
+      html += `</div>`;
+      globalIdx++;
+    });
+  });
+  if (!showAll) {
+    html += `<div class="nav-row">`;
+    html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+    html += `<span style="font-weight:600;color:#004B87;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+    html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+    html += `</div>`;
+  }
+  container.innerHTML = html;
+  updateProgress();
+}
+
+function selectOption(qid, idx) { if (checked[qid]) return; answered[qid] = idx; render(); }
+function checkAnswer(qid) { if (answered[qid] === undefined || checked[qid]) return; checked[qid] = true; render(); updateProgress(); }
+function navigate(dir) { currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir)); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function updateProgress() {
+  const done = Object.keys(checked).length;
+  const pct = Math.round((done / totalQ) * 100);
+  document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+  document.getElementById('progressPct').textContent = `${pct} %`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+  const done = Object.keys(checked).length;
+  if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+  let correct = 0;
+  flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+  const pct = Math.round((correct / done) * 100);
+  document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+  let gradeText = ''; let gradeClass = 'pass';
+  if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+  else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+  else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+  else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+  else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+  else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+  const gEl = document.getElementById('gradeText');
+  gEl.textContent = gradeText;
+  gEl.className = 'grade ' + gradeClass;
+  let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+  sections.forEach(sec => {
+    let sCorr = 0, sTotal = 0;
+    sec.questions.forEach(q => { if (checked[q.id]) { sTotal++; if (answered[q.id] === q.correct) sCorr++; } });
+    const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+    tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+  });
+  tbl += '</table>';
+  document.getElementById('sectionBreakdown').innerHTML = tbl;
+  document.getElementById('resultsPanel').classList.add('show');
+  document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+  answered = {}; checked = {}; currentQ = 0;
+  document.getElementById('resultsPanel').classList.remove('show');
+  render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () { showAll = this.checked; render(); });
+
+function shuffleQuizOptions() {
+  let seed = Date.now() % 2147483647;
+  function seededRandom() { seed = (seed * 16807 + 0) % 2147483647; return (seed - 1) / 2147483646; }
+  sections.forEach(sec => {
+    sec.questions.forEach(q => {
+      const correctText = q.options[q.correct];
+      const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+      for (let i = cleaned.length - 1; i > 0; i--) {
+        const j = Math.floor(seededRandom() * (i + 1));
+        [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+      }
+      const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+      const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+      q.options = cleaned.map((c, i) => prefixes[i] + c);
+      q.correct = cleaned.indexOf(correctClean);
+    });
+  });
+}
+shuffleQuizOptions();
+render();
+</script>
+</body>
+</html>

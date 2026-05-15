@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Tag 15 &ndash; Berufenet, KldB 2010 &amp; BERUFE.TV</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #1a1a2e; line-height: 1.6; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #003366 0%, #004B87 50%, #0082B4 100%); color: #fff; padding: 2rem 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.header h1 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+.header .subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); opacity: 0.9; }
+.header .meta { margin-top: 0.8rem; font-size: 0.85rem; opacity: 0.8; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+.toolbar { max-width: 960px; margin: 1.5rem auto 0; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; }
+.toolbar button, .toolbar .toggle-label { background: #004B87; color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.toolbar button:hover { background: #003366; }
+.toggle-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; user-select: none; }
+.toggle-label input { accent-color: #004B87; width: 18px; height: 18px; cursor: pointer; }
+.progress-container { max-width: 960px; margin: 1.2rem auto 0; padding: 0 1rem; }
+.progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+.progress-bar { width: 100%; height: 12px; background: #dce3ea; border-radius: 6px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0082B4, #00aaff); border-radius: 6px; transition: width 0.4s ease; }
+.container { max-width: 960px; margin: 1.5rem auto 2rem; padding: 0 1rem; }
+.section-title { background: #003366; color: #fff; padding: 0.8rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 1.1rem; margin-top: 2rem; }
+.section-title:first-child { margin-top: 0; }
+.question-card { background: #ffffff; border: 1px solid #dce3ea; border-radius: 0 0 8px 8px; margin-bottom: 1.25rem; padding: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: box-shadow 0.2s; }
+.question-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.question-card.correct-card { border-left: 5px solid #28a745; }
+.question-card.incorrect-card { border-left: 5px solid #dc3545; }
+.question-number { display: inline-block; background: #e8f0fe; color: #004B87; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+.question-text { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; line-height: 1.5; }
+.options-list { list-style: none; }
+.options-list li { margin-bottom: 0.5rem; }
+.options-list label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.65rem 0.9rem; border: 2px solid #dce3ea; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-size: 0.95rem; }
+.options-list label:hover { background: #f0f7ff; border-color: #a0c4e8; }
+.options-list input[type="radio"] { accent-color: #004B87; margin-top: 3px; flex-shrink: 0; }
+.options-list label.selected { background: #e8f0fe; border-color: #004B87; }
+.options-list label.correct-opt { background: #d4edda; border-color: #28a745; }
+.options-list label.incorrect-opt { background: #f8d7da; border-color: #dc3545; }
+.check-btn { margin-top: 0.8rem; background: #004B87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.check-btn:hover { background: #003366; }
+.check-btn:disabled { background: #8faec8; cursor: default; }
+.feedback { margin-top: 0.8rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+.feedback.show { display: block; }
+.feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.nav-btn { background: #004B87; color: #fff; border: none; padding: 0.55rem 1.4rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.nav-btn:hover { background: #003366; }
+.nav-btn:disabled { background: #8faec8; cursor: default; }
+.results-panel { background: #ffffff; border: 2px solid #004B87; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.results-panel.show { display: block; }
+.results-panel h2 { color: #003366; margin-bottom: 0.8rem; }
+.score-big { font-size: 3rem; font-weight: 700; color: #004B87; }
+.grade { font-size: 1.4rem; margin: 0.5rem 0 1rem; font-weight: 600; }
+.grade.pass { color: #28a745; }
+.grade.fail { color: #dc3545; }
+.section-breakdown { text-align: left; max-width: 600px; margin: 1rem auto; }
+.section-breakdown table { width: 100%; border-collapse: collapse; }
+.section-breakdown th, .section-breakdown td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #dce3ea; font-size: 0.9rem; }
+.section-breakdown th { background: #e8f0fe; color: #003366; text-align: left; }
+.references { max-width: 960px; margin: 2rem auto 3rem; padding: 1.5rem; background: #fff; border-radius: 8px; border: 1px solid #dce3ea; }
+.references h3 { color: #003366; margin-bottom: 0.8rem; font-size: 1.1rem; }
+.references p { font-size: 0.88rem; color: #333; margin-bottom: 0.5rem; padding-left: 2rem; text-indent: -2rem; line-height: 1.55; }
+.footer { text-align: center; padding: 1.5rem 1rem; font-size: 0.8rem; color: #777; border-top: 1px solid #dce3ea; }
+@media print { body { background: #fff; } .toolbar, .progress-container, .nav-row, .check-btn, .results-panel { display: none !important; } .header { background: #003366 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; display: block !important; } .question-card.hidden { display: block !important; } .section-title { break-after: avoid; } .feedback.show { display: block !important; } .options-list label.correct-opt { background: #d4edda !important; border-color: #28a745 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+@media (max-width: 600px) { .header { padding: 1.4rem 0.8rem; } .question-card { padding: 1rem; } .toolbar { flex-direction: column; align-items: stretch; text-align: center; } }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<header class="header">
+  <h1>Quiz Tag 15 &ndash; Berufenet, KldB 2010 &amp; BERUFE.TV</h1>
+  <div class="subtitle">Personaldienstleistungskaufmann/-frau IHK 2026 &ndash; B2 Teil 1/3</div>
+  <div class="meta"><span>&copy; Can Siebert</span><span>Stand 05/2026</span><span>60 Fragen &bull; Multiple Choice</span></div>
+</header>
+
+<div class="toolbar">
+  <label class="toggle-label"><input type="checkbox" id="toggleView"> Alle Fragen auf einmal anzeigen</label>
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+    <button onclick="showResults()">Ergebnis anzeigen</button>
+    <button onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+  </div>
+</div>
+
+<div class="progress-container">
+  <div class="progress-info"><span id="progressText">0 von 60 beantwortet</span><span id="progressPct">0 %</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<div class="container">
+  <div class="results-panel" id="resultsPanel">
+    <h2>Dein Ergebnis</h2>
+    <div class="score-big" id="scoreBig"></div>
+    <div class="grade" id="gradeText"></div>
+    <div class="section-breakdown" id="sectionBreakdown"></div>
+    <button class="nav-btn" style="margin-top:1rem;" onclick="resetQuiz()">Quiz zur&uuml;cksetzen</button>
+  </div>
+</div>
+
+<div class="references">
+  <h3>Literaturverzeichnis (APA 7)</h3>
+  <p>Bundesagentur f&uuml;r Arbeit. (2020). <em>Klassifikation der Berufe 2010 &ndash; &uuml;berarbeitete Fassung 2020</em>. https://statistik.arbeitsagentur.de/</p>
+  <p>Bundesagentur f&uuml;r Arbeit. (2024). <em>Berufenet</em>. https://berufenet.arbeitsagentur.de/</p>
+  <p>Bundesagentur f&uuml;r Arbeit. (2024). <em>BERUFE.TV &ndash; Filme zu Ausbildungs- und Studienberufen</em>. https://www.berufe.tv/</p>
+  <p>Dengler, K., &amp; Matthes, B. (2023). <em>Substituierbarkeitspotenziale von Berufen</em>. IAB-Forschungsbericht 15/2023.</p>
+  <p>Matthes, B., Meinken, H., &amp; Neuhauser, P. (2014). <em>Berufssektoren und Berufssegmente auf Grundlage der KldB 2010</em>. IAB Methodenbericht 09/2014.</p>
+  <p>Paulus, W., &amp; Matthes, B. (2011). <em>Klassifikation der Berufe 2010 &ndash; Band 1</em>. Bundesagentur f&uuml;r Arbeit.</p>
+  <p>Statistisches Bundesamt. (2024). <em>Berufsklassifikationen in der amtlichen Statistik</em>. https://www.destatis.de/</p>
+</div>
+
+<footer class="footer">&copy; 2026 Can Siebert. Alle Rechte vorbehalten. | Stand 05/2026</footer>
+
+<script>
+const sections = [
+{title:"Abschnitt A: Berufenet (Fragen 1–12)",questions:[
+{id:1,text:"Wer ist Herausgeber des Berufenet-Portals?",options:["A) DIHK","B) Bundesagentur für Arbeit","C) Statistisches Bundesamt","D) GVP"],correct:1,explanation:"Berufenet wird von der Bundesagentur für Arbeit (BA) herausgegeben und ist deren zentrales Online-Berufsinformationssystem."},
+{id:2,text:"Wie viele Berufe sind aktuell in Berufenet beschrieben (Größenordnung)?",options:["A) ca. 300","B) ca. 1.000","C) ca. 3.300","D) ca. 10.000"],correct:2,explanation:"Berufenet enthält rund 3.300 standardisierte Berufsbeschreibungen (Steckbriefe)."},
+{id:3,text:"Welche Rubrik gehört zum Standard-Steckbrief in Berufenet?",options:["A) Privatleben des Berufstätigen","B) Tätigkeiten und Arbeitsumgebung","C) Sternzeichen-Empfehlung","D) Persönliche Bewerbungsfotos"],correct:1,explanation:"Tätigkeiten und Arbeitsumgebung sind eine zentrale Rubrik im Berufenet-Steckbrief, neben Zugangsvoraussetzungen, Ausbildung, Verdienst und verwandten Berufen."},
+{id:4,text:"Welcher Suchweg ist in Berufenet NICHT verfügbar?",options:["A) Freitextsuche","B) Systematische Suche über KldB","C) Erweiterte Suche mit Filtern","D) Lebenslauf-Upload mit KI-Match"],correct:3,explanation:"Berufenet bietet Freitext-, Systematik- und erweiterte Suche, aber keinen Lebenslauf-Upload mit KI-Match. Letzteres ist ein eigenes Angebot anderer Plattformen."},
+{id:5,text:"Was ist das BIZ?",options:["A) Eine digitale Plattform","B) Berufsinformationscenter - physische Räume in den Agenturen für Arbeit","C) Eine Tarifkommission","D) Ein Gesetz"],correct:1,explanation:"BIZ steht für Berufsinformationscenter - physische Räume in den Agenturen für Arbeit, in denen Ratsuchende mit Beratern Berufe erkunden können. Berufenet ist die digitale Entsprechung."},
+{id:6,text:"Welche Information findet man typisch im Berufenet-Steckbrief?",options:["A) Aktuelle Stellenangebote bei einem konkreten Arbeitgeber","B) Ausbildungsdauer, Vergütung und typischer Verdienst","C) Tagesablauf des Personalchefs","D) Eigene Job-Bewertungen wie auf Kununu"],correct:1,explanation:"Berufenet liefert standardisierte Informationen: Ausbildungsdauer, Vergütung, typischer Verdienst, Zugangsvoraussetzungen. Es zeigt keine konkreten Stellenangebote (das ist die Jobbörse der BA)."},
+{id:7,text:"Welche Rubrik hilft bei der Profilerweiterung eines Bewerbers?",options:["A) Verdienst","B) Verwandte Berufe","C) Werkzeuge","D) Geschichte"],correct:1,explanation:"Die Rubrik ‚Verwandte Berufe‘ zeigt Berufe in derselben Berufsuntergruppe (KldB) - so erweitern Sie den Suchhorizont bei Bewerber:innen."},
+{id:8,text:"Wie ist Berufenet im Vergleich zum BIZ einzustufen?",options:["A) Berufenet ersetzt das BIZ vollständig","B) Berufenet ist die digitale Entsprechung mit denselben Inhalten","C) Berufenet enthält andere Inhalte als das BIZ","D) Berufenet gibt es nur in Bayern"],correct:1,explanation:"Berufenet ist die digitale Entsprechung des BIZ - selbe Inhalte, anderer Zugangsweg. Für die PDL-Praxis meist die schnellere Option."},
+{id:9,text:"Welche Auswertung ist in Berufenet NICHT möglich?",options:["A) Synonyme zum Berufsnamen anzeigen","B) Per Bundesland filtern (z.B. nur bayerische Berufsbezeichnungen)","C) Echtzeit-Lohnvergleich mit anderen EU-Ländern","D) Verwandte Berufe finden"],correct:2,explanation:"Echtzeit-Lohnvergleich mit anderen EU-Ländern ist nicht Bestandteil von Berufenet (dafür gibt es EURES). Die anderen Funktionen sind verfügbar."},
+{id:10,text:"Wann wurde Berufenet eingeführt?",options:["A) 1960er Jahre","B) 1990er Jahre","C) 2010","D) 2020"],correct:1,explanation:"Berufenet existiert seit den 1990er Jahren und wurde seitdem kontinuierlich weiterentwickelt - es ist das digitale Pendant zum BIZ."},
+{id:11,text:"Welche Steckbrief-Information ist KEIN Bestandteil von Berufenet?",options:["A) Tätigkeiten","B) Verdienst","C) Persönliche Telefonnummer von Betroffenen","D) Verwandte Berufe"],correct:2,explanation:"Persönliche Telefonnummern sind selbstverständlich kein Bestandteil. Berufenet liefert allgemeine, anonymisierte Berufsinformationen."},
+{id:12,text:"Für welche Praxissituation ist Berufenet besonders nützlich?",options:["A) Privates Hobbyprojekt suchen","B) Anforderungsprofil für eine Stellenausschreibung erstellen","C) Auto kaufen","D) Mietvertrag prüfen"],correct:1,explanation:"Beim Erstellen einer Stellenausschreibung liefert Berufenet die offizielle Berufsbezeichnung, typische Tätigkeiten und das Anforderungsprofil - eine zentrale PDL-Anwendung."}
+]},
+{title:"Abschnitt B: KldB 2010 - Struktur (Fragen 13–28)",questions:[
+{id:13,text:"Wofür steht die Abkürzung KldB?",options:["A) Klassifikation der Berufe","B) Konzept der lebenslangen Bildung","C) Kategorisierung leichter Berufstätigkeiten","D) Kommunikation langweiliger Berufsbeschreibungen"],correct:0,explanation:"KldB steht für ‚Klassifikation der Berufe‘. Die KldB 2010 ist die aktuelle deutsche Berufssystematik der Bundesagentur für Arbeit."},
+{id:14,text:"Wann wurde die KldB 2010 eingeführt?",options:["A) 1988","B) 2011","C) 2020","D) 2023"],correct:1,explanation:"Die KldB 2010 wurde 2011 eingeführt und 2020 in einer überarbeiteten Fassung aktualisiert. Sie ersetzte die KldB 1988/1992."},
+{id:15,text:"Wie viele Stufen umfasst die KldB-Hierarchie?",options:["A) 3","B) 4","C) 5","D) 7"],correct:2,explanation:"Die KldB 2010 ist fünfstufig: Berufsbereich (1-stellig), Berufshauptgruppe (2-stellig), Berufsgruppe (3-stellig), Berufsuntergruppe (4-stellig), Berufsgattung (5-stellig)."},
+{id:16,text:"Wie viele Berufsbereiche kennt die KldB 2010?",options:["A) 5","B) 10","C) 37","D) 144"],correct:1,explanation:"Es gibt 10 Berufsbereiche, nummeriert von 0 (Militär) bis 9 (Sprach- und Kunstberufe)."},
+{id:17,text:"Wie viele Berufshauptgruppen umfasst die KldB?",options:["A) 10","B) 25","C) 37","D) 50"],correct:2,explanation:"Es gibt 37 Berufshauptgruppen (2-stellig)."},
+{id:18,text:"Wie viele Berufsgruppen umfasst die KldB?",options:["A) 50","B) 100","C) 144","D) 300"],correct:2,explanation:"Es gibt 144 Berufsgruppen (3-stellig)."},
+{id:19,text:"Welcher Berufsbereich ist die Code-Ziffer 6 in der KldB 2010?",options:["A) Land-, Forst-, Tierwirtschaft","B) Kaufmännische Dienstleistungen, Handel, Vertrieb, Tourismus","C) Verwaltung","D) Sprach- und Kunstberufe"],correct:1,explanation:"Code 6 = Kaufmännische Dienstleistungen, Handel, Vertrieb, Tourismus. Dort sind Berufe wie Kaufmann/-frau im Einzelhandel verortet."},
+{id:20,text:"Welcher Berufsbereich ist die Code-Ziffer 7?",options:["A) Bau, Architektur","B) Unternehmensorganisation, Buchhaltung, Recht, Verwaltung","C) Naturwissenschaft, Informatik","D) Militär"],correct:1,explanation:"Code 7 = Unternehmensorganisation, Buchhaltung, Recht, Verwaltung. Hier ist die Personaldienstleistung verortet."},
+{id:21,text:"Welcher Berufsbereich ist Code 8?",options:["A) Verkehr, Logistik","B) Bau","C) Gesundheit, Soziales, Lehre, Erziehung","D) Sprach- und Kunstberufe"],correct:2,explanation:"Code 8 = Gesundheit, Soziales, Lehre, Erziehung. Pflegekräfte, Erzieher:innen und Lehrer:innen sind hier verortet."},
+{id:22,text:"Was ist das ‚Anforderungsniveau‘ in der KldB?",options:["A) Wie viel ein Beruf bezahlt","B) Die Schwierigkeitsstufe der Tätigkeit nach Helfer/Fachkraft/Spezialist/Experte","C) Die Anzahl der Bewerber","D) Eine Steuergröße"],correct:1,explanation:"Das Anforderungsniveau ist die Qualifikationstiefe in vier Stufen: Helfer (1), Fachkraft (2, duale Ausbildung), Spezialist (3, Meister/Techniker/Fachwirt), Experte (4, Hochschulabschluss)."},
+{id:23,text:"Welche Stelle des KldB-Codes zeigt das Anforderungsniveau?",options:["A) Erste Stelle","B) Letzte Stelle (5. Stelle)","C) Mittlere Stelle","D) Wird separat geschrieben"],correct:1,explanation:"Das Anforderungsniveau ist die letzte (fünfte) Stelle des KldB-Codes. So enthält der 5-stellige Code gleichzeitig Tätigkeit und Niveau."},
+{id:24,text:"Welche Stufe entspricht ‚Fachkraft mit dualer 3-jähriger Ausbildung‘?",options:["A) Niveau 1 (Helfer)","B) Niveau 2 (Fachkraft)","C) Niveau 3 (Spezialist)","D) Niveau 4 (Experte)"],correct:1,explanation:"Niveau 2 = Fachkraft mit abgeschlossener Berufsausbildung (typisch 3 Jahre dual)."},
+{id:25,text:"Was bedeutet Niveau 3?",options:["A) Helfertätigkeit","B) Fachkraft mit dualer Ausbildung","C) Spezialist:in (Meister, Techniker, Fachwirt)","D) Akademiker:in"],correct:2,explanation:"Niveau 3 = Spezialist:in mit Aufstiegsfortbildung (Meister, Techniker, Fachwirt) - typisch nach mehrjähriger Berufstätigkeit und weiterer Qualifikation."},
+{id:26,text:"In welchem KldB-Bereich ist die Personaldienstleistung verortet?",options:["A) 5 (Verkehr/Logistik)","B) 6 (Kaufmännische Dienstleistung)","C) 7 (Unternehmensorganisation/Verwaltung)","D) 8 (Soziales)"],correct:2,explanation:"Personaldienstleistung gehört zum Berufsbereich 7 (Unternehmensorganisation, Buchhaltung, Recht, Verwaltung) - Berufshauptgruppe 71, Gruppe 715, Untergruppe 7152."},
+{id:27,text:"Wie viele Berufsgattungen umfasst die KldB 2010?",options:["A) 100","B) 400","C) 700","D) ca. 1.300"],correct:3,explanation:"Es gibt rund 1.300 Berufsgattungen (5-stellig). Sie sind die unterste, präziseste Ebene der Klassifikation."},
+{id:28,text:"Was bedeutet der Berufsgattungscode 71522?",options:["A) Eine bestimmte Lagertätigkeit","B) Personaldienstleistungskauffrau/-mann (Niveau 2 = Fachkraft)","C) Eine IT-Tätigkeit","D) Ein Beruf im Gesundheitswesen"],correct:1,explanation:"71522: Bereich 7 (Verwaltung), Hauptgruppe 71 (Unternehmensführung), Gruppe 715 (Personal), Untergruppe 7152 (PDL), Niveau 2 (Fachkraft) - ergibt Personaldienstleistungskauffrau/-mann."}
+]},
+{title:"Abschnitt C: BERUFE.TV (Fragen 29–36)",questions:[
+{id:29,text:"Wer betreibt BERUFE.TV?",options:["A) Ein privater Sender","B) Die Bundesagentur für Arbeit","C) Das Bundesministerium für Bildung","D) Der DGB"],correct:1,explanation:"BERUFE.TV ist die Video-Plattform der Bundesagentur für Arbeit, vergleichbar mit der Funktion eines ‚BIZ-Films‘ - aber online verfügbar."},
+{id:30,text:"Wie viele Berufsfilme enthält BERUFE.TV (Größenordnung)?",options:["A) ca. 30","B) ca. 350","C) ca. 3.300","D) ca. 10.000"],correct:1,explanation:"Auf BERUFE.TV gibt es etwa 350 Filme zu Ausbildungs- und Studienberufen. Nicht alle 3.300 Berufe aus Berufenet sind verfilmt."},
+{id:31,text:"Wie lang sind BERUFE.TV-Filme typischerweise?",options:["A) 30 Sekunden","B) 3-6 Minuten","C) 30-60 Minuten","D) 2 Stunden"],correct:1,explanation:"Die Filme dauern typisch 3-6 Minuten - kurz genug für ein Bewerbergespräch, lang genug für Eindrücke vom Arbeitsalltag."},
+{id:32,text:"Welche Zielgruppe richtet sich BERUFE.TV primär an?",options:["A) Geschäftsführer:innen","B) Jugendliche und junge Erwachsene in der Berufsorientierung","C) Renteneintrittsphase","D) Politiker:innen"],correct:1,explanation:"BERUFE.TV richtet sich primär an Jugendliche und junge Erwachsene in der Berufsorientierungsphase - daher kurze, anschauliche Formate."},
+{id:33,text:"Was ist eine Stärke von BERUFE.TV?",options:["A) Detaillierte Lohnstatistik","B) Audiovisuelle Eindrücke und Originalstimmen aus dem Beruf","C) Tarifverträge zum Download","D) Lebenslauf-Generator"],correct:1,explanation:"Die Stärke ist die audiovisuelle Vermittlung - Bewerber:innen sehen reale Arbeitsplätze und hören Originalstimmen Berufstätiger."},
+{id:34,text:"Welche Grenze hat BERUFE.TV?",options:["A) Es kostet Geld","B) Es gibt nur Filme zu wirtschaftlich relevanten Berufen, nicht zu allen","C) Es ist nur auf Englisch","D) Es funktioniert nur Montag bis Freitag"],correct:1,explanation:"Nicht alle 3.300 Berufenet-Berufe sind verfilmt - BERUFE.TV konzentriert sich auf häufige Ausbildungs- und Studienberufe. Die Plattform ist kostenlos und 24/7 erreichbar."},
+{id:35,text:"Welcher Einsatzmoment ist typisch für BERUFE.TV?",options:["A) Bei der Lohnverhandlung","B) Im Bewerbergespräch zur Konkretisierung der Berufsvorstellung","C) Bei der Buchhaltung","D) Im Vorstellungsgespräch beim Kunden"],correct:1,explanation:"Typischer Einsatz: im Bewerbergespräch, wenn Bewerber:innen unentschlossen sind. Ein kurzer Film hilft, die Berufsvorstellung zu konkretisieren."},
+{id:36,text:"Ist BERUFE.TV ein Ersatz für Berufenet?",options:["A) Ja, BERUFE.TV ersetzt Berufenet","B) Nein, beide ergänzen sich - BERUFE.TV liefert Eindrücke, Berufenet die strukturierten Informationen","C) Ja, in Bayern","D) Nein, BERUFE.TV ist veraltet"],correct:1,explanation:"BERUFE.TV und Berufenet ergänzen sich: BERUFE.TV liefert audiovisuelle Eindrücke, Berufenet die strukturierten Informationen (Verdienst, Zugang, Stellenmarkt)."}
+]},
+{title:"Abschnitt D: Werkzeugauswahl (Fragen 37–46)",questions:[
+{id:37,text:"Welches Werkzeug ist am besten geeignet, um einem/einer Bewerber:in einen Beruf anschaulich nahezubringen?",options:["A) Berufenet","B) KldB 2010","C) BERUFE.TV","D) Wikipedia"],correct:2,explanation:"BERUFE.TV ist für anschauliche Vermittlung am besten geeignet - audiovisuelle Eindrücke ergänzen abstrakte Beschreibungen."},
+{id:38,text:"Welches Werkzeug nutzt man für detaillierte Berufsinformationen (Verdienst, Zugang, Stellenmarkt)?",options:["A) BERUFE.TV","B) Berufenet","C) Tarifvertrag","D) Wikipedia"],correct:1,explanation:"Berufenet liefert die strukturierten Informationen zu Verdienst, Zugangsvoraussetzungen und Stellenmarkt - in standardisierten Steckbriefen."},
+{id:39,text:"Welches Werkzeug nutzt man für statistische Auswertungen (Lohnvergleich, Engpassanalyse)?",options:["A) Berufenet","B) KldB 2010 in Kombination mit Statistik der BA","C) BERUFE.TV","D) Privatlexikon"],correct:1,explanation:"Statistische Auswertungen brauchen die KldB-Codes als Datengrundlage. Die BA-Statistik nutzt KldB für Engpassanalyse, Lohnstatistik und Arbeitslosenquote pro Beruf."},
+{id:40,text:"Wie identifiziert man verwandte Berufe zu einer gegebenen Berufsbezeichnung am effizientesten?",options:["A) Wikipedia durchsuchen","B) Über Berufenet (Rubrik ‚Verwandte Berufe‘) oder die KldB-Untergruppe","C) Bei BERUFE.TV nach ähnlichen Filmen suchen","D) Bei der IHK anrufen"],correct:1,explanation:"Die Rubrik ‚Verwandte Berufe‘ in Berufenet zeigt Berufe der gleichen KldB-Untergruppe - das ist die effizienteste Methode."},
+{id:41,text:"Welches Werkzeug brauchen Sie zum Schreiben einer korrekt klassifizierten Stellenausschreibung?",options:["A) Nur Berufenet","B) Berufenet + KldB-Code als Pflichtangabe","C) Nur BERUFE.TV","D) Nur Wikipedia"],correct:1,explanation:"Eine professionelle Stellenausschreibung braucht beides: Berufenet liefert das Anforderungsprofil, der KldB-Code ordnet sie eindeutig zu (Pflicht für viele Veröffentlichungswege)."},
+{id:42,text:"Bewerber:in unentschlossen zwischen 2 Berufen - welches Tool hilft?",options:["A) BERUFE.TV-Filme beider Berufe ansehen","B) Excel-Tabelle erstellen","C) Tarifvertrag lesen","D) Im Kalender nachsehen"],correct:0,explanation:"BERUFE.TV-Filme beider Berufe ansehen ist ein typischer Einsatz - audiovisuelle Eindrücke helfen Bewerber:innen bei der Entscheidung."},
+{id:43,text:"Welches Werkzeug ist passend, um einen ausländischen Berufsabschluss einzuordnen?",options:["A) BERUFE.TV","B) KldB 2010 in Kombination mit Berufenet (Tätigkeitsanalyse)","C) Nur das Anerkennungsportal","D) Wikipedia"],correct:1,explanation:"Die KldB 2010 plus Berufenet erlauben über die Tätigkeitsanalyse eine Einordnung des ausländischen Abschlusses ins deutsche Klassifikationssystem."},
+{id:44,text:"Welche Plattform ist primär für statistische Engpassanalyse relevant?",options:["A) BERUFE.TV","B) Berufenet","C) Statistik der BA (mit KldB-Codes)","D) Wikipedia"],correct:2,explanation:"Die Engpassanalyse der BA nutzt KldB-Codes als Identifikatoren. Die Plattform statistik.arbeitsagentur.de liefert konkrete Daten zu Engpassberufen."},
+{id:45,text:"Welches Werkzeug eignet sich für eine schnelle, niederschwellige Berufsinformation am Smartphone?",options:["A) Berufenet (mobil)","B) BERUFE.TV (mobil)","C) Beides","D) Keines"],correct:2,explanation:"Beide Plattformen sind mobil-optimiert. BERUFE.TV punktet bei kurzen Eindrücken, Berufenet bei strukturierter Info."},
+{id:46,text:"Welche Pflichtangabe in Stellenausschreibungen für die BA-Jobbörse ist KldB-basiert?",options:["A) Lebenslauf-Anlage","B) Der KldB-Code des Berufs (5-stellig)","C) Foto","D) Steuernummer"],correct:1,explanation:"Stellenausschreibungen über die BA-Jobbörse benötigen den 5-stelligen KldB-Code des Berufs als Pflichtangabe - er entscheidet über Sichtbarkeit und Matching."}
+]},
+{title:"Abschnitt E: Praxis-Recherche und Workflow (Fragen 47–60)",questions:[
+{id:47,text:"Was ist der erste Schritt im professionellen Recherche-Workflow ‚Vom Profil zum Beruf‘?",options:["A) Stellenausschreibung schreiben","B) Tätigkeitsanalyse beim/bei der Bewerber:in","C) Bei BERUFE.TV starten","D) KldB-Code auswählen"],correct:1,explanation:"Erster Schritt: Tätigkeitsanalyse - was hat der/die Bewerber:in tatsächlich gemacht? Nicht: was steht als Berufsetikett im Lebenslauf?"},
+{id:48,text:"Warum ist die Tätigkeitsanalyse wichtiger als das Berufsetikett?",options:["A) Etiketten sind verboten","B) Weil derselbe Berufsname je nach Betrieb sehr unterschiedlichen Tätigkeiten entspricht","C) Weil Etiketten politisch korrekt sein müssen","D) Es ist nicht wichtiger"],correct:1,explanation:"Beispiel: ‚Lagerist‘ kann Hochregalstapler-Fahrer:in (mit Schein), Kommissionierer:in (ohne Schein), Versandvorbereiter:in oder Wareneingangsprüfer:in bedeuten - sehr unterschiedliche Anforderungen, Tarife und Verrechnungssätze."},
+{id:49,text:"Was ist der zweite Schritt im Recherche-Workflow?",options:["A) Berufenet-Recherche und verwandte Berufe","B) Lohnabrechnung","C) Kundenpräsentation","D) Tag der offenen Tür"],correct:0,explanation:"Nach der Tätigkeitsanalyse: Berufenet-Recherche - inkl. der Rubrik ‚Verwandte Berufe‘, um den Suchhorizont zu erweitern."},
+{id:50,text:"Wann nutzen Sie BERUFE.TV im Workflow?",options:["A) Immer am Anfang","B) Bei Unentschlossenheit oder zur Konkretisierung der Berufsvorstellung","C) Nur bei Kindern","D) Nie in der PDL"],correct:1,explanation:"BERUFE.TV ist Schritt 4 (optional): Bei Unentschlossenheit oder zur Konkretisierung. Es ergänzt die strukturierte Recherche, ersetzt sie nicht."},
+{id:51,text:"Welche Kennung ist die ‚Lingua franca‘ der professionellen Berufsbeschreibung in Deutschland?",options:["A) ISCO-08","B) KldB-Code (5-stellig)","C) Steuernummer","D) Bibliothekssignatur"],correct:1,explanation:"Der 5-stellige KldB-Code ist die ‚Lingua franca‘ - Bundesagentur, Destatis, Tarifpartner und alle PDL-Firmen sprechen dieselbe Sprache."},
+{id:52,text:"Was ist ISCO-08?",options:["A) Eine deutsche Berufsklassifikation","B) Die internationale Berufsklassifikation der ILO","C) Eine Software","D) Ein Tarifvertrag"],correct:1,explanation:"ISCO-08 (International Standard Classification of Occupations) ist die internationale Berufsklassifikation der International Labour Organization (ILO). Korrespondenztabellen zur KldB 2010 existieren."},
+{id:53,text:"Was ist ein ‚Substituierbarkeitspotenzial‘?",options:["A) Ein Tarifbegriff","B) Der durch Automation/KI ersetzbare Anteil eines Berufs (IAB-Konzept)","C) Eine Steuer","D) Ein Gewerkschaftsbeitrag"],correct:1,explanation:"Das Substituierbarkeitspotenzial ist ein vom IAB entwickeltes Konzept - es schätzt den Anteil eines Berufs, der prinzipiell durch Automation/KI ersetzt werden könnte."},
+{id:54,text:"Welcher Workflow-Schritt erzeugt am Ende das Kundenangebot?",options:["A) Schritt 1 (Tätigkeitsanalyse)","B) Schritt 5 (Profil ableiten und Kundenangebot erstellen)","C) Schritt 3 (KldB-Einordnung)","D) Schritt 0 (Werbung)"],correct:1,explanation:"Schritt 5 erzeugt das Kundenangebot: Mit dem präzisen Profil und KldB-Code wird die Stundenverrechnung und Tarif-Einstufung möglich."},
+{id:55,text:"Welche Information aus Berufenet brauchen Sie für die korrekte Tarif-Einstufung?",options:["A) Foto","B) Verdienst-Information + Tätigkeitsbeschreibung","C) Privatadresse","D) Sternzeichen"],correct:1,explanation:"Für die Tarif-Einstufung brauchen Sie aus Berufenet: typische Tätigkeiten und Verdienstinformation. Damit ordnen Sie in die richtige Entgeltgruppe (E1-E9) und Branchenzuschlag ein."},
+{id:56,text:"In welchem Berufsbereich der KldB 2010 ist die Pflege verortet?",options:["A) Berufsbereich 6 (Kaufmännisch)","B) Berufsbereich 7 (Verwaltung)","C) Berufsbereich 8 (Gesundheit/Soziales/Lehre)","D) Berufsbereich 5 (Verkehr)"],correct:2,explanation:"Pflegekräfte sind im Berufsbereich 8 (Gesundheit, Soziales, Lehre, Erziehung) - mit verschiedenen Berufsgruppen und Anforderungsniveaus."},
+{id:57,text:"Welcher Berufsbereich ist primär für IT relevant?",options:["A) 4 (Naturwissenschaft, Geografie, Informatik)","B) 6 (Kaufmännische Dienstleistungen)","C) 7 (Verwaltung)","D) 9 (Sprach- und Kunstberufe)"],correct:0,explanation:"IT-Berufe sind primär im Berufsbereich 4 (Naturwissenschaft, Geografie, Informatik) - z.B. Fachinformatiker:in, IT-Systemkaufmann:frau."},
+{id:58,text:"Welche Berufsbereiche sind in der PDL-Praxis besonders relevant?",options:["A) Nur 0 und 1","B) 5, 6, 7, 8 (Logistik, Kauf, Verwaltung, Pflege)","C) Nur 9","D) Alle gleichmäßig"],correct:1,explanation:"In der PDL-Praxis sind besonders relevant: 5 (Verkehr/Logistik), 6 (Kauf/Handel), 7 (Verwaltung) und 8 (Pflege/Soziales) - das sind die größten Vermittlungsfelder."},
+{id:59,text:"Was bedeutet die KldB-Berufshauptgruppe 71?",options:["A) Land- und Forstwirtschaft","B) Berufe in Unternehmensführung und -organisation","C) Pflege","D) IT"],correct:1,explanation:"71 = Unternehmensführung und -organisation. Innerhalb davon ist 715 die Personalwesen-Gruppe."},
+{id:60,text:"Welche Aussage ist FALSCH?",options:["A) Berufenet ist online frei zugänglich","B) Die KldB 2010 ist die offizielle Berufssystematik","C) BERUFE.TV ist kostenpflichtig","D) Der KldB-Code ist Pflichtangabe in BA-Stellenausschreibungen"],correct:2,explanation:"FALSCH: BERUFE.TV ist kostenfrei und für alle zugänglich - es ist ein Angebot der Bundesagentur für Arbeit."}
+]}
+];
+
+let answered = {};
+let checked = {};
+let showAll = false;
+let currentQ = 0;
+const totalQ = 60;
+
+function allQuestions() { const flat = []; sections.forEach(s => s.questions.forEach(q => flat.push(q))); return flat; }
+const flatQ = allQuestions();
+
+function render() {
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  let globalIdx = 0;
+  sections.forEach((sec) => {
+    html += `<div class="section-title">${sec.title}</div>`;
+    sec.questions.forEach((q) => {
+      const vis = showAll || globalIdx === currentQ ? '' : ' hidden';
+      const cardClass = checked[q.id] ? (answered[q.id] === q.correct ? 'correct-card' : 'incorrect-card') : '';
+      html += `<div class="question-card ${cardClass}${vis}" id="qcard-${q.id}">`;
+      html += `<span class="question-number">Frage ${q.id} von ${totalQ}</span>`;
+      html += `<p class="question-text">${q.text}</p>`;
+      html += `<ul class="options-list">`;
+      q.options.forEach((opt, oi) => {
+        let cls = '';
+        if (checked[q.id]) {
+          if (oi === q.correct) cls = 'correct-opt';
+          else if (oi === answered[q.id] && oi !== q.correct) cls = 'incorrect-opt';
+        } else if (answered[q.id] === oi) {
+          cls = 'selected';
+        }
+        const dis = checked[q.id] ? 'disabled' : '';
+        const chk = answered[q.id] === oi ? 'checked' : '';
+        html += `<li><label class="${cls}"><input type="radio" name="q${q.id}" value="${oi}" ${chk} ${dis} onchange="selectOption(${q.id},${oi})"> ${opt}</label></li>`;
+      });
+      html += `</ul>`;
+      const btnDis = (answered[q.id] === undefined || checked[q.id]) ? 'disabled' : '';
+      html += `<button class="check-btn" id="btn-${q.id}" onclick="checkAnswer(${q.id})" ${btnDis}>Antwort pr&uuml;fen</button>`;
+      if (checked[q.id]) {
+        const isCorr = answered[q.id] === q.correct;
+        const fbClass = isCorr ? 'correct' : 'incorrect';
+        const fbText = isCorr ? `<strong>Richtig!</strong> ${q.explanation}` : `<strong>Leider falsch.</strong> Die richtige Antwort ist: <strong>${q.options[q.correct]}</strong>. ${q.explanation}`;
+        html += `<div class="feedback show ${fbClass}">${fbText}</div>`;
+      } else {
+        html += `<div class="feedback" id="fb-${q.id}"></div>`;
+      }
+      html += `</div>`;
+      globalIdx++;
+    });
+  });
+  if (!showAll) {
+    html += `<div class="nav-row">`;
+    html += `<button class="nav-btn" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>&laquo; Vorherige</button>`;
+    html += `<span style="font-weight:600;color:#004B87;">Frage ${currentQ + 1} / ${totalQ}</span>`;
+    html += `<button class="nav-btn" onclick="navigate(1)" ${currentQ === totalQ - 1 ? 'disabled' : ''}>N&auml;chste &raquo;</button>`;
+    html += `</div>`;
+  }
+  container.innerHTML = html;
+  updateProgress();
+}
+
+function selectOption(qid, idx) { if (checked[qid]) return; answered[qid] = idx; render(); }
+function checkAnswer(qid) { if (answered[qid] === undefined || checked[qid]) return; checked[qid] = true; render(); updateProgress(); }
+function navigate(dir) { currentQ = Math.max(0, Math.min(totalQ - 1, currentQ + dir)); render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function updateProgress() {
+  const done = Object.keys(checked).length;
+  const pct = Math.round((done / totalQ) * 100);
+  document.getElementById('progressText').textContent = `${done} von ${totalQ} beantwortet`;
+  document.getElementById('progressPct').textContent = `${pct} %`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function showResults() {
+  const done = Object.keys(checked).length;
+  if (done === 0) { alert('Bitte beantworte und prüfe zuerst mindestens eine Frage.'); return; }
+  let correct = 0;
+  flatQ.forEach(q => { if (checked[q.id] && answered[q.id] === q.correct) correct++; });
+  const pct = Math.round((correct / done) * 100);
+  document.getElementById('scoreBig').textContent = `${correct} / ${done} (${pct} %)`;
+  let gradeText = ''; let gradeClass = 'pass';
+  if (pct >= 92) gradeText = 'Note: 1 – Sehr gut';
+  else if (pct >= 81) gradeText = 'Note: 2 – Gut';
+  else if (pct >= 67) gradeText = 'Note: 3 – Befriedigend';
+  else if (pct >= 50) gradeText = 'Note: 4 – Ausreichend (bestanden)';
+  else if (pct >= 30) { gradeText = 'Note: 5 – Mangelhaft (nicht bestanden)'; gradeClass = 'fail'; }
+  else { gradeText = 'Note: 6 – Ungenügend (nicht bestanden)'; gradeClass = 'fail'; }
+  const gEl = document.getElementById('gradeText');
+  gEl.textContent = gradeText;
+  gEl.className = 'grade ' + gradeClass;
+  let tbl = '<table><tr><th>Abschnitt</th><th>Richtig</th><th>Prozent</th></tr>';
+  sections.forEach(sec => {
+    let sCorr = 0, sTotal = 0;
+    sec.questions.forEach(q => { if (checked[q.id]) { sTotal++; if (answered[q.id] === q.correct) sCorr++; } });
+    const sPct = sTotal > 0 ? Math.round((sCorr / sTotal) * 100) : 0;
+    tbl += `<tr><td>${sec.title.split('(')[0].trim()}</td><td>${sCorr} / ${sTotal}</td><td>${sPct} %</td></tr>`;
+  });
+  tbl += '</table>';
+  document.getElementById('sectionBreakdown').innerHTML = tbl;
+  document.getElementById('resultsPanel').classList.add('show');
+  document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  if (Object.keys(checked).length > 0 && !confirm('Quiz wirklich zurücksetzen? Alle Antworten gehen verloren.')) return;
+  answered = {}; checked = {}; currentQ = 0;
+  document.getElementById('resultsPanel').classList.remove('show');
+  render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('toggleView').addEventListener('change', function () { showAll = this.checked; render(); });
+
+function shuffleQuizOptions() {
+  let seed = Date.now() % 2147483647;
+  function seededRandom() { seed = (seed * 16807 + 0) % 2147483647; return (seed - 1) / 2147483646; }
+  sections.forEach(sec => {
+    sec.questions.forEach(q => {
+      const correctText = q.options[q.correct];
+      const cleaned = q.options.map(o => o.replace(/^[A-D]\)\s*/, ''));
+      for (let i = cleaned.length - 1; i > 0; i--) {
+        const j = Math.floor(seededRandom() * (i + 1));
+        [cleaned[i], cleaned[j]] = [cleaned[j], cleaned[i]];
+      }
+      const prefixes = ['A) ', 'B) ', 'C) ', 'D) '];
+      const correctClean = correctText.replace(/^[A-D]\)\s*/, '');
+      q.options = cleaned.map((c, i) => prefixes[i] + c);
+      q.correct = cleaned.indexOf(correctClean);
+    });
+  });
+}
+shuffleQuizOptions();
+render();
+</script>
+</body>
+</html>
